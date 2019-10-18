@@ -1,12 +1,11 @@
-import React from "react";
-import "./App.scss";
-import Main from "./Template/main";
-import "antd/dist/antd.css";
+import React from 'react';
+import './App.scss';
+import Main from './Template/main';
 
 const App = () => (
-  <div className="App">
+  <div className='App'>
     <Main />
   </div>
-);
+)
 
-export default App;
+export default App

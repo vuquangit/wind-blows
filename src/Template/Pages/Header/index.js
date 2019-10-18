@@ -1,25 +1,23 @@
-import React from "react";
-import { Layout, Menu, Icon } from "antd";
-import { Row, Col } from "antd";
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInstagram } from '@fortawesome/free-brands-svg-icons'
+import { Layout, Row, Col } from 'antd'
+import './header.scss'
 
-export default function Header() {
-  const { Header, Content } = Layout;
+export default function Header () {
+  const { Header } = Layout
 
   return (
     <Layout>
-      <Header
-        style={{
-          position: "fixed",
-          zIndex: 1,
-          width: "100%",
-          background: "#fff",
-          padding: 0
-        }}
-      >
-        <Content>
-          <Row>
+      <Header className='header'>
+        <div className='header__content'>
+          <Row className='header__content--row'>
             <Col xs={12} sm={6} md={8}>
-              The Wind Blows
+              <a href='/'>
+                <FontAwesomeIcon icon={faInstagram} />
+                <div className='split' />
+                <div>The Wind Blows</div>
+              </a>
             </Col>
             <Col xs={0} sm={10} md={8}>
               Search
@@ -28,8 +26,8 @@ export default function Header() {
               Profile User
             </Col>
           </Row>
-        </Content>
+        </div>
       </Header>
     </Layout>
-  );
+  )
 }

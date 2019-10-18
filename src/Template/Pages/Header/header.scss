@@ -1,0 +1,31 @@
+.header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  background: #fff !important;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+
+  &__content {
+    height: 77px;
+    max-width: 1010px;
+    padding: 26px 20px;
+    transition: height 0.2s ease-in-out;
+    width: 100%;
+
+    &--row {
+      line-height: 0;
+    }
+
+    .split {
+      background-color: rgba(var(--i1d, 38, 38, 38), 1);
+      height: 28px;
+      margin: 0 16px;
+      transition: opacity 0.1s ease-out;
+      width: 1px;
+    }
+  }
+}
