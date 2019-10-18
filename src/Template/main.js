@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import { HashRouter, Switch, Route } from 'react-router-dom'
-import PrivateRoute from '../Containers/PrivateRoute'
-import Page404 from './Pages/404'
-import pageConfigs from './pageConfigs'
-import { MainWrapper } from './main.style'
+import { HashRouter, Switch, Route } from "react-router-dom";
+import PrivateRoute from "../Containers/PrivateRoute";
+import Page404 from "./Pages/404";
+import pageConfigs from "./pageConfigs";
+import { MainWrapper } from "./main.style";
+import Header from "./Pages/Header";
 
 const Main = () => {
   const _renderPage = () =>
@@ -14,12 +15,13 @@ const Main = () => {
       ) : (
         <Route {...route} key={index} />
       )
-    )
+    );
 
   return (
-    <div className='position-relative'>
+    <div className="position-relative">
       <HashRouter>
-        <MainWrapper className='container-fluid pt-0'>
+        <Header />
+        <MainWrapper className="container-fluid pt-0">
           <Switch>
             {_renderPage()}
             <Route component={Page404} />
@@ -27,7 +29,7 @@ const Main = () => {
         </MainWrapper>
       </HashRouter>
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
