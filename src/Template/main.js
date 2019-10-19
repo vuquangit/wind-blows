@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Layout } from "antd";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import PrivateRoute from "../Containers/PrivateRoute";
 import Page404 from "./Pages/404";
@@ -20,13 +20,15 @@ const Main = () => {
   return (
     <div className="position-relative">
       <HashRouter>
-        <Header />
-        <MainWrapper className="container-fluid pt-0">
-          <Switch>
-            {_renderPage()}
-            <Route component={Page404} />
-          </Switch>
-        </MainWrapper>
+        <Layout>
+          <Header />
+          <MainWrapper className="container-fluid pt-0">
+            <Switch>
+              {_renderPage()}
+              <Route component={Page404} />
+            </Switch>
+          </MainWrapper>
+        </Layout>
       </HashRouter>
     </div>
   );

@@ -55,25 +55,36 @@
     flex: 0 1 auto;
     min-width: 125px;
     width: 215px;
+    border: solid 1px #dbdbdb;
+    border-radius: 3px;
+    display: flex;
 
     &--input {
       font-size: 16px;
-      border: solid 1px #dbdbdb;
-      border-radius: 3px;
+      border: 0;
       color: #262626;
       outline: 0;
-      padding: 3px 10px 3px 26px;
+      padding: 3px 20px 3px 26px;
       z-index: 2;
       box-sizing: border-box;
       height: 100%;
       width: 100%;
+
+      &-collapse {
+        padding: 0 0 0 5px;
+      }
     }
 
-    &--search-icon {
-      left: 64px;
+    &--icon {
       position: absolute;
       top: 9px;
-      z-index: 2;
+      z-index: 4;
+      padding-left: 10px;
+
+      &-center {
+        position: relative;
+        padding-left: 80px;
+      }
 
       svg {
         height: 10px !important;
@@ -81,7 +92,7 @@
       }
     }
 
-    &--search-clear {
+    &--clear {
       z-index: 3;
       right: 61px;
       top: 6px;
@@ -92,6 +103,30 @@
       }
     }
 
+  }
+
+  &__menu {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+
+    &--items {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .menu-item {
+      padding-left: 24px;
+
+      svg {
+        color: rgb(38, 38, 38);
+        width: 24px !important;
+        height: 24px !important;
+      }
+    }
   }
 }
 
