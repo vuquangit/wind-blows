@@ -58,6 +58,7 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "eslint-config-prettier": "^6.4.0",
     "eslint-config-react-app": "^5.0.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-config-standard-react": "^9.2.0",
@@ -79,13 +80,6 @@
     "stylelint-config-recommended-scss": "^4.0.0",
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.11.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "lint-staged && npm run lint && npm run test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "resolutions": {
     "ansi-styles": "^3.2.0"

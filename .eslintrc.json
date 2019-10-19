@@ -1,6 +1,6 @@
 {
   "extends": ["standard", "standard-react"],
-  "plugins": ["react-hooks", "react", "jsx-a11y", "prettier"],
+  "plugins": ["react-hooks", "react", "jsx-a11y"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
