@@ -1,18 +1,17 @@
-import React from "react";
-import { Layout, Row, Col } from "antd";
+import React from 'react'
+import { Layout, Row, Col } from 'antd'
+import './header.scss'
+import Brand from './Brand'
+import Search from './Search'
+import Menu from './Menu'
 
-import "./header.scss";
-import Brand from "./Brand";
-import Search from "./Search";
-import Menu from "./Menu";
-
-export default function Header() {
-  const { Header } = Layout;
+export default function Header () {
+  const { Header } = Layout
 
   return (
-    <Header className="header">
-      <div className="header__content">
-        <Row className="header__content--row">
+    <Header className='header'>
+      <div className='header__content'>
+        <Row className='header__content--row'>
           <Col xs={12} sm={6} md={8}>
             <Brand />
           </Col>
@@ -25,5 +24,5 @@ export default function Header() {
         </Row>
       </div>
     </Header>
-  );
+  )
 }

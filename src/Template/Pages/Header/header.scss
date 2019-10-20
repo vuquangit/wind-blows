@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
 .header {
   position: fixed;
   z-index: 1;
@@ -26,10 +28,16 @@
   }
 
   &__brand {
+    &--items {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
     &--divide {
       background-color: rgba(var(--i1d, 38, 38, 38), 1);
       height: 28px;
-      margin: 0 16px;
+      margin: 0;
       transition: opacity 0.1s ease-out;
       width: 1px;
     }
@@ -41,12 +49,19 @@
 
     &--icon {
       animation: fan-spinner 3s linear infinite;
+      display: flex;
+      justify-content: center;
+
+      @include media-breakpoint-down(sm) {
+        justify-content: start;
+      }
     }
 
     &--text {
-      font-size: 24px;
+      font-size: 22px;
       padding: 0;
       margin: 0;
+      text-align: left;
     }
   }
 
@@ -102,7 +117,6 @@
         height: 16px !important;
       }
     }
-
   }
 
   &__menu {
@@ -125,11 +139,14 @@
         color: rgb(38, 38, 38);
         width: 24px !important;
         height: 24px !important;
+
+        &:hover {
+          color: rgb(0, 124, 196) !important;
+        }
       }
     }
   }
 }
-
 
 @keyframes fan-spinner {
   from {

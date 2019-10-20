@@ -1,15 +1,24 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFan } from "@fortawesome/free-solid-svg-icons";
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFan } from '@fortawesome/free-solid-svg-icons'
+import { Row, Col } from 'antd'
 
-function Brand() {
+function Brand () {
   return (
-    <a href="/" className="header__brand d-flex align-items-center">
-      <FontAwesomeIcon icon={faFan} className="header__brand--icon" />
-      <div className="header__brand--divide" />
-      <h3 className="header__brand--text">The Wind Blows</h3>
+    <a href='/' className='header__brand'>
+      <Row className='header__brand--items'>
+        <Col xs={24} sm={24} md={0} lg={4}>
+          <FontAwesomeIcon icon={faFan} className='header__brand--icon' />
+        </Col>
+        <Col xs={0} sm={0} md={0} lg={1}>
+          <div className='header__brand--divide' />
+        </Col>
+        <Col xs={0} sm={0} md={24} lg={19}>
+          <h3 className='header__brand--text'>The Wind Blows</h3>
+        </Col>
+      </Row>
     </a>
-  );
+  )
 }
 
-export default Brand;
+export default Brand
