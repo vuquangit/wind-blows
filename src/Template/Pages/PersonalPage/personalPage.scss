@@ -1,8 +1,106 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
 .personal {
+  background-color: #fff;
   flex-grow: 1;
   margin: 0 auto 30px;
   max-width: 935px;
   box-sizing: content-box;
   padding: 60px 20px 0;
   width: calc(100% - 40px);
+
+  @include media-breakpoint-down(sm) {
+    padding: 0;
+  }
+
+  &__header {
+    margin-bottom: 44px;
+    @include media-breakpoint-down(sm) {
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-top: 30px;
+      border-bottom: none;
+      margin-bottom: 24px;
+      padding-bottom: 0;
+    }
+
+    &--avatar {
+      flex-grow: 1;
+      margin-right: 30px;
+
+      .avatar-layer1 {
+        height: 150px;
+        width: 150px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+        @include media-breakpoint-down(sm) {
+          height: 77px;
+          width: 77px;
+        }
+      }
+
+      .avatar-layer2 {
+        background-color: #fafafa;
+        border-radius: 50%;
+        box-sizing: border-box;
+        margin: 0 auto;
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+
+      .avatar-button {
+        border: 0;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .avatar-image {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+    }
+
+    &--username {
+      margin-bottom: 20px;
+      display: flex;
+
+      @include media-breakpoint-down(sm) {
+        margin-bottom: 12px;
+      }
+
+      .username {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: rgba(var(--i1d, 38, 38, 38), 1);
+        font-weight: 300;
+        font-size: 28px;
+        line-height: 32px;
+        margin: -5px 0 -6px;
+      }
+
+      .edit-account {
+        color: rgba(var(--fe0, 0, 53, 105), 1);
+        text-decoration: none;
+        flex-shrink: 0;
+        margin-left: 20px;
+
+        button {
+          background-color: transparent;
+          border: 1px solid rgba(var(--d0b, 219, 219, 219), 1);
+          color: rgba(var(--f07, 38, 38, 38), 1);
+          border-radius: 4px;
+          position: relative;
+        }
+      }
+    }
+  }
 }

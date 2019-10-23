@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'antd'
 import Avatar from './Avatar'
-import UserName from './UserName'
+import Username from './Username'
 import Follows from './Follows'
 import Description from './Description'
 
@@ -14,7 +14,7 @@ const Profiles = () => {
         </Col>
         <Col xs={18} sm={18} md={16}>
           <Row gutter={24}>           
-            <UserName />            
+            <Username />            
           </Row>
           <Row gutter={24}>           
             <Follows />           
