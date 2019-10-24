@@ -102,5 +102,34 @@
         }
       }
     }
+
+    &--follow {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+
+      .follow__item {
+        font-size: 16px;
+        margin-right: 40px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &--number {
+          color: #262626;
+          font-weight: 600;
+        }
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+      }
+    }
   }
 }
