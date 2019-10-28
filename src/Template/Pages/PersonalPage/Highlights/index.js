@@ -3,7 +3,7 @@ import { Row } from 'antd'
 
 const Highlights = () => {
   return (    
-    <Row>Highlights</Row>      
+    <Row className='personal__highlights'>Highlights</Row>      
   )
 }
 
