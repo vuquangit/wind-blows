@@ -88,6 +88,20 @@
         margin: -5px 0 -6px;
       }
 
+      .verified {
+        background-position: -383px -238px;
+        height: 18px;
+        width: 18px;
+        background-repeat: no-repeat;
+        background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+        flex-shrink: 0;
+        margin-left: 7px;
+        display: block;
+        overflow: hidden;
+        text-indent: 110%;
+        white-space: nowrap;
+      }
+
       .edit-account {
         color: rgba(var(--fe0, 0, 53, 105), 1);
         text-decoration: none;
@@ -151,5 +165,9 @@
         text-align: left;
       }
     }
+  }
+
+  &__highlight {
+    padding-bottom: 50px;
   }
 }
