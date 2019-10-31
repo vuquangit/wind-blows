@@ -16,8 +16,10 @@ const Profiles = () => {
           <Row gutter={24} className="m-0">
             <Username />
           </Row>
-          <Row gutter={24} className="m-0">
-            <Follows />
+          <Row>
+            <Col xs={0} sm={0} md={24}>
+              <Follows />
+            </Col>
           </Row>
           <Row>
             <Col xs={0} sm={0} md={24}>

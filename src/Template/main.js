@@ -1,11 +1,11 @@
-import React from 'react'
-import { Layout } from 'antd'
-import { HashRouter, Switch, Route } from 'react-router-dom'
-import PrivateRoute from '../Containers/PrivateRoute'
-import Page404 from './Pages/404'
-import pageConfigs from './pageConfigs'
-import { MainWrapper } from './main.style'
-import Header from './Pages/Header'
+import React from "react";
+import { Layout } from "antd";
+import { HashRouter, Switch, Route } from "react-router-dom";
+import PrivateRoute from "../Containers/PrivateRoute";
+import Page404 from "./Pages/404";
+import pageConfigs from "./pageConfigs";
+import { MainWrapper } from "./main.style";
+import Header from "./Pages/Header";
 
 const Main = () => {
   const _renderPage = () =>
@@ -15,12 +15,12 @@ const Main = () => {
       ) : (
         <Route {...route} key={index} />
       )
-    )
+    );
 
   return (
     <div>
       <HashRouter>
-        <Layout>
+        <Layout style={{ background: "#fff" }}>
           <Header />
           <MainWrapper>
             <Switch>
@@ -31,7 +31,7 @@ const Main = () => {
         </Layout>
       </HashRouter>
     </div>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

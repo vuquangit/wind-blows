@@ -169,6 +169,8 @@
 
   &__highlight {
     margin-bottom: 44px;
+    padding-left: 24px;
+    padding-right: 34px;
 
     @include media-breakpoint-down(sm) {
       margin-bottom: 21px;
@@ -207,6 +209,7 @@
         position: relative;
         width: 77px;
         height: 77px;
+
         @include media-breakpoint-down(sm) {
           width: 56px;
           height: 56px;
@@ -237,5 +240,29 @@
         }
       }
     }
+
+    $btnSlider: 26px !important;
+    $slider-lineHeight: 0;
+
+    .slick-prev {
+      &:before {
+        font-size: $btnSlider;
+        line-height: $slider-lineHeight;
+        color: rgb(0, 107, 156);
+      }
+    }
+
+    .slick-next {
+      &:before {
+        font-size: $btnSlider;
+        line-height: $slider-lineHeight;
+        color: rgb(0, 107, 156);
+      }
+    }
+
+    .slick-disabled {
+      display: none !important;
+    }
+
   }
 }

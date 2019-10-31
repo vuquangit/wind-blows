@@ -133,6 +133,12 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+
+      .active {
+        svg {
+          color: rgb(21, 105, 214) !important;
+        }
+      }
     }
 
     .menu-item {
