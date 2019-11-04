@@ -1,7 +1,7 @@
-import React from "react";
-import { Row } from "antd";
-import PostItem from "Components/PostItem";
-import postList from "./mock.json";
+import React from 'react'
+import { Row, Col } from 'antd'
+import PostItem from 'Components/PostItem'
+import postList from './mock.json'
 
 const TabControl = () => {
   return (
@@ -9,11 +9,13 @@ const TabControl = () => {
       <Row>Tab</Row>
       <Row>
         {postList.map((item, idx) => (
-          <PostItem key={item.id || idx} {...item} />
+          <Col key={item.id || idx} span={8}>
+            <PostItem {...item} />
+          </Col>
         ))}
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default TabControl;
+export default TabControl
