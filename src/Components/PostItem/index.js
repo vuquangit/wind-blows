@@ -3,20 +3,15 @@ import numeral from "numeral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import ModalItem from "../ModalItem";
-import { Modal } from "antd";
 import "./postItem.scss";
 
-function PostItem({
-  thumbnailSrc = "",
-  numLikes = 0,
-  numComments = 0,
-  ...restProps
-}) {
+const PostItem = data => {
+  const { thumbnailSrc, numLikes, numComments } = data;
+
   const [isHover, setIsHouver] = React.useState(false);
   const handleMouseHover = () => setIsHouver(!isHover);
 
   const [visible, setVisible] = useState(false);
-
   const showModal = () => setVisible(true);
   const handleCancelModal = e => setVisible(false);
 
@@ -29,7 +24,7 @@ function PostItem({
         onClick={showModal}
       >
         <div>
-          <img alt="alt image" src={thumbnailSrc} />
+          <img alt="" src={thumbnailSrc} />
         </div>
         <div>
           <span aria-label="Carousel" className="filled" />
@@ -49,19 +44,13 @@ function PostItem({
           </div>
         )}
       </div>
-
-      <div className="modal-item">
-        <Modal
-          title={null}
-          visible={visible}
-          onCancel={handleCancelModal}
-          footer={null}
-        >
-          <ModalItem {...restProps} />
-        </Modal>
-      </div>
+      <ModalItem
+        visible={visible}
+        handleCancelModal={handleCancelModal}
+        {...data}
+      />
     </div>
   );
-}
+};
 
 export default PostItem;

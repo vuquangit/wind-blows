@@ -1,0 +1,172 @@
+.modal-item {
+    top: 0;
+    height: 100vh;
+    max-width: 935px;
+    width: 100% !important;
+
+    .ant-modal-content {
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        height: 100% !important;
+
+        .ant-modal-header {
+            background-color: transparent;
+            border: 0;
+            height: 40px;
+            padding: none;
+            margin: none;
+        }
+
+        .ant-modal-close-x {
+            width: 40px;
+            height: 40px;
+
+            .ant-modal-close-icon {
+                color: #fff;
+                font-size: 24px;
+                line-height: 32px;
+
+            }
+        }
+
+        .ant-modal-body {
+            padding: 0;
+            height: calc(100% - 50px);
+            background-color: #fff;
+        }
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border-left: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+        height: 72px;
+        padding: 20px;
+        color: #262626;
+
+        .owner {
+            display: flex;
+            align-items: center;
+        }
+
+        .verified {
+            background-position: -383px -238px;
+            height: 18px;
+            width: 18px;
+            background-repeat: no-repeat;
+            background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+            flex-shrink: 0;
+            margin-left: 7px;
+            display: block;
+            overflow: hidden;
+            text-indent: 110%;
+            white-space: nowrap;
+        }
+
+        .username {
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 5px;
+            margin: 0;
+            margin-left: 10px;
+        }
+
+        .follow {
+            span {
+                margin-left: 4px;
+                margin-right: 4px;
+            }
+
+            button {
+                border: 0;
+                padding: 0;
+                position: relative;
+                background: 0 0;
+                background-color: transparent;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .comment-list {
+        .ant-comment-inner {
+            padding: 0;
+        }
+    }
+
+    .comment-add {
+        &__content {
+            display: flex;
+            align-items: center;
+
+            .ant-form-item {
+                margin: 0;
+                padding: 0;
+            }
+
+            .submit {
+                border-color: #fff;
+                border: 0;
+                font-weight: 600;
+                color: #3897f0;
+            }
+
+            .ant-comment-inner {
+                padding: 0;
+            }
+
+            .ant-btn.disabled,
+            .ant-btn[disabled] {
+                cursor: default;
+                background-color: #fff;
+                color: #c0e2f5;
+            }
+
+            .ant-input,
+            .ant-input:focus,
+            .ant-input:hover {
+                border-color: #fff;
+                border-right-width: 0px !important;
+                outline: 0;
+                box-shadow: none;
+            }
+        }
+    }
+
+    .action-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            width: 40px;
+
+            svg {
+                font-size: 24px;
+            }
+        }
+
+        .item-liked {
+            svg {
+                color: red;
+            }
+        }
+    }
+}
