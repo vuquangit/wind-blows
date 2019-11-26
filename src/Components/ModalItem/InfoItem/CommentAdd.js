@@ -17,16 +17,20 @@ const CommentAdd = ({ comments = [], setComments }) => {
       setSubmitting(false);
       setValue("");
       setComments([
+        ...comments,
         {
-          author: "Han Solo",
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content: <p>{value}</p>,
-          datetime: moment().fromNow()
-        },
-        ...comments
+          deleted: false,
+          didReportAsSpam: false,
+          id: moment().format("YYYYMMDDHHmmSSS"),
+          isAuthorVerified: false,
+          likeCount: 0,
+          likedByViewer: false,
+          postedAt: moment().format(),
+          text: value,
+          userId: "1545908582"
+        }
       ]);
-    }, 1000);
+    }, 200);
   };
 
   const handleChange = e => setValue(e.target.value);

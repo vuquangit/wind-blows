@@ -1,6 +1,7 @@
 .modal-item {
     top: 0;
-    height: 100vh;
+    height: 100%;
+    overflow: auto;
     max-width: 935px;
     width: 100% !important;
 
@@ -21,6 +22,7 @@
         .ant-modal-close-x {
             width: 40px;
             height: 40px;
+            line-height: 40px;
 
             .ant-modal-close-icon {
                 color: #fff;
@@ -37,46 +39,125 @@
         }
     }
 
+    &__content {
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+    }
+
+    .content-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &__image {
+        background-Position: center;
+        background-Size: contain;
+        background-Repeat: no-repeat;
+        height: 100%;
+    }
+
+    .owner {
+        display: flex;
+        align-items: center;
+
+        &__avatar {
+            align-self: flex-start !important;
+            margin: 0 18px 0 0;
+        }
+
+        &__info {
+            display: inline-block;
+            flex-shrink: 1;
+            min-width: 0;
+
+            &--username {
+                display: inline-flex;
+                font-size: 14px;
+                padding: 0;
+                margin: 0;
+                margin-right: 4px;
+
+                a {
+                    color: #262626;
+                    font-size: 14px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    margin: 0;
+
+                    &:visited {
+                        color: #262626;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            &__verified {
+                background-position: -383px -238px;
+                height: 18px;
+                width: 18px;
+                background-repeat: no-repeat;
+                background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+                flex-shrink: 0;
+                margin-left: 7px;
+                display: block;
+                overflow: hidden;
+                text-indent: 110%;
+                white-space: nowrap;
+            }
+
+            span {
+                font-weight: 400;
+            }
+        }
+
+        &__comment {
+            margin-top: 16px;
+            margin-bottom: 4px;
+
+            &--content {
+                color: #999;
+
+                .content-item {
+                    background: 0 0;
+                    border: 0;
+                    cursor: pointer;
+                    display: inline;
+                    font-size: 12px;
+                    font-weight: 600;
+                    line-height: 14px;
+                    margin-right: 16px;
+                    padding: 0;
+                    color: #999;
+
+                    &:visited {
+                        color: #999;
+                    }
+                }
+
+                button {
+                    background-color: transparent;
+                    border: none !important;
+                }
+            }
+        }
+    }
+
     &__header {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        border-left: 0px !important;
         border-left: 1px solid #efefef;
         border-bottom: 1px solid #efefef;
         height: 72px;
-        padding: 20px;
+        padding: 16px;
         color: #262626;
-
-        .owner {
-            display: flex;
-            align-items: center;
-        }
-
-        .verified {
-            background-position: -383px -238px;
-            height: 18px;
-            width: 18px;
-            background-repeat: no-repeat;
-            background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
-            flex-shrink: 0;
-            margin-left: 7px;
-            display: block;
-            overflow: hidden;
-            text-indent: 110%;
-            white-space: nowrap;
-        }
-
-        .username {
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 600;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            padding-left: 5px;
-            margin: 0;
-            margin-left: 10px;
-        }
 
         .follow {
             span {
@@ -102,6 +183,8 @@
     }
 
     .comment-add {
+        border-top: 1px solid #efefef;
+
         &__content {
             display: flex;
             align-items: center;
@@ -144,6 +227,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        border-top: 1px solid #efefef;
 
         &__content {
             display: flex;
@@ -162,11 +246,67 @@
                 font-size: 24px;
             }
         }
+    }
 
-        .item-liked {
+    .comment {
+        &:hover {
+            .item-option {
+                display: block;
+            }
+        }
+
+        &__content {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px 0px;
+            width: auto;
+            justify-content: space-between;
+
+            &--action {
+                align-self: flex-start;
+                position: relative;
+
+                .item-option {
+                    display: none;
+                    position: absolute;
+                    right: 16px;
+                    background: 0 0;
+                    padding: 0;
+                    border: 0;
+
+                    &:hover {
+                        display: block;
+                    }
+
+                    button {
+                        background-color: #fff;
+                        border: none !important;
+                        font-size: 32px;
+                        opacity: 0.9;
+                    }
+                }
+            }
+        }
+    }
+
+    .heart {
+        padding: 0;
+        cursor: pointer;
+
+        svg {
+            color: rgb(190, 190, 190);
+        }
+
+        &__liked {
             svg {
                 color: red;
             }
         }
     }
+}
+
+.item-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

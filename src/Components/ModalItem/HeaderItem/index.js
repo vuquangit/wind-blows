@@ -1,5 +1,5 @@
 import React from "react";
-import Owner from "./Owner";
+import Owner from "../Owner";
 
 function HeaderItem({ owner }) {
   //  Compare id login and id owner
@@ -7,7 +7,7 @@ function HeaderItem({ owner }) {
 
   return (
     <div className="modal-item__header">
-      <Owner {...owner} />
+      <Owner {...owner} isComment={false} />
       {isFollowing && (
         <div className="follow">
           <span>•</span>

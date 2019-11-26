@@ -1,25 +1,15 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart as faLike,
-  faComment,
-  faBookmark
-} from "@fortawesome/free-regular-svg-icons";
-import {
-  faShareSquare,
-  faHeart as faLiked
-} from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
+import { faComment, faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faShareSquare } from "@fortawesome/free-solid-svg-icons";
+import Heart from "../Heart";
 
 const Action = ({ isLiked = true }) => {
-  const icon = isLiked ? faLiked : faLike;
-  const classHeart = classNames("action-item__item", { "item-liked": isLiked });
-
   return (
     <div className="action-item">
       <div className="action-item__content">
-        <div className={classHeart}>
-          <FontAwesomeIcon icon={icon} title="Like" />
+        <div className="action-item__item">
+          <Heart isLiked={isLiked} />
         </div>
         <div className="action-item__item">
           <FontAwesomeIcon icon={faComment} title="Comment" />

@@ -13,8 +13,6 @@ const ModalItem = ({
   owner,
   ...restProps
 }) => {
-  console.log(owner, restProps);
-
   return (
     <Modal
       title={" "}
@@ -23,14 +21,16 @@ const ModalItem = ({
       footer={null}
       className="modal-item"
     >
-      <Row>
+      <Row className="modal-item__content">
         <Col xs={24} sm={16} md={16}>
           <ImageItem src={src} />
         </Col>
         <Col xs={24} sm={8} md={8}>
-          <HeaderItem owner={owner} />
-          <InfoItem {...restProps} owner={owner} />
-          <OptionItem />
+          <div className="content-info">
+            <HeaderItem owner={owner} />
+            <InfoItem {...restProps} owner={owner} />
+            {/* <OptionItem /> */}
+          </div>
         </Col>
       </Row>
     </Modal>
