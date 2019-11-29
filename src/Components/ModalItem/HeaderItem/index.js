@@ -7,13 +7,18 @@ function HeaderItem({ owner }) {
 
   return (
     <div className="modal-item__header">
-      <Owner {...owner} isComment={false} />
-      {isFollowing && (
-        <div className="follow">
-          <span>•</span>
-          <button>Following</button>
-        </div>
-      )}
+      <div className="modal-item__header--content">
+        <Owner {...owner} isComment={false} />
+        {isFollowing && (
+          <div className="follow">
+            <span>•</span>
+            <button>Following</button>
+          </div>
+        )}
+      </div>
+      <div className="modal-item__header--option">
+        <span>...</span>
+      </div>
     </div>
   );
 }
