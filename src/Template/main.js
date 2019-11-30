@@ -6,6 +6,7 @@ import Page404 from "./Pages/404";
 import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import Header from "./Pages/Header";
+import Login from "./Pages/Login";
 
 const Main = () => {
   const _renderPage = () =>
@@ -21,13 +22,14 @@ const Main = () => {
     <div>
       <HashRouter>
         <Layout style={{ background: "#fff" }}>
-          <Header />
+          <Login />
+          {/* <Header />
           <MainWrapper>
             <Switch>
               {_renderPage()}
               <Route component={Page404} />
             </Switch>
-          </MainWrapper>
+          </MainWrapper> */}
         </Layout>
       </HashRouter>
     </div>
