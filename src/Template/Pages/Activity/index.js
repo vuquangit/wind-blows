@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
+import BasicTemplate from 'Template/BasicTemplate';
 
 const Activity = () => {
-  return (
-    <div>
-      Activity
-    </div>
-  )
-}
+  return <BasicTemplate>Activity</BasicTemplate>
+};
 
 export default Activity

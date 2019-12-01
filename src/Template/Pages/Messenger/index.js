@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
+import BasicTemplate from 'Template/BasicTemplate';
 
 const Messenger = () => {
-  return (
-    <div>
-      Messenger
-    </div>
-  )
-}
+  return <BasicTemplate>Messenger</BasicTemplate>
+};
 
 export default Messenger

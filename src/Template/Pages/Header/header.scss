@@ -1,7 +1,7 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
 .header {
-  position: fixed;
+  position: relative;
   z-index: 1;
   width: 100%;
   background: #fff !important;
@@ -11,6 +11,10 @@
   align-items: center;
   border-bottom: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
   height: 75px;
+
+  &__fixed {
+    position: fixed;
+  }
 
   &__content {
     height: 77px;

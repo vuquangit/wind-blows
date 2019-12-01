@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import Loading from '../../Template/Pages/Loading'
+import React, { useEffect } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import Loading from '../../Template/Pages/Loading';
+import { connect } from 'react-redux';
 
 const RedirectRoute = props => (
   <Redirect
@@ -11,10 +12,10 @@ const RedirectRoute = props => (
   />
 )
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const isAuthenticated = true
+const PrivateRoute = ({ component: Component, state, ...rest }) => {
+  const isAuthenticated = state.isAuthenticated
   const isLoading = false
-
+  // debugger;
   useEffect(
     () => {
       setTimeout(() => {
@@ -36,6 +37,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   ) : (
     <Loading />
   )
-}
+};
 
-export default PrivateRoute
+const mapStateToProps = state => {
+  return {
+    state
+  }
+};
+
+export default connect(mapStateToProps)(PrivateRoute)

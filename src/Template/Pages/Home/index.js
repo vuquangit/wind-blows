@@ -1,6 +1,7 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import BasicTemplate from 'Template/BasicTemplate';
 
-const HomePage = () => <div>HOME PAGE</div>;
+const HomePage = () => <BasicTemplate>HOME PAGE</BasicTemplate>
 
-export default withRouter(HomePage);
+export default withRouter(HomePage)

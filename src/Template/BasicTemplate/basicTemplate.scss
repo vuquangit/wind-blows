@@ -1,0 +1,18 @@
+.basic-template {
+  // display: grid;
+  // grid-template-columns: auto;
+  // grid-template-rows: auto;
+  // grid-template-areas:
+  //   "header"
+  //   "children";
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    // grid-area: header;
+  }
+
+  &__children {
+    // grid-area: children;
+  }
+}

@@ -1,11 +1,12 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFan } from '@fortawesome/free-solid-svg-icons'
-import { Row, Col } from 'antd'
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFan } from '@fortawesome/free-solid-svg-icons';
+import { Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
 
-function Brand () {
+function Brand() {
   return (
-    <a href='/' className='header__brand'>
+    <Link to='/' className='header__brand'>
       <Row className='header__brand--items'>
         <Col xs={24} sm={24} md={0} lg={4}>
           <FontAwesomeIcon icon={faFan} className='header__brand--icon' />
@@ -17,7 +18,7 @@ function Brand () {
           <h3 className='header__brand--text'>The Wind Blows</h3>
         </Col>
       </Row>
-    </a>
+    </Link>
   )
 }
 
