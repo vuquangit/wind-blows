@@ -109,7 +109,7 @@
         white-space: nowrap;
       }
 
-      .edit-account {
+      .edit-profile {
         color: rgba(var(--fe0, 0, 53, 105), 1);
         text-decoration: none;
         flex-shrink: 0;
@@ -132,13 +132,15 @@
         }
       }
 
-      .account-setting {
-        padding-left: 16px;
-        cursor: pointer;
+      .edit-account {
+        &__show-modal {
+          padding-left: 16px;
+          cursor: pointer;
 
-        svg {
-          height: 24px;
-          width: 24px;
+          svg {
+            height: 24px;
+            width: 24px;
+          }
         }
       }
     }
@@ -287,6 +289,31 @@
 
     .slick-disabled {
       display: none !important;
+    }
+
+  }
+}
+
+.edit-account {
+  &__modal {
+    .ant-modal-body {
+      padding: 0;
+    }
+
+    .ant-modal-close {
+      display: none;
+    }
+
+    &--items {
+      display: flex;
+      flex-direction: column;
+
+      .edit-item {
+        background: transparent;
+        border: 0;
+        min-height: 48px;
+        border-top: 1px solid #dbdbdb;
+      }
     }
 
   }

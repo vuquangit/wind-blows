@@ -42,10 +42,7 @@ class RegistrationForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <Form
-        onSubmit={this.handleSubmit}
-        className="signup__content--registration"
-      >
+      <Form onSubmit={this.handleSubmit} className="registration">
         <Form.Item>
           {getFieldDecorator("email", {
             rules: [

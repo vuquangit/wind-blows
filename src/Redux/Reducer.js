@@ -1,17 +1,17 @@
-import { SET_AUTHENTICATED } from './ActionType';
+import { SET_AUTHENTICATED } from "./ActionType";
 
-const initialState = { isAuthenticated: false }
+const initialState = { isAuthenticated: false };
 
 const todos = (state = initialState, action) => {
   switch (action.type) {
-  case SET_AUTHENTICATED:
-    return {
-      ...state,
-      isAuthenticated: action
-    }
+    case SET_AUTHENTICATED:
+      return {
+        ...state,
+        isAuthenticated: action
+      };
     default:
-    return state
+      return state;
   }
-}
+};
 
-export default todos
+export default todos;

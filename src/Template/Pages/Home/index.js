@@ -1,7 +1,27 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import BasicTemplate from 'Template/BasicTemplate';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import BasicTemplate from "Template/BasicTemplate";
+// import HomeSignup from "./HomeSignup";
+import { connect } from "react-redux";
 
-const HomePage = () => <BasicTemplate>HOME PAGE</BasicTemplate>
+const HomePage = props => {
+  return (
+    <>
+      {/* {props.state.isAuthenticated ? (
+        <BasicTemplate>HOME PAGE</BasicTemplate>
+      ) : (
+        // <HomeSignup />
+        <div>Home signup</div>
+      )} */}
+      <BasicTemplate>HOME PAGE</BasicTemplate>
+    </>
+  );
+};
 
-export default withRouter(HomePage)
+const mapStateToProps = state => {
+  return {
+    state
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(HomePage));

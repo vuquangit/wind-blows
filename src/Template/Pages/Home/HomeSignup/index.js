@@ -1,22 +1,22 @@
 import React from "react";
 import { Row, Col } from "antd";
-import Signup from "./Signup";
 import PanelImage from "./PanelImage";
-import "./login.scss";
+import EmailSignup from "Template/Pages/Accounts/EmailSignup";
+import "./homeSignup.scss";
 
-const Login = () => {
+const HomeSignup = () => {
   return (
-    <div className="login">
-      <Row className="login__content">
+    <div className="home-signup">
+      <Row>
         <Col xs={0} sm={0} md={12}>
           <PanelImage />
         </Col>
         <Col xs={24} sm={24} md={12}>
-          <Signup />
+          <EmailSignup />
         </Col>
       </Row>
     </div>
   );
 };
 
-export default Login;
+export default HomeSignup;
