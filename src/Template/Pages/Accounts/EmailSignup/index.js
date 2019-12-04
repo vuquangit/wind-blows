@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setAuthenticated } from "Redux/Action";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import SiteName from "Components/SiteName";
 import Registration from "./Registration";
-import "./login.scss";
+import "./signup.scss";
 
 const EmailSignup = props => {
+  const isAuthenticated = useSelector(state => state.isAuthenticated);
   useEffect(() => {
-    const isAuthenticated = props.state.isAuthenticated;
     if (isAuthenticated) {
       props.history.push("/");
     }
-  }, [props.history, props.state.isAuthenticated]);
+  }, [props.history, isAuthenticated]);
+  const dispatch = useDispatch();
+  const onLoginClick = () => dispatch(setAuthenticated(true));
 
   return (
-    <div className="login">
-      <div className="login__content">
-        <div className="login__sign">
-          <div className="login__sign--content">
+    <div className="signup">
+      <div className="signup__content">
+        <div className="signup__sign">
+          <div className="signup__sign--content">
             <div className="form">
               <div className="form--header">
                 <SiteName />
@@ -34,7 +36,7 @@ const EmailSignup = props => {
                   <button
                     type="button"
                     className="loginFB__submit"
-                    onClick={props.onLoginClick}
+                    onClick={onLoginClick}
                   >
                     <FontAwesomeIcon icon={faFacebookSquare} />
                     <span> Log in with Facebook</span>
@@ -63,21 +65,4 @@ const EmailSignup = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    state
-  };
-};
-
-const mapDispactToProps = dispatch => {
-  return {
-    onLoginClick: e => {
-      dispatch(setAuthenticated(true));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispactToProps
-)(withRouter(EmailSignup));
+export default withRouter(EmailSignup);

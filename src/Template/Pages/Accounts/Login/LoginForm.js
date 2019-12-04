@@ -13,6 +13,8 @@ class LoginForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { onLoginClick } = this.props;
+
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
@@ -37,14 +39,11 @@ class LoginForm extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator("remember", {
-            valuePropName: "checked",
-            initialValue: true
-          })(<Checkbox>Remember me</Checkbox>)}
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className="login-form__submit"
+            onClick={onLoginClick}
           >
             Log In
           </Button>

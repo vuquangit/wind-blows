@@ -1,0 +1,36 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+.home {
+    &__icon {
+        display: flex;
+        justify-content: center;
+
+        &--svg {
+            animation: fan-spinner 30s linear infinite;
+            font-size: 400px;
+            color: #007bff;
+
+            @include media-breakpoint-down(md) {
+                font-size: 300px;
+            }
+
+            @include media-breakpoint-down(xs) {
+                font-size: 200px;
+            }
+        }
+    }
+
+    &__goo-blobs {
+        z-index: 9999;
+    }
+}
+
+@keyframes fan-spinner {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
+}

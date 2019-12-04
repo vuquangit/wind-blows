@@ -6,6 +6,7 @@ import Activity from "./Pages/Activity";
 import Messenger from "./Pages/Messenger";
 import Login from "./Pages/Accounts/Login";
 import EmailSignup from "./Pages/Accounts/EmailSignup";
+import ResetPassword from "Template/Pages/Accounts/Password/Reset";
 
 const pageConfigs = [
   {
@@ -16,6 +17,11 @@ const pageConfigs = [
   {
     path: "/accounts/emailsignup",
     component: EmailSignup,
+    exact: true
+  },
+  {
+    path: "/accounts/password/reset",
+    component: ResetPassword,
     exact: true
   },
   {

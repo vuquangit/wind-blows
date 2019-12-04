@@ -7,7 +7,7 @@ const todos = (state = initialState, action) => {
     case SET_AUTHENTICATED:
       return {
         ...state,
-        isAuthenticated: action
+        isAuthenticated: action.val
       };
     default:
       return state;

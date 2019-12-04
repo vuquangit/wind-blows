@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import LoginForm from "./LoginForm";
@@ -26,7 +26,7 @@ const Login = props => {
               <SiteName />
             </div>
             <div className="form--content">
-              <LoginForm />
+              <LoginForm onLoginClick={props.onLoginClick} />
               <div className="divide">
                 <div className="divide__line" />
                 <div className="divide__text">or</div>
@@ -41,6 +41,11 @@ const Login = props => {
                   <FontAwesomeIcon icon={faFacebookSquare} />
                   <span> Log in with Facebook</span>
                 </button>
+              </div>
+              <div>
+                <Link to="/accounts/password/reset" className="forgot-password">
+                  Forgot password?
+                </Link>
               </div>
             </div>
           </div>

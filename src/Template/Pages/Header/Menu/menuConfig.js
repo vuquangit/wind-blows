@@ -1,28 +1,31 @@
-import { faHeartbeat, faUser, faGlobeAsia } from '@fortawesome/free-solid-svg-icons'
-import { faFacebookMessenger } from '@fortawesome/free-brands-svg-icons'
+import {
+  faHeartbeat,
+  faUser,
+  faGlobeAsia
+} from "@fortawesome/free-solid-svg-icons";
+import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
 
-const menuConfig =
-[
+const menuConfig = [
   {
-    title: 'Explore',
-    href: '/explore',
+    title: "Explore",
+    href: "/explore",
     icon: faGlobeAsia
   },
   {
-    title: 'Messenger',
-    href: '/messenger',
+    title: "Messenger",
+    href: "/messenger",
     icon: faFacebookMessenger
   },
   {
-    title: 'Activity',
-    href: '/activity',
+    title: "Activity",
+    href: "/activity",
     icon: faHeartbeat
   },
   {
-    title: 'Personal Page',
-    href: '/:username',
+    title: "Personal Page",
+    href: "/chang.gio",
     icon: faUser
   }
-]
+];
 
-export default menuConfig
+export default menuConfig;
