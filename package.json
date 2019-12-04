@@ -29,8 +29,8 @@
     "styled-components": "^4.4.0"
   },
   "scripts": {
-    "build": "GENERATE_SOURCEMAP=false && NODE_ENV=production && react-scripts build && rm -rf dist && mv build dist",
-    "build:clean": "NODE_ENV=production && rimraf ./build",
+    "build": "react-scripts build && rm -rf dist && mv build dist",
+    "build:clean": "rimraf ./build",
     "postbuild": "rimraf dist/**/*.map",
     "coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject",
