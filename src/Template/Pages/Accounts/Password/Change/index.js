@@ -1,13 +1,13 @@
 import React from "react";
 import BasicTemplate from "Template/BasicTemplate";
 import WrapperMenuAccounts from "Template/Pages/Accounts/WrapperMenuAccount";
-import ResetPassword from "./ResetPassword";
+import ChangePassword from "./ChangePassword";
 
 const Change = () => {
   return (
     <BasicTemplate>
       <WrapperMenuAccounts>
-        <ResetPassword />
+        <ChangePassword />
       </WrapperMenuAccounts>
     </BasicTemplate>
   );

@@ -1,18 +1,15 @@
 .basic-template {
-  // display: grid;
-  // grid-template-columns: auto;
-  // grid-template-rows: auto;
-  // grid-template-areas:
-  //   "header"
-  //   "children";
   display: flex;
   flex-direction: column;
 
-  &__header {
-    // grid-area: header;
-  }
-
   &__children {
-    // grid-area: children;
+    background-color: rgba(var(--b3f, 250, 250, 250), 1);
+    display: flex;
+    justify-content: center;
+
+    &--content {
+      max-width: 935px;
+      width: 100%;
+    }
   }
 }

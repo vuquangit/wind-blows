@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Row, Col, Modal } from "antd";
 import { useDispatch } from "react-redux";
 import { setAuthenticated } from "Redux/Action";
@@ -19,6 +19,8 @@ const Username = props => {
 
   const dispatch = useDispatch();
   const onLogoutClick = () => dispatch(setAuthenticated(false));
+  const onChangePassword = () =>
+    props.history.push("/accounts/password/change/");
 
   return (
     <div className="personal__header--username">
@@ -59,7 +61,9 @@ const Username = props => {
               footer={null}
             >
               <div className="edit-account__modal--items">
-                <button className="edit-item">Change Password</button>
+                <button className="edit-item" onClick={onChangePassword}>
+                  Change Password
+                </button>
                 <button className="edit-item">Nametag</button>
                 <button className="edit-item">Apps and Website</button>
                 <button className="edit-item">Notifications</button>

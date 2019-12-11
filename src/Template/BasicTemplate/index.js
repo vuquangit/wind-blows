@@ -24,7 +24,9 @@ const BasicTemplate = ({ children }) => {
       <div className="basic-template__header">
         <Header isScroll={isScroll} />
       </div>
-      <div className="basic-template__children">{children}</div>
+      <div className="basic-template__children">
+        <div className="basic-template__children--content">{children}</div>
+      </div>
     </div>
   );
 };
