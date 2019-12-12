@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Row, Col, Modal } from "antd";
 import { useDispatch } from "react-redux";
 import { setAuthenticated } from "Redux/Action";
@@ -59,6 +59,7 @@ const Username = props => {
               onCancel={handleCancel}
               className="edit-account__modal"
               footer={null}
+              closable={false}
             >
               <div className="edit-account__modal--items">
                 <button className="edit-item" onClick={onChangePassword}>

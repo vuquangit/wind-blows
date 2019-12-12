@@ -1,51 +1,26 @@
 .edit-profile {
     .ant-form-item {
         margin-bottom: 16px;
-        display: flex;
-        align-items: center;
+        // display: flex;
+        // align-items: center;
     }
 
     .ant-form-item-label {
         white-space: pre-wrap;
         line-height: inherit;
+
+        @media (max-width: 575px) {
+            padding: 0;
+
+            label {
+                margin-bottom: 0;
+            }
+        }
     }
 
     &__photo {
         margin: 32px 0 0;
         padding-bottom: 16px;
-
-        &--avatar {
-            display: flex;
-            justify-content: flex-end;
-            padding-right: 16px;
-
-        }
-
-        &--change {
-            display: flex;
-            justify-content: left;
-            text-align: left;
-
-            h1 {
-                font-size: 20px;
-                line-height: 26px;
-                margin-bottom: 2px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-weight: 400;
-            }
-
-            button {
-                border: 0;
-                color: rgba(var(--h5f, 56, 151, 240), 1);
-                display: inline;
-                padding: 0;
-                position: relative;
-                background: 0 0;
-                font-weight: 600;
-            }
-        }
     }
 
     &__form {

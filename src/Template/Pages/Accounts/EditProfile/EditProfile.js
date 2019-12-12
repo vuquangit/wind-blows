@@ -6,16 +6,10 @@ import {
   Icon,
   Menu,
   Dropdown,
-  Select,
   Checkbox,
-  Button,
-  Avatar,
-  Row,
-  Col
+  Button
 } from "antd";
-
-//#region const arguments
-const { Option } = Select;
+import ProfilePhoto from "Components/ProfilePhoto";
 
 const EditProfile = props => {
   const handleSubmit = e => {
@@ -53,15 +47,6 @@ const EditProfile = props => {
     }
   };
 
-  const prefixSelector = getFieldDecorator("prefix", {
-    initialValue: "84"
-  })(
-    <Select style={{ width: 70 }}>
-      <Option value="84">+84</Option>
-      <Option value="87">+87</Option>
-    </Select>
-  );
-
   const genderLists = (
     <Menu>
       <Menu.Item key="1">Male</Menu.Item>
@@ -70,29 +55,11 @@ const EditProfile = props => {
       <Menu.Item key="4">Prefer Not To Say</Menu.Item>
     </Menu>
   );
-  //#endregion
 
   return (
     <div className="edit-profile">
       <div className="edit-profile__photo">
-        <Row type="flex" align="middle">
-          <Col {...formItemLayout.labelCol}>
-            <div className="edit-profile__photo--avatar">
-              <Avatar
-                src="https://live.staticflickr.com/65535/49150573271_52eb21ac75_z.jpg"
-                size={40}
-              />
-            </div>
-          </Col>
-          <Col {...formItemLayout.wrapperCol}>
-            <div className="edit-profile__photo--change">
-              <div>
-                <h1>chang.gio</h1>
-                <button>Change Profile Photo</button>
-              </div>
-            </div>
-          </Col>
-        </Row>
+        <ProfilePhoto {...formItemLayout} changePhoto={true} />
       </div>
       <Form {...formItemLayout} onSubmit={handleSubmit}>
         <Form.Item label="Name">
@@ -150,11 +117,7 @@ const EditProfile = props => {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="Phone Number">
-          {getFieldDecorator("phone", {
-            rules: [
-              { required: true, message: "Please input your phone number!" }
-            ]
-          })(<Input addonBefore={prefixSelector} style={{ width: "100%" }} />)}
+          <Input />
         </Form.Item>
         <Form.Item label="Gender">
           <Dropdown overlay={genderLists}>
@@ -178,14 +141,15 @@ const EditProfile = props => {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
+          <Button type="danger" style={{ marginLeft: "16px" }}>
+            Disable my account
+          </Button>
         </Form.Item>
       </Form>
     </div>
   );
 };
 
-const WrappedRegistrationForm = Form.create({ name: "editProfile" })(
-  EditProfile
-);
+const WrappedEditProfile = Form.create({ name: "editProfile" })(EditProfile);
 
-export default WrappedRegistrationForm;
+export default WrappedEditProfile;

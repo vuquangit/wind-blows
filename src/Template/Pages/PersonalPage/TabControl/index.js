@@ -1,7 +1,8 @@
-import React from 'react'
-import { Row, Col } from 'antd'
-import PostItem from 'Components/PostItem'
-import postList from './mock.json'
+import React from "react";
+import { Row, Col } from "antd";
+import PostItem from "Components/PostItem";
+// import postList from './mock.json'
+import postList from "./_trangthuy.json";
 
 const TabControl = () => {
   return (
@@ -15,7 +16,7 @@ const TabControl = () => {
         ))}
       </Row>
     </div>
-  )
-}
+  );
+};
 
-export default TabControl
+export default TabControl;
