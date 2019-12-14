@@ -6,8 +6,8 @@ function HeaderItem({ owner }) {
   const isFollowing = true;
 
   return (
-    <div className="modal-item__header">
-      <div className="modal-item__header--content">
+    <div className="post-item__header">
+      <div className="post-item__header--content">
         <Owner {...owner} isComment={false} />
         {isFollowing && (
           <div className="follow">
@@ -16,7 +16,7 @@ function HeaderItem({ owner }) {
           </div>
         )}
       </div>
-      <div className="modal-item__header--option">
+      <div className="post-item__header--option">
         <span>...</span>
       </div>
     </div>

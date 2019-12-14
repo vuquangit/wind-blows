@@ -1,0 +1,14 @@
+.heart {
+    padding: 0;
+    cursor: pointer;
+
+    svg {
+        color: rgb(190, 190, 190);
+    }
+
+    &__liked {
+        svg {
+            color: red;
+        }
+    }
+}

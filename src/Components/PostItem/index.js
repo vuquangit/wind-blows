@@ -1,55 +1,32 @@
-import React, { useState } from "react";
-import numeral from "numeral";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
-import ModalItem from "../ModalItem";
+import React from "react";
+import { Row, Col } from "antd";
+import HeaderItem from "./HeaderItem";
+import ImageItem from "./ImageItem";
+import InfoItem from "./InfoItem";
 import "./postItem.scss";
 
-const PostItem = data => {
-  const { thumbnailSrc, numLikes, numComments } = data;
-
-  const [isHover, setIsHouver] = React.useState(false);
-  const handleMouseHover = () => setIsHouver(!isHover);
-
-  const [visible, setVisible] = useState(false);
-  const showModal = () => setVisible(true);
-  const handleCancelModal = e => setVisible(false);
+const PostItem = ({ src, owner, ...restProps }) => {
+  console.log(restProps);
 
   return (
-    <div className="post-item">
-      <div
-        className="post-item__content"
-        onMouseEnter={handleMouseHover}
-        onMouseLeave={handleMouseHover}
-        onClick={showModal}
-      >
-        <div>
-          <img alt="" src={thumbnailSrc} />
+    <Row className="post-item">
+      <Col xs={24} sm={24} md={0}>
+        <HeaderItem owner={owner} />
+      </Col>
+      <Col xs={24} sm={16}>
+        <ImageItem src={src} />
+      </Col>
+      <Col xs={24} sm={8}>
+        <div className="post-item__info">
+          <Row>
+            <Col xs={0} sm={0} md={24}>
+              <HeaderItem owner={owner} />
+            </Col>
+          </Row>
+          <InfoItem {...restProps} owner={owner} />
         </div>
-        <div>
-          <span aria-label="Carousel" className="filled" />
-        </div>
-        {isHover && (
-          <div className="LC">
-            <div className="LC__content">
-              <div className="LC__content--item">
-                <FontAwesomeIcon icon={faHeart} />
-                {` ${numeral(numLikes).format("0.[00]a")}`}
-              </div>
-              <div className="LC__content--item">
-                <FontAwesomeIcon icon={faComment} />
-                {` ${numeral(numComments).format("0.[00]a")}`}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      <ModalItem
-        visible={visible}
-        handleCancelModal={handleCancelModal}
-        {...data}
-      />
-    </div>
+      </Col>
+    </Row>
   );
 };
 

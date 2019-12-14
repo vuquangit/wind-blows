@@ -3,7 +3,7 @@ import React from "react";
 function ImageItem({ src = "" }) {
   return (
     <div
-      className="modal-item__image"
+      className="post-item__image"
       style={{ backgroundImage: `url(${src})` }}
     ></div>
   );

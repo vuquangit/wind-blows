@@ -2,7 +2,7 @@ import React from "react";
 import CommentItem from "../CommentItem";
 
 const CommentList = ({ comments = [] }) => {
-  console.log(comments);
+  // console.log(comments);
 
   return (
     <div className="comment-list">

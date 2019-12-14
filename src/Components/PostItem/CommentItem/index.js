@@ -1,6 +1,6 @@
 import React from "react";
 import Owner from "../Owner";
-import Heart from "../Heart";
+import Heart from "../../HeartIcon";
 
 const CommentItem = ({
   owner = {

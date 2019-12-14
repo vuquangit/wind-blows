@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faShareSquare } from "@fortawesome/free-solid-svg-icons";
-import Heart from "../Heart";
+import Heart from "../../HeartIcon";
 
 const Action = ({ isLiked = true }) => {
   return (

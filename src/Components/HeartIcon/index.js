@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faLike } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as faLiked } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
+import "./heart.scss";
 
 const Heart = ({ isLiked = true }) => {
   const icon = isLiked ? faLiked : faLike;
