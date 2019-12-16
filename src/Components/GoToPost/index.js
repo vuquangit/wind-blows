@@ -7,7 +7,7 @@ const GoToPost = () => {
   return (
     <div className="GTP">
       <div className="GTP__WPI">
-        <Post {...postData[0].post} isHomePage={false} />
+        <Post {...postData.post} isHomePage={false} />
       </div>
     </div>
   );

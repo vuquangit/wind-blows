@@ -11,7 +11,10 @@ const Post = (props = {}) => {
     <article className="PI">
       <PostHeader {...props.owner} isHomePage={props.isHomePage} />
       <PostImage src={props.src || ""} />
-      <PostInfo />
+      <PostInfo
+        numPreviewLikes={props.numPreviewLikes}
+        postedAt={props.postedAt}
+      />
       <PostOption />
     </article>
   );

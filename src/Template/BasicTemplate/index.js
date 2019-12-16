@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Pages/Header";
 import "./basicTemplate.scss";
+import Footer from "Template/Pages/Footer";
 
 const BasicTemplate = ({ children }) => {
   const [isScroll, setScroll] = useState(false);
@@ -26,6 +27,9 @@ const BasicTemplate = ({ children }) => {
       </div>
       <div className="basic-template__children">
         <div className="basic-template__children--content">{children}</div>
+      </div>
+      <div className="basic-template__footer">
+        <Footer />
       </div>
     </div>
   );
