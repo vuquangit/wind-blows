@@ -36,7 +36,10 @@ const PostHeader = ({
               </Link>
             </h2>
             {isVerified && (
-              <span className="owner__info--verified" title="Verified">
+              <span
+                className=" sprite-icon__core verified__small"
+                title="Verified"
+              >
                 Verified
               </span>
             )}

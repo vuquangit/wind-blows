@@ -5,15 +5,22 @@ import { faHeart as faLiked } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import "./heart.scss";
 
-const Heart = ({ isLiked = true }) => {
+const Heart = ({ isLiked = true, size }) => {
   const icon = isLiked ? faLiked : faLike;
   const classHeart = classNames({ heart__liked: isLiked });
   const title = isLiked ? "Like" : "Unlike";
 
+  const IconSize = size
+    ? {
+        height: `${size}px`,
+        width: "auto"
+      }
+    : "";
+
   return (
     <div className="heart">
       <div className={classHeart}>
-        <FontAwesomeIcon icon={icon} title={title} />
+        <FontAwesomeIcon icon={icon} title={title} style={IconSize} />
       </div>
     </div>
   );

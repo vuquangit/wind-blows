@@ -13,7 +13,9 @@ const Footer = () => {
         <nav className="footer__content--nav">
           <div className="nav__content">{_renderFooterNav()}</div>
         </nav>
-        <span class="footer__content--copy-right">© 2019 The Wind Blows</span>
+        <span className="footer__content--copy-right">
+          © 2019 The Wind Blows
+        </span>
       </div>
     </footer>
   );
