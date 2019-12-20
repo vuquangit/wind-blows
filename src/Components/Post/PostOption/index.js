@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "antd";
 import ModalOption from "./ModalOption";
+import "./postOption.scss";
 
 const PostOption = () => {
   const [visibleModal, setVisibleModal] = useState(false);

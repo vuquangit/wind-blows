@@ -62,6 +62,7 @@
   height: 100%;
   overflow: auto;
   max-width: 935px;
+  // max-height: 600px;
   width: 100% !important;
 
   @include media-breakpoint-down(sm) {
@@ -73,6 +74,8 @@
     box-shadow: none;
     border: none;
     height: 100% !important;
+    // display: flex;
+    // align-items: center;
 
     @include media-breakpoint-down(sm) {
       height: auto !important;
@@ -95,7 +98,6 @@
         color: #fff;
         font-size: 24px;
         line-height: 32px;
-
       }
     }
 
@@ -103,6 +105,13 @@
       padding: 0;
       height: calc(100% - 50px);
       background-color: #fff;
+      width: fit-content;
+      margin: 0 auto;
+      max-height: 600px;
+
+      @media (max-width: 736px) {
+        max-height: none;
+      }
 
       @include media-breakpoint-down(sm) {
         height: auto !important;

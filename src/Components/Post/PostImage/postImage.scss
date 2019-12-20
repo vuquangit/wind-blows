@@ -1,0 +1,47 @@
+.PI__PI {
+    background-color: #fafafa;
+    justify-content: center;
+    margin-right: 335px;
+    min-height: 450px;
+
+    @media (max-width: 736px) {
+        margin-right: 0 !important;
+        min-height: 0;
+    }
+
+    &--content {
+        left: 0;
+        position: relative;
+        top: 0;
+
+        .content__wrapper {
+            display: block;
+            overflow: hidden;
+            max-width: 598px;
+
+            @media (max-width: 736px) {
+                max-width: 100%;
+            }
+
+            &--image-normal {
+                width: 100%;
+                height: auto;
+            }
+
+            &--image-modal {
+                width: auto;
+                height: 100%;
+
+                @media (max-width: 736px) {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+}
+
+.PI__maxHeight {
+    height: 100% !important;
+    width: auto;
+}

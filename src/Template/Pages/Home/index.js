@@ -2,29 +2,24 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import BasicTemplate from "Template/BasicTemplate";
 import "./home.scss";
-// import items from "./mock1.json";
-// import PostItem from "Components/PostItem";
-import GoToPost from "Components/GoToPost";
+import items from "./mock1.json";
+import PostItem from "Components/Post";
+// import GoToPost from "Components/GoToPost";
 
 const HomePage = () => {
-  // const _renderItem = () =>
-  //   items.map((item, idx) => (
-  //     <div
-  //       key={item.id || idx}
-  //       style={{
-  //         height: "500px",
-  //         border: "1px solid rgb(208, 208, 208)",
-  //         margin: "16px 0"
-  //       }}
-  //     >
-  //       <PostItem {...item.post} className="home-post" />
-  //     </div>
-  //   ));
+  const _renderItem = () =>
+    items.map((item, idx) => (
+      <div key={item.id || idx} className="home__content--item">
+        <PostItem {...item.post} />
+      </div>
+    ));
 
   return (
     <BasicTemplate>
-      {/* <div className="home">{_renderItem()}</div> */}
-      <GoToPost />
+      <div className="home">
+        <div className="home__content">{_renderItem()}</div>
+      </div>
+      {/* <GoToPost /> */}
     </BasicTemplate>
   );
 };

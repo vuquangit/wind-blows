@@ -3,7 +3,8 @@ import { Modal } from "antd";
 import numeral from "numeral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
-import PostItem from "Components/PostItem";
+// import PostItem from "Components/PostItem";
+import PostItem from "Components/Post";
 
 const PersonalPost = data => {
   const { thumbnailSrc, numLikes, numComments } = data;
@@ -51,7 +52,7 @@ const PersonalPost = data => {
         footer={null}
         className="personal-post__modal"
       >
-        <PostItem {...data} />
+        <PostItem {...data} isModal={true} />
       </Modal>
     </div>
   );

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import CommentListItem from "./CommentListItem";
 import { Divider } from "antd";
+import * as Scroll from "react-scroll";
 
 const CommentList = ({
   captionAndTitle,
@@ -11,11 +12,42 @@ const CommentList = ({
   comments,
   ...restProps
 }) => {
-  // console.log(comments);
+  useEffect(() => {
+    // componentDidMount
+    // Scroll.Events.scrollEvent.register("begin", function(to, element) {
+    //   console.log("begin", arguments);
+    // });
+
+    // Scroll.Events.scrollEvent.register("end", function(to, element) {
+    //   console.log("end", arguments);
+    // });
+    Scroll.Events.scrollEvent.register("begin");
+    Scroll.Events.scrollEvent.register("end");
+    Scroll.scrollSpy.update();
+
+    //componentWillUnmount
+    return () => {
+      Scroll.Events.scrollEvent.remove("begin");
+      Scroll.Events.scrollEvent.remove("end");
+    };
+  }, []);
+
+  const scrollToEnd = useCallback(() => {
+    Scroll.scroller.scrollTo("scroll-container__my-scroll", {
+      duration: 800,
+      delay: 0,
+      smooth: "easeInOutCirc",
+      containerId: "scroll-container"
+    });
+  }, []);
+
+  useEffect(() => {
+    scrollToEnd();
+  }, [comments, scrollToEnd]);
 
   return (
     <div className="PI__info--comment-list">
-      <div className="CL">
+      <div className="CL" id="scroll-container">
         {captionAndTitle && (
           <CommentListItem
             isCaption
@@ -25,7 +57,9 @@ const CommentList = ({
           />
         )}
         {!commentsDisabled && comments && (
-          <Divider style={{ margin: 0, fontSize: "14px" }}>Read more</Divider>
+          <Divider style={{ margin: 0, fontSize: "14px", cursor: "pointer" }}>
+            Read more
+          </Divider>
         )}
         {!commentsDisabled &&
           comments &&
@@ -34,6 +68,8 @@ const CommentList = ({
               <CommentListItem isCaption={false} {...item} />
             </div>
           ))}
+
+        <Scroll.Element name="scroll-container__my-scroll" />
       </div>
     </div>
   );

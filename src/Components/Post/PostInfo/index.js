@@ -5,10 +5,11 @@ import CommentList from "./CommentList";
 import PostedAt from "./PostedAt";
 import PostComment from "./PostComment";
 import commentListData from "./commentListData.json";
+import "./postInfo.scss";
 
 const PostInfo = ({ numPreviewLikes, postedAt }) => {
   const [propsComment, setComment] = useState(commentListData);
-  console.log(propsComment);
+  // console.log(propsComment);
 
   // Request list comment of this post ???
 
@@ -18,7 +19,7 @@ const PostInfo = ({ numPreviewLikes, postedAt }) => {
       <PeopleLiked numPreviewLikes={numPreviewLikes} />
       <CommentList {...propsComment} />
       <PostedAt postedAt={postedAt} />
-      <PostComment setComment={setComment} />
+      <PostComment propsComment={propsComment} setComment={setComment} />
     </div>
   );
 };
