@@ -1,16 +1,14 @@
 import React from "react";
 import BasicTemplate from "Template/BasicTemplate";
-import WrapperMenuAccounts from "Template/Pages/Accounts/WrapperMenuAccount";
 import ResetPassword from "./ResetPassword";
+import "./reset.scss";
 
-const Change = () => {
+const Reset = () => {
   return (
     <BasicTemplate>
-      <WrapperMenuAccounts>
-        <ResetPassword />
-      </WrapperMenuAccounts>
+      <ResetPassword />
     </BasicTemplate>
   );
 };
 
-export default Change;
+export default Reset;

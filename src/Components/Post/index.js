@@ -7,7 +7,7 @@ import PostOption from "./PostOption";
 import classNames from "classnames";
 
 const Post = ({ isModal = false, ...props } = {}) => {
-  console.log(props);
+  // console.log(props);
   const classPostItem = classNames("PI", { PI__modal: isModal });
 
   return (

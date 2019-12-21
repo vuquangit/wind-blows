@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProfilePhoto from "Components/ProfilePhoto";
 import { Form, Input, Button } from "antd";
+import { Link } from "react-router-dom";
 import "./changePassword.scss";
 
 const ChangePassword = props => {
@@ -109,6 +110,9 @@ const ChangePassword = props => {
           <Button type="primary" htmlType="submit">
             Change Password
           </Button>
+        </Form.Item>
+        <Form.Item {...tailFormItemLayout}>
+          <Link to="/accounts/password/reset/">Forgot password ?</Link>
         </Form.Item>
       </Form>
     </div>

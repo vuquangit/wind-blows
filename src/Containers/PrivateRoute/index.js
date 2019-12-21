@@ -27,6 +27,7 @@ const PrivateRoute = ({ component: Component, state, ...rest }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+  console.log(state)
 
   return !isLoading ? (
     <Route
