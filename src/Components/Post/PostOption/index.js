@@ -16,10 +16,10 @@ const PostOption = () => {
     <div className="PI__PO">
       <Button className="PI__PO--btn" onClick={showModal}>
         <span
-          className="btn-img"
-          style={{
-            backgroundImage: `URL(${window.location.origin}/sprite_glyphs.png)`
-          }}
+          className="sprite-icon__glyphs btn-img"
+          // style={{
+          //   backgroundImage: `URL(${window.location.origin}/sprite_glyphs.png)`
+          // }}
         />
       </Button>
       <ModalOption
