@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { setAuthenticated } from "Redux/Action";
+import { setAuthenticated } from "Redux/Auth/auth.action";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import SiteName from "Components/SiteName";
@@ -10,7 +10,7 @@ import Registration from "./Registration";
 import "./signup.scss";
 
 const EmailSignup = props => {
-  const isAuthenticated = useSelector(state => state.isAuthenticated);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   useEffect(() => {
     if (isAuthenticated) {
       props.history.push("/");

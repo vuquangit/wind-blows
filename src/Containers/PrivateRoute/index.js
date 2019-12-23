@@ -6,14 +6,14 @@ import { connect } from "react-redux";
 const RedirectRoute = props => (
   <Redirect
     to={{
-      pathname: "/accounts/emailsignup",
+      pathname: "/accounts/emailsignup/",
       state: { from: props.location }
     }}
   />
 );
 
-const PrivateRoute = ({ component: Component, state, ...rest }) => {
-  const isAuthenticated = state.isAuthenticated;
+const PrivateRoute = ({ component: Component, auth, ...rest }) => {
+  const isAuthenticated = auth.isAuthenticated;
   const isLoading = false;
   // debugger;
   useEffect(
@@ -27,7 +27,6 @@ const PrivateRoute = ({ component: Component, state, ...rest }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-  console.log(state)
 
   return !isLoading ? (
     <Route
@@ -41,9 +40,9 @@ const PrivateRoute = ({ component: Component, state, ...rest }) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ auth }) => {
   return {
-    state
+    auth
   };
 };
 

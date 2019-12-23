@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
 import LoginForm from "./LoginForm";
 import { connect } from "react-redux";
-import { setAuthenticated } from "Redux/Action";
+import { setAuthenticated } from "Redux/Auth/auth.action";
 import { withRouter } from "react-router";
 import SiteName from "Components/SiteName";
 import { Link } from "react-router-dom";
@@ -11,11 +11,11 @@ import "./login.scss";
 
 const Login = props => {
   useEffect(() => {
-    const isAuthenticated = props.state.isAuthenticated;
+    const isAuthenticated = props.auth.isAuthenticated;
     if (isAuthenticated) {
       props.history.push("/");
     }
-  }, [props.history, props.state.isAuthenticated]);
+  }, [props.history, props.auth.isAuthenticated]);
 
   return (
     <div className="login">
@@ -63,9 +63,9 @@ const Login = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ auth }) => {
   return {
-    state
+    auth
   };
 };
 

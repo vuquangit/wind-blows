@@ -4,7 +4,7 @@ import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Row, Col, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { setAuthenticated } from "Redux/Action";
+import { setAuthenticated } from "Redux/Auth/auth.action";
 import { withRouter } from "react-router";
 
 const Username = props => {

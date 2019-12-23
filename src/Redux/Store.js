@@ -1,9 +1,9 @@
-import { createStore } from 'redux';
-import todoApp from './Reducer';
+import { createStore } from "redux";
+import rootReducer from "./rootReducer";
 
 const Store = createStore(
-  todoApp,
+  rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
+);
 
-export default Store
+export default Store;
