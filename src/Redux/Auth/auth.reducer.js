@@ -1,6 +1,6 @@
 import { SET_AUTHENTICATED } from "./actionType";
 
-const initialState = { isAuthenticated: false };
+const initialState = { isAuthenticated: true };
 
 const todos = (state = initialState, action) => {
   switch (action.type) {
