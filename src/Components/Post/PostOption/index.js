@@ -18,7 +18,7 @@ const PostOption = () => {
         <span
           className="btn-img"
           style={{
-            backgroundImage: `URL(${process.env.PUBLIC_URL}/images/sprite_icons.png)`
+            backgroundImage: `URL(${window.location.origin}/sprite_glyphs.png)`
           }}
         />
       </Button>
