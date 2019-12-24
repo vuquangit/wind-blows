@@ -45,3 +45,12 @@
     height: 100% !important;
     width: auto;
 }
+
+.homepage-image {
+    margin-right: 0 !important;
+    min-height: 0;
+
+    &__wrapper {
+        max-width: 100% !important;
+    }
+}

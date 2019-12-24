@@ -2,15 +2,16 @@ import React, { useEffect, useCallback } from "react";
 import CommentListItem from "./CommentListItem";
 import { Divider } from "antd";
 import * as Scroll from "react-scroll";
+import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 const CommentList = ({
   captionAndTitle,
-  postedAt,
   ownerId,
   id,
   commentsDisabled,
   comments,
-  ...restProps
+  isHomePage
 }) => {
   useEffect(() => {
     // componentDidMount
@@ -42,30 +43,49 @@ const CommentList = ({
   }, []);
 
   useEffect(() => {
-    scrollToEnd();
-  }, [comments, scrollToEnd]);
+    !isHomePage && scrollToEnd();
+  }, [comments, scrollToEnd, isHomePage]);
+
+  const CLClass = classNames("PI__info--comment-list", {
+    "homepage-info__CL": isHomePage
+  });
+
+  const CLContentClass = classNames("CL", {
+    "homepage-info__CL--content": isHomePage
+  });
+
+  const CLCommentClass = classNames("CL__comment", { CLCMT: isHomePage });
 
   return (
-    <div className="PI__info--comment-list">
-      <div className="CL" id="scroll-container">
+    <div className={CLClass}>
+      <div className={CLContentClass} id="scroll-container">
         {captionAndTitle && (
           <CommentListItem
             isCaption
+            isHomePage={isHomePage}
             userId={ownerId}
             text={captionAndTitle}
             id={id}
           />
         )}
-        {!commentsDisabled && comments && (
-          <Divider style={{ margin: 0, fontSize: "14px", cursor: "pointer" }}>
-            Read more
-          </Divider>
-        )}
+        {!commentsDisabled &&
+          comments &&
+          (!isHomePage ? (
+            <Divider className="CL__comment--divider">Read more</Divider>
+          ) : (
+            <Link to="p/codepost" className="CL__comment--GTP">
+              View all 99 comments
+            </Link>
+          ))}
         {!commentsDisabled &&
           comments &&
           comments.map((item, idx) => (
-            <div key={item.id || idx} className="CL__comment">
-              <CommentListItem isCaption={false} {...item} />
+            <div key={item.id || idx} className={CLCommentClass}>
+              <CommentListItem
+                isCaption={false}
+                isHomePage={isHomePage}
+                {...item}
+              />
             </div>
           ))}
 

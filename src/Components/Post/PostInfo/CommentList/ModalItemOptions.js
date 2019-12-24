@@ -10,7 +10,7 @@ const ModalItemOptions = ({ visibleModal, handleCancelModal }) => {
       className="PI__PO--modal"
       footer={null}
       closable={false}
-      centered={true}
+      centered
     >
       <div className="modal__content">
         <Button className="modal__content--btn btn-red">Report</Button>

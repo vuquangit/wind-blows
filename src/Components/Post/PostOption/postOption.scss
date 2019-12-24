@@ -55,6 +55,11 @@
                 padding: 4px 8px;
                 text-align: center;
                 font-size: 14px;
+
+                a,
+                a:visited {
+                    text-decoration: none !important;
+                }
             }
 
             .btn-red {

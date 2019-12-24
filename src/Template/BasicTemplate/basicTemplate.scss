@@ -16,12 +16,14 @@
 
 .sprite-icon {
   &__core {
-    background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+    // background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+    background-image: url(./sprite_core.png);
   }
 
   &__glyphs {
-    background-image:
-      url(https://www.instagram.com/static/bundles/es6/sprite_glyphs_a35ec5018262.png/a35ec5018262.png)
+    // background-image:
+    //   url(https://www.instagram.com/static/bundles/es6/sprite_glyphs_a35ec5018262.png/a35ec5018262.png)
+    background-image: url(./sprite_glyphs.png);
   }
 }
 

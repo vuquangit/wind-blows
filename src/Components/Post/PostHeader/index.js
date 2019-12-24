@@ -45,7 +45,7 @@ const PostHeader = ({
               </span>
             )}
           </div>
-          {!isMyPost && (
+          {!isHomePage && !isMyPost && (
             <div className="owner__follow">
               <span className="owner__follow--dot">•</span>
               <button className={followClass}>

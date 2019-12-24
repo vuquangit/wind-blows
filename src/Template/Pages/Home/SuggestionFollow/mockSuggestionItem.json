@@ -1,0 +1,57 @@
+{
+    "avatarSize": "small",
+    "borderlessFollowButton": true,
+    "entryPoint": "unknown",
+    "hideFollowButton": false,
+    "hideName": true,
+    "hideStoryRings": false,
+    "id": "1332334441",
+    "isVisible": true,
+    "onFollowClick": "fn()",
+    "onScrollEnter": "fn()",
+    "onUsernameClick": "fn()",
+    "position": 0,
+    "relationship": {
+        "blockedByViewer": "Object",
+        "hasBlockedViewer": "Object",
+        "followedByViewer": "Object",
+        "followsViewer": {
+            "state": null,
+            "stable": true
+        }
+    },
+    "user": {
+        "counts": "Object",
+        "fullName": "𝘼𝙣𝙣𝙖 𝙇𝙮 𝙇𝙮 𝘽𝙪𝙞",
+        "id": "1332334441",
+        "isNew": false,
+        "isPrivate": true,
+        "isVerified": false,
+        "profilePictureUrl": "https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-19/s150x150/79951565_2229922993968240_3413307718126010368_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_ohc=-gaFfbNuYhgAX_q8HCw&oh=d27720f7375afa954c298924ae43e0cc&oe=5EABDB24",
+        "username": "lylychan_55",
+        "suggestionDescription": "Followed by hinchan_nahcnih + 1 more"
+    },
+    "viewer": {
+        "bio": "I'm the wind.... 🍃 \nLove photography 📷 \n바람 \n:) 🎼❄️🐥 ®",
+        "counts": "Object",
+        "fullName": "Chàng Gió 🐾",
+        "hasPhoneNumber": true,
+        "hasProfilePic": true,
+        "id": "1503958910",
+        "isNew": false,
+        "isPrivate": true,
+        "profilePictureUrl": "https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-19/s150x150/75553997_2258267614274135_3945426274582790144_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_ohc=5Jsfi2PpUI0AX89Ly3L&oh=481d4c11406c905c9d8fca5101fa0980&oe=5EA7E1E1",
+        "profilePictureUrlHd": "https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-19/s320x320/75553997_2258267614274135_3945426274582790144_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_ohc=5Jsfi2PpUI0AX89Ly3L&oh=6e9d9e608a8e593426aaad46e970c75d&oe=5EA5D099",
+        "username": "chang.gio",
+        "website": "",
+        "isVerified": false,
+        "highlightReelCount": 6,
+        "mutualFollowers": {
+            "usernames": [],
+            "additional_count": 0
+        },
+        "websiteLinkshimmed": "",
+        "isUnpublished": false
+    },
+    "dispatch": "fn()"
+}

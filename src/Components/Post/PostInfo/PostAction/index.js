@@ -5,8 +5,9 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "antd";
 import Heart from "Components/HeartIcon";
 import ModalShare from "./ModalShare";
+import classNames from "classnames";
 
-const PostAction = ({ isLiked = true }) => {
+const PostAction = ({ isLiked = true, isHomePage }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const showModalShare = () => {
     setVisibleModal(true);
@@ -15,8 +16,12 @@ const PostAction = ({ isLiked = true }) => {
     setVisibleModal(false);
   };
 
+  const actionClass = classNames("PI__info--actions", {
+    "homepage-info__action": isHomePage
+  });
+
   return (
-    <section className="PI__info--actions">
+    <section className={actionClass}>
       <div className="action-item__content">
         <Button className="action-item__item">
           <Heart isLiked={isLiked} />

@@ -9,6 +9,7 @@ import EmailSignup from "./Pages/Accounts/EmailSignup";
 import ResetPassword from "Template/Pages/Accounts/Password/Reset";
 import EditProfile from "Template/Pages/Accounts/EditProfile";
 import ChangePassword from "Template/Pages/Accounts/Password/Change";
+import GoToPost from "Components/GoToPost";
 
 const pageConfigs = [
   {
@@ -58,6 +59,11 @@ const pageConfigs = [
   {
     path: "/accounts/edit/",
     component: EditProfile,
+    exact: true
+  },
+  {
+    path: "/p/:code/",
+    component: GoToPost,
     exact: true
   },
   {
