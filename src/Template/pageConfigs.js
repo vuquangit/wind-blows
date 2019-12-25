@@ -10,6 +10,8 @@ import ResetPassword from "Template/Pages/Accounts/Password/Reset";
 import EditProfile from "Template/Pages/Accounts/EditProfile";
 import ChangePassword from "Template/Pages/Accounts/Password/Change";
 import GoToPost from "Components/GoToPost";
+import Followers from "Template/Pages/PersonalPage/Profile/Follows/Followers";
+import Following from "./Pages/PersonalPage/Profile/Follows/Following";
 
 const pageConfigs = [
   {
@@ -67,8 +69,20 @@ const pageConfigs = [
     exact: true
   },
   {
-    path: "/:username",
+    path: "/:username/",
     component: PersonalPage,
+    exact: true,
+    private: true
+  },
+  {
+    path: "/:username/followers/",
+    component: Followers,
+    exact: true,
+    private: true
+  },
+  {
+    path: "/:username/following/",
+    component: Following,
     exact: true,
     private: true
   }

@@ -1,5 +1,6 @@
 import React from "react";
 import numeral from "numeral";
+import { Link } from "react-router-dom";
 
 const Follows = ({ follwedBy = 59562432, follows = 3435, media = 94268 }) => {
   return (
@@ -13,20 +14,20 @@ const Follows = ({ follwedBy = 59562432, follows = 3435, media = 94268 }) => {
         </span>
       </div>
       <div className="follow__item">
-        <a href="/chang.gio/followers">
+        <Link to="/chang.gio/followers">
           <span className="follow__item--number">
             {`${numeral(follwedBy).format("0.[00]a")} `}
           </span>
           followers
-        </a>
+        </Link>
       </div>
       <div className="follow__item">
-        <a href="/chang.gio/following">
+        <Link to="/chang.gio/following">
           <span className="follow__item--number">
             {`${numeral(media).format("0.[00]a")} `}
           </span>
           following
-        </a>
+        </Link>
       </div>
     </div>
   );

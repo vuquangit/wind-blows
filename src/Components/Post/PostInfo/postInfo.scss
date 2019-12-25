@@ -411,6 +411,10 @@
         &--content {
             position: relative !important;
             padding: 0 16px !important;
+            overflow: hidden;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-y: unset !important;
 
             .CLCMT {
                 margin: 0;

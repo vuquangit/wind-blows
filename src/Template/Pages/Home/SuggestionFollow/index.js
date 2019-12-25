@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SuggestionItem from "./SuggestionItem";
+import SuggestionItem from "Components/UserRelationship";
+import suggestionList from "./mockSuggestion.json";
 
 const SuggestionFollow = () => {
-  const userIds = ["1332334441", "23676821149", "5338274728"];
+  // const userIds = ["1332334441", "23676821149", "5338274728"];
 
   return (
     <div className="suggestion">
@@ -17,8 +18,12 @@ const SuggestionFollow = () => {
       </div>
       <div className="suggestion__list">
         <div>
-          {userIds.map((item, idx) => (
-            <SuggestionItem id={item} key={item || idx} />
+          {suggestionList.items.map((item, idx) => (
+            <SuggestionItem
+              key={item || idx}
+              user={item.user}
+              relationship={item.relationship}
+            />
           ))}
         </div>
       </div>

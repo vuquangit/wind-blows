@@ -24,10 +24,12 @@ const HomePage = () => {
       <div className="home">
         <div className="home__content">
           <Row>
-            <Col xs={24} md={17}>
-              <div className="home__content--post">{_renderItem()}</div>
+            <Col xs={24} lg={17}>
+              <div className="home__content--post">
+                <div className="post-list"> {_renderItem()}</div>
+              </div>
             </Col>
-            <Col xs={0} md={7}>
+            <Col xs={0} lg={7}>
               <div className="home__content--advance">
                 <Profile />
                 <SuggestionFollow />

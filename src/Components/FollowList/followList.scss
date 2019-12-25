@@ -1,0 +1,18 @@
+.follow-list {
+    background-color: #fff;
+
+    &__header {
+        border-bottom: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h1 {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            text-align: center;
+        }
+    }
+}
