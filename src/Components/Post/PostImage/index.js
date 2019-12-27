@@ -2,7 +2,13 @@ import React from "react";
 import "./postImage.scss";
 import classNames from "classnames";
 
-const PostImage = ({ src = "", isModal = false, isHomePage = false }) => {
+const PostImage = ({
+  src = "",
+  isModal = false,
+  isHomePage = false,
+  likedByViewer = false,
+  handleLikePost
+}) => {
   const classPI = classNames(
     "PI__PI",
     { PI__maxHeight: isModal },
@@ -26,7 +32,15 @@ const PostImage = ({ src = "", isModal = false, isHomePage = false }) => {
     <div className={classPI}>
       <div className={classPIContent}>
         <div className={classPIWrapper}>
-          <img alt="..." src={src} className={classPIImageModal} />
+          <img
+            alt="..."
+            src={src}
+            className={classPIImageModal}
+            onDoubleClick={!likedByViewer && handleLikePost}
+          />
+        </div>
+        <div className="image-heart">
+          <span className="sprite-icon__core image-heart__icon" />
         </div>
       </div>
     </div>

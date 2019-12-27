@@ -1,0 +1,138 @@
+.post-status {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid rgb(219, 219, 219);
+
+    &__content {
+        &--header {
+            border: 1px solid rgb(241, 241, 241);
+            box-sizing: border-box;
+            height: 32px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: rgb(241, 241, 241);
+
+            h1 {
+                font-size: 16px;
+                line-height: 18px;
+                font-weight: 600;
+                padding: 0;
+                margin: 0;
+                margin-left: 16px;
+            }
+        }
+
+        &--caption {
+            flex: 1;
+        }
+
+        &--upload {
+            background-color: #fafafa;
+            padding: 4px;
+
+            .upload__content {
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+        }
+
+        &--wrapper-option {
+            display: flex;
+            flex-direction: column;
+            // transition: all 0.5s ease-in;
+        }
+
+        &--option {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            height: 36px;
+            border: 1px solid rgb(241, 241, 241);
+            background-color: rgb(241, 241, 241);
+
+            .option {
+                &__toggle {
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: flex-start;
+                }
+            }
+        }
+
+        &--location {
+            padding: 4px 8px;
+            border-top: 1px solid rgb(241, 241, 241);
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+
+            .location__icon {
+                margin-right: 8px;
+            }
+        }
+
+        &--comments-private {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 4px 8px;
+
+            .ant-switch {
+                margin-left: 8px;
+            }
+        }
+
+        &--submit {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            margin: 0 8px;
+        }
+    }
+
+    /* you can make up upload button and sample style by using stylesheets */
+    .ant-upload-picture-card-wrapper {
+        display: flex;
+        flex-direction: row;
+        // overflow-x: auto;
+    }
+
+    .ant-upload-list {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .ant-upload-list-picture-card-container {
+        // margin: 0;
+        margin: 0 2px !important;
+    }
+
+    .ant-upload-select-picture-card {
+        font-size: 32px;
+        color: #999;
+        margin: 0;
+        margin: 0 2px !important;
+    }
+
+    .ant-upload-select-picture-card .ant-upload-text {
+        // margin-top: 8px;
+        color: #666;
+    }
+
+    .ant-upload {
+        padding: 0 !important;
+    }
+
+    .ant-upload-list-item-done {
+        padding: 0;
+    }
+
+    .ant-upload-list-item-info {
+        &::before {
+            left: 0;
+        }
+    }
+}

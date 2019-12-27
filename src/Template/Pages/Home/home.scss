@@ -10,6 +10,10 @@
             .post-list {
                 margin-top: 60px;
                 max-width: 614px;
+
+                &__post-status {
+                    margin-bottom: 16px;
+                }
             }
 
             .home-post__item {
@@ -135,82 +139,6 @@
                     padding-bottom: 8px;
                     padding-top: 8px;
                     background-color: rgba(var(--cdc, 255, 255, 255), 1);
-
-                    // .SGI {
-                    //     padding: 8px 16px;
-                    //     display: flex;
-                    //     justify-content: flex-start;
-                    //     flex-direction: row;
-                    //     align-items: center;
-                    //     align-content: stretch;
-
-                    //     &__avatar {
-                    //         margin-right: 12px;
-                    //     }
-
-                    //     &__info {
-                    //         display: flex;
-                    //         flex-direction: column;
-                    //         justify-content: center;
-                    //         flex: 1 1 auto;
-                    //         align-items: stretch;
-                    //         min-height: 0;
-                    //         min-width: 0;
-
-                    //         &--username {
-                    //             color: rgba(var(--i1d, 38, 38, 38), 1);
-                    //             text-decoration: none;
-                    //             font-size: 14px;
-                    //             line-height: 18px;
-                    //             font-weight: 600;
-                    //             display: block;
-                    //             overflow: hidden;
-                    //             text-overflow: ellipsis;
-                    //             white-space: nowrap;
-                    //             display: inline !important;
-                    //             margin: 0 !important;
-                    //             text-align: left;
-
-                    //             a,
-                    //             a:visited {
-                    //                 color: rgba(var(--i1d, 38, 38, 38), 1);
-                    //                 text-decoration: none;
-                    //             }
-                    //         }
-
-                    //         &--description {
-                    //             margin-top: 8px;
-
-                    //             .DCR {
-                    //                 display: block;
-                    //                 overflow: hidden;
-                    //                 text-overflow: ellipsis;
-                    //                 white-space: nowrap;
-                    //                 color: rgba(var(--f52, 153, 153, 153), 1);
-                    //                 font-weight: 400;
-                    //                 font-size: 12px;
-                    //                 line-height: 14px;
-                    //             }
-                    //         }
-                    //     }
-
-                    //     &__follow {
-                    //         margin-left: 8px;
-                    //         flex: 0 0 auto;
-
-                    //         &--btn {
-                    //             border: 0;
-                    //             color: rgba(var(--h5f, 56, 151, 240), 1);
-                    //             display: inline;
-                    //             padding: 0;
-                    //             position: relative;
-                    //             font-size: 12px;
-                    //             line-height: 18px;
-                    //             font-weight: 600;
-                    //             background-color: transparent;
-                    //         }
-                    //     }
-                    // }
                 }
             }
         }

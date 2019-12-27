@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 import PostTimeAgo from "Components/TimeFromNow";
@@ -44,11 +44,10 @@ const CommentListItem = ({
   // Event like comment
   const [_likedByViewer, setLikedByViewer] = useState(likedByViewer);
   const [_likeCount, setLikeCount] = useState(likeCount);
-  const handleLikedByViewer = () => {
+  const handleLikedByViewer = useCallback(() => {
     setLikedByViewer(!_likedByViewer);
-    const countLike = !_likedByViewer ? ++likeCount : --likeCount;
-    setLikeCount(countLike);
-  };
+    setLikeCount(!_likedByViewer ? _likeCount + 1 : _likeCount - 1);
+  }, [_likedByViewer, _likeCount]);
 
   // className
   const itemW1 = classNames("CL__item--W1", { CL__CMTW1: isHomePage });

@@ -28,8 +28,6 @@
             order: 1;
         }
 
-
-
         .action-item {
             &__content {
                 display: flex;
@@ -49,6 +47,7 @@
 
                 svg {
                     font-size: 24px;
+                    color: #383838;
                 }
 
                 &:first-child {
@@ -169,7 +168,7 @@
                 }
 
                 &--content {
-                    width: calc(100% - 28px);
+                    width: calc(100% - 24px);
                     display: flex;
                     flex-direction: row !important;
 
@@ -280,7 +279,7 @@
                     display: none;
                     background-image: linear-gradient(to right, rgba(255, 255, 255, .8), #fff);
                     position: absolute;
-                    right: 12px;
+                    right: 18px;
                     top: -4px;
                     padding-top: 10px;
 

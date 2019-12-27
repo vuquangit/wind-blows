@@ -8,7 +8,7 @@ const PostHeader = ({
   username = "",
   profilePictureUrl = "",
   isVerified = "",
-  location = "Ho Chi Minh City, Viet Nam",
+  location = { name: "Ho Chi Minh City, Viet Nam" },
   isHomePage = false
 }) => {
   // Compare owner post and user login profile
@@ -26,13 +26,15 @@ const PostHeader = ({
   return (
     <header className={headerClass}>
       <div className="PI__PH--avatar">
-        <Avatar src={profilePictureUrl} />
+        <Link to={`/${username}/`}>
+          <Avatar src={profilePictureUrl} />
+        </Link>
       </div>
       <div className="PI__PH--owner">
         <div className="owner">
           <div className="owner__info">
             <h2 className="owner__info--username">
-              <Link to={username} title={username}>
+              <Link to={`/${username}/`} title={username}>
                 {username}
               </Link>
             </h2>
@@ -54,7 +56,9 @@ const PostHeader = ({
             </div>
           )}
         </div>
-        {location && <div className="location">{location} </div>}
+        {location && location.name && (
+          <div className="location">{location.name} </div>
+        )}
       </div>
     </header>
   );

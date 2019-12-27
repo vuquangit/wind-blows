@@ -20,7 +20,7 @@ const SuggestionFollow = () => {
         <div>
           {suggestionList.items.map((item, idx) => (
             <SuggestionItem
-              key={item || idx}
+              key={item.user.item || idx}
               user={item.user}
               relationship={item.relationship}
             />
