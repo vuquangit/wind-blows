@@ -8,7 +8,7 @@ import "./heart.scss";
 const Heart = ({ isLiked = true, size }) => {
   const icon = isLiked ? faLiked : faLike;
   const classHeart = classNames({ heart__liked: isLiked });
-  const title = isLiked ? "Like" : "Unlike";
+  const title = isLiked ? "Unlike" : "Like";
 
   const IconSize = size
     ? {

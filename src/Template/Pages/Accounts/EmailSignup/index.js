@@ -1,23 +1,34 @@
 import React, { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faFacebookSquare, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
-import { setAuthenticated } from "Redux/Auth/auth.action";
+// import { setAuthenticated } from "Redux/Auth/auth.action";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 import SiteName from "Components/SiteName";
 import Registration from "./Registration";
+import Authorization from "Containers/Authorization";
 import "./signup.scss";
 
-const EmailSignup = props => {
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  useEffect(() => {
-    if (isAuthenticated) {
-      props.history.push("/");
-    }
-  }, [props.history, isAuthenticated]);
+const EmailSignup = ({ history }) => {
+  // const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     props.history.push("/");
+  //   }
+  // }, [props.history, isAuthenticated]);
+  // const dispatch = useDispatch();
+  // const onLoginClick = () => dispatch(setAuthenticated(true));
+
   const dispatch = useDispatch();
-  const onLoginClick = () => dispatch(setAuthenticated(true));
+  const profile = useSelector((state = {}) => state.profile) || {};
+  useEffect(() => {
+    const isValidProfile = !isEmpty(profile.data);
+    if (isValidProfile) {
+      history.replace("/");
+    }
+  }, [dispatch, history, profile, profile.data]);
 
   return (
     <div className="signup">
@@ -32,16 +43,17 @@ const EmailSignup = props => {
                 <h2 className="description">
                   Sign up to see photos and videos from your friends.
                 </h2>
-                <div className="loginFB">
-                  <button
+                {/* <div className="loginFB"> */}
+                <Authorization />
+                {/* <button
                     type="button"
                     className="loginFB__submit"
                     onClick={onLoginClick}
                   >
                     <FontAwesomeIcon icon={faFacebookSquare} />
                     <span> Log in with Facebook</span>
-                  </button>
-                </div>
+                  </button> */}
+                {/* </div> */}
                 <div className="divide">
                   <div className="divide__line" />
                   <div className="divide__text">or</div>

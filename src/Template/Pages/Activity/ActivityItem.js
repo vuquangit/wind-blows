@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ActivityItem = (props = {}) => {
   const { user, media } = props;
-  console.log(props);
+  // console.log(props);
 
   return (
     <div className="activity__item">

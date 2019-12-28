@@ -7,7 +7,7 @@ const PostImage = ({
   isModal = false,
   isHomePage = false,
   likedByViewer = false,
-  handleLikePost
+  handleLikePost = () => {}
 }) => {
   const classPI = classNames(
     "PI__PI",
@@ -36,7 +36,7 @@ const PostImage = ({
             alt="..."
             src={src}
             className={classPIImageModal}
-            onDoubleClick={!likedByViewer && handleLikePost}
+            onDoubleClick={!likedByViewer ? handleLikePost : () => {}}
           />
         </div>
         <div className="image-heart">

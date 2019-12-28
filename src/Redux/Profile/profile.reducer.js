@@ -8,6 +8,8 @@ const initState = {
 };
 
 export const profileReducer = (state = initState, action = {}) => {
+  // console.log("action profile:", action);
+
   switch (action.type) {
     case actionType.PROFILE_FAILURE:
       return { ...state, error: action.error, isFetching: false };

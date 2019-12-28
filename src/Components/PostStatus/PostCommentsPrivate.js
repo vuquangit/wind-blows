@@ -8,7 +8,7 @@ const PostCommentsPrivate = () => {
     <div className="post-status__content--comments-private">
       <FontAwesomeIcon icon={faCommentSlash} />
       <div>Disable comments:</div>
-      <Switch defaultChecked />
+      <Switch defaultChecked={false} />
     </div>
   );
 };
