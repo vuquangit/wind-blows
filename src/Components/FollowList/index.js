@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import FollowItem from "Components/UserRelationship";
+import IsLoading from "Components/IsLoading";
 import "./followList.scss";
 
-const FollowList = ({ headerFollow = "", items = [] }) => {
+const FollowList = ({ headerFollow = "", items = [], isLoading = false }) => {
   const _renderFollowItem = useCallback(
     () =>
       items.map((item, idx) => (
@@ -21,6 +22,7 @@ const FollowList = ({ headerFollow = "", items = [] }) => {
         <h1>{headerFollow}</h1>
       </div>
       <div>{_renderFollowItem()}</div>
+      <IsLoading isLoading={isLoading} size={30} />
     </div>
   );
 };

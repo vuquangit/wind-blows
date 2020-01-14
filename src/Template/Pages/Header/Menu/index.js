@@ -5,8 +5,12 @@ import { Badge } from "antd";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Activity from "Template/Pages/Activity";
+import { useSelector } from "react-redux";
 
 const Menu = () => {
+  const profile = useSelector((state = {}) => state.profile.data.user);
+  const { username = "", id } = profile;
+
   return (
     <div className="header__menu">
       <div className="header__menu--items">
@@ -24,7 +28,7 @@ const Menu = () => {
           <Activity />
         </div>
         <div className="menu-item">
-          <NavLink to="/chang.gio">
+          <NavLink to={`/${username || id}`}>
             <Badge count={0}>
               <FontAwesomeIcon icon={faUser} title="Personal Page" />
             </Badge>

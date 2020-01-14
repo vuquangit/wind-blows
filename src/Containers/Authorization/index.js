@@ -1,12 +1,10 @@
 import React from "react";
-// import { auth as firebaseAuth } from "firebase/app";
 import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import { pick } from "lodash";
-import { setAuthenticated } from "Redux/Auth/auth.action";
 
 const Authorization = ({ history, location }) => {
   const dispatch = useDispatch();
@@ -15,30 +13,28 @@ const Authorization = ({ history, location }) => {
     signInFlow: "popup",
     // We will display Google and Facebook as auth providers.
     signInOptions: [
-      // firebaseAuth.GoogleAuthProvider.PROVIDER_ID,
-      // firebaseAuth.FacebookAuthProvider.PROVIDER_ID
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID
     ],
     callbacks: {
       // Avoid redirects after sign-in.
-      // signInSuccessWithAuthResult: () => false
       signInSuccessWithAuthResult: async (info = {}) => {
-        const data = pick(info.user, [
+        const {
+          displayName: fullName,
+          photoURL: profilePictureUrl,
+          ...rest
+        } = pick(info.user, [
           "displayName",
           "email",
           "phoneNumber",
           "photoURL",
-          "uid"
+          "emailVerified"
         ]);
-        // console.log(info);
-        await dispatch(
-          // updateProfileInfo({ data, endpoint: `oauth/${data.uid}` })
-          setAuthenticated(true)
-        );
-        // if (location.pathname === 'login') {
-        //   history.back()
-        // }
+
+        const data = { fullName, profilePictureUrl, ...rest };
+        // console.log(data);
+
+        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
         if (location.pathname !== "/") {
           history.push("/");
         }
@@ -46,11 +42,10 @@ const Authorization = ({ history, location }) => {
     }
   };
 
-  console.log("render author");
+  // console.log("render author");
 
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column p-4">
-      {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebaseAuth()} /> */}
+    <div className="d-flex justify-content-center align-items-center flex-column">
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );

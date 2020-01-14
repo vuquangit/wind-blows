@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 
-const Description = ({
-  name = "Chàng Gió 🐾",
-  bio = "I'm the wind.... October🍃 Love photography 📷 \n바람 \n:) 🎼❄️🐥 ®"
-}) => {
-  const _renderBio = bio.split("\n").map((item, key) => {
+const Description = () => {
+  const profile = useSelector((state = {}) => state.personalProfile.data);
+  const { bio = "", fullName = "" } = profile;
+
+  const _bio = bio.split("\n").map((item, key) => {
     return (
       <Fragment key={key}>
         {item}
@@ -12,10 +13,11 @@ const Description = ({
       </Fragment>
     );
   });
+
   return (
     <div className="personal__header--description">
-      <h1 className="description-name">{name}</h1>
-      <span className="description-bio">{_renderBio}</span>
+      <h1 className="description-name">{fullName}</h1>
+      <span className="description-bio">{_bio}</span>
     </div>
   );
 };

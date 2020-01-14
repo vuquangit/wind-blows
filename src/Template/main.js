@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { pick, isEmpty } from "lodash";
+import firebase from "firebase";
+
 import PrivateRoute from "Containers/PrivateRoute";
 import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
-import { setAuthenticated } from "Redux/Auth/auth.action";
-import { pick, isEmpty } from "lodash";
-import firebase from "firebase";
 import Loading from "./Pages/Loading";
 
 const Main = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state = {}) => state.profile.data);
-  // const isFetching = useSelector((state = {}) => state.profile.isFetching);
-  const isAuthenticated = useSelector(
-    (state = {}) => state.auth.isAuthenticated
-  );
+  const isFetching = useSelector((state = {}) => state.profile.isFetching);
 
   const _renderPage = () =>
     pageConfigs.map((route = {}, index) =>
@@ -27,30 +24,33 @@ const Main = () => {
       )
     );
 
+  // console.log("main homepage", profile);
+
   useEffect(
     () => {
       if (isEmpty(profile)) {
-        (isAuthenticated || firebase) &&
+        // Local Storage
+        firebase &&
           firebase.auth().onAuthStateChanged(async user => {
             if (user) {
               // User is signed in.
-              const data = pick(user, [
+              const {
+                displayName: fullName,
+                photoURL: profilePictureUrl,
+                ...rest
+              } = pick(user, [
                 "displayName",
                 "email",
                 "phoneNumber",
                 "photoURL",
-                "uid"
+                "emailVerified"
               ]);
 
-              await dispatch(
-                // updateProfileInfo({ data, endpoint: `oauth/${data.uid}` })
-                setAuthenticated(true)
-              );
+              const data = { fullName, profilePictureUrl, ...rest };
+
+              await dispatch(updateProfileInfo({ data, endpoint: `auth/me` }));
             } else {
-              dispatch(
-                // signOut()
-                setAuthenticated(false)
-              );
+              dispatch(signOut());
             }
           });
       }
@@ -59,7 +59,9 @@ const Main = () => {
     []
   );
 
-  return (
+  return isFetching ? (
+    <Loading />
+  ) : (
     <BrowserRouter>
       <MainWrapper>
         <Switch> {_renderPage()}</Switch>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import PostAction from "./PostAction";
 import PeopleLiked from "./PeopleLiked";
 import CommentList from "./CommentList";

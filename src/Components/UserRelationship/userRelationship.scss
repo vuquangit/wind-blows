@@ -92,4 +92,12 @@
             margin-left: 23px;
         }
     }
+
+    a {
+        text-decoration: none !important;
+
+        &:hover {
+            text-decoration: none !important;
+        }
+    }
 }

@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
-import Loading from "../../Template/Pages/Loading";
-import { connect } from "react-redux";
+import { isEmpty, get } from "lodash";
+import Loading from "Template/Pages/Loading";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "Redux/Profile/profile.action";
 
 const RedirectRoute = props => (
   <Redirect
@@ -13,14 +15,17 @@ const RedirectRoute = props => (
 );
 
 const PrivateRoute = ({ component: Component, auth, ...rest }) => {
-  const isAuthenticated = auth.isAuthenticated;
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    state => !isEmpty(get(state, "profile.data"))
+  );
   const isLoading = false;
   // debugger;
   useEffect(
     () => {
       setTimeout(() => {
         if (!isAuthenticated && isLoading) {
-          // do signout()
+          dispatch(signOut());
         }
       });
     },
@@ -40,10 +45,4 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
   );
 };
 
-const mapStateToProps = ({ auth }) => {
-  return {
-    auth
-  };
-};
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;
