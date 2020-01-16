@@ -1,5 +1,4 @@
 import React from "react";
-import { Spin, Icon } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFan } from "@fortawesome/free-solid-svg-icons";
 import "./isLoading.scss";

@@ -14,8 +14,7 @@ const EmailSignup = ({ history }) => {
   const dispatch = useDispatch();
   const profile = useSelector((state = {}) => state.profile) || {};
   useEffect(() => {
-    const isValidProfile = !isEmpty(profile.data);
-    if (isValidProfile) {
+    if (!isEmpty(profile.data)) {
       history.push("/");
     }
   }, [dispatch, history, profile, profile.data]);

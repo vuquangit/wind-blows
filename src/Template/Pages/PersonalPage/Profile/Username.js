@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from "react";
+import firebase from "firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Row, Col, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
-import firebase from "firebase";
-import { signOut } from "Redux/Profile/profile.action";
 import { isEqual } from "lodash";
+
+import { signOut } from "Redux/Profile/profile.action";
 
 const Username = ({ history }) => {
   const { username = "", isVerified = false, id = "" } = useSelector(

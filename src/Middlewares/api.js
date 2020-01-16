@@ -7,15 +7,11 @@ const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 const callApi = async (
   endpoint,
   options = {},
-  method = "get",
+  method = "POST",
   headers = {}
 ) => {
   const fullUrl = `${SERVER_BASE_URL}/${endpoint}`;
-  // console.log(options, "options");
-  // console.log(headers, "headers");
-  // console.log(endpoint, "endpoint");
-  // console.log(method, "method");
-  // console.log(fullUrl);
+  // console.log("call Api:", endpoint, options, method, headers);
 
   const result = await axios({
     method,
@@ -72,6 +68,7 @@ export default store => next => async action => {
     return next(
       actionWith({
         error: error.message || "Something wrong!!!",
+        message: error.response.data.message || "",
         type: failureType
       })
     );

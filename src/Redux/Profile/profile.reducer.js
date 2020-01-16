@@ -4,21 +4,26 @@ import * as actionType from "./actionType";
 const initState = {
   isFetching: true,
   data: {},
-  error: false
+  error: false,
+  message: ""
 };
 
 export const profileReducer = (state = initState, action = {}) => {
-  // console.log("action profile:", action);
-
   switch (action.type) {
     case actionType.PROFILE_FAILURE:
-      return { ...state, error: action.error, isFetching: false };
+      return {
+        ...state,
+        error: action.error,
+        message: action.message,
+        isFetching: false
+      };
     case actionType.PROFILE_REQUEST:
-      return { ...state, isFetching: true, error: false };
+      return { ...state, isFetching: true, error: false, message: "" };
     case actionType.PROFILE_SUCCESS:
       return {
         ...state,
         error: false,
+        message: "",
         isFetching: false,
         data: merge(state.data, action.data)
       };
@@ -27,6 +32,7 @@ export const profileReducer = (state = initState, action = {}) => {
         ...state,
         isFetching: false,
         error: false,
+        message: "",
         data: {}
       };
     default:

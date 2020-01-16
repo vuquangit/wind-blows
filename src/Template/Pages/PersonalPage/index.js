@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "antd";
+import { withRouter } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { get } from "lodash";
+
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
 import Highlights from "./Highlights";
 import TabControl from "./TabControl";
 import Follows from "./Profile/Follows";
 import IsLoading from "Components/IsLoading";
-
-import { withRouter } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { get } from "lodash";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
-
+import Page404 from "Template/Pages/404";
 import "./personalPage.scss";
 
 const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
@@ -27,7 +27,6 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
       await dispatch(requestPersonalInfo({ username }));
     };
     _requestPersonalInfo();
-    console.log("request personal info");
   }, [match, dispatch]);
 
   // useEffect(() => {
@@ -35,30 +34,28 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
   // }, [error, history]);
 
   return (
-    <BasicTemplate>
-      {isFetching ? (
-        <IsLoading isLoading={isFetching} />
-      ) : !error ? (
-        <div className="personal">
-          <Profile />
-          <Highlights />
-          <Row>
-            <Col xs={24} sm={24} md={0}>
-              <Follows />
-            </Col>
-          </Row>
-          <TabControl />
-        </div>
+    <>
+      {!error ? (
+        <BasicTemplate>
+          {isFetching ? (
+            <IsLoading isLoading={isFetching} size={128} />
+          ) : (
+            <div className="personal">
+              <Profile />
+              <Highlights />
+              <Row>
+                <Col xs={24} sm={24} md={0}>
+                  <Follows />
+                </Col>
+              </Row>
+              <TabControl />
+            </div>
+          )}
+        </BasicTemplate>
       ) : (
-        <div>
-          <h5>Sorry, this page isn't available. </h5>
-          <h6>
-            The link you followed may be broken, or the page may have been
-            removed. Go back to The Wind Blows.
-          </h6>
-        </div>
+        <Page404 />
       )}
-    </BasicTemplate>
+    </>
   );
 };
 

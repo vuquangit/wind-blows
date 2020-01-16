@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import BasicTemplate from "Template/BasicTemplate";
 import FollowList from "Components/FollowList";
-import FollowingList from "./mockFollowing.json";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { get } from "lodash";
 
-const Following = () => {
-  const { id: ownerId = "" } = useSelector(
-    (state = {}) => state.personalProfile.data
+const Following = ({ match = {} }) => {
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => state.profile.data.user
   );
+
+  const username = get(match, "params.username");
 
   const [state, setState] = useState({
     data: [],
     error: null,
     isLoading: true,
-    page: 1
+    page: 1,
+    totalItems: 0
   });
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
@@ -26,7 +30,13 @@ const Following = () => {
 
         const response = await axios({
           method: "GET",
-          url: `${SERVER_BASE_URL}/following?page=${state.page}&limit=20&id=${ownerId}`,
+          url: `${SERVER_BASE_URL}/username/following`,
+          params: {
+            page: state.page,
+            limit: 20,
+            username: username,
+            viewerId: viewerId
+          },
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -35,7 +45,8 @@ const Following = () => {
 
         setState(prevState => ({
           ...prevState,
-          data: [...prevState.data, ...response.data.following]
+          data: [...prevState.data, ...response.data.following],
+          totalItems: response.data.counts.follows // total following
         }));
       } catch (error) {
         setState(prevState => ({ ...prevState, error }));
@@ -43,9 +54,13 @@ const Following = () => {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
     })();
-  }, [SERVER_BASE_URL, ownerId, state.page]);
+  }, [SERVER_BASE_URL, username, viewerId, state.page]);
 
-  console.log("Following: ", state);
+  const hasMoreItems = state.data.length < state.totalItems;
+
+  const getMoreItems = async () => {
+    setState(prevState => ({ ...prevState, page: prevState.state + 1 }));
+  };
 
   return (
     <BasicTemplate>
@@ -53,9 +68,11 @@ const Following = () => {
         headerFollow="Following"
         items={state.data}
         isLoading={state.isLoading}
+        hasMoreItems={hasMoreItems}
+        getMoreItems={getMoreItems}
       />
     </BasicTemplate>
   );
 };
 
-export default Following;
+export default withRouter(Following);

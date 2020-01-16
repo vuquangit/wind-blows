@@ -14,6 +14,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const profile = useSelector((state = {}) => state.profile.data);
   const isFetching = useSelector((state = {}) => state.profile.isFetching);
+  const message = useSelector((state = {}) => state.profile.message);
 
   const _renderPage = () =>
     pageConfigs.map((route = {}, index) =>
@@ -47,7 +48,6 @@ const Main = () => {
               ]);
 
               const data = { fullName, profilePictureUrl, ...rest };
-
               await dispatch(updateProfileInfo({ data, endpoint: `auth/me` }));
             } else {
               dispatch(signOut());
@@ -59,7 +59,7 @@ const Main = () => {
     []
   );
 
-  return isFetching ? (
+  return isFetching && message ? (
     <Loading />
   ) : (
     <BrowserRouter>

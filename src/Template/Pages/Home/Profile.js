@@ -1,13 +1,16 @@
 import React from "react";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Profile = ({
-  isVerified = true,
-  name = "Chàng Gió 🐾",
-  profilePictureUrl = "https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-19/s150x150/75553997_2258267614274135_3945426274582790144_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_ohc=5Jsfi2PpUI0AX89Ly3L&oh=481d4c11406c905c9d8fca5101fa0980&oe=5EA7E1E1",
-  username = "chang.gio"
-}) => {
+const Profile = () => {
+  const {
+    username = "",
+    isVerified = false,
+    profilePictureUrl = "",
+    fullName = ""
+  } = useSelector((state = {}) => state.profile.data.user);
+
   return (
     <div className="profile">
       <div className="profile__content">
@@ -26,7 +29,7 @@ const Profile = ({
               </span>
             )}
           </div>
-          <div className="info__name">{name}</div>
+          <div className="info__name">{fullName}</div>
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isEmpty, get } from "lodash";
-import Loading from "Template/Pages/Loading";
 import { useSelector, useDispatch } from "react-redux";
+
+import Loading from "Template/Pages/Loading";
 import { signOut } from "Redux/Profile/profile.action";
 
 const RedirectRoute = props => (
@@ -19,8 +20,9 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
   const isAuthenticated = useSelector(
     state => !isEmpty(get(state, "profile.data"))
   );
-  const isLoading = false;
+  const isLoading = useSelector(state => get(state, "profile.isFetching"));
   // debugger;
+
   useEffect(
     () => {
       setTimeout(() => {
