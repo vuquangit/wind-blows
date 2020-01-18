@@ -40,7 +40,7 @@ const RegistrationForm = ({ form, history }) => {
     e.preventDefault();
     form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
 
         await fetchSignup({
           email: values.email,
@@ -76,6 +76,22 @@ const RegistrationForm = ({ form, history }) => {
     callback();
   };
 
+  const validateUsername = (rule, value, callback) => {
+    if (value) {
+      if (/[A-Z]/g.test(value) && /\s/gi.test(value)) {
+        callback("Non white space and upper case character");
+      } else if (/\s/g.test(value)) {
+        callback("Non white space character");
+      } else if (/([A-Z])/g.test(value)) {
+        callback("Non upper case character");
+      } else if (/@/g.test(value)) {
+        callback("Please do not enter the @ character");
+      }
+    } else {
+      callback();
+    }
+  };
+
   return (
     <Form onSubmit={handleSubmit} className="registration">
       <Form.Item>
@@ -90,29 +106,34 @@ const RegistrationForm = ({ form, history }) => {
               message: "Please input your E-mail!"
             }
           ]
-        })(<Input placeholder="Email" allowClear />)}
+        })(<Input placeholder="Email" allowClear title="Email" />)}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("fullName", {
           rules: [
             {
               required: true,
-              message: "Please input your full name!",
-              whitespace: true
+              message: "Please input your full name!"
             }
           ]
-        })(<Input placeholder="Full Name" />)}
+        })(<Input placeholder="Full Name" title="Full Name" />)}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("username", {
           rules: [
             {
               required: true,
-              message: "Please input your username!",
-              whitespace: false
+              message: "Please input your username!"
+            },
+            {
+              whitespace: false,
+              message: "Non white space character"
+            },
+            {
+              validator: validateUsername
             }
           ]
-        })(<Input placeholder="Username" allowClear />)}
+        })(<Input placeholder="Username" allowClear title="Username" />)}
       </Form.Item>
       <Form.Item hasFeedback>
         {getFieldDecorator("password", {
@@ -122,10 +143,16 @@ const RegistrationForm = ({ form, history }) => {
               message: "Please input your password!"
             },
             {
+              min: 8,
+              message: "Length greater than 8 characters"
+            },
+            {
               validator: validateToNextPassword
             }
           ]
-        })(<Input.Password placeholder="Password" allowClear />)}
+        })(
+          <Input.Password placeholder="Password" allowClear title="Password" />
+        )}
       </Form.Item>
       <Form.Item hasFeedback>
         {getFieldDecorator("confirm", {
@@ -135,6 +162,10 @@ const RegistrationForm = ({ form, history }) => {
               message: "Please confirm your password!"
             },
             {
+              min: 8,
+              message: "Length greater than 8 characters"
+            },
+            {
               validator: compareToFirstPassword
             }
           ]
@@ -142,6 +173,7 @@ const RegistrationForm = ({ form, history }) => {
           <Input.Password
             onBlur={handleConfirmBlur}
             placeholder="Confirm Password"
+            title="Confirm Password"
             allowClear
           />
         )}

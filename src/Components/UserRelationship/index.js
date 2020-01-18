@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Avatar, Button, Modal } from "antd";
+import React from "react";
+import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 import "./userRelationship.scss";
 import { withRouter } from "react-router";
-import classNames from "classnames";
+import FollowStatus from "Components/FollowStatus";
+import { useSelector } from "react-redux";
+import { isEqual } from "lodash";
 
 const UserRelationship = ({ user = {}, relationship = {}, match }) => {
   const {
@@ -13,31 +15,12 @@ const UserRelationship = ({ user = {}, relationship = {}, match }) => {
     suggestionDescription = "",
     fullName = ""
   } = user;
-  const subDescription = match.path === "/" ? suggestionDescription : fullName;
-  const followStatus =
-    relationship.followedByViewer.state === "FOLLOW_STATUS_FOLLOWING"
-      ? "Following"
-      : "Follow";
-
-  // classnames
-  const followStatusClass = classNames(
-    "SGI__follow--btn-normal",
-    {
-      "SGI__follow--btn-homepage": match.path === "/"
-    },
-    {
-      "SGI__follow--btn-follow":
-        match.path !== "/" &&
-        relationship.followedByViewer.state !== "FOLLOW_STATUS_FOLLOWING"
-    }
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => state.profile.data.user
   );
 
-  // Modal unfollow
-  // Modal
-  const [visibleModal, setVisibleModal] = useState(false);
-  const showModal = () => setVisibleModal(true);
-  const handleCancel = e => setVisibleModal(false);
-  const handleUnfollow = () => {};
+  const subDescription = match.path === "/" ? suggestionDescription : fullName;
+  const isMe = isEqual(id, viewerId);
 
   return (
     <div className="SGI">
@@ -57,27 +40,13 @@ const UserRelationship = ({ user = {}, relationship = {}, match }) => {
         </div>
       </div>
       <div className="SGI__follow">
-        <Button className={followStatusClass} onClick={showModal}>
-          {followStatus}
-        </Button>
-
-        <Modal
-          title={`Unfollow ${username || fullName || id}`}
-          visible={visibleModal}
-          onCancel={handleCancel}
-          className="edit-account__modal"
-          footer={null}
-          closable={false}
-        >
-          <div className="edit-account__modal--items">
-            <button className="edit-item" onClick={handleUnfollow}>
-              Unfollow
-            </button>
-            <button className="edit-item" onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
-        </Modal>
+        {!isMe && (
+          <FollowStatus
+            user={user}
+            viewerId={viewerId}
+            relationship={relationship}
+          />
+        )}
       </div>
     </div>
   );

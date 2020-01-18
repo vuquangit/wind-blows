@@ -23,6 +23,8 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
   const isLoading = useSelector(state => get(state, "profile.isFetching"));
   // debugger;
 
+  console.log("isAuthenticated", isAuthenticated);
+
   useEffect(
     () => {
       setTimeout(() => {

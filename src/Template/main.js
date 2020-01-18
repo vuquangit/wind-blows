@@ -8,13 +8,11 @@ import PrivateRoute from "Containers/PrivateRoute";
 import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
-import Loading from "./Pages/Loading";
+// import Loading from "./Pages/Loading";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const profile = useSelector((state = {}) => state.profile.data);
-  const isFetching = useSelector((state = {}) => state.profile.isFetching);
-  const message = useSelector((state = {}) => state.profile.message);
+  const { data: profileData } = useSelector((state = {}) => state.profile);
 
   const _renderPage = () =>
     pageConfigs.map((route = {}, index) =>
@@ -25,14 +23,15 @@ const Main = () => {
       )
     );
 
-  // console.log("main homepage", profile);
+  // console.log("main homepage", profileData);
 
   useEffect(
     () => {
-      if (isEmpty(profile)) {
+      if (isEmpty(profileData)) {
         // Local Storage
         firebase &&
           firebase.auth().onAuthStateChanged(async user => {
+            console.log("use Effect Homapage");
             if (user) {
               // User is signed in.
               const {
@@ -48,7 +47,7 @@ const Main = () => {
               ]);
 
               const data = { fullName, profilePictureUrl, ...rest };
-              await dispatch(updateProfileInfo({ data, endpoint: `auth/me` }));
+              await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
             } else {
               dispatch(signOut());
             }
@@ -59,12 +58,10 @@ const Main = () => {
     []
   );
 
-  return isFetching && message ? (
-    <Loading />
-  ) : (
+  return (
     <BrowserRouter>
       <MainWrapper>
-        <Switch> {_renderPage()}</Switch>
+        <Switch>{_renderPage()}</Switch>
       </MainWrapper>
     </BrowserRouter>
   );

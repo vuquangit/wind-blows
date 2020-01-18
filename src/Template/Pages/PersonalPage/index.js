@@ -20,18 +20,17 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
     get(state, "personalProfile.isFetching")
   );
   const error = useSelector(state => get(state, "personalProfile.error"));
+  const { id: viewerId = "" } = useSelector(state =>
+    get(state, "profile.data.user")
+  );
 
   useEffect(() => {
     const username = get(match, "params.username");
     const _requestPersonalInfo = async () => {
-      await dispatch(requestPersonalInfo({ username }));
+      await dispatch(requestPersonalInfo({ username, viewerId }));
     };
     _requestPersonalInfo();
-  }, [match, dispatch]);
-
-  // useEffect(() => {
-  //   error && history.replace("/404");
-  // }, [error, history]);
+  }, [match, dispatch, viewerId]);
 
   return (
     <>

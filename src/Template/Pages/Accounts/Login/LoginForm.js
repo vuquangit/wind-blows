@@ -1,10 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Form, Icon, Input, Button, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isEmpty } from "lodash";
 
 import { requestProfileInfo } from "Redux/Profile/profile.action";
+import Loading from "Template/Pages/Loading";
 
 const LoginForm = ({ form, history }) => {
   const { getFieldDecorator, validateFields } = form;

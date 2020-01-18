@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 
+import Loading from "Template/Pages/Loading";
 import SiteName from "Components/SiteName";
 import Authorization from "Containers/Authorization";
 import "./login.scss";
@@ -12,12 +13,16 @@ import "./login.scss";
 const Login = ({ history }) => {
   // Redirect when signed
   const dispatch = useDispatch();
-  const profile = useSelector((state = {}) => state.profile) || {};
+  const { data: profileData, isFetching, message } =
+    useSelector((state = {}) => state.profile) || {};
   useEffect(() => {
-    if (!isEmpty(profile.data)) {
+    // console.log("useEffect login");
+    if (!isEmpty(profileData)) {
       history.push("/");
     }
-  }, [dispatch, history, profile.data]);
+  }, [dispatch, history, profileData]);
+
+  // console.log("login");
 
   return (
     <div className="login">

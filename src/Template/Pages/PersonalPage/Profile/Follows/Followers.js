@@ -30,7 +30,7 @@ const Followers = ({ match = {} }) => {
 
         const response = await axios({
           method: "GET",
-          url: `${SERVER_BASE_URL}/username/followers`,
+          url: `${SERVER_BASE_URL}/follows/followers/username/`,
           params: {
             page: state.page,
             limit: 20,

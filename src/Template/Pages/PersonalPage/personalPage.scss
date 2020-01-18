@@ -143,6 +143,31 @@
           }
         }
       }
+
+      .user-options {
+        display: flex;
+        flex-direction: row;
+        margin-left: 20px;
+
+        &__follow {
+          margin-right: 8px;
+          width: 92px;
+
+
+        }
+
+        &__option {
+          position: relative;
+          width: 34px;
+
+          &--btn {
+            background-repeat: no-repeat;
+            background-position: -338px -321px;
+            height: 24px;
+            width: 24px;
+          }
+        }
+      }
     }
 
     &--follow {

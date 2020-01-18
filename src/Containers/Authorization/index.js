@@ -5,12 +5,14 @@ import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import { pick } from "lodash";
+import "./authorization.scss";
 
 const Authorization = ({ history, location }) => {
   const dispatch = useDispatch();
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: "popup",
+    signInSuccessUrl: "/",
     // We will display Google and Facebook as auth providers.
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -32,7 +34,6 @@ const Authorization = ({ history, location }) => {
         ]);
 
         const data = { fullName, profilePictureUrl, ...rest };
-        // console.log(data);
 
         await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
         if (location.pathname !== "/") {
@@ -42,10 +43,8 @@ const Authorization = ({ history, location }) => {
     }
   };
 
-  // console.log("render author");
-
   return (
-    <div className="d-flex justify-content-center align-items-center flex-column">
+    <div className="authorization">
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );

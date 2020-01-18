@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const Avatar = () => {
   const { profilePictureUrl = "" } = useSelector(
-    (state = {}) => state.personalProfile.data
+    (state = {}) => state.personalProfile.data.user
   );
 
   return (

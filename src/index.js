@@ -9,10 +9,20 @@ import { Provider } from "react-redux";
 import firebase from "firebase/app";
 import firebaseConfig from "./firebaseConfig";
 import configureStore from "./Redux/Store";
+import { loadState, saveState } from "./localStorage";
+import throttle from "lodash.throttle";
 
 firebase.initializeApp(firebaseConfig);
 
-const store = configureStore();
+const persistedState = loadState();
+const store = configureStore(persistedState);
+store.subscribe(
+  throttle(() => {
+    saveState({
+      profile: store.getState().profile
+    });
+  }, 1000)
+);
 
 if (process.env.NODE_ENV !== "development") {
   if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {

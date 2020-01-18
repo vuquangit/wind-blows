@@ -68,7 +68,7 @@ export default store => next => async action => {
     return next(
       actionWith({
         error: error.message || "Something wrong!!!",
-        message: error.response.data.message || "",
+        message: error.response ? error.response.data.message || null : null,
         type: failureType
       })
     );

@@ -7,52 +7,62 @@ import { isEmpty } from "lodash";
 import SiteName from "Components/SiteName";
 import Registration from "./Registration";
 import Authorization from "Containers/Authorization";
+import Loading from "Template/Pages/Loading";
 import "./signup.scss";
 
 const EmailSignup = ({ history }) => {
   //Is signed
   const dispatch = useDispatch();
-  const profile = useSelector((state = {}) => state.profile) || {};
+  const { data: profileData, isFetching, message } =
+    useSelector((state = {}) => state.profile) || {};
   useEffect(() => {
-    if (!isEmpty(profile.data)) {
+    if (!isEmpty(profileData)) {
       history.push("/");
     }
-  }, [dispatch, history, profile, profile.data]);
+  }, [dispatch, history, profileData, isFetching]);
+
+  // console.log("signup");
 
   return (
-    <div className="signup">
-      <div className="signup__content">
-        <div className="signup__sign">
-          <div className="signup__sign--content">
-            <div className="form">
-              <div className="form--header">
-                <SiteName />
-              </div>
-              <div className="form--content">
-                <h2 className="description">
-                  Sign up to see photos and videos from your friends.
-                </h2>
-                <Authorization />
-                <div className="divide">
-                  <div className="divide__line" />
-                  <div className="divide__text">or</div>
-                  <div className="divide__line" />
+    <>
+      {isFetching && !isEmpty(profileData) ? (
+        <Loading />
+      ) : (
+        <div className="signup">
+          <div className="signup__content">
+            <div className="signup__sign">
+              <div className="signup__sign--content">
+                <div className="form">
+                  <div className="form--header">
+                    <SiteName />
+                  </div>
+                  <div className="form--content">
+                    <h2 className="description">
+                      Sign up to see photos and videos from your friends.
+                    </h2>
+                    <Authorization />
+                    <div className="divide">
+                      <div className="divide__line" />
+                      <div className="divide__text">or</div>
+                      <div className="divide__line" />
+                    </div>
+                    <Registration />
+                  </div>
                 </div>
-                <Registration />
+                <div className="switch-sign">
+                  <p className="switch-sign--text">
+                    Have a account?
+                    <Link to="/accounts/login">
+                      <button className="switch-btn">Log in</button>
+                    </Link>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="switch-sign">
-              <p className="switch-sign--text">
-                Have a account?
-                <Link to="/accounts/login">
-                  <button className="switch-btn">Log in</button>
-                </Link>
-              </p>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

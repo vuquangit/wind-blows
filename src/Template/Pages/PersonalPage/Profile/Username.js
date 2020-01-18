@@ -3,17 +3,19 @@ import firebase from "firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { Row, Col, Modal } from "antd";
+import { Row, Col, Modal, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import { isEqual } from "lodash";
 
 import { signOut } from "Redux/Profile/profile.action";
+import FollowStatus from "Components/FollowStatus";
 
 const Username = ({ history }) => {
-  const { username = "", isVerified = false, id = "" } = useSelector(
+  const { user: userProfile = {}, relationship = {} } = useSelector(
     (state = {}) => state.personalProfile.data
   );
+  const { username = "", isVerified = false, id = "" } = userProfile;
 
   // ID is id signed
   const { id: viewerId = "" } = useSelector(
@@ -21,12 +23,17 @@ const Username = ({ history }) => {
   );
   const viewerIsOwner = isEqual(id, viewerId);
 
-  // Modal
-  const [visibleModal, setVisibleModal] = useState(false);
-  const showModal = () => setVisibleModal(true);
-  const handleCancel = e => setVisibleModal(false);
+  // Modal edit account
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false);
+  const showModalEdit = () => setVisibleModalEdit(true);
+  const handleCancelEdit = e => setVisibleModalEdit(false);
 
-  // Auth
+  // Modal user option
+  const [visibleModal_UserOption, setVisibleModal_UserOption] = useState(false);
+  const showModal_UserOption = () => setVisibleModal_UserOption(true);
+  const handleCancel_UserOption = e => setVisibleModal_UserOption(false);
+
+  // Auth: logout
   const dispatch = useDispatch();
   const onLogoutClick = useCallback(() => {
     const signout = async () => {
@@ -56,7 +63,7 @@ const Username = ({ history }) => {
             </span>
           </Col>
         )}
-        {viewerIsOwner && (
+        {viewerIsOwner ? (
           <>
             <Col>
               <Row>
@@ -72,17 +79,18 @@ const Username = ({ history }) => {
                 <div
                   className="edit-account__show-modal item-center"
                   title="Edit Account"
-                  onClick={showModal}
+                  onClick={showModalEdit}
                 >
                   <FontAwesomeIcon icon={faUserCog} />
                 </div>
                 <Modal
                   title={null}
-                  visible={visibleModal}
-                  onCancel={handleCancel}
+                  visible={visibleModalEdit}
+                  onCancel={handleCancelEdit}
                   className="edit-account__modal"
                   footer={null}
                   closable={false}
+                  centered
                 >
                   <div className="edit-account__modal--items">
                     <button className="edit-item" onClick={onChangePassword}>
@@ -91,7 +99,7 @@ const Username = ({ history }) => {
                     <button className="edit-item" onClick={onLogoutClick}>
                       Log Out
                     </button>
-                    <button className="edit-item" onClick={handleCancel}>
+                    <button className="edit-item" onClick={handleCancelEdit}>
                       Cancel
                     </button>
                   </div>
@@ -99,6 +107,40 @@ const Username = ({ history }) => {
               </div>
             </Col>
           </>
+        ) : (
+          <div className="user-options">
+            <div className="user-options__follow">
+              <FollowStatus
+                user={userProfile}
+                viewerId={viewerId}
+                relationship={relationship}
+              />
+            </div>
+            <div className="user-options__option">
+              <Button onClick={showModal_UserOption}>
+                <span className="sprite-icon__glyphs user-options__option--btn" />
+              </Button>
+              <Modal
+                title={null}
+                visible={visibleModal_UserOption}
+                onCancel={handleCancel_UserOption}
+                className="edit-account__modal"
+                footer={null}
+                closable={false}
+                centered
+              >
+                <div className="edit-account__modal--items">
+                  <button className="edit-item">Block this user</button>
+                  <button
+                    className="edit-item"
+                    onClick={handleCancel_UserOption}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </Modal>
+            </div>
+          </div>
         )}
       </Row>
       <Row>
