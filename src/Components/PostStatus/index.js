@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./postStatus.scss";
 import PostHeader from "./PostHeader";
 import PostCation from "./PostCaption";
+// import PostUploadImage from "./PostUploadImage";
 import PostUploadImage from "./PostUploadImage";
 import PostLocation from "./PostLocation";
 import PostOption from "./PostOption";
