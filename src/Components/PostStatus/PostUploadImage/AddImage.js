@@ -14,7 +14,7 @@ const toBase64 = file => {
         // Landscape: 1080x608
         // Square: 1080x1080
         // Portait: 1080x1350
-        const width = 1080;
+        const width = img.width > 1080 ? 1080 : img.width;
         const elem = document.createElement("canvas");
         const scaleFactor = width / img.width;
         elem.width = width;
@@ -74,35 +74,34 @@ const AddImage = ({ handleAddImage = () => {} }) => {
 
   return (
     <div className="add-image">
-      {uploading && (
+      {uploading ? (
         <div className="add-image__is-loading">
           <IsLoading isLoading={uploading} size={32} />
         </div>
+      ) : (
+        <>
+          <span className="_kkr">
+            <div className="_m _6a">
+              <a className="__9u __9t" rel="ignore">
+                <div className="_3jk">
+                  <input
+                    accept="image/*, image/heic, image/heif"
+                    multiple
+                    name="composer_photo"
+                    title="Select images to upload"
+                    data-testid="add-more-photos"
+                    display="inline-block"
+                    type="file"
+                    className="_n _5f0v"
+                    id="js_e9p"
+                    onChange={fetchUploadImage}
+                  />
+                </div>
+              </a>
+            </div>
+          </span>
+        </>
       )}
-      {/* ) : ( */}
-      <>
-        <span className="_kkr">
-          <div className="_m _6a">
-            <a className="__9u __9t" rel="ignore">
-              <div className="_3jk">
-                <input
-                  accept="image/*, image/heic, image/heif"
-                  multiple
-                  name="composer_photo"
-                  title="Select images to upload"
-                  data-testid="add-more-photos"
-                  display="inline-block"
-                  type="file"
-                  className="_n _5f0v"
-                  id="js_e9p"
-                  onChange={fetchUploadImage}
-                />
-              </div>
-            </a>
-          </div>
-        </span>
-      </>
-      {/* )} */}
     </div>
   );
 };

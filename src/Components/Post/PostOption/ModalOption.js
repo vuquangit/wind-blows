@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button } from "antd";
 import { Link } from "react-router-dom";
 
-const ModalOption = ({ visibleModal, handleCancelModal }) => {
+const ModalOption = ({ visibleModal, handleCancelModal, postId }) => {
   return (
     <Modal
       title={null}
@@ -17,7 +17,7 @@ const ModalOption = ({ visibleModal, handleCancelModal }) => {
         <Button className="modal__content--btn btn-red">Report</Button>
         <Button className="modal__content--btn btn-red">Unfollow</Button>
         <Button className="modal__content--btn">
-          <Link to="/p/codepost">Go to post</Link>
+          <Link to={`/p/${postId}`}>Go to post</Link>
         </Button>
         <Button className="modal__content--btn">Embed</Button>
         <Button className="modal__content--btn">Share</Button>

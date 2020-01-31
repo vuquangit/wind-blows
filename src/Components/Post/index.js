@@ -7,15 +7,16 @@ import PostInfo from "./PostInfo";
 import PostOption from "./PostOption";
 
 const PostItem = ({
+  id: postId,
   isModal = false,
   isHomePage = false,
   owner = {},
-  src = "",
   numPreviewLikes = 0,
   postedAt = new Date(),
   likedByViewer = false,
   savedByViewer = false,
-  location = {}
+  location = {},
+  sidecarChildren = []
 }) => {
   // Event post like
   const [isLikePost, setIsLikePost] = useState(likedByViewer);
@@ -32,7 +33,7 @@ const PostItem = ({
     <article className={classPostItem}>
       <PostHeader {...owner} isHomePage={isHomePage} location={location} />
       <PostImage
-        src={src || ""}
+        sidecarChildren={sidecarChildren}
         isModal={isModal}
         isHomePage={isHomePage}
         likedByViewer={isLikePost}
@@ -46,7 +47,7 @@ const PostItem = ({
         savedByViewer={savedByViewer}
         handleLikePost={handleLikePost}
       />
-      <PostOption />
+      <PostOption postId={postId} />
     </article>
   );
 };

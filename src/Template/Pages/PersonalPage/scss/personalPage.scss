@@ -1,0 +1,22 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+.personal {
+  background-color: #fff;
+  flex-grow: 1;
+  margin: 0 auto 30px;
+  max-width: 935px;
+  box-sizing: content-box;
+  padding: 60px 20px 0;
+  width: calc(100% - 40px);
+
+  @include media-breakpoint-down(sm) {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  @import 'header';
+  @import 'highlight';
+}
+
+@import 'editAccount';

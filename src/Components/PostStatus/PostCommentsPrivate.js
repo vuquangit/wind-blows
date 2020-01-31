@@ -3,12 +3,19 @@ import { Switch } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentSlash } from "@fortawesome/free-solid-svg-icons";
 
-const PostCommentsPrivate = () => {
+const PostCommentsPrivate = ({ commentsDisabled = false, setStatus }) => {
+  const handleSwitchChange = (checked, event) => {
+    setStatus(prevState => ({
+      ...prevState,
+      commentsDisabled: checked
+    }));
+  };
+
   return (
     <div className="post-status__content--comments-private">
       <FontAwesomeIcon icon={faCommentSlash} />
       <div>Disable comments:</div>
-      <Switch defaultChecked={false} />
+      <Switch checked={commentsDisabled} onChange={handleSwitchChange} />
     </div>
   );
 };

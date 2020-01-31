@@ -64,7 +64,7 @@ const pageConfigs = [
     exact: true
   },
   {
-    path: "/p/:code/",
+    path: "/p/:id/",
     component: GoToPost,
     exact: true
   },

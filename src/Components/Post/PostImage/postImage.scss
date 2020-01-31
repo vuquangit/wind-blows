@@ -15,7 +15,7 @@
         top: 0;
 
         .content__wrapper {
-            display: block;
+            // display: block;
             overflow: hidden;
             max-width: 598px;
 
@@ -26,6 +26,8 @@
             &--image-normal {
                 width: 100%;
                 height: auto;
+                margin-top: auto;
+                margin-bottom: auto;
             }
 
             &--image-modal {
@@ -70,6 +72,7 @@
 .PI__maxHeight {
     height: 100% !important;
     width: auto;
+    background-color: black;
 }
 
 .homepage-image {

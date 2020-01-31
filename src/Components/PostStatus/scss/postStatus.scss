@@ -1,0 +1,16 @@
+.post-status {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid rgb(219, 219, 219);
+
+    @import 'formPost';
+
+    &__content {
+        @import 'header';
+        @import 'caption';
+        @import 'option';
+        @import 'location';
+        @import 'commentsPrivate';
+        @import 'submit';
+    }
+}

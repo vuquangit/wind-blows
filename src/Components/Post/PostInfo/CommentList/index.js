@@ -43,7 +43,7 @@ const CommentList = ({
   }, []);
 
   useEffect(() => {
-    !isHomePage && scrollToEnd();
+    // !isHomePage && scrollToEnd();
   }, [comments, scrollToEnd, isHomePage]);
 
   const CLClass = classNames("PI__info--comment-list", {

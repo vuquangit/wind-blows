@@ -2,14 +2,19 @@ import React from "react";
 import PostSubmit from "./PostSubmit";
 import TogglePost from "./TogglePost";
 
-const PostOption = ({ isShowOption, handleToggleOption }) => {
+const PostOption = ({
+  status = {},
+  clearStatus,
+  isShowOption,
+  handleToggleOption
+}) => {
   return (
     <div className="post-status__content--option">
       <TogglePost
         isShowOption={isShowOption}
         handleToggleOption={handleToggleOption}
       />
-      <PostSubmit />
+      <PostSubmit status={status} clearStatus={clearStatus} />
     </div>
   );
 };

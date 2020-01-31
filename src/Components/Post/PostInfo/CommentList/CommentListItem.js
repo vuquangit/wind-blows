@@ -7,7 +7,7 @@ import ModalItemOptions from "./ModalItemOptions";
 import classNames from "classnames";
 
 const CommentListItem = ({
-  commentOwnerAvatar = "https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-19/s150x150/74962053_499046997632215_4287713981000318976_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_ohc=DsyWwQLv8J4AX9tZUA1&oh=30c6732a5bf837d9cffc6aa757dc8c9c&oe=5E719EBA",
+  commentOwnerAvatar = "",
   commentOwnerUsername = "lizkimcuong93",
   postOwnerIsUnpublished = false,
   viewerId = "1503958910",
@@ -61,7 +61,11 @@ const CommentListItem = ({
           <div className="CL__item--content">
             {!isHomePage && (
               <div className="item__avatar">
-                <Avatar src={commentOwnerAvatar} />
+                {commentOwnerAvatar ? (
+                  <Avatar src={commentOwnerAvatar} />
+                ) : (
+                  <Avatar src={commentOwnerAvatar} />
+                )}
               </div>
             )}
             <div className="item__content">

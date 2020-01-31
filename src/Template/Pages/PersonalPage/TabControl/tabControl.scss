@@ -16,9 +16,32 @@
       margin-bottom: 3px;
     }
 
-    img {
+    .thumbnail-post {
       width: 100%;
-      height: 100%;
+      height: auto;
+    }
+
+    .carousel {
+      align-items: flex-end;
+      bottom: 0;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      &__filled {
+        background-image: url(sprite_mediatypes.png);
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        height: 32px;
+        width: 32px;
+
+      }
+
     }
 
     .LC {

@@ -6,13 +6,14 @@ import { get } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
-import Highlights from "./Highlights";
+// import Highlights from "./Highlights";
 import TabControl from "./TabControl";
 import Follows from "./Profile/Follows";
 import IsLoading from "Components/IsLoading";
-import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import Page404 from "Template/Pages/404";
-import "./personalPage.scss";
+import PostStatus from "Components/PostStatus";
+import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
+import "./scss/personalPage.scss";
 
 const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
   const dispatch = useDispatch();
@@ -41,12 +42,13 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
           ) : (
             <div className="personal">
               <Profile />
-              <Highlights />
+              {/* <Highlights /> */}
               <Row>
                 <Col xs={24} sm={24} md={0}>
                   <Follows />
                 </Col>
               </Row>
+              <PostStatus />
               <TabControl />
             </div>
           )}

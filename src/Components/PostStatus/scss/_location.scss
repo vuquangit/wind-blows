@@ -1,0 +1,11 @@
+&--location {
+    padding: 4px 8px;
+    border-top: 1px solid rgb(241, 241, 241);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    .location__icon {
+        margin-right: 8px;
+    }
+}

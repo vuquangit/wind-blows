@@ -13,7 +13,7 @@ const Thumbnails = ({ public_id, handleRemoveImage = () => {} }) => {
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const fecthDeleteImage = async publicId => {
     try {
-      const res = await axios({
+      await axios({
         method: "POST",
         url: `${SERVER_BASE_URL}/upload-image/delete`,
         data: {
@@ -23,9 +23,6 @@ const Thumbnails = ({ public_id, handleRemoveImage = () => {} }) => {
           "Content-Type": "application/json;charset=UTF-8"
         }
       });
-
-      console.log(res);
-      // handleRemoveImage(publicId);
     } catch (err) {
       message.error("Error: ", err);
       console.log(err);
@@ -65,7 +62,10 @@ const Thumbnails = ({ public_id, handleRemoveImage = () => {} }) => {
         >
           <div>
             <CloudinaryContext cloudName="dnzsa2z7b">
-              <Image publicId={public_id} />
+              <Image
+                publicId={public_id}
+                style={{ height: "calc( 100vh - 120px)" }}
+              />
             </CloudinaryContext>
           </div>
         </Modal>

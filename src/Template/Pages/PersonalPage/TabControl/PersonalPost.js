@@ -3,11 +3,12 @@ import { Modal } from "antd";
 import numeral from "numeral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
-// import PostItem from "Components/PostItem";
+import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
+
 import PostItem from "Components/Post";
 
 const PersonalPost = data => {
-  const { thumbnailSrc, numLikes, numComments } = data;
+  const { sidecarChildren, numLikes, numComments } = data;
 
   const [isHover, setIsHouver] = React.useState(false);
   const handleMouseHover = () => setIsHouver(!isHover);
@@ -24,12 +25,19 @@ const PersonalPost = data => {
         onMouseLeave={handleMouseHover}
         onClick={showModal}
       >
-        <div>
-          <img alt="" src={thumbnailSrc} />
-        </div>
-        <div>
-          <span aria-label="Carousel" className="filled" />
-        </div>
+        <CloudinaryContext cloudName="dnzsa2z7b">
+          <Image
+            publicId={sidecarChildren[0].public_id}
+            className="thumbnail-post"
+          >
+            <Transformation height="320" width="320" crop="fill" />
+          </Image>
+        </CloudinaryContext>
+        {sidecarChildren.length > 1 && (
+          <div className="carousel">
+            <span aria-label="Carousel" className="carousel__filled" />
+          </div>
+        )}
         {isHover && (
           <div className="LC">
             <div className="LC__content">

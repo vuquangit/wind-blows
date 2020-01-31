@@ -12,12 +12,11 @@ const BasicTemplate = ({ children }) => {
   }, []);
 
   const handleScroll = e => {
-    let element = e.target.scrollingElement;
-
-    if (element && element.scrollTop > 0) {
-      // do something at end of scroll
-      setScroll(true);
-    } else setScroll(false);
+    // let element = e.target.scrollingElement;
+    // if (element && element.scrollTop > 0) {
+    //   // do something at end of scroll
+    //   setScroll(true);
+    // } else setScroll(false);
   };
 
   return (

@@ -2,31 +2,6 @@
     "analyticsContext": "postPage",
     "className": "QBXjJ",
     "id": "2207534776416989997",
-    "isVisible": true,
-    "lightLetterbox": true,
-    "Options": [
-        null,
-        {
-            "compare": null,
-            "displayName": "Connect(Component)"
-        },
-        {
-            "compare": null,
-            "displayName": "Connect(Component)"
-        },
-        null,
-        {
-            "compare": null,
-            "displayName": "Connect(Component)"
-        },
-        null,
-        {
-            "compare": null,
-            "displayName": "Connect(Component)"
-        }
-    ],
-    "willScrollTo": "top",
-    "commentSaveIsInFlight": false,
     "likedByList": {
         "userIds": [],
         "searchInput": ""
@@ -570,7 +545,5 @@
         "profilePictureUrlHd": "https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-19/s320x320/75553997_2258267614274135_3945426274582790144_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_ohc=KWIUBC1QN8gAX8p9HYz&oh=4aa911c9c8f3d1495b8e5d18860866d5&oe=5EA5D099",
         "username": "chang.gio",
         "website": ""
-    },
-    "viewportWidth": 1366,
-    "variant": "flexible"
+    }
 }

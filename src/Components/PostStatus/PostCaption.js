@@ -1,15 +1,28 @@
 import React from "react";
-import { Input } from "antd";
+import { Input, Avatar } from "antd";
+import { useSelector } from "react-redux";
 
-const PostCaption = () => {
-  const { TextArea } = Input;
+const PostCaption = ({ caption = "", setStatus }) => {
+  const { profilePictureUrl = "" } = useSelector(
+    (state = {}) => state.profile.data.user
+  );
+
+  const handleInputChanged = e => {
+    // console.log(e.target.value);
+    e.persist();
+
+    setStatus(prevState => ({ ...prevState, caption: e.target.value }));
+  };
 
   return (
     <div className="post-status__content--caption">
-      <TextArea
+      <Avatar src={profilePictureUrl} />
+      <Input.TextArea
         placeholder="Caption..."
         autoSize={{ minRows: 2, maxRows: 4 }}
         allowClear
+        onChange={handleInputChanged}
+        value={caption}
       />
     </div>
   );
