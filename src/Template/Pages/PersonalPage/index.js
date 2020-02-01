@@ -6,7 +6,7 @@ import { get } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
-// import Highlights from "./Highlights";
+import Highlights from "./Highlights";
 import TabControl from "./TabControl";
 import Follows from "./Profile/Follows";
 import IsLoading from "Components/IsLoading";
@@ -42,7 +42,7 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
           ) : (
             <div className="personal">
               <Profile />
-              {/* <Highlights /> */}
+              <Highlights />
               <Row>
                 <Col xs={24} sm={24} md={0}>
                   <Follows />

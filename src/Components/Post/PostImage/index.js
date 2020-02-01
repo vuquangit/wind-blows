@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./postImage.scss";
 import classNames from "classnames";
-import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
-import IsLoading from "Components/IsLoading";
+import { CloudinaryContext, Image } from "cloudinary-react";
+import SliderImages from "./SliderImage";
+import ItemImage from "./ItemImage";
 
 const PostImage = ({
   sidecarChildren = [],
@@ -27,20 +28,20 @@ const PostImage = ({
     },
     { "homepage-image__wrapper": isHomePage }
   );
-  const classPIImageModal = classNames("content__wrapper--image-normal", {
-    "content__wrapper--image-modal":
-      isModal && sidecarChildren[0].width < sidecarChildren[0].height
-  });
 
   return (
     <div className={classPI}>
       <div className={classPIContent}>
-        <CloudinaryContext cloudName="dnzsa2z7b" className={classPIWrapper}>
-          <Image
-            publicId={sidecarChildren[0].public_id}
-            className={classPIImageModal}
-            onDoubleClick={!likedByViewer ? handleLikePost : () => {}}
-          />
+        <CloudinaryContext
+          cloudName="dnzsa2z7b"
+          className={classPIWrapper}
+          onDoubleClick={!likedByViewer ? handleLikePost : () => {}}
+        >
+          {sidecarChildren.length === 1 ? (
+            <ItemImage {...sidecarChildren[0]} isModal={isModal} />
+          ) : (
+            <SliderImages sidecarChildren={sidecarChildren} />
+          )}
         </CloudinaryContext>
         <div className="image-heart">
           <span className="sprite-icon__core image-heart__icon" />

@@ -27,7 +27,7 @@ const PostSubmit = ({ status = {}, clearStatus }) => {
         }
       });
 
-      console.log(res);
+      // console.log(res);
       setState(prevState => ({ ...prevState, data: res.data }));
 
       // clear post

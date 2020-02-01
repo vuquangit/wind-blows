@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Avatar } from "antd";
 
-const Avatar = () => {
+const AvatarProfile = () => {
   const { profilePictureUrl = "" } = useSelector(
     (state = {}) => state.personalProfile.data.user
   );
@@ -11,12 +12,11 @@ const Avatar = () => {
       <div className="avatar-layer1">
         <div className="avatar-layer2">
           <button className="avatar-button" title="Change Profile Photo">
-            {/* eslint-disable-next-line */}
-            <img
-              className="avatar-image"
-              src={profilePictureUrl}
-              alt="Change Profile Photo"
-            />
+            {profilePictureUrl ? (
+              <Avatar src={profilePictureUrl} size={150} />
+            ) : (
+              <Avatar icon="user" size={150} />
+            )}
           </button>
         </div>
       </div>
@@ -24,4 +24,4 @@ const Avatar = () => {
   );
 };
 
-export default Avatar;
+export default AvatarProfile;

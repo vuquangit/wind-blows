@@ -67,6 +67,58 @@
             }
         }
     }
+
+    .slider-image {
+        .slick-track {
+            position: relative !important;
+            top: 0;
+            left: 0;
+            display: block !important;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .slick-prev,
+        .slick-next {
+            height: 30px;
+            width: 30px;
+
+            &:before {
+                font-size: 30px;
+            }
+        }
+
+        .slick-prev {
+            left: 15px !important;
+        }
+
+        .slick-next {
+            right: 15px !important;
+        }
+
+        .slick-dots {
+            bottom: 10px !important;
+
+            li {
+                button {
+                    &:before {
+                        opacity: .4;
+                        color: rgba(var(--eca, 255, 255, 255), 1);
+                        border: 1px solid #dd2f2f;
+                    }
+                }
+            }
+
+            .slick-active {
+                button {
+                    &:before {
+                        opacity: 1;
+                        color: rgba(var(--eca, 255, 255, 255), 1);
+                    }
+                }
+            }
+        }
+    }
 }
 
 .PI__maxHeight {

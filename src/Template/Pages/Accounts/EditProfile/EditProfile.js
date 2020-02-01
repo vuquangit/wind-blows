@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -10,18 +10,73 @@ import {
   Button
 } from "antd";
 import ProfilePhoto from "Components/ProfilePhoto";
+import { useSelector } from "react-redux";
+import { get } from "lodash";
+import Axios from "axios";
+import { message } from "antd";
 
 const EditProfile = props => {
+  const profile = useSelector((state = {}) => state.profile.data.user);
+
+  useEffect(() => {
+    setFieldsValue({
+      fullName: get(profile, "fullName"),
+      username: profile.username,
+      website: profile.website,
+      bio: get(profile, "bio"),
+      email: get(profile, "email"),
+      phoneNumber: get(profile, "phonenumber"),
+      gender: get(profile, "gender")
+    });
+  }, [profile]);
+
+  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
+
+  // post
+  const [stateUpdate, setStateUpdate] = useState({
+    isUpdating: false,
+    data: {},
+    error: null
+  });
+
+  // update profile
+  const fetchUpdateProfile = async values => {
+    try {
+      setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
+
+      const res = await Axios({
+        method: "post",
+        url: `${SERVER_BASE_URL}/users/update`,
+        data: { id: get(profile, "id"), ...values },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      console.log(res);
+      setStateUpdate(prevState => ({ ...prevState, data: res.data }));
+
+      // fetch personal post data
+      // ....
+    } catch (err) {
+      console.log(err);
+      message.error("Post status error: ", err);
+    } finally {
+      setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
+    }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+
+        fetchUpdateProfile(values);
       }
     });
   };
 
-  const { getFieldDecorator } = props.form;
+  const { getFieldDecorator, setFieldsValue } = props.form;
 
   const formItemLayout = {
     labelCol: {
@@ -63,7 +118,7 @@ const EditProfile = props => {
       </div>
       <Form {...formItemLayout} onSubmit={handleSubmit}>
         <Form.Item label="Name">
-          {getFieldDecorator("name", {
+          {getFieldDecorator("fullName", {
             rules: [
               {
                 required: true,
@@ -94,10 +149,12 @@ const EditProfile = props => {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="Website">
-          <Input />
+          {getFieldDecorator("website")(<Input />)}
         </Form.Item>
         <Form.Item label="Bio">
-          <Input.TextArea autoSize={{ minRows: 2, maxRows: 9999999 }} />
+          {getFieldDecorator("bio")(
+            <Input.TextArea autoSize={{ minRows: 2, maxRows: 9999999 }} />
+          )}
         </Form.Item>
         <Form.Item label=" " className="edit-profile__form--private">
           <h2 className="private__text">Private Information</h2>
@@ -117,14 +174,16 @@ const EditProfile = props => {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="Phone Number">
-          <Input />
+          {getFieldDecorator("phoneNumber")(<Input />)}
         </Form.Item>
         <Form.Item label="Gender">
-          <Dropdown overlay={genderLists}>
-            <Button block className="edit-profile__form--gender">
-              Male <Icon type="down" />
-            </Button>
-          </Dropdown>
+          {getFieldDecorator("gender")(
+            <Dropdown overlay={genderLists}>
+              <Button block className="edit-profile__form--gender">
+                Male <Icon type="down" />
+              </Button>
+            </Dropdown>
+          )}
         </Form.Item>
         <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
