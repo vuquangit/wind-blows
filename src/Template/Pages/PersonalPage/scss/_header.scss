@@ -1,203 +1,209 @@
 &__header {
-    margin-bottom: 44px;
+  margin-bottom: 44px;
 
+  @include media-breakpoint-down(sm) {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 30px;
+    border-bottom: none;
+    margin-bottom: 24px;
+    padding-bottom: 0;
+  }
+
+  &--avatar {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-right: 30px;
+
+    .avatar-content {
+      width: fit-content;
+      position: relative;
+    }
+
+    .change-photo {
+      position: absolute;
+      right: 0px;
+      z-index: 1;
+      bottom: 15px;
+
+      &__btn-change {
+        border-radius: 50%;
+        background-color: rgb(233, 233, 233);
+        border: 0;
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+
+  &--username {
     @include media-breakpoint-down(sm) {
-        margin-left: 16px;
-        margin-right: 16px;
-        margin-top: 30px;
-        border-bottom: none;
-        margin-bottom: 24px;
-        padding-bottom: 0;
+      padding-left: 10px;
     }
 
-    &--avatar {
-        flex-grow: 1;
-        margin-right: 30px;
+    .account {
+      margin-bottom: 20px;
 
-        .avatar-layer1 {
-            height: 150px;
-            width: 150px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-
-            @include media-breakpoint-down(sm) {
-                height: 77px;
-                width: 77px;
-            }
-        }
-
-        .avatar-layer2 {
-            background-color: #fafafa;
-            border-radius: 50%;
-            box-sizing: border-box;
-            margin: 0 auto;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            width: 100%;
-        }
-
-        .avatar-button {
-            border: 0;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        .avatar-image {
-            height: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-            width: 100%;
-        }
+      @include media-breakpoint-down(sm) {
+        margin-bottom: 12px;
+      }
     }
 
-    &--username {
+    .username {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: rgba(var(--i1d, 38, 38, 38), 1);
+      font-weight: 300;
+      font-size: 28px;
+      line-height: 34px;
+      margin: -5px 0 -6px;
+    }
+
+    .verified {
+      background-position: -383px -238px;
+      height: 18px;
+      width: 18px;
+      background-repeat: no-repeat;
+      background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+      flex-shrink: 0;
+      margin-left: 7px;
+      display: block;
+      overflow: hidden;
+      text-indent: 110%;
+      white-space: nowrap;
+    }
+
+    .edit-profile {
+      color: rgba(var(--fe0, 0, 53, 105), 1);
+      text-decoration: none;
+      flex-shrink: 0;
+      margin-left: 20px;
+
+      @include media-breakpoint-down(sm) {
+        margin-left: 0;
+      }
+
+      button {
+        background-color: transparent;
+        border: 1px solid rgba(var(--d0b, 219, 219, 219), 1);
+        color: rgba(var(--f07, 38, 38, 38), 1);
+        border-radius: 4px;
+        position: relative;
+
         @include media-breakpoint-down(sm) {
-            padding-left: 10px;
+          width: 100%;
         }
-
-        .account {
-            margin-bottom: 20px;
-
-            @include media-breakpoint-down(sm) {
-                margin-bottom: 12px;
-            }
-        }
-
-        .username {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: rgba(var(--i1d, 38, 38, 38), 1);
-            font-weight: 300;
-            font-size: 28px;
-            line-height: 34px;
-            margin: -5px 0 -6px;
-        }
-
-        .verified {
-            background-position: -383px -238px;
-            height: 18px;
-            width: 18px;
-            background-repeat: no-repeat;
-            background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
-            flex-shrink: 0;
-            margin-left: 7px;
-            display: block;
-            overflow: hidden;
-            text-indent: 110%;
-            white-space: nowrap;
-        }
-
-        .edit-profile {
-            color: rgba(var(--fe0, 0, 53, 105), 1);
-            text-decoration: none;
-            flex-shrink: 0;
-            margin-left: 20px;
-
-            @include media-breakpoint-down(sm) {
-                margin-left: 0;
-            }
-
-            button {
-                background-color: transparent;
-                border: 1px solid rgba(var(--d0b, 219, 219, 219), 1);
-                color: rgba(var(--f07, 38, 38, 38), 1);
-                border-radius: 4px;
-                position: relative;
-
-                @include media-breakpoint-down(sm) {
-                    width: 100%;
-                }
-            }
-        }
-
-        .edit-account {
-            &__show-modal {
-                padding-left: 16px;
-                cursor: pointer;
-
-                svg {
-                    height: 24px;
-                    width: 24px;
-                }
-            }
-        }
-
-        .user-options {
-            display: flex;
-            flex-direction: row;
-            margin-left: 20px;
-
-            &__follow {
-                margin-right: 8px;
-                width: 92px;
-
-
-            }
-
-            &__option {
-                position: relative;
-                width: 34px;
-
-                &--btn {
-                    background-repeat: no-repeat;
-                    background-position: -338px -321px;
-                    height: 24px;
-                    width: 24px;
-                }
-            }
-        }
+      }
     }
 
-    &--follow {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: row;
+    .edit-account {
+      &__show-modal {
+        padding-left: 16px;
+        cursor: pointer;
 
-        .follow__item {
-            font-size: 16px;
-            margin-right: 40px;
-
-            &:first-child {
-                margin-left: 0;
-            }
-
-            &:last-child {
-                margin-right: 0;
-            }
-
-            &--number {
-                color: #262626;
-                font-weight: 600;
-            }
-
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
+        svg {
+          height: 24px;
+          width: 24px;
         }
+      }
     }
 
-    &--description {
-        font-size: 16px;
-        line-height: 24px;
-        word-wrap: break-word;
-        display: flex;
-        flex-direction: column;
+    .user-options {
+      display: flex;
+      flex-direction: row;
+      margin-left: 20px;
 
-        .description-name {
-            font: inherit;
-            display: inline;
-            font-weight: 600;
-            text-align: start;
-        }
+      &__follow {
+        margin-right: 8px;
+        width: 92px;
+      }
 
-        .description-bio {
-            text-align: left;
+      &__option {
+        position: relative;
+        width: 34px;
+
+        &--btn {
+          background-repeat: no-repeat;
+          background-position: -338px -321px;
+          height: 24px;
+          width: 24px;
         }
+      }
     }
+  }
+
+  &--follow {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+
+    .follow__item {
+      font-size: 16px;
+      margin-right: 40px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &--number {
+        color: #262626;
+        font-weight: 600;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  }
+
+  &--description {
+    font-size: 16px;
+    line-height: 24px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+
+    .description-name {
+      font: inherit;
+      display: inline;
+      font-weight: 600;
+      text-align: start;
+    }
+
+    .description-bio {
+      text-align: left;
+    }
+
+    .description-website {
+      font-weight: 600;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    a,
+    a:visited {
+      color: #003569;
+      color: rgba(var(--fe0, 0, 53, 105), 1);
+      text-decoration: none;
+    }
+  }
 }

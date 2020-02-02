@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
-import PersonalPost from "./PersonalPost";
-import postList from "./changgio.json";
-import "./tabControl.scss";
 import Axios from "axios";
+
+import PersonalPost from "./PersonalPost";
 import IsLoading from "Components/IsLoading";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import "./tabControl.scss";
 
 const TabControl = () => {
   const [state, setState] = useState({
@@ -37,8 +37,6 @@ const TabControl = () => {
             "Content-Type": "application/json"
           }
         });
-
-        console.log("response: ", response);
 
         setState(prevState => ({
           ...prevState,

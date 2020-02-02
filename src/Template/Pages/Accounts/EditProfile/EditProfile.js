@@ -7,15 +7,18 @@ import {
   Menu,
   Dropdown,
   Checkbox,
-  Button
+  Button,
+  message
 } from "antd";
-import ProfilePhoto from "Components/ProfilePhoto";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { get } from "lodash";
 import Axios from "axios";
-import { message } from "antd";
+
+import ProfilePhoto from "Components/ProfilePhoto";
+import { updateProfileInfo } from "Redux/Profile/profile.action";
 
 const EditProfile = props => {
+  const dispatch = useDispatch();
   const profile = useSelector((state = {}) => state.profile.data.user);
 
   useEffect(() => {
@@ -25,9 +28,10 @@ const EditProfile = props => {
       website: profile.website,
       bio: get(profile, "bio"),
       email: get(profile, "email"),
-      phoneNumber: get(profile, "phonenumber"),
+      phoneNumber: get(profile, "phoneNumber"),
       gender: get(profile, "gender")
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
@@ -56,6 +60,12 @@ const EditProfile = props => {
       setStateUpdate(prevState => ({ ...prevState, data: res.data }));
 
       // fetch personal post data
+      if (res.status === 200 || res.status === 201) {
+        const data = { email: values.email };
+        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+
+        message.success("Updated your profile");
+      }
       // ....
     } catch (err) {
       console.log(err);
@@ -114,7 +124,7 @@ const EditProfile = props => {
   return (
     <div className="edit-profile">
       <div className="edit-profile__photo">
-        <ProfilePhoto {...formItemLayout} changePhoto={true} />
+        <ProfilePhoto {...formItemLayout} changePhoto />
       </div>
       <Form {...formItemLayout} onSubmit={handleSubmit}>
         <Form.Item label="Name">
@@ -197,10 +207,18 @@ const EditProfile = props => {
           )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={stateUpdate.isUpdating}
+          >
             Submit
           </Button>
-          <Button type="danger" style={{ marginLeft: "16px" }}>
+          <Button
+            type="danger"
+            style={{ marginLeft: "16px" }}
+            disabled={stateUpdate.isUpdating}
+          >
             Disable my account
           </Button>
         </Form.Item>

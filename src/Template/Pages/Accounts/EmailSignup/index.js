@@ -13,7 +13,7 @@ import "./signup.scss";
 const EmailSignup = ({ history }) => {
   //Is signed
   const dispatch = useDispatch();
-  const { data: profileData, isFetching, message } =
+  const { data: profileData, isFetching } =
     useSelector((state = {}) => state.profile) || {};
   useEffect(() => {
     if (!isEmpty(profileData)) {

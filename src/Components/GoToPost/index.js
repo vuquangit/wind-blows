@@ -4,7 +4,7 @@ import Axios from "axios";
 import { useSelector } from "react-redux";
 
 import Post from "Components/Post";
-import postData from "./mock.json";
+// import postData from "./mock.json";
 import BasicTemplate from "Template/BasicTemplate";
 import IsLoading from "Components/IsLoading";
 import "./goToPost.scss";

@@ -1,15 +1,16 @@
 import React from "react";
-import { faUser, faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
-import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
-import { Badge } from "antd";
-import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Activity from "Template/Pages/Activity";
+import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
+import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
+import { Badge, Avatar } from "antd";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import Activity from "Template/Pages/Activity";
 
 const Menu = () => {
   const profile = useSelector((state = {}) => state.profile.data.user);
-  const { username = "", id } = profile;
+  const { username = "", id = "", profilePictureUrl = "" } = profile;
 
   return (
     <div className="header__menu">
@@ -30,7 +31,15 @@ const Menu = () => {
         <div className="menu-item">
           <NavLink to={`/${username || id}`}>
             <Badge count={0}>
-              <FontAwesomeIcon icon={faUser} title="Personal Page" />
+              {profilePictureUrl ? (
+                <Avatar
+                  src={profilePictureUrl}
+                  size={24}
+                  title="Personal Page"
+                />
+              ) : (
+                <Avatar icon="user" size={24} title="Personal Page" />
+              )}
             </Badge>
           </NavLink>
         </div>

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 
-import Loading from "Template/Pages/Loading";
+// import Loading from "Template/Pages/Loading";
 import SiteName from "Components/SiteName";
 import Authorization from "Containers/Authorization";
 import "./login.scss";
@@ -13,6 +13,7 @@ import "./login.scss";
 const Login = ({ history }) => {
   // Redirect when signed
   const dispatch = useDispatch();
+  // eslint-disable-next-line
   const { data: profileData, isFetching, message } =
     useSelector((state = {}) => state.profile) || {};
   useEffect(() => {

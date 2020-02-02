@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Row, Col, Avatar } from "antd";
 import ModalChangePhoto from "./ModalChangePhoto";
 import "./profilePhoto.scss";
+import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 const ProfilePhoto = props => {
   const [visibleModal, setVisibleModal] = useState(false);
   const showModal = () => {
     setVisibleModal(true);
   };
-  const handleCancelModal = e => {
+  const handleCancelModal = () => {
     setVisibleModal(false);
   };
 
@@ -18,21 +20,26 @@ const ProfilePhoto = props => {
     changePhoto = false
   } = props;
 
+  const { profilePictureUrl = "", username = "" } = useSelector(state =>
+    get(state, "profile.data.user")
+  );
+
   return (
     <div className="profile-photo">
       <Row type="flex" align="middle">
         <Col {...labelCol.sm}>
           <div className="profile-photo__avatar">
-            <Avatar
-              src="https://live.staticflickr.com/65535/49150573271_52eb21ac75_z.jpg"
-              size={40}
-            />
+            {profilePictureUrl ? (
+              <Avatar src={profilePictureUrl} size={40} />
+            ) : (
+              <Avatar icon="user" size={40} />
+            )}
           </div>
         </Col>
         <Col {...wrapperCol.sm}>
           <div className="profile-photo__change">
             <div>
-              <h1>chang.gio</h1>
+              <h1>{username}</h1>
               {changePhoto && (
                 <button onClick={showModal}>Change Profile Photo</button>
               )}
@@ -40,7 +47,6 @@ const ProfilePhoto = props => {
           </div>
         </Col>
       </Row>
-
       {changePhoto && (
         <ModalChangePhoto
           visibleModal={visibleModal}

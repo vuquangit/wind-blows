@@ -4,6 +4,7 @@ import "./basicTemplate.scss";
 import Footer from "Template/Pages/Footer";
 
 const BasicTemplate = ({ children }) => {
+  // eslint-disable-next-line
   const [isScroll, setScroll] = useState(false);
 
   useEffect(() => {

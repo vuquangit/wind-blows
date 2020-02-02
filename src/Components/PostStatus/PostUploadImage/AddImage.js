@@ -82,7 +82,7 @@ const AddImage = ({ handleAddImage = () => {} }) => {
         <>
           <span className="_kkr">
             <div className="_m _6a">
-              <a className="__9u __9t" rel="ignore">
+              <div className="__9u __9t" rel="ignore">
                 <div className="_3jk">
                   <input
                     accept="image/*, image/heic, image/heif"
@@ -97,7 +97,7 @@ const AddImage = ({ handleAddImage = () => {} }) => {
                     onChange={fetchUploadImage}
                   />
                 </div>
-              </a>
+              </div>
             </div>
           </span>
         </>

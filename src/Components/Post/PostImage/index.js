@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import "./postImage.scss";
+import React from "react";
 import classNames from "classnames";
-import { CloudinaryContext, Image } from "cloudinary-react";
+import { CloudinaryContext } from "cloudinary-react";
+
 import SliderImages from "./SliderImage";
 import ItemImage from "./ItemImage";
+import "./postImage.scss";
 
 const PostImage = ({
   sidecarChildren = [],

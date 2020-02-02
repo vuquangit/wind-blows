@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { get } from "lodash";
+import { get, isEqual } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
@@ -21,17 +21,21 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
     get(state, "personalProfile.isFetching")
   );
   const error = useSelector(state => get(state, "personalProfile.error"));
-  const { id: viewerId = "" } = useSelector(state =>
-    get(state, "profile.data.user")
-  );
+  const {
+    id: viewerId = "",
+    username: viewerUsername = ""
+  } = useSelector(state => get(state, "profile.data.user"));
 
+  // fetch data username view
+  const username = get(match, "params.username");
   useEffect(() => {
-    const username = get(match, "params.username");
     const _requestPersonalInfo = async () => {
       await dispatch(requestPersonalInfo({ username, viewerId }));
     };
     _requestPersonalInfo();
-  }, [match, dispatch, viewerId]);
+  }, [match, dispatch, viewerId, username]);
+
+  const isOwner = isEqual(viewerUsername, username);
 
   return (
     <>
@@ -48,7 +52,7 @@ const PersonalPage = ({ history, match = {}, location = {}, ...restProps }) => {
                   <Follows />
                 </Col>
               </Row>
-              <PostStatus />
+              {isOwner && <PostStatus />}
               <TabControl />
             </div>
           )}
