@@ -1,6 +1,6 @@
 // import Page404 from './Pages/404'
 import HomePage from "./Pages/Home";
-import PersonalPage from "./Pages/PersonalPage";
+
 import Explore from "./Pages/Explore";
 import Activity from "./Pages/Activity";
 import Messenger from "./Pages/Messenger";
@@ -10,8 +10,11 @@ import ResetPassword from "Template/Pages/Accounts/Password/Reset";
 import EditProfile from "Template/Pages/Accounts/EditProfile";
 import ChangePassword from "Template/Pages/Accounts/Password/Change";
 import GoToPost from "Components/GoToPost";
-import Followers from "Template/Pages/PersonalPage/Profile/Follows/Followers";
-import Following from "./Pages/PersonalPage/Profile/Follows/Following";
+
+import PersonalPost from "./Pages/PersonalPage/PersonalPost";
+import PersonalSaved from "./Pages/PersonalPage/PersonalSaved";
+import Followers from "Template/Pages/PersonalPage/PersonalPageCover/Profile/Follows/Followers";
+import Following from "Template/Pages/PersonalPage/PersonalPageCover/Profile/Follows/Following";
 
 const pageConfigs = [
   {
@@ -70,7 +73,13 @@ const pageConfigs = [
   },
   {
     path: "/:username/",
-    component: PersonalPage,
+    component: PersonalPost,
+    exact: true,
+    private: true
+  },
+  {
+    path: "/:username/saved",
+    component: PersonalSaved,
     exact: true,
     private: true
   },

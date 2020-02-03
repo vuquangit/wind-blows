@@ -1,5 +1,10 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
+.post-grid {
+  display: flex;
+  flex-direction: column;
+}
+
 .personal-post {
   flex: 1 0 0%;
   display: block;

@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import FollowItem from "Components/UserRelationship";
 import IsLoading from "Components/IsLoading";
 import InfiniteScroll from "react-infinite-scroller";
+
 import "./followList.scss";
 
 const FollowList = ({
@@ -34,7 +35,7 @@ const FollowList = ({
         hasMore={hasMoreItems}
         loader={
           <div className="loader" key={0}>
-            Loading ...
+            <IsLoading isLoading size={30} />
           </div>
         }
       >

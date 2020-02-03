@@ -7,7 +7,7 @@ import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 
 import PostItem from "Components/Post";
 
-const PersonalPost = data => {
+const PersonalPostItem = data => {
   const { sidecarChildren, numLikes, numComments } = data;
 
   const [isHover, setIsHouver] = React.useState(false);
@@ -66,4 +66,4 @@ const PersonalPost = data => {
   );
 };
 
-export default PersonalPost;
+export default PersonalPostItem;

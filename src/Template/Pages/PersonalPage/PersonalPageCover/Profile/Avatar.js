@@ -9,23 +9,18 @@ import ModalChangePhoto from "Components/ProfilePhoto/ModalChangePhoto";
 import { withRouter } from "react-router-dom";
 
 const AvatarProfile = ({ match }) => {
-  const { profilePictureUrl = "",  } = useSelector(
-    (state = {}) => state.personalProfile.data.user
+  const { profilePictureUrl = "" } = useSelector((state = {}) =>
+    get(state, "personalProfile.data.user")
   );
-
-  const { usernameViewer = "" } = useSelector((state = {}) =>
+  const { username: viewerUsername = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user")
   );
-  const isOwner = isEqual(usernameViewer, get(match, "params.username"));
+  const isOwner = isEqual(viewerUsername, get(match, "params.username"));
 
   // modal change profile photo
   const [visibleModal, setVisibleModal] = useState(false);
-  const showModal = () => {
-    setVisibleModal(true);
-  };
-  const handleCancelModal = () => {
-    setVisibleModal(false);
-  };
+  const showModal = () => setVisibleModal(true);
+  const handleCancelModal = () => setVisibleModal(false);
 
   return (
     <div className="personal__header--avatar">

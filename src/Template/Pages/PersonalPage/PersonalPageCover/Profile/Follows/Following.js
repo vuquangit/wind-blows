@@ -59,7 +59,7 @@ const Following = ({ match = {} }) => {
   const hasMoreItems = state.data.length < state.totalItems;
 
   const getMoreItems = async () => {
-    setState(prevState => ({ ...prevState, page: prevState.state + 1 }));
+    setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
   return (

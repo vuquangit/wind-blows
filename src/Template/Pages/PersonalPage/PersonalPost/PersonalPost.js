@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "antd";
 import Axios from "axios";
-
-import PersonalPost from "./PersonalPost";
-import IsLoading from "Components/IsLoading";
+import { get } from "lodash";
 import { useSelector } from "react-redux";
-import "./tabControl.scss";
+import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
 
-const TabControl = () => {
+import IsLoading from "Components/IsLoading";
+import PostGrid from "../FetchPosts/PostGrid";
+import PostsEmpty from "../FetchPosts/PostsEmpty";
+
+const PersonalPost = () => {
+  const { id: ownerId = "" } = useSelector((state = {}) =>
+    get(state, "personalProfile.data.user")
+  );
+
   const [state, setState] = useState({
     isLoading: true,
     data: [],
@@ -15,10 +20,6 @@ const TabControl = () => {
     limit: 20,
     page: 1
   });
-
-  const { id: ownerId = "" } = useSelector(
-    (state = {}) => state.personalProfile.data.user
-  );
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
@@ -52,23 +53,16 @@ const TabControl = () => {
   }, [SERVER_BASE_URL, ownerId, state.limit, state.page]);
 
   return (
-    <div>
-      <Row>Tab</Row>
-      <Row>
-        {state.isLoading ? (
-          <IsLoading isLoading={state.isLoading} />
-        ) : state.data.length > 0 ? (
-          state.data.map((item, idx) => (
-            <Col key={item.id || idx} span={8}>
-              <PersonalPost {...item} />
-            </Col>
-          ))
-        ) : (
-          <div>No post</div>
-        )}
-      </Row>
+    <div className="personal-post">
+      {state.isLoading ? (
+        <IsLoading isLoading={state.isLoading} />
+      ) : state.data.length > 0 ? (
+        <PostGrid posts={state.data} />
+      ) : (
+        <PostsEmpty icon={faCameraRetro} text={`No Post Yet`} />
+      )}
     </div>
   );
 };
 
-export default TabControl;
+export default PersonalPost;

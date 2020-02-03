@@ -15,8 +15,9 @@
     width: 100%;
   }
 
-  @import 'header';
+  @import 'profile';
   @import 'highlight';
+  @import 'tabPages';
 }
 
 @import 'editAccount';
