@@ -14,7 +14,7 @@ const HomePage = () => {
   const _renderItem = () =>
     items.map((item, idx) => (
       <div key={item.id || idx} className="home-post__item">
-        <PostItem {...item.post} isHomePage />
+        <PostItem {...item.post} relationship={item.relationship} isHomePage />
       </div>
     ));
 

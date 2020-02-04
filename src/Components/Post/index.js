@@ -16,7 +16,8 @@ const PostItem = ({
   likedByViewer = false,
   savedByViewer = false,
   location = {},
-  sidecarChildren = []
+  sidecarChildren = [],
+  relationship = {}
 }) => {
   // Event post like
   const [isLikePost, setIsLikePost] = useState(likedByViewer);
@@ -31,7 +32,12 @@ const PostItem = ({
 
   return (
     <article className={classPostItem}>
-      <PostHeader {...owner} isHomePage={isHomePage} location={location} />
+      <PostHeader
+        owner={owner}
+        isHomePage={isHomePage}
+        location={location}
+        relationship={relationship}
+      />
       <PostImage
         sidecarChildren={sidecarChildren}
         isModal={isModal}

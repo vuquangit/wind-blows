@@ -70,22 +70,12 @@
                     margin-right: 4px;
                 }
 
-                &--button {
-                    background-color: transparent;
-                    color: rgba(var(--f07, 38, 38, 38), 1);
-                    border: 0;
-                    font-weight: 600;
-                    font-size: 14px;
-                    line-height: 18px;
-                    padding: 0;
-
-                    &:focus {
-                        outline: none;
-                    }
-                }
-
                 .follow {
                     color: rgba(var(--h5f, 56, 151, 240), 1);
+                }
+
+                .follow-status__btn {
+                    border: 0;
                 }
             }
         }

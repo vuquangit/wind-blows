@@ -4,18 +4,27 @@ import numeral from "numeral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
+import { get } from "lodash";
+import { useSelector } from "react-redux";
 
 import PostItem from "Components/Post";
 
 const PersonalPostItem = data => {
   const { sidecarChildren, numLikes, numComments } = data;
 
+  // show info image
   const [isHover, setIsHouver] = React.useState(false);
   const handleMouseHover = () => setIsHouver(!isHover);
 
+  // modal
   const [visible, setVisible] = useState(false);
   const showModal = () => setVisible(true);
   const handleCancelModal = e => setVisible(false);
+
+  //  relationship
+  const relationship = useSelector((state = {}) =>
+    get(state, "personalProfile.data.relationship")
+  );
 
   return (
     <div className="personal-post">
@@ -60,7 +69,7 @@ const PersonalPostItem = data => {
         footer={null}
         className="personal-post__modal"
       >
-        <PostItem {...data} isModal={true} />
+        <PostItem {...data} relationship={relationship} isModal={true} />
       </Modal>
     </div>
   );

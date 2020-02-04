@@ -3,13 +3,13 @@ import axios from "axios";
 import { Modal, Avatar, message } from "antd";
 import classNames from "classnames";
 import { withRouter } from "react-router";
+
 import "./followStatus.scss";
 
 const FollowStatus = ({
   user = {},
   viewerId = "",
-  relationship = { followedByViewer: { state: "" } },
-  match
+  relationship = { followedByViewer: { state: "" } }
 }) => {
   const {
     id: userId = "",
@@ -40,7 +40,6 @@ const FollowStatus = ({
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const fetchFollows = async (endpoint = "") => {
     try {
-      // console.log("featch follow", endpoint);
       setState(prevState => ({ ...prevState, isLoading: true }));
 
       const response = await axios({
@@ -72,7 +71,6 @@ const FollowStatus = ({
       }));
     } finally {
       setState(prevState => ({ ...prevState, isLoading: false }));
-      // console.log(state);
     }
   };
 
@@ -96,7 +94,7 @@ const FollowStatus = ({
     state.followStatus === "Following"
       ? setVisibleModal(true)
       : handleFollows();
-  const handleCancelModal = e => setVisibleModal(false);
+  const handleCancelModal = () => setVisibleModal(false);
 
   const handleFollows = () =>
     state.followStatus === "Follow"

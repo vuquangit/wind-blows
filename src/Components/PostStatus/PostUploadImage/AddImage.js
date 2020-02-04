@@ -43,6 +43,16 @@ const AddImage = ({ handleAddImage = () => {} }) => {
     setUploading(true);
 
     const filesSeleted = Array.from(e.target.files);
+    if (filesSeleted.length > 9) {
+      message.warning({
+        content: "You can only upload a maximum of 9 files",
+        duration: 5
+      });
+      e.preventDefault();
+      setUploading(false);
+      return; // exit upload
+    }
+
     const getDataImages = filesSeleted.map(async file => {
       const { data, type } = await toBase64(file);
       return {

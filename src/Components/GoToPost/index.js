@@ -4,7 +4,6 @@ import Axios from "axios";
 import { useSelector } from "react-redux";
 
 import Post from "Components/Post";
-// import postData from "./mock.json";
 import BasicTemplate from "Template/BasicTemplate";
 import IsLoading from "Components/IsLoading";
 import "./goToPost.scss";
@@ -37,8 +36,6 @@ const GoToPost = ({ match = {} }) => {
           }
         });
 
-        console.log("response: ", response);
-
         setState(prevState => ({
           ...prevState,
           data: { ...prevState.data, ...response.data }
@@ -54,13 +51,10 @@ const GoToPost = ({ match = {} }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("go to post", state.data);
-
   return (
     <BasicTemplate>
       <div className="GTP">
         <div className="GTP__WPI">
-          {/* <Post {...postData.post} isHomePage={false} /> */}
           {state.isLoading ? (
             <IsLoading isLoading={state.isLoading} />
           ) : (

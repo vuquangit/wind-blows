@@ -9,10 +9,14 @@ import ItemImage from "./ItemImage";
 const SliderImages = ({ sidecarChildren = [] }) => {
   return (
     !isEmpty(sidecarChildren) && (
-      <div className="slider-image">
+      <div className="slider-images">
         <Slider {...settings}>
           {sidecarChildren.map((item, idx) => (
-            <ItemImage key={item.public_id || idx} {...item} />
+            <ItemImage
+              key={item.public_id || idx}
+              {...item}
+              className="slider-image__items"
+            />
           ))}
         </Slider>
       </div>

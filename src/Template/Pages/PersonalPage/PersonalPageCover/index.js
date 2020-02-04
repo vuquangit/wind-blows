@@ -36,14 +36,16 @@ const PersonalPage = ({ match = {}, children }) => {
       await dispatch(requestPersonalInfo({ username, viewerId }));
     };
 
+    // console.log(
+    //   "fetch personal",
+    //   isEmpty(usernameStore) || !isEqual(username, usernameStore)
+    // );
+
     (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
       _requestPersonalInfo();
   }, [match, dispatch, viewerId, username, usernameStore]);
 
   const isOwner = isEqual(viewerUsername, username);
-
-  console.log(username, usernameStore);
-  console.log("error", error);
 
   return (
     <>

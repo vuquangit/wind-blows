@@ -20,7 +20,7 @@ const FetchPosts = ({
     isLoading: true,
     data: [],
     error: null,
-    limit: 12,
+    limit: 18,
     page: 1,
     totalItem: 0
   });
@@ -29,7 +29,7 @@ const FetchPosts = ({
 
   // fetch data items
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -45,8 +45,8 @@ const FetchPosts = ({
           },
           headers: {
             "Content-Type": "application/json"
-          }
-          //, cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         console.log(response);
@@ -70,10 +70,10 @@ const FetchPosts = ({
     console.log("fetch data");
     feactData();
 
-    // // unmounth
-    // return () => {
-    //   source.cancel();
-    // };
+    // unmounth
+    return () => {
+      source.cancel();
+    };
   }, [SERVER_BASE_URL, endpoint, method, ownerId, state.limit, state.page]);
 
   // load more item
