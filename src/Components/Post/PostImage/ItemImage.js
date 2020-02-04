@@ -6,11 +6,10 @@ const ItemImage = ({
   public_id = "",
   width = 0,
   height = 0,
-  isModal = false,
-  isSliderImage = false
+  isModal = false
 }) => {
   const classPIImageModal = classNames("content__wrapper--image-normal", {
-    "content__wrapper--image-portrait": width < height
+    "content__wrapper--image-portrait": isModal && width < height
   });
 
   return <Image publicId={public_id} className={classPIImageModal} />;

@@ -41,7 +41,7 @@ const PostImage = ({
           {sidecarChildren.length === 1 ? (
             <ItemImage {...sidecarChildren[0]} isModal={isModal} />
           ) : (
-            <SliderImages sidecarChildren={sidecarChildren} />
+            <SliderImages sidecarChildren={sidecarChildren} isModal={isModal} />
           )}
         </CloudinaryContext>
         <div className="image-heart">
