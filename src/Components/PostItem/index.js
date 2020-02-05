@@ -12,7 +12,6 @@ const PostItem = ({
   isHomePage = false,
   owner = {},
   numPreviewLikes = 0,
-  postedAt = new Date(),
   likedByViewer = false,
   savedByViewer = false,
   location = {},
@@ -47,11 +46,12 @@ const PostItem = ({
       />
       <PostInfo
         numPreviewLikes={likeTotal}
-        postedAt={postedAt}
         isHomePage={isHomePage}
         likedByViewer={isLikePost}
         savedByViewer={savedByViewer}
         handleLikePost={handleLikePost}
+        postId={postId}
+        owner={owner}
       />
       <PostOption postId={postId} />
     </article>

@@ -1,12 +1,12 @@
 import React from "react";
 import numeral from "numeral";
 
-const InfoLiked = ({ numPreviewLikes = 0 }) => {
+const InfoLiked = ({ numLikes = 0 }) => {
   return (
     <section className="PI__info--liked">
-      {numPreviewLikes && (
+      {numLikes > 0 && (
         <div className="liked__number">
-          {`${numeral(numPreviewLikes).format("0,0")}`} people liked
+          {`${numeral(numLikes).format("0,0")}`} people liked
         </div>
       )}
     </section>

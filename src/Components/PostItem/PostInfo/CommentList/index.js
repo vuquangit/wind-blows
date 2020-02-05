@@ -1,24 +1,30 @@
 import React, { useEffect, useCallback } from "react";
-import CommentListItem from "./CommentListItem";
-import { Divider } from "antd";
+import { Divider, Button } from "antd";
 import * as Scroll from "react-scroll";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 
+import CommentItem from "./CommentItem";
+
 const CommentList = ({
   captionAndTitle,
-  ownerId,
-  id,
+  postedAt = new Date(),
+  owner = {},
+  id: postId = "",
   commentsDisabled,
   comments,
-  isHomePage
+  isHomePage,
+  commentsTotalCount = 0,
+  fetchMoreComments = () => {},
+  setIsViewerComments = () => {},
+  IsViewerComments = false
 }) => {
+  // add scroll events
   useEffect(() => {
     // componentDidMount
     // Scroll.Events.scrollEvent.register("begin", function(to, element) {
     //   console.log("begin", arguments);
     // });
-
     // Scroll.Events.scrollEvent.register("end", function(to, element) {
     //   console.log("end", arguments);
     // });
@@ -33,6 +39,7 @@ const CommentList = ({
     };
   }, []);
 
+  // event scroll
   const scrollToEnd = useCallback(() => {
     Scroll.scroller.scrollTo("scroll-container__my-scroll", {
       duration: 800,
@@ -43,8 +50,17 @@ const CommentList = ({
   }, []);
 
   useEffect(() => {
-    // !isHomePage && scrollToEnd();
-  }, [comments, scrollToEnd, isHomePage]);
+    if (!isHomePage && IsViewerComments) {
+      scrollToEnd();
+      setIsViewerComments(false);
+    }
+  }, [
+    comments,
+    scrollToEnd,
+    isHomePage,
+    IsViewerComments,
+    setIsViewerComments
+  ]);
 
   const CLClass = classNames("PI__info--comment-list", {
     "homepage-info__CL": isHomePage
@@ -60,34 +76,38 @@ const CommentList = ({
     <div className={CLClass}>
       <div className={CLContentClass} id="scroll-container">
         {captionAndTitle && (
-          <CommentListItem
+          <CommentItem
             isCaption
             isHomePage={isHomePage}
-            userId={ownerId}
+            commentOwnerId={owner.id || ""}
             text={captionAndTitle}
-            id={id}
+            id={postId}
+            postedAt={postedAt}
           />
         )}
-        {!commentsDisabled &&
-          comments &&
-          (!isHomePage ? (
-            <Divider className="CL__comment--divider">Read more</Divider>
-          ) : (
-            <Link to="p/codepost" className="CL__comment--GTP">
-              View all 99 comments
-            </Link>
-          ))}
-        {!commentsDisabled &&
-          comments &&
-          comments.map((item, idx) => (
-            <div key={item.id || idx} className={CLCommentClass}>
-              <CommentListItem
-                isCaption={false}
-                isHomePage={isHomePage}
-                {...item}
-              />
-            </div>
-          ))}
+        {!commentsDisabled && comments && (
+          <>
+            {isHomePage && commentsTotalCount && (
+              <Link to={`p/${postId}`} className="CL__comment--GTP">
+                {`View all ${commentsTotalCount} comments`}
+              </Link>
+            )}
+            {comments.map((item, idx) => (
+              <div key={item.id || idx} className={CLCommentClass}>
+                <CommentItem
+                  isCaption={false}
+                  isHomePage={isHomePage}
+                  {...item}
+                />
+              </div>
+            ))}
+            {!isHomePage && comments.length < commentsTotalCount && (
+              <Divider className="CL__comment--divider">
+                <Button onClick={fetchMoreComments}>Read more</Button>
+              </Divider>
+            )}
+          </>
+        )}
 
         <Scroll.Element name="scroll-container__my-scroll" />
       </div>

@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import BasicTemplate from "Template/BasicTemplate";
 import "./home.scss";
 import items from "./mock1.json";
-import PostItem from "Components/Post";
+import PostItem from "Components/PostItem";
 import { Row, Col } from "antd";
 import Profile from "./Profile";
 import SuggestionFollow from "./SuggestionFollow";

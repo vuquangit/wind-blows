@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 
-import Post from "Components/Post";
+import PostItem from "Components/PostItem";
 import BasicTemplate from "Template/BasicTemplate";
 import IsLoading from "Components/IsLoading";
 import "./goToPost.scss";
@@ -58,7 +58,7 @@ const GoToPost = ({ match = {} }) => {
           {state.isLoading ? (
             <IsLoading isLoading={state.isLoading} />
           ) : (
-            <Post {...state.data.post} isHomePage={false} />
+            <PostItem {...state.data.post} isHomePage={false} />
           )}
         </div>
       </div>

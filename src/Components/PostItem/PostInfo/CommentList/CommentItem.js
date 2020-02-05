@@ -1,33 +1,26 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
+import axios from "axios";
+import { get } from "lodash";
+
 import PostTimeAgo from "Components/TimeFromNow";
 import HeartIcon from "Components/HeartIcon";
 import ModalItemOptions from "./ModalItemOptions";
-import classNames from "classnames";
+import { useSelector } from "react-redux";
 
 const CommentListItem = ({
-  commentOwnerAvatar = "",
-  commentOwnerUsername = "lizkimcuong93",
-  postOwnerIsUnpublished = false,
-  viewerId = "1503958910",
-  className = "PpGvg ",
-  commentOwnerId = "966456675",
-  isAuthorVerified = true,
+  commentOwnerId = "",
+  userId = "",
   isCaption = true,
   isEdited = false,
-  loggedIn = true,
-  mediaType = 1,
-  postedAt = 1503984756,
-  postId = "1591861973712489532",
-  postOwnerId = "966456675",
-  showIGTVCaption = false,
-  showRemoveIcon = false,
-  showRichComment = true,
-  text = "Content text....",
-  code = "BYXbgfylcw8",
-  commentThreadId = "17896213924052379",
-  id = "17896213924052379",
+  postedAt = "",
+  createdAt = "",
+  postId = "",
+  postOwnerId = "",
+  text = "",
+  id = "",
   likeCount = 0,
   likedByViewer = false,
   isHomePage = false
@@ -52,7 +45,55 @@ const CommentListItem = ({
   // className
   const itemW1 = classNames("CL__item--W1", { CL__CMTW1: isHomePage });
 
-  // Request data of Owner comment ???
+  // fetch data of owner comment
+  const viewerProfile = useSelector((state = {}) =>
+    get(state, "profile.data.user")
+  );
+
+  const [stateOwnerComments, setOwnerComments] = useState({
+    isLoading: true,
+    data: {},
+    error: null
+  });
+
+  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
+  useEffect(() => {
+    const fetchOwnerComments = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${SERVER_BASE_URL}/user/${commentOwnerId || userId}`,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        setOwnerComments(prevState => ({
+          ...prevState,
+          data: { ...prevState.data, ...response.data }
+        }));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setOwnerComments(prevState => ({ ...prevState, isLoading: false }));
+      }
+    };
+
+    if (viewerProfile.id !== (commentOwnerId || userId)) fetchOwnerComments();
+    else {
+      setOwnerComments(prevState => ({
+        ...prevState,
+        data: { ...prevState.data, ...viewerProfile }
+      }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const {
+    profilePictureUrl: commentOwnerAvatar = "",
+    username: commentOwnerUsername = "",
+    isVerified: isAuthorVerified = false
+  } = get(stateOwnerComments, "data");
 
   return (
     <div className="CL__item">
@@ -88,7 +129,7 @@ const CommentListItem = ({
                   <div className="info__content">
                     <PostTimeAgo
                       className="info__content--item info__content--time "
-                      postedAt={postedAt}
+                      postedAt={postedAt || createdAt || new Date()}
                     />
                     {!isCaption && (
                       <>

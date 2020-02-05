@@ -124,6 +124,10 @@
                     cursor: pointer;
                     color: rgba(var(--fe0, 0, 53, 105), 1);
                     text-decoration: none;
+
+                    button {
+                        border: none;
+                    }
                 }
 
                 &--GTP {

@@ -7,7 +7,7 @@ import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
-import PostItem from "Components/Post";
+import PostItem from "Components/PostItem";
 
 const PersonalPostItem = data => {
   const { sidecarChildren, numLikes, numComments } = data;
@@ -69,7 +69,7 @@ const PersonalPostItem = data => {
         footer={null}
         className="personal-post__modal"
       >
-        <PostItem {...data} relationship={relationship} isModal={true} />
+        <PostItem {...data} relationship={relationship} isModal />
       </Modal>
     </div>
   );
