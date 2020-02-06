@@ -6,16 +6,25 @@ import {
   faBookmark as faBookmarkBlack
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "antd";
+import classNames from "classnames";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { get } from "lodash";
+
 import Heart from "Components/HeartIcon";
 import ModalShare from "./ModalShare";
-import classNames from "classnames";
 
 const PostAction = ({
   isHomePage,
   likedByViewer,
   handleLikePost,
-  savedByViewer
+  savedByViewer,
+  postId = ""
 }) => {
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user")
+  );
+
   // Modal share button
   const [visibleModal, setVisibleModal] = useState(false);
   const showModalShare = () => {
@@ -27,8 +36,39 @@ const PostAction = ({
 
   // Event save post
   const [isSavePost, setIsSavePost] = useState(savedByViewer);
-  const handleSavePost = useCallback(() => {
+  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
+  const fetchSavePost = async (endpoint = "") => {
+    const source = axios.CancelToken.source();
+
+    try {
+      const res = await axios({
+        method: "post",
+        url: `${SERVER_BASE_URL}/saved/${endpoint}`,
+        data: {
+          userId: viewerId,
+          postId: postId
+        },
+        headers: {
+          "Content-Type": "application/json"
+        },
+        cancelToken: source.token
+      });
+
+      console.log("saved res:", res);
+      setIsSavePost(!isSavePost);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("cancelled save post");
+      } else {
+        console.log(error);
+      }
+    } finally {
+    }
+  };
+
+  const handleSavePost = useCallback(async () => {
     setIsSavePost(!isSavePost);
+    !isSavePost ? fetchSavePost("add") : fetchSavePost("delete");
   }, [isSavePost]);
 
   // classNames

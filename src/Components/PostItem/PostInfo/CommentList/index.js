@@ -17,17 +17,11 @@ const CommentList = ({
   commentsTotalCount = 0,
   fetchMoreComments = () => {},
   setIsViewerComments = () => {},
+  handleDeleteComments = () => {},
   IsViewerComments = false
 }) => {
   // add scroll events
   useEffect(() => {
-    // componentDidMount
-    // Scroll.Events.scrollEvent.register("begin", function(to, element) {
-    //   console.log("begin", arguments);
-    // });
-    // Scroll.Events.scrollEvent.register("end", function(to, element) {
-    //   console.log("end", arguments);
-    // });
     Scroll.Events.scrollEvent.register("begin");
     Scroll.Events.scrollEvent.register("end");
     Scroll.scrollSpy.update();
@@ -49,6 +43,7 @@ const CommentList = ({
     });
   }, []);
 
+  // effect scroll
   useEffect(() => {
     if (!isHomePage && IsViewerComments) {
       scrollToEnd();
@@ -62,14 +57,13 @@ const CommentList = ({
     setIsViewerComments
   ]);
 
+  // class styles
   const CLClass = classNames("PI__info--comment-list", {
     "homepage-info__CL": isHomePage
   });
-
   const CLContentClass = classNames("CL", {
     "homepage-info__CL--content": isHomePage
   });
-
   const CLCommentClass = classNames("CL__comment", { CLCMT: isHomePage });
 
   return (
@@ -79,7 +73,8 @@ const CommentList = ({
           <CommentItem
             isCaption
             isHomePage={isHomePage}
-            commentOwnerId={owner.id || ""}
+            userId={owner.id}
+            postOwnerId={owner.id}
             text={captionAndTitle}
             id={postId}
             postedAt={postedAt}
@@ -95,9 +90,12 @@ const CommentList = ({
             {comments.map((item, idx) => (
               <div key={item.id || idx} className={CLCommentClass}>
                 <CommentItem
+                  {...item}
                   isCaption={false}
                   isHomePage={isHomePage}
-                  {...item}
+                  postOwnerId={owner.id}
+                  postId={postId}
+                  handleDeleteComments={handleDeleteComments}
                 />
               </div>
             ))}
@@ -108,7 +106,6 @@ const CommentList = ({
             )}
           </>
         )}
-
         <Scroll.Element name="scroll-container__my-scroll" />
       </div>
     </div>

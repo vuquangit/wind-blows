@@ -1,6 +1,5 @@
 import React from "react";
 import PersonalPageCover from "../PersonalPageCover";
-// import PersonalPost from "./PersonalPost";
 import FetchPosts from "../FetchPosts";
 import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
 

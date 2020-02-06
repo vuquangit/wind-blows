@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Avatar, message } from "antd";
 import classNames from "classnames";
 import { withRouter } from "react-router";
+import { get } from "lodash";
 
 import "./followStatus.scss";
 
@@ -28,14 +29,16 @@ const FollowStatus = ({
     followStatus: ""
   });
 
+  const followStatus =
+    get(relationship, "followedByViewer.state") ||
+    "FOLLOW_NOT_STATUS_FOLLOWING";
+
   useEffect(() => {
     const relationshipStatus =
-      relationship.followedByViewer.state === "FOLLOW_STATUS_FOLLOWING"
-        ? "Following"
-        : "Follow";
+      followStatus === "FOLLOW_STATUS_FOLLOWING" ? "Following" : "Follow";
 
     setState(prevState => ({ ...prevState, followStatus: relationshipStatus }));
-  }, [relationship.followedByViewer.state]);
+  }, [followStatus]);
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const fetchFollows = async (endpoint = "") => {

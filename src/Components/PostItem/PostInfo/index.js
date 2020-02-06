@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import axios from "axios";
-import { get } from "lodash";
+import { get, filter } from "lodash";
 
 import PostAction from "./PostAction";
-import PeopleLiked from "./PeopleLiked";
+import PostLikes from "./PostLikes";
 import CommentList from "./CommentList";
 import PostedAt from "./PostedAt";
-import PostComment from "./PostComment";
+import AddComments from "./AddComments";
 import "./postInfo.scss";
 
 const PostInfo = ({
@@ -80,10 +80,25 @@ const PostInfo = ({
   const { postedAt = new Date() } = get(stateComments, "data");
 
   // add post comments
-  const handleCommentsPost = res => {
+  const handleAddComments = res => {
     setComments(prevState => ({
       ...prevState,
-      data: { comments: [...(get(prevState, "data.comments") || []), res] }
+      data: {
+        ...prevState.data,
+        comments: [...(get(prevState, "data.comments") || []), res]
+      }
+    }));
+  };
+  const handleDeleteComments = commentsId => {
+    setComments(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        comments: filter(
+          get(prevState, "data.comments") || [],
+          o => o.id != commentsId
+        )
+      }
     }));
   };
   const [IsViewerComments, setIsViewerComments] = useState(false);
@@ -97,11 +112,12 @@ const PostInfo = ({
     <div className={infoClass}>
       <PostAction
         isHomePage={isHomePage}
+        postId={postId}
         handleLikePost={handleLikePost}
         likedByViewer={likedByViewer}
         savedByViewer={savedByViewer}
       />
-      <PeopleLiked isHomePage={isHomePage} numLikes={numLikes} />
+      <PostLikes isHomePage={isHomePage} numLikes={numLikes} postId={postId} />
       <CommentList
         isHomePage={isHomePage}
         {...stateComments.data}
@@ -109,12 +125,13 @@ const PostInfo = ({
         IsViewerComments={IsViewerComments}
         fetchMoreComments={fetchMoreComments}
         setIsViewerComments={setIsViewerComments}
+        handleDeleteComments={handleDeleteComments}
       />
       <PostedAt isHomePage={isHomePage} postedAt={postedAt} />
-      <PostComment
+      <AddComments
         isHomePage={isHomePage}
         postId={postId}
-        handleCommentsPost={handleCommentsPost}
+        handleAddComments={handleAddComments}
         setIsViewerComments={setIsViewerComments}
       />
     </div>

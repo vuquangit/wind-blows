@@ -59,7 +59,8 @@ const Following = ({ match = {} }) => {
   const hasMoreItems = state.data.length < state.totalItems;
 
   const getMoreItems = async () => {
-    setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+    state.data.length === state.page * state.limit &&
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
   return (

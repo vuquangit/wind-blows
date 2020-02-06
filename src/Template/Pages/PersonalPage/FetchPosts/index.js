@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 
 import PostGrid from "./PostGrid";
@@ -14,6 +14,9 @@ const FetchPosts = ({
 }) => {
   const { id: ownerId = "" } = useSelector((state = {}) =>
     get(state, "personalProfile.data.user")
+  );
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user")
   );
 
   const [state, setState] = useState({
@@ -39,7 +42,8 @@ const FetchPosts = ({
           method: method,
           url: `${SERVER_BASE_URL}${endpoint}`,
           params: {
-            id: ownerId,
+            ownerId: ownerId,
+            viewerId: viewerId,
             limit: state.limit,
             page: state.page
           },
@@ -49,32 +53,46 @@ const FetchPosts = ({
           cancelToken: source.token
         });
 
-        console.log(response);
+        console.log("response fetch", response);
         setState(prevState => ({
           ...prevState,
           data: [...prevState.data, ...response.data.data],
-          totalItem: get(response, "data.totalItem")
+          totalItem: get(response, "data.totalItem"),
+          isLoading: false
         }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled");
+          console.log("cancelled fetch personal");
         } else {
-          throw error;
+          setState(prevState => ({
+            ...prevState,
+            error: error,
+            isLoading: false
+          }));
+          console.log(error);
         }
-        console.log(error);
       } finally {
-        setState(prevState => ({ ...prevState, isLoading: false }));
+        // !isEmpty(state) &&
+        //   setState(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
-    console.log("fetch data");
+    console.log("fetch data personal");
     feactData();
 
     // unmounth
     return () => {
       source.cancel();
     };
-  }, [SERVER_BASE_URL, endpoint, method, ownerId, state.limit, state.page]);
+  }, [
+    SERVER_BASE_URL,
+    endpoint,
+    method,
+    ownerId,
+    state.limit,
+    state.page,
+    viewerId
+  ]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

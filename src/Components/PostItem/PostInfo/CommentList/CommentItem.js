@@ -11,8 +11,7 @@ import ModalItemOptions from "./ModalItemOptions";
 import { useSelector } from "react-redux";
 
 const CommentListItem = ({
-  commentOwnerId = "",
-  userId = "",
+  userId: commentOwnerId = "",
   isCaption = true,
   isEdited = false,
   postedAt = "",
@@ -20,10 +19,11 @@ const CommentListItem = ({
   postId = "",
   postOwnerId = "",
   text = "",
-  id = "",
+  id: commentId = "",
   likeCount = 0,
   likedByViewer = false,
-  isHomePage = false
+  isHomePage = false,
+  handleDeleteComments = () => {}
 }) => {
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);
@@ -58,34 +58,53 @@ const CommentListItem = ({
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     const fetchOwnerComments = async () => {
       try {
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/user/${commentOwnerId || userId}`,
+          url: `${SERVER_BASE_URL}/user/${commentOwnerId}`,
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          cancelToken: source.token
         });
 
         setOwnerComments(prevState => ({
           ...prevState,
-          data: { ...prevState.data, ...response.data }
+          data: { ...prevState.data, ...response.data },
+          isLoading: false
         }));
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled fetch personal");
+        } else {
+          setOwnerComments(prevState => ({
+            ...prevState,
+            error: error,
+            isLoading: false
+          }));
+          console.log(error);
+        }
       } finally {
-        setOwnerComments(prevState => ({ ...prevState, isLoading: false }));
+        // setOwnerComments(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
-    if (viewerProfile.id !== (commentOwnerId || userId)) fetchOwnerComments();
+    if (viewerProfile.id !== commentOwnerId) fetchOwnerComments();
     else {
       setOwnerComments(prevState => ({
         ...prevState,
         data: { ...prevState.data, ...viewerProfile }
       }));
     }
+
+    // unmounth
+    return () => {
+      source.cancel();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -154,8 +173,12 @@ const CommentListItem = ({
                     <span className=" sprite-icon__glyphs option__btn--icon" />
                   </button>
                   <ModalItemOptions
+                    commentOwnerId={commentOwnerId}
+                    commentId={commentId}
+                    postOwnerId={postOwnerId}
                     visibleModal={visibleModalOptions}
                     handleCancelModal={handleCancelModalOptions}
+                    handleDeleteComments={handleDeleteComments}
                   />
                 </div>
               )}

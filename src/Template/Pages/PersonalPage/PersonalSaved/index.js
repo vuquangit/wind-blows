@@ -9,7 +9,7 @@ const WrappedPersonalSaved = () => {
       <PersonalPageCover>
         <FetchPosts
           method={`get`}
-          endpoint={`/save-post/posts`}
+          endpoint={`/saved/posts`}
           iconEmpty={faSave}
           textEmpty={`No Post Saved Yet`}
         />

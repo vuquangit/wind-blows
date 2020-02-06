@@ -5,9 +5,9 @@ import axios from "axios";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
-const PostComment = ({
+const AddComments = ({
   postId = "",
-  handleCommentsPost = () => {},
+  handleAddComments = () => {},
   setIsViewerComments = () => {}
 }) => {
   const viewerId = useSelector(state => get(state, "profile.data.user.id"));
@@ -40,7 +40,7 @@ const PostComment = ({
       });
 
       // console.log("fetch comments data", response);
-      handleCommentsPost(get(response, "data"));
+      handleAddComments(get(response, "data"));
       setText("");
 
       // scroll to bottom comments
@@ -65,6 +65,7 @@ const PostComment = ({
               value={text}
               placeholder="Add a comment..."
               autoSize={{ minRows: 1, maxRows: 4 }}
+              disabled={isLoading}
             />
             <Button
               htmlType="submit"
@@ -83,4 +84,4 @@ const PostComment = ({
   );
 };
 
-export default PostComment;
+export default AddComments;

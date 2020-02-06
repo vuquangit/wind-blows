@@ -35,13 +35,13 @@ const FollowList = ({
         hasMore={hasMoreItems}
         loader={
           <div className="loader" key={0}>
-            <IsLoading isLoading size={30} />
+            <IsLoading isLoading size={64} />
           </div>
         }
       >
         <div>{_renderFollowItem()}</div>
       </InfiniteScroll>
-      <IsLoading isLoading={isLoading} size={30} />
+      <IsLoading isLoading={isLoading} size={64} />
     </div>
   );
 };

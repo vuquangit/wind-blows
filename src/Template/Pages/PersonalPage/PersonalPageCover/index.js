@@ -36,11 +36,6 @@ const PersonalPage = ({ match = {}, children }) => {
       await dispatch(requestPersonalInfo({ username, viewerId }));
     };
 
-    // console.log(
-    //   "fetch personal",
-    //   isEmpty(usernameStore) || !isEqual(username, usernameStore)
-    // );
-
     (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
       _requestPersonalInfo();
   }, [match, dispatch, viewerId, username, usernameStore]);
@@ -52,11 +47,13 @@ const PersonalPage = ({ match = {}, children }) => {
       {!error ? (
         <BasicTemplate>
           {isFetching ? (
-            <IsLoading isLoading={isFetching} size={128} />
+            <div className="personal__loading">
+              <IsLoading isLoading size={128} />
+            </div>
           ) : (
             <div className="personal">
               <Profile />
-              <Highlights />
+              {/* <Highlights /> */}
               <Row>
                 <Col xs={24} sm={24} md={0}>
                   <Follows />

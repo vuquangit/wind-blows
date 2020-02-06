@@ -58,7 +58,7 @@ const GoToPost = ({ match = {} }) => {
           {state.isLoading ? (
             <IsLoading isLoading={state.isLoading} />
           ) : (
-            <PostItem {...state.data.post} isHomePage={false} />
+            <PostItem {...state.data} isHomePage={false} />
           )}
         </div>
       </div>
