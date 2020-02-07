@@ -18,6 +18,10 @@
 
             .home-post__item {
                 margin-bottom: 60px;
+
+                @media (max-width: 736px) {
+                    border: 1px solid #efefef;
+                }
             }
         }
 

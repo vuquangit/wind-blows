@@ -1,22 +1,22 @@
 import React from "react";
-import { faSave } from "@fortawesome/free-regular-svg-icons";
+import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
 
 import PersonalPageCover from "../WrapperPersonalPage";
 import FetchPosts from "../FetchPosts";
 
-const WrappedPersonalSaved = () => {
+const WrappedPersonalPost = () => {
   return (
     <div>
       <PersonalPageCover>
         <FetchPosts
           method={`get`}
-          endpoint={`/saved/posts`}
-          iconEmpty={faSave}
-          textEmpty={`No Post Saved Yet`}
+          endpoint={`/posts`}
+          iconEmpty={faCameraRetro}
+          textEmpty={`No Post Yet`}
         />
       </PersonalPageCover>
     </div>
   );
 };
 
-export default WrappedPersonalSaved;
+export default WrappedPersonalPost;

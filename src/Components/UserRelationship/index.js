@@ -1,11 +1,12 @@
 import React from "react";
 import { Avatar } from "antd";
 import { Link } from "react-router-dom";
-import "./userRelationship.scss";
 import { withRouter } from "react-router";
-import FollowStatus from "Components/FollowStatus";
 import { useSelector } from "react-redux";
 import { isEqual } from "lodash";
+
+import FollowStatus from "Containers/FollowStatus";
+import "./userRelationship.scss";
 
 const UserRelationship = ({ user = {}, relationship = {}, match }) => {
   const {

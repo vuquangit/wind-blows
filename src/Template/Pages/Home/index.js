@@ -1,14 +1,15 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import BasicTemplate from "Template/BasicTemplate";
-import "./home.scss";
-import items from "./mock1.json";
-import PostItem from "Components/PostItem";
 import { Row, Col } from "antd";
-import Profile from "./Profile";
+
+import BasicTemplate from "Template/BasicTemplate";
+import items from "./mock1.json";
+import PostItem from "Containers/PostItem";
+import PostStatus from "Containers/PostStatus";
+import Profile from "./HomeProfile";
 import SuggestionFollow from "./SuggestionFollow";
 import Footer from "Template/Pages/Footer";
-import PostStatus from "Components/PostStatus";
+import "./home.scss";
 
 const HomePage = () => {
   const _renderItem = () =>

@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { get } from "lodash";
 import Axios from "axios";
 
-import ProfilePhoto from "Components/ProfilePhoto";
+import ProfilePhoto from "Containers/ProfilePhoto";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 
 const EditProfile = props => {

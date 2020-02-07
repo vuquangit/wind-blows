@@ -7,7 +7,7 @@ import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
-import PostItem from "Components/PostItem";
+import PostItem from "Containers/PostItem";
 
 const PersonalPostItem = data => {
   const { sidecarChildren, numLikes, numComments } = data;

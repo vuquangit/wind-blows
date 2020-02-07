@@ -1,20 +1,17 @@
-// import Page404 from './Pages/404'
 import HomePage from "./Pages/Home";
-
 import Explore from "./Pages/Explore";
 import Activity from "./Pages/Activity";
 import Messenger from "./Pages/Messenger";
 import Login from "./Pages/Accounts/Login";
 import EmailSignup from "./Pages/Accounts/EmailSignup";
+import PersonalPost from "./Pages/PersonalPage/PersonalPosts";
+import PersonalSaved from "./Pages/PersonalPage/PersonalSaved";
 import ResetPassword from "Template/Pages/Accounts/Password/Reset";
 import EditProfile from "Template/Pages/Accounts/EditProfile";
 import ChangePassword from "Template/Pages/Accounts/Password/Change";
-import GoToPost from "Components/GoToPost";
-
-import PersonalPost from "./Pages/PersonalPage/PersonalPost";
-import PersonalSaved from "./Pages/PersonalPage/PersonalSaved";
-import Followers from "Template/Pages/PersonalPage/PersonalPageCover/Profile/Follows/Followers";
-import Following from "Template/Pages/PersonalPage/PersonalPageCover/Profile/Follows/Following";
+import Followers from "Template/Pages/PersonalPage/WrapperPersonalPage/Profile/Follows/Followers";
+import Following from "Template/Pages/PersonalPage/WrapperPersonalPage/Profile/Follows/Following";
+import GoToPost from "Containers/GoToPost";
 
 const pageConfigs = [
   {

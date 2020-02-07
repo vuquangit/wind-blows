@@ -26,7 +26,9 @@ const Footer = ({ isHomePage = false }) => {
         <nav className={FCCNavClass}>
           <div className="nav__content">{_renderFooterNav()}</div>
         </nav>
-        <span className={FCCopyRight}>© 2019 The Wind Blows</span>
+        <span
+          className={FCCopyRight}
+        >{`© 2019-${new Date().getFullYear()} The Wind Blows`}</span>
       </div>
     </footer>
   );

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { get, isEmpty } from "lodash";
+import { get } from "lodash";
 import { useSelector } from "react-redux";
 
 import PostGrid from "./PostGrid";
 import PostsEmpty from "./PostsEmpty";
+import PostsLoading from "./PostsLoading";
 
 const FetchPosts = ({
   method = "get",
@@ -80,7 +81,7 @@ const FetchPosts = ({
     console.log("fetch data personal");
     feactData();
 
-    // unmounth
+    // unmount
     return () => {
       source.cancel();
     };
@@ -103,7 +104,9 @@ const FetchPosts = ({
 
   return (
     <div className="personal-post">
-      {state.data.length > 0 ? (
+      {state.isLoading && state.data.length === 0 ? (
+        <PostsLoading />
+      ) : state.data.length > 0 ? (
         <PostGrid
           items={state.data}
           isLoading={state.isLoading}
