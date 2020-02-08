@@ -9,6 +9,7 @@ import CommentList from "./CommentList";
 import PostedAt from "./PostedAt";
 import AddComments from "./AddComments";
 import "./postInfo.scss";
+import { useSelector } from "react-redux";
 
 const PostInfo = ({
   postId = "",
@@ -19,6 +20,10 @@ const PostInfo = ({
   savedByViewer = false,
   handleLikePost
 }) => {
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user")
+  );
+
   // fetch comments data
   const [stateComments, setComments] = useState({
     isLoading: true,
@@ -38,6 +43,7 @@ const PostInfo = ({
           url: `${SERVER_BASE_URL}/post/comments`,
           params: {
             postId: postId,
+            viewerId: viewerId,
             limit: stateComments.limit,
             page: stateComments.page
           },

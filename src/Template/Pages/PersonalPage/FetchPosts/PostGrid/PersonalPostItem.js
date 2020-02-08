@@ -69,7 +69,12 @@ const PersonalPostItem = data => {
         footer={null}
         className="personal-post__modal"
       >
-        <PostItem {...data} relationship={relationship} isModal />
+        <PostItem
+          {...data}
+          relationship={relationship}
+          isModal
+          handleCancelModalPost={handleCancelModal}
+        />
       </Modal>
     </div>
   );

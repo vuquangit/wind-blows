@@ -56,7 +56,9 @@ const GoToPost = ({ match = {} }) => {
       <div className="GTP">
         <div className="GTP__WPI">
           {state.isLoading ? (
-            <IsLoading isLoading={state.isLoading} />
+            <div className="GTP__WPI--is-loading">
+              <IsLoading isLoading size={100} />
+            </div>
           ) : (
             <PostItem {...state.data} isHomePage={false} />
           )}

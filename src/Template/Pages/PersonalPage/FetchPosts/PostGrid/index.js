@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { Col } from "antd";
+import InfiniteScroll from "react-infinite-scroller";
 
 import PersonalPostItem from "./PersonalPostItem";
-import InfiniteScroll from "react-infinite-scroller";
 import PostsLoading from "../PostsLoading";
 import "./postGrid.scss";
 

@@ -20,7 +20,8 @@ const PostItem = ({
   savedByViewer = false,
   location = {},
   sidecarChildren = [],
-  relationship = {}
+  relationship = {},
+  handleCancelModalPost = () => {}
 }) => {
   // fetch likes
   const { id: viewerId = "" } = useSelector((state = {}) =>
@@ -57,7 +58,6 @@ const PostItem = ({
         } else {
           console.log(err);
         }
-      } finally {
       }
     },
     [SERVER_BASE_URL, postId, sourceLikePost.token, viewerId]
@@ -103,7 +103,12 @@ const PostItem = ({
         savedByViewer={savedByViewer}
         handleLikePost={handleLikePost}
       />
-      <PostOption postId={postId} owner={owner} relationship={relationship} />
+      <PostOption
+        postId={postId}
+        owner={owner}
+        relationship={relationship}
+        handleCancelModalPost={handleCancelModalPost}
+      />
     </article>
   );
 };

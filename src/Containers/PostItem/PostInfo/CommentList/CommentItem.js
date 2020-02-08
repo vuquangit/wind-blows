@@ -17,12 +17,11 @@ const CommentListItem = ({
   isEdited = false,
   postedAt = "",
   createdAt = "",
-  postId = "",
   postOwnerId = "",
   text = "",
   id: commentId = "",
   likeCount = 0,
-  likedByViewer = false,
+  likedByViewer,
   isHomePage = false,
   handleDeleteComments = () => {}
 }) => {

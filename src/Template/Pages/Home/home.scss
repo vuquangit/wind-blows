@@ -8,11 +8,19 @@
             justify-content: center;
 
             .post-list {
+                width: 100%;
                 margin-top: 60px;
                 max-width: 614px;
 
                 &__post-status {
                     margin-bottom: 16px;
+                }
+
+                &__is-loading {
+                    height: 200px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
 

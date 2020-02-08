@@ -120,7 +120,6 @@ const FollowStatus = ({
           ? textFollowing
           : state.followStatus}
       </button>
-
       <Modal
         title={null}
         visible={visibleModal}

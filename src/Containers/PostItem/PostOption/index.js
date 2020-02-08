@@ -3,7 +3,12 @@ import { Button } from "antd";
 import ModalOption from "./ModalOption";
 import "./postOption.scss";
 
-const PostOption = ({ postId = "", owner = {}, relationship = {} }) => {
+const PostOption = ({
+  postId = "",
+  owner = {},
+  relationship = {},
+  handleCancelModalPost = () => {}
+}) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const showModal = () => {
     setVisibleModal(true);
@@ -23,6 +28,7 @@ const PostOption = ({ postId = "", owner = {}, relationship = {} }) => {
         relationship={relationship}
         visibleModal={visibleModal}
         handleCancelModal={handleCancelModal}
+        handleCancelModalPost={handleCancelModalPost}
       />
     </div>
   );
