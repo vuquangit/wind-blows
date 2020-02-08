@@ -1,19 +1,20 @@
-import React from 'react';
-import { Layout, Row, Col } from 'antd';
-import './header.scss';
-import Brand from './Brand';
-import Search from './Search';
-import Menu from './Menu';
-import classNames from 'classnames';
+import React from "react";
+import { Layout, Row, Col } from "antd";
+import classNames from "classnames";
+
+import Brand from "./Brand";
+import Search from "./Search";
+import Menu from "./Menu";
+import "./header.scss";
 
 export default function Header({ isScroll }) {
-  const { Header } = Layout
-  const headerClass = classNames('header', { header__fixed: isScroll })
+  const { Header } = Layout;
+  const headerClass = classNames("header", { header__fixed: isScroll });
 
   return (
     <Header className={headerClass}>
-      <div className='header__content'>
-        <Row className='header__content--row'>
+      <div className="header__content">
+        <Row className="header__content--row">
           <Col xs={12} sm={6} md={8}>
             <Brand />
           </Col>
@@ -26,5 +27,5 @@ export default function Header({ isScroll }) {
         </Row>
       </div>
     </Header>
-  )
+  );
 }

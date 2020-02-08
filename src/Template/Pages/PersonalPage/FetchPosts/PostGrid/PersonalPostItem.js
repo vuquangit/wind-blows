@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import numeral from "numeral";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
-import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
+import { Image, Transformation } from "cloudinary-react";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
@@ -34,14 +34,12 @@ const PersonalPostItem = data => {
         onMouseLeave={handleMouseHover}
         onClick={showModal}
       >
-        <CloudinaryContext cloudName="dnzsa2z7b">
-          <Image
-            publicId={sidecarChildren[0].public_id}
-            className="thumbnail-post"
-          >
-            <Transformation height="320" width="320" crop="fill" />
-          </Image>
-        </CloudinaryContext>
+        <Image
+          publicId={sidecarChildren[0].public_id}
+          className="thumbnail-post"
+        >
+          <Transformation height="320" width="320" crop="fill" />
+        </Image>
         {sidecarChildren.length > 1 && (
           <div className="carousel">
             <span aria-label="Carousel" className="carousel__filled" />

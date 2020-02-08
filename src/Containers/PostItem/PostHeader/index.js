@@ -1,10 +1,10 @@
 import React from "react";
-import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { get, isEqual } from "lodash";
 import { useSelector } from "react-redux";
 
+import AvatarUser from "Components/AvatarUser";
 import FollowStatus from "Containers/FollowStatus";
 import "./postHeader.scss";
 
@@ -18,6 +18,7 @@ const PostHeader = ({
     id: ownerId = "",
     username = "",
     profilePictureUrl = "",
+    profilePicturePublicId = "",
     isVerified = ""
   } = owner;
 
@@ -34,7 +35,10 @@ const PostHeader = ({
     <header className={headerClass}>
       <div className="PI__PH--avatar">
         <Link to={`/${username}/`}>
-          <Avatar src={profilePictureUrl} />
+          <AvatarUser
+            profilePicturePublicId={profilePicturePublicId}
+            profilePictureUrl={profilePictureUrl}
+          />
         </Link>
       </div>
       <div className="PI__PH--owner">

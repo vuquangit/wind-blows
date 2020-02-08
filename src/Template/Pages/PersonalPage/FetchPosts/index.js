@@ -21,7 +21,7 @@ const FetchPosts = ({
   );
 
   const [state, setState] = useState({
-    isLoading: true,
+    isLoading: false,
     data: [],
     error: null,
     limit: 18,
@@ -72,9 +72,6 @@ const FetchPosts = ({
           }));
           console.log(error);
         }
-      } finally {
-        // !isEmpty(state) &&
-        //   setState(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 

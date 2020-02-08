@@ -47,7 +47,7 @@ const EditProfile = props => {
   const fetchUpdateProfile = async values => {
     try {
       setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
-
+      console.log("data edit", { id: get(profile, "id"), ...values });
       const res = await Axios({
         method: "post",
         url: `${SERVER_BASE_URL}/users/update`,
@@ -56,7 +56,7 @@ const EditProfile = props => {
           "Content-Type": "application/json"
         }
       });
-      console.log(res);
+      console.log("Edited profile :", res);
       setStateUpdate(prevState => ({ ...prevState, data: res.data }));
 
       // fetch personal post data
@@ -68,8 +68,8 @@ const EditProfile = props => {
       }
       // ....
     } catch (err) {
-      console.log(err);
-      message.error("Post status error: ", err);
+      console.log("Edit profile error ", err);
+      message.error("Edit profile error: ", err);
     } finally {
       setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "cloudinary-react";
+import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
 
 const ItemImage = ({
@@ -12,7 +12,11 @@ const ItemImage = ({
     "content__wrapper--image-portrait": isModal && width < height
   });
 
-  return <Image publicId={public_id} className={classPIImageModal} />;
+  return (
+    <Image publicId={public_id} className={classPIImageModal}>
+      <Transformation width="600" crop="scale" />
+    </Image>
+  );
 };
 
 export default ItemImage;

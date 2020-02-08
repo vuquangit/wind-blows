@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal, Avatar, message } from "antd";
+import { Modal, message } from "antd";
 import classNames from "classnames";
 import { withRouter } from "react-router";
 import { get } from "lodash";
 
+import AvatarUser from "Components/AvatarUser";
 import "./followStatus.scss";
 
 const FollowStatus = ({
@@ -19,6 +20,7 @@ const FollowStatus = ({
     username = "",
     fullName = "",
     profilePictureUrl = "",
+    profilePicturePublicId = "",
     isPrivate = false
   } = user;
 
@@ -132,7 +134,11 @@ const FollowStatus = ({
         <div className="follow-status__modal--items">
           <div className="item__avatar">
             <div className="item__avatar--wrapper">
-              <Avatar src={profilePictureUrl} size={96} />
+              <AvatarUser
+                profilePicturePublicId={profilePicturePublicId}
+                profilePictureUrl={profilePictureUrl}
+                size={96}
+              />
             </div>
           </div>
           <div className="item__description">

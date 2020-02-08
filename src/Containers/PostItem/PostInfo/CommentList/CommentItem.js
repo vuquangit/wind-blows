@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Button } from "antd";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import axios from "axios";
@@ -10,6 +10,7 @@ import PostTimeAgo from "Components/TimeFromNow";
 import HeartIcon from "Components/HeartIcon";
 import ModalItemOptions from "./ModalItemOptions";
 import ModalLikes from "../ModalLikes";
+import AvatarUser from "Components/AvatarUser";
 
 const CommentListItem = ({
   userId: commentOwnerId = "",
@@ -21,7 +22,7 @@ const CommentListItem = ({
   text = "",
   id: commentId = "",
   likeCount = 0,
-  likedByViewer,
+  likedByViewer = false,
   isHomePage = false,
   handleDeleteComments = () => {}
 }) => {
@@ -146,6 +147,7 @@ const CommentListItem = ({
 
   const {
     profilePictureUrl: commentOwnerAvatar = "",
+    profilePicturePublicId: commentOwnerAvatarId = "",
     username: commentOwnerUsername = "",
     isVerified: isAuthorVerified = false
   } = get(stateOwnerComments, "data");
@@ -172,11 +174,11 @@ const CommentListItem = ({
           <div className="CL__item--content">
             {!isHomePage && (
               <div className="item__avatar">
-                {commentOwnerAvatar ? (
-                  <Avatar src={commentOwnerAvatar} />
-                ) : (
-                  <Avatar src={commentOwnerAvatar} />
-                )}
+                <AvatarUser
+                  profilePicturePublicId={commentOwnerAvatarId}
+                  profilePictureUrl={commentOwnerAvatar}
+                  size={32}
+                />
               </div>
             )}
             <div className="item__content">

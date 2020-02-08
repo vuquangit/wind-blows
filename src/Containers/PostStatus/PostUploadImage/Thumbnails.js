@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
+import { Image, Transformation } from "cloudinary-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Modal, message } from "antd";
@@ -61,12 +61,10 @@ const Thumbnails = ({ public_id, handleRemoveImage = () => {} }) => {
           centered
         >
           <div>
-            <CloudinaryContext cloudName="dnzsa2z7b">
-              <Image
-                publicId={public_id}
-                style={{ height: "calc( 100vh - 120px)" }}
-              />
-            </CloudinaryContext>
+            <Image
+              publicId={public_id}
+              style={{ height: "calc( 100vh - 120px)" }}
+            />
           </div>
         </Modal>
       </div>

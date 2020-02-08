@@ -1,9 +1,11 @@
 import React from "react";
-import { Input, Avatar } from "antd";
+import { Input } from "antd";
 import { useSelector } from "react-redux";
 
+import AvatarUser from "Components/AvatarUser";
+
 const PostCaption = ({ caption = "", setStatus }) => {
-  const { profilePictureUrl = "" } = useSelector(
+  const { profilePictureUrl = "", profilePicturePublicId = "" } = useSelector(
     (state = {}) => state.profile.data.user
   );
 
@@ -16,7 +18,10 @@ const PostCaption = ({ caption = "", setStatus }) => {
 
   return (
     <div className="post-status__content--caption">
-      <Avatar src={profilePictureUrl} />
+      <AvatarUser
+        profilePicturePublicId={profilePicturePublicId}
+        profilePictureUrl={profilePictureUrl}
+      />
       <Input.TextArea
         placeholder="Caption..."
         autoSize={{ minRows: 2, maxRows: 4 }}

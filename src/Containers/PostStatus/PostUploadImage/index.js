@@ -1,5 +1,4 @@
 import React from "react";
-import { CloudinaryContext } from "cloudinary-react";
 
 import AddImage from "./AddImage";
 import Thumbnails from "./Thumbnails";
@@ -10,14 +9,13 @@ const PostUploadImage = ({
   handleAddImage = () => {},
   handleRemoveImage = () => {}
 }) => {
-  // const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const images = sidecarChildren;
 
   return (
     <div className="post-upload-image">
       <div className="upload-image__wrapper">
         <div className="upload-image__items">
-          <CloudinaryContext cloudName="dnzsa2z7b" className="thumbnails">
+          <div className="thumbnails">
             {images.length > 0 &&
               images.map((item, idx) => (
                 <Thumbnails
@@ -26,7 +24,7 @@ const PostUploadImage = ({
                   handleRemoveImage={handleRemoveImage}
                 />
               ))}
-          </CloudinaryContext>
+          </div>
           <AddImage images={images} handleAddImage={handleAddImage} />
         </div>
       </div>

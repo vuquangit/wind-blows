@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { CloudinaryContext } from "cloudinary-react";
 
 import SliderImages from "./SliderImage";
 import ItemImage from "./ItemImage";
@@ -33,8 +32,7 @@ const PostImage = ({
   return (
     <div className={classPI}>
       <div className={classPIContent}>
-        <CloudinaryContext
-          cloudName="dnzsa2z7b"
+        <div
           className={classPIWrapper}
           onDoubleClick={!likedByViewer ? handleLikePost : () => {}}
         >
@@ -43,7 +41,7 @@ const PostImage = ({
           ) : (
             <SliderImages sidecarChildren={sidecarChildren} isModal={isModal} />
           )}
-        </CloudinaryContext>
+        </div>
         <div className="image-heart">
           <span className="sprite-icon__core image-heart__icon" />
         </div>

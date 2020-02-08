@@ -1,17 +1,18 @@
 import React from "react";
-import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import { useSelector } from "react-redux";
 import { isEqual } from "lodash";
 
 import FollowStatus from "Containers/FollowStatus";
+import AvatarUser from "Components/AvatarUser";
 import "./userRelationship.scss";
 
 const UserRelationship = ({ user = {}, relationship = {}, match }) => {
   const {
     id = "",
     profilePictureUrl = "",
+    profilePicturePublicId = "",
     username = "",
     suggestionDescription = "",
     fullName = ""
@@ -27,7 +28,10 @@ const UserRelationship = ({ user = {}, relationship = {}, match }) => {
     <div className="SGI">
       <div className="SGI__avatar">
         <Link to={`/${username || id}/`} title={username || id}>
-          <Avatar src={profilePictureUrl} />
+          <AvatarUser
+            profilePicturePublicId={profilePicturePublicId}
+            profilePictureUrl={profilePictureUrl}
+          />
         </Link>
       </div>
       <div className="SGI__info">

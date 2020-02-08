@@ -2,15 +2,21 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger } from "@fortawesome/free-brands-svg-icons";
-import { Badge, Avatar } from "antd";
+import { Badge } from "antd";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 import Activity from "Template/Pages/Activity";
+import AvatarUser from "Components/AvatarUser";
 
 const Menu = () => {
-  const profile = useSelector((state = {}) => state.profile.data.user);
-  const { username = "", id = "", profilePictureUrl = "" } = profile;
+  const {
+    username = "",
+    id = "",
+    profilePictureUrl = "",
+    profilePicturePublicId = ""
+  } = useSelector((state = {}) => get(state, "profile.data.user") || "");
 
   return (
     <div className="header__menu">
@@ -21,26 +27,21 @@ const Menu = () => {
           </NavLink>
         </div>
         <div className="menu-item">
-          <Badge count={9} overflowCount={99}>
-            <FontAwesomeIcon icon={faFacebookMessenger} title="Messenger" />
-          </Badge>
+          <NavLink to="/messenger">
+            <Badge count={9} overflowCount={99}>
+              <FontAwesomeIcon icon={faFacebookMessenger} title="Messenger" />
+            </Badge>
+          </NavLink>
         </div>
         <div className="menu-item">
           <Activity />
         </div>
         <div className="menu-item">
           <NavLink to={`/${username || id}`}>
-            <Badge count={0}>
-              {profilePictureUrl ? (
-                <Avatar
-                  src={profilePictureUrl}
-                  size={24}
-                  title="Personal Page"
-                />
-              ) : (
-                <Avatar icon="user" size={24} title="Personal Page" />
-              )}
-            </Badge>
+            <AvatarUser
+              profilePicturePublicId={profilePicturePublicId}
+              profilePictureUrl={profilePictureUrl}
+            />
           </NavLink>
         </div>
       </div>

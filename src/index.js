@@ -1,16 +1,19 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.css";
-import "antd/dist/antd.css";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
+import throttle from "lodash.throttle";
+import { CloudinaryContext } from "cloudinary-react";
+import "bootstrap/dist/css/bootstrap.css";
+import "antd/dist/antd.css";
+
+import App from "./App";
 import firebase from "firebase/app";
 import firebaseConfig from "./firebaseConfig";
 import configureStore from "./Redux/Store";
 import { loadState, saveState } from "./localStorage";
-import throttle from "lodash.throttle";
+import cloudinaryConfig from "./cloudinaryConfig";
+import "./index.css";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -37,7 +40,9 @@ if (process.env.NODE_ENV !== "development") {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <CloudinaryContext cloudName={cloudinaryConfig.cloud_name}>
+      <App />
+    </CloudinaryContext>
   </Provider>,
   document.getElementById("root")
 );

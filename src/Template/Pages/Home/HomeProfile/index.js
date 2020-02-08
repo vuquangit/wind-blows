@@ -1,13 +1,15 @@
 import React from "react";
-import { Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import AvatarUser from "Components/AvatarUser";
 
 const Profile = () => {
   const {
     username = "",
     isVerified = false,
     profilePictureUrl = "",
+    profilePicturePublicId = "",
     fullName = ""
   } = useSelector((state = {}) => state.profile.data.user);
 
@@ -15,7 +17,11 @@ const Profile = () => {
     <div className="profile">
       <div className="profile__content">
         <Link to={`/${username}/`}>
-          <Avatar src={profilePictureUrl} size={50} />
+          <AvatarUser
+            profilePicturePublicId={profilePicturePublicId}
+            profilePictureUrl={profilePictureUrl}
+            size={50}
+          />
         </Link>
         <div className="profile__content--info">
           <div className="info__username">
