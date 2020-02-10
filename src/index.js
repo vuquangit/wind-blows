@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
+import { registerServiceWorker as registerServiceWorkerFCM } from "Firebases/register-sw";
 import { Provider } from "react-redux";
 import throttle from "lodash.throttle";
 import { CloudinaryContext } from "cloudinary-react";
@@ -8,15 +9,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "antd/dist/antd.css";
 
 import App from "./App";
-import firebase from "firebase/app";
-import firebaseConfig from "./firebaseConfig";
 import configureStore from "./Redux/Store";
 import { loadState, saveState } from "./localStorage";
 import cloudinaryConfig from "./cloudinaryConfig";
+// eslint-disable-next-line quotes
+import Firebase from "Firebases/firebase";
 import "./index.css";
 
-firebase.initializeApp(firebaseConfig);
+registerServiceWorkerFCM();
 
+// local store redux
 const persistedState = loadState();
 const store = configureStore(persistedState);
 store.subscribe(
@@ -27,6 +29,7 @@ store.subscribe(
   }, 1000)
 );
 
+// dev tool
 if (process.env.NODE_ENV !== "development") {
   if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
     for (const [key, value] of Object.entries(
