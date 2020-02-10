@@ -12,8 +12,8 @@ import App from "./App";
 import configureStore from "./Redux/Store";
 import { loadState, saveState } from "./localStorage";
 import cloudinaryConfig from "./cloudinaryConfig";
-// eslint-disable-next-line quotes
-import Firebase from "Firebases/firebase";
+// eslint-disable-next-line
+import firebase from "Firebases/firebase";
 import "./index.css";
 
 registerServiceWorkerFCM();
