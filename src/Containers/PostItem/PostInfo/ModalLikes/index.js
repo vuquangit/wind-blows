@@ -59,8 +59,6 @@ const ModalLikes = ({
           }));
           console.log(error);
         }
-      } finally {
-        // setState(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
@@ -79,9 +77,9 @@ const ModalLikes = ({
     visibleModal
   ]);
 
+  // scroll items
   const hasMoreItems =
     (get(state, "data.data") || []).length < state.totalLikes;
-  //   const hasMoreItems = false;
 
   const getMoreItems = async () => {
     state.data.data.length === state.page * state.limit &&

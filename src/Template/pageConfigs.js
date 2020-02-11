@@ -1,6 +1,6 @@
 import HomePage from "./Pages/Home";
-import Explore from "./Pages/Explore";
-// import Activity from "./Pages/Activity";
+// import Explore from "./Pages/Explore";
+import Activity from "./Pages/Activity";
 import Messenger from "./Pages/Messenger";
 import Login from "./Pages/Accounts/Login";
 import EmailSignup from "./Pages/Accounts/EmailSignup";
@@ -21,12 +21,12 @@ const pageConfigs = [
     exact: true,
     private: true
   },
-  {
-    path: "/explore",
-    component: Explore,
-    exact: true,
-    private: true
-  },
+  // {
+  //   path: "/explore",
+  //   component: Explore,
+  //   exact: true,
+  //   private: true
+  // },
   {
     path: "/messenger",
     component: Messenger,
@@ -35,7 +35,12 @@ const pageConfigs = [
   },
   {
     path: "/activity/",
-    // component: Activity,
+    component: Activity,
+    exact: true,
+    private: true
+  },
+  {
+    path: "/notifications/",
     component: Notifications,
     exact: true,
     private: true

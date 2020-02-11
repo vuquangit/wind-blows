@@ -51,7 +51,7 @@ const PostItem = ({
         setIsLikingPost(false);
         console.log(endpoint === "like" ? "liked" : "unlike");
       } catch (err) {
-        setIsLikingPost(false);
+        // setIsLikingPost(false);
 
         if (axios.isCancel(err)) {
           console.log("cancelled like post");

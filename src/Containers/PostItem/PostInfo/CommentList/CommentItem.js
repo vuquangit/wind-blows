@@ -64,7 +64,7 @@ const CommentListItem = ({
       setIsLiking(false);
 
       if (axios.isCancel(err)) {
-        console.log("cancelled like post");
+        console.log("cancelled like comment");
       } else {
         console.log(err);
       }

@@ -1,110 +1,101 @@
 import React, { useState, useEffect } from "react";
-import { messaging } from "Firebases/init-fcm";
+import axios from "axios";
+import { get } from "lodash";
+import { useSelector } from "react-redux";
+
+import BasicTemplate from "Template/BasicTemplate";
+import Notification from "./Notification";
+import NotiLoading from "./NotificationLoading";
+import NotiEmpty from "./NotificationEmpty";
 import "./notification.scss";
 
 const Notifications = () => {
-  const [token, setToken] = useState("");
-  const [notifications, setNotifications] = useState([]);
-
-  const registerPushListener = pushNotification =>
-    navigator.serviceWorker.addEventListener("message", ({ data }) =>
-      pushNotification(
-        data.data
-          ? data.data.message
-          : data["firebase-messaging-msg-data"].data.message
-      )
-    );
-
-  const sendTokenToServer = token => {
-    //send to server...
-    setToken(token);
-  };
-
-  const pushNotification = newNotification =>
-    setNotifications(prevState => [...prevState, newNotification]);
+  const [state, setState] = useState({
+    isLoading: false,
+    data: [],
+    error: null,
+    limit: 18,
+    page: 1,
+    totalItem: 0
+  });
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user")
+  );
+  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
-    // // componentDidMount
-    // const getToken = async () => {
-    //   messaging
-    //     .requestPermission() // ask
-    //     .then(async function() {
-    //       const currentToken = await messaging.getToken();
-    //       //   setToken(token);
-    //       sendTokenToServer(currentToken);
+    const source = axios.CancelToken.source();
 
-    //       console.log("get token successfully");
-    //       // send token to server
-    //     })
-    //     .catch(function(err) {
-    //       console.log("Unable to get permission to notify.", err);
-    //     });
-
-    //   registerPushListener(pushNotification);
-    // };
-
-    // https://rharshad.com/web-push-notifications-react-firebase/
-    const notificationPermission = async () => {
-      let permissionGranted = false;
+    const feactData = async () => {
       try {
-        /* request permission if not granted */
-        if (Notification.permission !== "granted") {
-          await messaging.requestPermission();
-        }
-        /* get instance token if not available */
-        if (localStorage.getItem("GCM_TOKEN") !== null) {
-          permissionGranted = true;
-        } else {
-          const token = await messaging.getToken(); // returns the same token on every invocation until refreshed by browser
-          await sendTokenToServer(token);
-          localStorage.setItem("GCM_TOKEN", token);
-          permissionGranted = true;
-        }
+        setState(prevState => ({ ...prevState, isLoading: true }));
 
-        setToken(localStorage.getItem("GCM_TOKEN"));
-        registerPushListener(pushNotification);
-      } catch (err) {
-        console.log(err);
-        if (
-          err.hasOwnProperty("code") &&
-          err.code === "messaging/permission-default"
-        )
-          console.log("You need to allow the site to send notifications");
-        else if (
-          err.hasOwnProperty("code") &&
-          err.code === "messaging/permission-blocked"
-        )
-          console.log(
-            "Currently, the site is blocked from sending notifications. Please unblock the same in your browser settings"
-          );
-        else console.log("Unable to subscribe you to notifications");
-      } finally {
-        return permissionGranted;
+        const response = await axios({
+          method: "get",
+          url: `${SERVER_BASE_URL}/users/notifications`,
+          params: {
+            userId: viewerId,
+            limit: state.limit,
+            page: state.page
+          },
+          headers: {
+            "Content-Type": "application/json"
+          },
+          cancelToken: source.token
+        });
+
+        console.log("respone notifications", response);
+        setState(prevState => ({
+          ...prevState,
+          data: [...prevState.data, ...response.data.data],
+          totalItem: get(response, "data.totalItem"),
+          isLoading: false
+        }));
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled fetch notifications");
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            error: error,
+            isLoading: false
+          }));
+          console.log(error);
+        }
       }
     };
 
-    // getToken();
-    notificationPermission();
+    feactData();
+
+    // unmount
+    return () => {
+      source.cancel();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state.page]);
 
-  console.log(notifications);
-
-  const renderNotification = (notification, i) => (
-    <li key={i}>{notification}</li>
-  );
+  // load more item
+  const hasMoreItems = state.data.length < state.totalItem;
+  const getMoreItems = () => {
+    state.data.length === state.page * state.limit &&
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+  };
 
   return (
-    <div className="notification">
-      <h1>React + Firebase Cloud Messaging (Push Notifications)</h1>
-      <div>
-        Current token is: <p>{token}</p>
-      </div>
-      <ul>
-        Notifications List:
-        {notifications.map(renderNotification)}
-      </ul>
-    </div>
+    <BasicTemplate>
+      {state.isLoading && state.data.length === 0 ? (
+        <NotiLoading />
+      ) : state.data.length > 0 ? (
+        <Notification
+          items={state.data}
+          isLoading={state.isLoading}
+          hasMoreItems={hasMoreItems}
+          getMoreItems={() => getMoreItems()}
+        />
+      ) : (
+        <NotiEmpty />
+      )}
+    </BasicTemplate>
   );
 };
 

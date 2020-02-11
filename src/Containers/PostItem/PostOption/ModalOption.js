@@ -66,7 +66,7 @@ const ModalOption = ({
       message.error("Delete post error");
 
       if (axios.isCancel(err)) {
-        console.log("cancelled like post");
+        console.log("cancelled delete commnent");
       } else {
         console.log(err);
       }
