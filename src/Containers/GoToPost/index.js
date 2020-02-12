@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 import PostItem from "Containers/PostItem";
 import BasicTemplate from "Template/BasicTemplate";
@@ -17,7 +18,7 @@ const GoToPost = ({ match = {} }) => {
 
   const postId = match.params.id;
   const { id: viewerId = "" } = useSelector(
-    (state = {}) => state.profile.data.user
+    (state = {}) => get(state, "profile.data.user") || {}
   );
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 

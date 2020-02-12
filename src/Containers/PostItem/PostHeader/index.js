@@ -23,8 +23,8 @@ const PostHeader = ({
   } = owner;
 
   // Compare owner post and user login profile
-  const { id: viewerId = "" } = useSelector(state =>
-    get(state, "profile.data.user")
+  const { id: viewerId = "" } = useSelector(
+    state => get(state, "profile.data.user") || {}
   );
   const isMyPost = isEqual(viewerId, ownerId);
 

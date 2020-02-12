@@ -17,8 +17,8 @@ const PostLikes = ({ numLikes = 0, postId = "" }) => {
   };
 
   // params modal post likes
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
   );
   const endpoint = "/post/likes";
   const params = { postId: postId, viewerId: viewerId };

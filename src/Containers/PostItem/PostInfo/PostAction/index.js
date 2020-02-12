@@ -21,8 +21,8 @@ const PostAction = ({
   savedByViewer,
   postId = ""
 }) => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
   );
 
   // Modal share button

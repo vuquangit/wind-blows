@@ -7,6 +7,7 @@ import BasicTemplate from "Template/BasicTemplate";
 import Notification from "./Notification";
 import NotiLoading from "./NotificationLoading";
 import NotiEmpty from "./NotificationEmpty";
+
 import "./notification.scss";
 
 const Notifications = () => {

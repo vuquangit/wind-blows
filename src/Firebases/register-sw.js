@@ -7,6 +7,7 @@ const registerServiceWorker = () => {
   //   navigator.serviceWorker
   //     .register("./firebase-messaging-sw.js")
   //     .then(function(registration) {
+  //       messaging.useServiceWorker(registration);
   //       console.log("Registration successful, scope is:", registration.scope);
   //     })
   //     .catch(function(err) {
@@ -30,7 +31,7 @@ const registerServiceWorker = () => {
         const options = {
           body: payload.notification.body,
           // icon: payload.notification.icon,
-          icon: "/favicon.ico",
+          icon: "",
           actions: [
             {
               action: `${SERVER_BASE_URL}${payload.fcmOptions.link}`,

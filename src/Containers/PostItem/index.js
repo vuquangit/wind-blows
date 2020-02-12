@@ -24,8 +24,8 @@ const PostItem = ({
   handleCancelModalPost = () => {}
 }) => {
   // fetch likes
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
   );
   const [isLikingPost, setIsLikingPost] = useState(false);
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";

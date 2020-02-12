@@ -20,8 +20,8 @@ const PostInfo = ({
   savedByViewer = false,
   handleLikePost
 }) => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
   );
 
   // fetch comments data

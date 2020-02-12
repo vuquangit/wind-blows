@@ -18,7 +18,7 @@ import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const { data: profileData } = useSelector((state = {}) => state.profile);
+  const { data: profileData = {} } = useSelector((state = {}) => state.profile);
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   const _renderPage = () =>
@@ -55,13 +55,16 @@ const Main = () => {
 
               const data = { fullName, profilePictureUrl, ...rest };
               await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+              console.log("firebase login");
+
+              !isEmpty(profileData) && notificationPermission();
             } else {
               dispatch(signOut());
             }
           });
+      } else {
+        !isEmpty(profileData) && notificationPermission();
       }
-
-      !isEmpty(profileData) && notificationPermission();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -75,20 +78,20 @@ const Main = () => {
       if (Notification.permission !== "granted") {
         await messaging.requestPermission();
       }
+
       /* get instance token if not available */
       if (localStorage.getItem("GCM_TOKEN") !== null) {
         permissionGranted = true;
       } else {
         const token = await messaging.getToken(); // returns the same token on every invocation until refreshed by browser
-        await sendTokenToServer(token);
+        // await sendTokenToServer(token);
         localStorage.setItem("GCM_TOKEN", token);
         permissionGranted = true;
       }
 
-      // await sendTokenToServer(localStorage.getItem("GCM_TOKEN"));
-
+      await sendTokenToServer(localStorage.getItem("GCM_TOKEN"));
       registerPushListener(pushNotification);
-      console.log("register FCM success");
+      console.log("register FCM success:", localStorage.getItem("GCM_TOKEN"));
     } catch (err) {
       console.log(err);
       if (
@@ -142,7 +145,7 @@ const Main = () => {
         method: "post",
         url: `${SERVER_BASE_URL}/users/notifications/add`,
         data: {
-          userId: get(profileData, "id") || "",
+          userId: get(profileData, "user.id") || "",
           token: token
         },
         headers: {

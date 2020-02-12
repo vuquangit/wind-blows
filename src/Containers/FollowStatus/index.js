@@ -97,10 +97,19 @@ const FollowStatus = ({
 
   // Modal unfollow
   const [visibleModal, setVisibleModal] = useState(false);
-  const showModal = () =>
+  const showModal = e => {
+    // A cross browser compatible way to stop propagation of the event:
+    // if (!e) var e = window.event;
+    // e.cancelBubble = true; //IE
+    // // if (e.stopPropagation) e.stopPropagation(); //FF
+    // e.stopPropagation();
+    var ev = !e ? window.event : e; //IE:Moz
+    ev.stopPropagation ? ev.stopPropagation() : (ev.cancelBubble = true);
+
     state.followStatus === "Following"
       ? setVisibleModal(true)
       : handleFollows();
+  };
   const handleCancelModal = () => setVisibleModal(false);
 
   const handleFollows = () =>

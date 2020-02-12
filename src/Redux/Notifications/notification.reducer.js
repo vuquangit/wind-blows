@@ -11,6 +11,9 @@ export const notificationReducer = (state = initState, action = {}) => {
     case actionType.NOTIFICATION_DECREASE:
       if (state.totalUnread > 0)
         return { ...state, totalUnread: state.totalUnread - 1 };
+      else break;
+    case actionType.NOTIFICATION_CLEAR:
+      return { ...state, totalUnread: 0 };
     default:
       return state;
   }

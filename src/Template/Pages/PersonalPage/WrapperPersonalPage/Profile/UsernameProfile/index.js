@@ -143,17 +143,19 @@ const Username = ({ history }) => {
           </div>
         )}
       </Row>
-      <Row>
-        <Col xs={24} sm={24} md={0}>
-          <Link
-            to="/accounts/edit/"
-            className="edit-profile"
-            title="Edit Profile"
-          >
-            <button type="button">Edit Profile</button>
-          </Link>
-        </Col>
-      </Row>
+      {viewerIsOwner && (
+        <Row>
+          <Col xs={24} sm={24} md={0}>
+            <Link
+              to="/accounts/edit/"
+              className="edit-profile"
+              title="Edit Profile"
+            >
+              <button type="button">Edit Profile</button>
+            </Link>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };
