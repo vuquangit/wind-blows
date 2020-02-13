@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { get } from "lodash";
 import { Button, message } from "antd";
@@ -7,31 +7,24 @@ import axios from "axios";
 
 import NotiLoading from "./NotificationLoading";
 import UserRelationship from "Components/UserRelationship";
-import { clearNotifications } from "Redux/Notifications/notification.action";
+import NotificationNew from "./NotificationsNew";
+import { resetNotifications } from "Redux/Notifications/notification.action";
 
 const Notification = ({
   items = [],
   isLoading = false,
+  setAllItemsReaded = () => {},
   getMoreItems = () => {},
   hasMoreItems = false
 }) => {
   const dispatch = useDispatch();
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user")
   );
 
-  const [state, setState] = useState({
-    isLoading: false,
-    isReadAll: false,
-    error: null
-  });
-
   const handleReadAllNoti = async () => {
     try {
-      setState(prevState => ({ ...prevState, isLoading: true }));
-
       await axios({
         method: "post",
         url: `${SERVER_BASE_URL}/users/notifications/read-all`,
@@ -43,16 +36,11 @@ const Notification = ({
         }
       });
 
-      await dispatch(clearNotifications());
-      setState(prevState => ({ ...prevState, isReadAll: true }));
+      await dispatch(resetNotifications()); // noti === 0
+      setAllItemsReaded();
     } catch (error) {
       console.log(error);
       message.error("error");
-    } finally {
-      setState(prevState => ({
-        ...prevState,
-        isLoading: false
-      }));
     }
   };
 
@@ -66,15 +54,15 @@ const Notification = ({
           user={get(item, "user") || {}}
           relationship={get(item, "user.relationship")}
           notifications={item}
-          isReadAll={state.isReadAll}
         />
       )),
-    [items, state.isReadAll]
+    [items]
   );
 
   return (
     <div className="notification">
       <div className="notification__header">
+        <h1 className="notification__header--title">Notifications</h1>
         <Button
           onClick={handleReadAllNoti}
           className="notification__header--btn-read-all"
@@ -82,6 +70,7 @@ const Notification = ({
           Mark all as read
         </Button>
       </div>
+      <NotificationNew />
       <InfiniteScroll
         pageStart={0}
         loadMore={getMoreItems}

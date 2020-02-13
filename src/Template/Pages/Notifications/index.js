@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { get } from "lodash";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Notification from "./Notification";
 import NotiLoading from "./NotificationLoading";
 import NotiEmpty from "./NotificationEmpty";
-
+import { clearNewNotifications } from "Redux/Notifications/notification.action";
 import "./notification.scss";
 
 const Notifications = () => {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     isLoading: false,
     data: [],
@@ -52,6 +53,8 @@ const Notifications = () => {
           totalItem: get(response, "data.totalItem"),
           isLoading: false
         }));
+
+        await dispatch(clearNewNotifications());
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled fetch notifications");
@@ -75,6 +78,19 @@ const Notifications = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.page]);
 
+  const setAllItemsReaded = () => {
+    if (state && state.data && state.data.length > 0) {
+      const items = state.data.map(item => {
+        return { ...item, read: true };
+      });
+
+      setState(prevState => ({
+        ...prevState,
+        data: items
+      }));
+    }
+  };
+
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
   const getMoreItems = () => {
@@ -90,6 +106,7 @@ const Notifications = () => {
         <Notification
           items={state.data}
           isLoading={state.isLoading}
+          setAllItemsReaded={setAllItemsReaded}
           hasMoreItems={hasMoreItems}
           getMoreItems={() => getMoreItems()}
         />

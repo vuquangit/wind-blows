@@ -18,7 +18,6 @@ const UserRelationship = ({
   user = {},
   relationship = {},
   notifications = {},
-  isReadAll = false,
   match,
   history
 }) => {
@@ -82,7 +81,7 @@ const UserRelationship = ({
 
   // styles
   const classSGI = classNames("SGI", {
-    SGI__unread: typeNotification !== 0 && !isReadAll && !notiReaded
+    SGI__unread: typeNotification !== 0 && !notiReaded
   });
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pick, isEmpty, get } from "lodash";
+import { pick, isEmpty, get, startsWith } from "lodash";
 import firebase from "firebase";
 import axios from "axios";
 import { message, notification } from "antd";
@@ -13,7 +13,10 @@ import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
 // import Loading from "./Pages/Loading";
-import { increaseNotifications } from "Redux/Notifications/notification.action";
+import {
+  increaseNotifications,
+  newNotifications
+} from "Redux/Notifications/notification.action";
 import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
@@ -71,6 +74,33 @@ const Main = () => {
   );
 
   // notifications
+  const sourceNoti = axios.CancelToken.source();
+  const feactNewNoti = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${SERVER_BASE_URL}/users/notifications`,
+        params: {
+          userId: get(profileData, "user.id") || "",
+          limit: 1,
+          page: 1
+        },
+        headers: {
+          "Content-Type": "application/json"
+        },
+        cancelToken: sourceNoti.token
+      });
+
+      console.log("respone notifications", response);
+      const data = get(response, "data.data") || [];
+      await dispatch(newNotifications(data));
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("cancelled fetch notifications new");
+      } else console.log(error);
+    }
+  };
+
   const notificationPermission = async () => {
     let permissionGranted = false;
     try {
@@ -128,7 +158,9 @@ const Main = () => {
     });
 
     // update badge, store notification
-    dispatch(increaseNotifications());
+    if (startsWith(window.location.pathname, "/notifications")) {
+      feactNewNoti();
+    } else dispatch(increaseNotifications());
   };
 
   const registerPushListener = pushNotification =>

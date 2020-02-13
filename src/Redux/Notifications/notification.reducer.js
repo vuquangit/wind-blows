@@ -1,6 +1,6 @@
 import * as actionType from "./actionType";
 
-const initState = { totalUnread: 0 };
+const initState = { totalUnread: 0, newNotifications: [] };
 
 export const notificationReducer = (state = initState, action = {}) => {
   switch (action.type) {
@@ -12,8 +12,33 @@ export const notificationReducer = (state = initState, action = {}) => {
       if (state.totalUnread > 0)
         return { ...state, totalUnread: state.totalUnread - 1 };
       else break;
+    case actionType.NOTIFICATION_NEW:
+      return {
+        ...state,
+        totalUnread: state.totalUnread + 1,
+        newNotifications: [...action.data, ...state.newNotifications]
+      };
+
     case actionType.NOTIFICATION_CLEAR:
-      return { ...state, totalUnread: 0 };
+      return {
+        ...state,
+        newNotifications: []
+      };
+    case actionType.NOTIFICATION_RESET:
+      if (state.newNotifications && state.newNotifications.length > 0) {
+        const items = state.newNotifications.map(item => {
+          return { ...item, read: true };
+        });
+        return {
+          ...state,
+          totalUnread: 0,
+          newNotifications: items
+        };
+      } else
+        return {
+          ...state,
+          totalUnread: 0
+        };
     default:
       return state;
   }

@@ -13,13 +13,24 @@ const decreaseNotifications = () => ({
   type: actionTypes.NOTIFICATION_DECREASE
 });
 
-const clearNotifications = () => ({
+const newNotifications = data => ({
+  type: actionTypes.NOTIFICATION_NEW,
+  data
+});
+
+const clearNewNotifications = () => ({
   type: actionTypes.NOTIFICATION_CLEAR
+});
+
+const resetNotifications = () => ({
+  type: actionTypes.NOTIFICATION_RESET
 });
 
 export {
   updateNotifications,
   increaseNotifications,
   decreaseNotifications,
-  clearNotifications
+  newNotifications,
+  clearNewNotifications,
+  resetNotifications
 };
