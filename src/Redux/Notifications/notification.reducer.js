@@ -18,7 +18,6 @@ export const notificationReducer = (state = initState, action = {}) => {
         totalUnread: state.totalUnread + 1,
         newNotifications: [...action.data, ...state.newNotifications]
       };
-
     case actionType.NOTIFICATION_CLEAR:
       return {
         ...state,

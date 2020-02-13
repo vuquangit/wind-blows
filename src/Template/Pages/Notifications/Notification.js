@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { get } from "lodash";
 import { Button, message } from "antd";

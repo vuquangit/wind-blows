@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pick, isEmpty, get, startsWith } from "lodash";
+import { pick, isEmpty, get } from "lodash";
 import firebase from "firebase";
 import axios from "axios";
 import { message, notification } from "antd";
@@ -13,10 +13,7 @@ import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
 // import Loading from "./Pages/Loading";
-import {
-  increaseNotifications,
-  newNotifications
-} from "Redux/Notifications/notification.action";
+import { newNotifications } from "Redux/Notifications/notification.action";
 import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
@@ -32,8 +29,6 @@ const Main = () => {
         <Route {...route} key={index} />
       )
     );
-
-  // console.log("main homepage", profileData);
 
   useEffect(
     () => {
@@ -146,8 +141,8 @@ const Main = () => {
     notification.info({
       message: get(data, "notification.title") || "",
       description: get(data, "notification.body") || "",
-      placement: "topLeft",
-      duration: 3,
+      placement: "bottomLeft",
+      duration: 5,
       icon: (
         <FontAwesomeIcon icon={faFan} style={{ color: "rgb(0, 123, 255)" }} />
       ),
@@ -158,9 +153,7 @@ const Main = () => {
     });
 
     // update badge, store notification
-    if (startsWith(window.location.pathname, "/notifications")) {
-      feactNewNoti();
-    } else dispatch(increaseNotifications());
+    feactNewNoti();
   };
 
   const registerPushListener = pushNotification =>

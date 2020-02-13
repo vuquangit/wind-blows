@@ -1,17 +1,23 @@
 import React from "react";
+import axios from "axios";
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { isEqual, get } from "lodash";
 import { Image } from "cloudinary-react";
 import { Button, message } from "antd";
-import classNames from "classnames";
-import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUserPlus,
+  faHeart,
+  faCommentAlt
+} from "@fortawesome/free-solid-svg-icons";
 
+import { decreaseNotifications } from "Redux/Notifications/notification.action";
 import FollowStatus from "Containers/FollowStatus";
 import AvatarUser from "Components/AvatarUser";
 import TimeFromNow from "Components/TimeFromNow";
-import { decreaseNotifications } from "Redux/Notifications/notification.action";
 import "./userRelationship.scss";
 
 const UserRelationship = ({
@@ -33,6 +39,7 @@ const UserRelationship = ({
     fullName = "",
     requestedByViewer = false
   } = user;
+
   const {
     id: notificationId = "",
     typeNotification = 0,
@@ -41,8 +48,9 @@ const UserRelationship = ({
     media = {},
     read: notiReaded = false
   } = notifications;
+
   const { id: viewerId = "" } = useSelector(
-    (state = {}) => state.profile.data.user
+    (state = {}) => get(state, "profile.data.user") || {}
   );
   const subDescription = match.path === "/" ? suggestionDescription : fullName;
   const isMe = isEqual(id, viewerId);
@@ -112,7 +120,6 @@ const UserRelationship = ({
             {username}
           </Link>
         )}
-
         {typeNotification === 0 ? (
           <div className="description-suggestions">{subDescription}</div>
         ) : typeNotification === 1 ? (
@@ -121,18 +128,37 @@ const UserRelationship = ({
           " liked your photo."
         ) : typeNotification === 3 ? (
           <>
-            {` like your comments: `}
+            like your comments:
             <span style={{ fontStyle: "italic" }}>{text}</span>
           </>
         ) : (
           <>
-            {` mentioned you in a comment: `}
+            mentioned you in a comment:
             <span style={{ fontStyle: "italic" }}>{text}</span>
           </>
         )}
-
         {typeNotification !== 0 && (
-          <TimeFromNow postedAt={timestamp} className="timestamp" />
+          <div className="SGI__description-more">
+            {typeNotification === 1 ? (
+              <FontAwesomeIcon
+                icon={faUserPlus}
+                className="SGI__description-more--icon-follow"
+              />
+            ) : typeNotification === 2 || typeNotification === 3 ? (
+              <FontAwesomeIcon
+                icon={faHeart}
+                className="SGI__description-more--icon-heart"
+              />
+            ) : (
+              typeNotification === 4 && (
+                <FontAwesomeIcon
+                  icon={faCommentAlt}
+                  className="SGI__description-more--icon-comment"
+                />
+              )
+            )}
+            <TimeFromNow postedAt={timestamp} className="timestamp" />
+          </div>
         )}
       </div>
       {typeNotification === 0 || typeNotification === 1

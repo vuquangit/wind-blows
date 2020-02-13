@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { Badge } from "antd";
-import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { get } from "lodash";
 import axios from "axios";
+import { Badge } from "antd";
+import { get } from "lodash";
+import { NavLink } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import { useSelector, useDispatch } from "react-redux";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Activity from "Template/Pages/Activity";
 import AvatarUser from "Components/AvatarUser";
+import DropdownNotification from "./DropdownNotification";
 import { updateNotifications } from "Redux/Notifications/notification.action";
 
 const Menu = () => {
@@ -50,19 +51,24 @@ const Menu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // notifications
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
+
   return (
     <div className="header__menu">
       <div className="header__menu--items">
         <div className="menu-item">
-          <NavLink to="/notifications">
-            <Badge count={totalNotiUnread} overflowCount={99}>
-              <FontAwesomeIcon icon={faBell} title="Notifications" />
-            </Badge>
-          </NavLink>
+          {!isSmallScreen ? (
+            <DropdownNotification count={totalNotiUnread} />
+          ) : (
+            <NavLink to="/notifications">
+              <Badge count={totalNotiUnread} overflowCount={99}>
+                <FontAwesomeIcon icon={faBell} title="Notifications" />
+              </Badge>
+            </NavLink>
+          )}
         </div>
-        <div className="menu-item">
-          <Activity />
-        </div>
+
         <div className="menu-item">
           <NavLink to={`/${username || id}`}>
             <AvatarUser

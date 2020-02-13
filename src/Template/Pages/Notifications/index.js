@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { get } from "lodash";
+import { get, startsWith } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 
 import BasicTemplate from "Template/BasicTemplate";
@@ -9,6 +9,7 @@ import NotiLoading from "./NotificationLoading";
 import NotiEmpty from "./NotificationEmpty";
 import { clearNewNotifications } from "Redux/Notifications/notification.action";
 import "./notification.scss";
+import { withRouter } from "react-router-dom";
 
 const Notifications = () => {
   const dispatch = useDispatch();
@@ -99,7 +100,7 @@ const Notifications = () => {
   };
 
   return (
-    <BasicTemplate>
+    <>
       {state.isLoading && state.data.length === 0 ? (
         <NotiLoading />
       ) : state.data.length > 0 ? (
@@ -113,8 +114,24 @@ const Notifications = () => {
       ) : (
         <NotiEmpty />
       )}
-    </BasicTemplate>
+    </>
   );
 };
 
-export default Notifications;
+const WrappedNotification = ({ match = {} }) => {
+  const isDropdown = startsWith(match.path, "/notifications");
+
+  return (
+    <>
+      {isDropdown ? (
+        <BasicTemplate>
+          <Notifications />
+        </BasicTemplate>
+      ) : (
+        <Notifications />
+      )}
+    </>
+  );
+};
+
+export default withRouter(WrappedNotification);
