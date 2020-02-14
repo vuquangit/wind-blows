@@ -6,19 +6,29 @@ import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { Image, Transformation } from "cloudinary-react";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
+import { withRouter } from "react-router-dom";
 
 import PostItem from "Containers/PostItem";
 
-const PersonalPostItem = data => {
-  const { sidecarChildren, numLikes, numComments } = data;
-
+const PersonalPostItem = ({
+  id: postId = "",
+  sidecarChildren = [],
+  numLikes = 0,
+  numComments = 0,
+  history = {}
+}) => {
   // show info image
   const [isHover, setIsHouver] = React.useState(false);
   const handleMouseHover = () => setIsHouver(!isHover);
 
-  // modal
+  // show image
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
   const [visible, setVisible] = useState(false);
-  const showModal = () => setVisible(true);
+  const handleShowImage = () => {
+    if (isSmallScreen) history.push(`/p/${postId}`);
+    else setVisible(true);
+  };
   const handleCancelModal = e => setVisible(false);
 
   //  relationship
@@ -32,7 +42,7 @@ const PersonalPostItem = data => {
         className="personal-post__content"
         onMouseEnter={handleMouseHover}
         onMouseLeave={handleMouseHover}
-        onClick={showModal}
+        onClick={handleShowImage}
       >
         <Image
           publicId={sidecarChildren[0].public_id}
@@ -68,7 +78,9 @@ const PersonalPostItem = data => {
         className="personal-post__modal"
       >
         <PostItem
-          {...data}
+          sidecarChildren={sidecarChildren}
+          numLikes={numLikes}
+          numComments={numComments}
           relationship={relationship}
           isModal
           handleCancelModalPost={handleCancelModal}
@@ -78,4 +90,4 @@ const PersonalPostItem = data => {
   );
 };
 
-export default PersonalPostItem;
+export default withRouter(PersonalPostItem);

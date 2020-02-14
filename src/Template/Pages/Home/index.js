@@ -33,7 +33,7 @@ const HomePage = () => {
     isLoading: true,
     data: [],
     error: null,
-    limit: 3,
+    limit: 12,
     page: 1,
     totalItem: 0
   });
@@ -48,10 +48,9 @@ const HomePage = () => {
 
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/posts`,
+          url: `${SERVER_BASE_URL}/posts-following`,
           params: {
-            ownerId: viewerId,
-            viewerId: viewerId,
+            userId: viewerId,
             limit: state.limit,
             page: state.page
           },
@@ -116,6 +115,7 @@ const HomePage = () => {
                     pageStart={0}
                     loadMore={getMoreItems}
                     hasMore={hasMoreItems}
+                    threshold={300}
                   >
                     {_renderPostItem()}
                   </InfiniteScroll>

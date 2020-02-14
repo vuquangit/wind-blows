@@ -7,6 +7,7 @@ import { get } from "lodash";
 import PostItem from "Containers/PostItem";
 import BasicTemplate from "Template/BasicTemplate";
 import IsLoading from "Components/IsLoading";
+import Page404 from "Template/Pages/404";
 import "./goToPost.scss";
 
 const GoToPost = ({ match = {} }) => {
@@ -43,6 +44,7 @@ const GoToPost = ({ match = {} }) => {
         }));
       } catch (err) {
         console.log(err);
+        setState(prevState => ({ ...prevState, error: err }));
       } finally {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
@@ -53,19 +55,25 @@ const GoToPost = ({ match = {} }) => {
   }, []);
 
   return (
-    <BasicTemplate>
-      <div className="GTP">
-        <div className="GTP__WPI">
-          {state.isLoading ? (
-            <div className="GTP__WPI--is-loading">
-              <IsLoading isLoading size={100} />
+    <>
+      {state.error ? (
+        <BasicTemplate>
+          <div className="GTP">
+            <div className="GTP__WPI">
+              {state.isLoading ? (
+                <div className="GTP__WPI--is-loading">
+                  <IsLoading isLoading size={100} />
+                </div>
+              ) : (
+                <PostItem {...state.data} isHomePage={false} />
+              )}
             </div>
-          ) : (
-            <PostItem {...state.data} isHomePage={false} />
-          )}
-        </div>
-      </div>
-    </BasicTemplate>
+          </div>
+        </BasicTemplate>
+      ) : (
+        <Page404 />
+      )}
+    </>
   );
 };
 

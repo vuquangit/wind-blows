@@ -3,8 +3,9 @@ import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateProfileInfo } from "Redux/Profile/profile.action";
 import { pick } from "lodash";
+
+import { updateProfileInfo } from "Redux/Profile/profile.action";
 import "./authorization.scss";
 
 const Authorization = ({ history, location }) => {

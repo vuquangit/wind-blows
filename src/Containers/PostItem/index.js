@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import classNames from "classnames";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import PostHeader from "./PostHeader";
 import PostImage from "./PostImage";
@@ -27,13 +27,10 @@ const PostItem = ({
   const { id: viewerId = "" } = useSelector(
     (state = {}) => get(state, "profile.data.user") || {}
   );
-  const [isLikingPost, setIsLikingPost] = useState(false);
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const sourceLikePost = axios.CancelToken.source();
   const fetchLikePost = useCallback(
     async (endpoint = "") => {
-      setIsLikingPost(true);
-
       try {
         await axios({
           method: "post",
@@ -48,11 +45,8 @@ const PostItem = ({
           cancelToken: sourceLikePost.token
         });
 
-        setIsLikingPost(false);
-        console.log(endpoint === "like" ? "liked" : "unlike");
+        console.log(endpoint === "like" ? "liked post" : "unlike post");
       } catch (err) {
-        // setIsLikingPost(false);
-
         if (axios.isCancel(err)) {
           console.log("cancelled like post");
         } else {
@@ -71,7 +65,6 @@ const PostItem = ({
     setLikeTotal(!isLikePost ? likeTotal + 1 : likeTotal - 1);
 
     // not watting
-    isLikingPost && sourceLikePost.cancel("cancelled like post");
     isLikePost ? fetchLikePost("unlike") : fetchLikePost("like");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLikePost]);

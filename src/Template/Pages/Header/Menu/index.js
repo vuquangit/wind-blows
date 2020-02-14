@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { Badge } from "antd";
-import { get } from "lodash";
-import { NavLink } from "react-router-dom";
+import { get, startsWith } from "lodash";
+import { NavLink, withRouter } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,7 @@ import AvatarUser from "Components/AvatarUser";
 import DropdownNotification from "./DropdownNotification";
 import { updateNotifications } from "Redux/Notifications/notification.action";
 
-const Menu = () => {
+const Menu = ({ match = {} }) => {
   const dispatch = useDispatch();
   const {
     username = "",
@@ -53,12 +53,13 @@ const Menu = () => {
 
   // notifications
   const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
+  const enableDropdownNoti = startsWith(match.path, "/notifications");
 
   return (
     <div className="header__menu">
       <div className="header__menu--items">
         <div className="menu-item">
-          {!isSmallScreen ? (
+          {!isSmallScreen && !enableDropdownNoti ? (
             <DropdownNotification count={totalNotiUnread} />
           ) : (
             <NavLink to="/notifications">
@@ -68,7 +69,6 @@ const Menu = () => {
             </NavLink>
           )}
         </div>
-
         <div className="menu-item">
           <NavLink to={`/${username || id}`}>
             <AvatarUser
@@ -82,4 +82,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default withRouter(Menu);

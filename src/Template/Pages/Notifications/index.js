@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { get, startsWith } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Notification from "./Notification";
@@ -9,7 +10,6 @@ import NotiLoading from "./NotificationLoading";
 import NotiEmpty from "./NotificationEmpty";
 import { clearNewNotifications } from "Redux/Notifications/notification.action";
 import "./notification.scss";
-import { withRouter } from "react-router-dom";
 
 const Notifications = () => {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const Notifications = () => {
           isLoading: false
         }));
 
-        await dispatch(clearNewNotifications());
+        if (state.page === 1) await dispatch(clearNewNotifications());
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled fetch notifications");

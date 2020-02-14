@@ -18,7 +18,7 @@ const PostInfo = ({
   isHomePage = false,
   likedByViewer = false,
   savedByViewer = false,
-  handleLikePost
+  handleLikePost = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector(
     (state = {}) => get(state, "profile.data.user") || {}

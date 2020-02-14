@@ -1,9 +1,11 @@
 import React, { useCallback } from "react";
+import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
-import { get } from "lodash";
+import { get, startsWith } from "lodash";
 import { Button, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import NotiLoading from "./NotificationLoading";
 import UserRelationship from "Components/UserRelationship";
@@ -15,7 +17,8 @@ const Notification = ({
   isLoading = false,
   setAllItemsReaded = () => {},
   getMoreItems = () => {},
-  hasMoreItems = false
+  hasMoreItems = false,
+  match = {}
 }) => {
   const dispatch = useDispatch();
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
@@ -23,6 +26,7 @@ const Notification = ({
     get(state, "profile.data.user")
   );
 
+  // handle read all notifications
   const handleReadAllNoti = async () => {
     try {
       await axios({
@@ -59,22 +63,32 @@ const Notification = ({
     [items]
   );
 
+  const isDropdown = !startsWith(match.path, "/notifications");
+  const threshold = isDropdown ? 50 : 250;
+
   return (
     <div className="notification">
       <div className="notification__header">
         <h1 className="notification__header--title">Notifications</h1>
-        <Button
-          onClick={handleReadAllNoti}
-          className="notification__header--btn-read-all"
-        >
-          Mark all as read
-        </Button>
+        <div>
+          <Button
+            onClick={handleReadAllNoti}
+            className="notification__header--btn"
+          >
+            Mark all as read
+          </Button>
+          <Link to="/notifications">
+            <Button className="notification__header--btn">See all</Button>
+          </Link>
+        </div>
       </div>
       <NotificationNew />
       <InfiniteScroll
         pageStart={0}
         loadMore={getMoreItems}
         hasMore={hasMoreItems}
+        threshold={threshold}
+        useWindow={!isDropdown}
       >
         {_renderItem()}
       </InfiniteScroll>
@@ -83,4 +97,4 @@ const Notification = ({
   );
 };
 
-export default Notification;
+export default withRouter(Notification);

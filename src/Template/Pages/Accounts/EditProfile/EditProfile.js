@@ -19,73 +19,9 @@ import { updateProfileInfo } from "Redux/Profile/profile.action";
 
 const EditProfile = props => {
   const dispatch = useDispatch();
-  const profile = useSelector((state = {}) => state.profile.data.user);
-
-  useEffect(() => {
-    setFieldsValue({
-      fullName: get(profile, "fullName"),
-      username: profile.username,
-      website: profile.website,
-      bio: get(profile, "bio"),
-      email: get(profile, "email"),
-      phoneNumber: get(profile, "phoneNumber"),
-      gender: get(profile, "gender")
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile]);
-
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
-  // post
-  const [stateUpdate, setStateUpdate] = useState({
-    isUpdating: false,
-    data: {},
-    error: null
-  });
-
-  // update profile
-  const fetchUpdateProfile = async values => {
-    try {
-      setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
-      console.log("data edit", { id: get(profile, "id"), ...values });
-      const res = await Axios({
-        method: "post",
-        url: `${SERVER_BASE_URL}/users/update`,
-        data: { id: get(profile, "id"), ...values },
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      console.log("Edited profile :", res);
-      setStateUpdate(prevState => ({ ...prevState, data: res.data }));
-
-      // fetch personal post data
-      if (res.status === 200 || res.status === 201) {
-        const data = { email: values.email };
-        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
-
-        message.success("Updated your profile");
-      }
-      // ....
-    } catch (err) {
-      console.log("Edit profile error ", err);
-      message.error("Edit profile error: ", err);
-    } finally {
-      setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-
-        fetchUpdateProfile(values);
-      }
-    });
-  };
-
+  const profile =
+    useSelector((state = {}) => get(state, "profile.data.user")) || {};
   const { getFieldDecorator, setFieldsValue } = props.form;
 
   const formItemLayout = {
@@ -110,6 +46,69 @@ const EditProfile = props => {
         offset: 8
       }
     }
+  };
+
+  useEffect(() => {
+    setFieldsValue({
+      fullName: get(profile, "fullName"),
+      username: get(profile, "username"),
+      website: get(profile, "website"),
+      bio: get(profile, "bio"),
+      email: get(profile, "email"),
+      phoneNumber: get(profile, "phoneNumber"),
+      gender: get(profile, "gender")
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
+
+  // post
+  const [stateUpdate, setStateUpdate] = useState({
+    isUpdating: false,
+    data: {},
+    error: null
+  });
+
+  // update profile
+  const fetchUpdateProfile = async values => {
+    try {
+      setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
+
+      const res = await Axios({
+        method: "post",
+        url: `${SERVER_BASE_URL}/users/update`,
+        data: { id: get(profile, "id"), ...values },
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      console.log("Edited profile :", res);
+      setStateUpdate(prevState => ({ ...prevState, data: res.data }));
+
+      // fetch personal post data
+      if (res.status === 200 || res.status === 201) {
+        const data = { email: values.email };
+        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+
+        message.success("Updated your profile", 5);
+      }
+      // ....
+    } catch (err) {
+      console.log("Edit profile error ", err);
+      message.error("Edit profile error: ", err);
+    } finally {
+      setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
+    }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log("Received values of form: ", values);
+
+        fetchUpdateProfile(values);
+      }
+    });
   };
 
   const genderLists = (
@@ -197,11 +196,18 @@ const EditProfile = props => {
         </Form.Item>
         <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
-            valuePropName: "checked"
+            valuePropName: "checked",
+            rules: [
+              {
+                required: true,
+                message: "Please check checkbox agreement"
+              }
+            ]
           })(
             <div className="edit-profile__form--agreement">
               <Checkbox>
-                I have read the <a href="/accounts/edit">agreement</a>
+                Include your account when recommending similar accounts people
+                might want to follow.
               </Checkbox>
             </div>
           )}

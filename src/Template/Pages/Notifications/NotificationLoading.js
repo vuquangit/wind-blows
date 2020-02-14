@@ -3,7 +3,7 @@ import IsLoading from "Components/IsLoading";
 
 const NotificationLoading = () => {
   return (
-    <div>
+    <div className="notification__is-loading">
       <IsLoading isLoading size={48} />
     </div>
   );

@@ -12,13 +12,15 @@ import PrivateRoute from "Containers/PrivateRoute";
 import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
-// import Loading from "./Pages/Loading";
+import Loading from "./Pages/Loading";
 import { newNotifications } from "Redux/Notifications/notification.action";
 import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const { data: profileData = {} } = useSelector((state = {}) => state.profile);
+  const { data: profileData = {}, isFetching = false } = useSelector(
+    (state = {}) => state.profile
+  );
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   const _renderPage = () =>
@@ -187,7 +189,9 @@ const Main = () => {
     }
   };
 
-  return (
+  return isFetching ? (
+    <Loading />
+  ) : (
     <BrowserRouter>
       <MainWrapper>
         <Switch>{_renderPage()}</Switch>

@@ -1,4 +1,4 @@
-.activity {
+.dropdown {
     position: relative;
     display: flex;
     align-items: stretch;
@@ -68,36 +68,6 @@
             white-space: normal;
             width: 500px;
             z-index: 11;
-        }
-
-        .activity__content {
-            display: flex;
-            flex-shrink: 0;
-            margin: 0;
-            padding: 0;
-            position: relative;
-            flex-direction: column;
-            align-items: stretch;
-
-            &--L1 {
-                height: auto;
-                overflow: hidden auto;
-                display: flex;
-                align-items: stretch;
-                flex-direction: column;
-                flex-shrink: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-            }
-
-            &--L2 {
-                flex-direction: column;
-                padding-bottom: 0px;
-                padding-top: 0px;
-                display: flex;
-                align-items: stretch;
-            }
         }
     }
 

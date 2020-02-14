@@ -5,7 +5,7 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  align-items: center;
+  // align-items: center;
   align-content: stretch;
   text-decoration: none !important;
   cursor: pointer;
@@ -26,6 +26,10 @@
 
   &__unread {
     background-color: #cdddec;
+  }
+
+  &__avatar {
+    padding-top: 3px;
   }
 
   &__info {
@@ -113,18 +117,25 @@
     flex-direction: row;
 
     &--icon-heart {
-      color: red;
+      width: 14px !important;
+      height: 14px !important;
+      color: red !important;
     }
 
     &--icon-follow {
-      color: rgb(3, 129, 123);
+      width: 14px !important;
+      height: 14px !important;
+      color: rgb(3, 129, 123) !important;
     }
 
     &--icon-comment {
-      color: rgb(62, 173, 77);
+      width: 14px !important;
+      height: 14px !important;
+      color: rgb(62, 173, 77) !important;
     }
 
     .timestamp {
+      text-transform: lowercase;
       font-size: 14px;
       line-height: 18px;
       font-weight: 400;

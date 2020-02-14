@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
@@ -12,16 +12,17 @@ import "./signup.scss";
 
 const EmailSignup = ({ history }) => {
   //Is signed
-  const dispatch = useDispatch();
+
   const { data: profileData, isFetching } =
     useSelector((state = {}) => state.profile) || {};
+
   useEffect(() => {
     if (!isEmpty(profileData)) {
       history.push("/");
     }
-  }, [dispatch, history, profileData, isFetching]);
+  }, [profileData, isFetching, history]);
 
-  // console.log("signup");
+  console.log("signup");
 
   return (
     <>

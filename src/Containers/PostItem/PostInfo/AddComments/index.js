@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Comment, Button, Input, message } from "antd";
-// import moment from "moment";
+import React, { useState, useRef } from "react";
 import axios from "axios";
+
 import { get } from "lodash";
 import { useSelector } from "react-redux";
+import { Comment, Button, Input, message } from "antd";
 
 const AddComments = ({
   postId = "",
@@ -11,7 +11,7 @@ const AddComments = ({
   setIsViewerComments = () => {}
 }) => {
   const viewerId = useSelector(state => get(state, "profile.data.user.id"));
-
+  const textInput = useRef(null);
   const [text, setText] = useState("");
   const handleChangeText = e => setText(e.target.value);
 
@@ -45,6 +45,9 @@ const AddComments = ({
 
       // scroll to bottom comments
       setIsViewerComments(true);
+
+      console.log(textInput);
+      textInput.current.focus();
     } catch (err) {
       console.log(err);
       message.error("Comments this post error");
@@ -66,6 +69,7 @@ const AddComments = ({
               placeholder="Add a comment..."
               autoSize={{ minRows: 1, maxRows: 4 }}
               disabled={isLoading}
+              ref={textInput}
             />
             <Button
               htmlType="submit"
