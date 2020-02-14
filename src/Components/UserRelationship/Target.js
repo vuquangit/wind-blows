@@ -6,11 +6,7 @@ import { Button } from "antd";
 import { useSelector } from "react-redux";
 import { isEqual, get } from "lodash";
 
-const Target = ({
-  user = {},
-  notifications = { notifications },
-  relationship = { relationship }
-}) => {
+const Target = ({ user = {}, notifications = {}, relationship = {} }) => {
   const { id: viewerId = "" } = useSelector(
     (state = {}) => get(state, "profile.data.user") || {}
   );

@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import { isEmpty, get } from "lodash";
 
 import { requestProfileInfo } from "Redux/Profile/profile.action";
-// import Loading from "Template/Pages/Loading";
 
 const LoginForm = ({ form, history }) => {
   const { getFieldDecorator, validateFields, setFieldsValue } = form;
@@ -58,7 +57,6 @@ const LoginForm = ({ form, history }) => {
         // save local storage
         window.sessionStorage.setItem("login_username", values.username);
         window.sessionStorage.setItem("login_password", values.password);
-
         const typeInput = await confirmInput(values.username);
 
         if (typeInput.type === "email")
@@ -77,7 +75,6 @@ const LoginForm = ({ form, history }) => {
         if (!isEmpty(profileData)) {
           window.sessionStorage.removeItem("login_username");
           window.sessionStorage.removeItem("login_password");
-
           history.push("/");
         }
       }

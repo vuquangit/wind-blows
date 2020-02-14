@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import classNames from "classnames";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { get, isEmpty } from "lodash";
+import { get } from "lodash";
 
 import PostHeader from "./PostHeader";
 import PostImage from "./PostImage";

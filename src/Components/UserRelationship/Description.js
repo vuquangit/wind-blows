@@ -10,11 +10,7 @@ import {
 
 import TimeFromNow from "Components/TimeFromNow";
 
-const Description = ({
-  user = {},
-  notifications = { notifications },
-  match = {}
-}) => {
+const Description = ({ user = {}, notifications = {}, match = {} }) => {
   const { username = "", suggestionDescription = "", fullName = "" } = user;
   const { typeNotification = 0, text = "", timestamp = "" } = notifications;
   const subDescription = match.path === "/" ? suggestionDescription : fullName;

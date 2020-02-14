@@ -1,47 +1,63 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { isEmpty } from "lodash";
+import { isEmpty, get } from "lodash";
 
 import { createProfile } from "Redux/Profile/profile.action";
 
 const RegistrationForm = ({ form, history }) => {
-  const { getFieldDecorator } = form;
-  const [state, setState] = useState({
-    confirmDirty: false,
-    autoCompleteResult: []
-  });
-
   // state profile
   const dispatch = useDispatch();
   const { data: profileData, isFetching, message } = useSelector(
     (state = {}) => state.profile
   );
 
+  const { getFieldDecorator, setFieldsValue, validateFields } = form;
+  const [confirmDirty, setConfirmDirty] = useState(false);
+
+  const validateToNextPassword = (rule, value, callback) => {
+    if (value && confirmDirty) {
+      validateFields(["confirm"], { force: true });
+    }
+    callback();
+  };
+  const compareToFirstPassword = (rule, value, callback) => {
+    if (value && value !== form.getFieldValue("password")) {
+      callback("Two passwords that you enter is inconsistent!");
+    } else {
+      callback();
+    }
+  };
+  const handleConfirmBlur = e => {
+    const { value } = e.target;
+    setConfirmDirty(confirmDirty || !!value);
+  };
+
   // fetch login
-  const fetchSignup = useCallback(
-    async data => {
-      await dispatch(
-        createProfile({
-          data,
-          endpoint: "auth/signup",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8"
-          }
-        })
-      );
-    },
-    [dispatch]
-  );
+  const fetchSignup = async data => {
+    await dispatch(
+      createProfile({
+        data,
+        endpoint: "/auth/signup",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8"
+        }
+      })
+    );
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
-    form.validateFieldsAndScroll(async (err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
-        // console.log("Received values of form: ", values);
+        window.sessionStorage.setItem("signup_email", values.email);
+        window.sessionStorage.setItem("signup_fullname", values.fullname);
+        window.sessionStorage.setItem("signup_username", values.username);
+        window.sessionStorage.setItem("signup_password", values.password);
 
+        console.log(values);
         await fetchSignup({
           email: values.email,
           fullName: values.fullName,
@@ -50,31 +66,27 @@ const RegistrationForm = ({ form, history }) => {
         });
 
         if (!isEmpty(profileData)) {
+          window.sessionStorage.removeItem("signup_email");
+          window.sessionStorage.removeItem("signup_fullname");
+          window.sessionStorage.removeItem("signup_username");
+          window.sessionStorage.removeItem("signup_password");
           history.push("/");
         }
       }
     });
   };
 
-  const handleConfirmBlur = e => {
-    const { value } = e.target;
-    setState({ confirmDirty: state.confirmDirty || !!value });
-  };
+  useEffect(() => {
+    if (get(window, "sessionStorage.signup_username"))
+      setFieldsValue({
+        email: get(window, "sessionStorage.signup_email") || "",
+        fulName: get(window, "sessionStorage.signup_fullName") || "",
+        username: get(window, "sessionStorage.signup_username") || "",
+        password: get(window, "sessionStorage.signup_password") || ""
+      });
 
-  const compareToFirstPassword = (rule, value, callback) => {
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const validateUsername = (rule, value, callback) => {
     if (value) {
@@ -140,7 +152,7 @@ const RegistrationForm = ({ form, history }) => {
           rules: [
             {
               required: true,
-              message: "Please input your password!"
+              message: "Please input your new password!"
             },
             {
               min: 8,
@@ -150,17 +162,16 @@ const RegistrationForm = ({ form, history }) => {
               validator: validateToNextPassword
             }
           ]
-        })(
-          <Input.Password placeholder="Password" allowClear title="Password" />
-        )}
+        })(<Input.Password />)}
       </Form.Item>
       <Form.Item hasFeedback>
         {getFieldDecorator("confirm", {
           rules: [
             {
               required: true,
-              message: "Please confirm your password!"
+              message: "Please confirm your new password!"
             },
+
             {
               min: 8,
               message: "Length greater than 8 characters"
@@ -169,14 +180,7 @@ const RegistrationForm = ({ form, history }) => {
               validator: compareToFirstPassword
             }
           ]
-        })(
-          <Input.Password
-            onBlur={handleConfirmBlur}
-            placeholder="Confirm Password"
-            title="Confirm Password"
-            allowClear
-          />
-        )}
+        })(<Input.Password onBlur={handleConfirmBlur} />)}
       </Form.Item>
       <Form.Item>
         <Button
