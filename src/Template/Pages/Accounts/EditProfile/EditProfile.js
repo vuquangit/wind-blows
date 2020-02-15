@@ -48,6 +48,16 @@ const EditProfile = props => {
     }
   };
 
+  const validateUsername = (rule, value, callback) => {
+    if (value && /^\S+$/gi.test(value) === false) {
+      callback("Username contain whitespace");
+    } else if (value && /[A-Z]+/.test(value)) {
+      callback("The username has uppercase characters");
+    } else {
+      callback();
+    }
+  };
+
   useEffect(() => {
     setFieldsValue({
       fullName: get(profile, "fullName"),
@@ -84,14 +94,13 @@ const EditProfile = props => {
       console.log("Edited profile :", res);
       setStateUpdate(prevState => ({ ...prevState, data: res.data }));
 
-      // fetch personal post data
+      // refresh personal store
       if (res.status === 200 || res.status === 201) {
         const data = { email: values.email };
         await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
 
         message.success("Updated your profile", 5);
       }
-      // ....
     } catch (err) {
       console.log("Edit profile error ", err);
       message.error("Edit profile error: ", err);
@@ -153,6 +162,9 @@ const EditProfile = props => {
                 required: true,
                 message: "Please input your username!",
                 whitespace: true
+              },
+              {
+                validator: validateUsername
               }
             ]
           })(<Input />)}

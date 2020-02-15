@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Form, Input, Button, message, Typography } from "antd";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { get } from "lodash";
 import axios from "axios";
 
+import { updateProfileInfo } from "Redux/Profile/profile.action";
 import ProfilePhoto from "Containers/ProfilePhoto";
 import "./changePassword.scss";
 
 const ChangePassword = props => {
+  const dispatch = useDispatch();
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const { isAuthenticateLogin = false, id: ownerId = "" } =
+  const { isAuthenticateLogin = false, id: ownerId = "", email = "" } =
     useSelector((state = {}) => get(state, "profile.data.user")) || {};
 
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -80,7 +82,15 @@ const ChangePassword = props => {
 
       console.log("Edited profile :", res);
       setStateUpdate(prevState => ({ ...prevState, data: res.data }));
-      message.success("Updated your profile", 5);
+      // message.success("Updated your profile", 5);
+
+      // refresh personal store
+      if (res.status === 200 || res.status === 201) {
+        const data = { email };
+        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+
+        message.success("Updated your profile", 5);
+      }
     } catch (err) {
       console.log("Change password error ", err);
       message.error("Change password error: ", 5);

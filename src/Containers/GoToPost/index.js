@@ -40,7 +40,8 @@ const GoToPost = ({ match = {} }) => {
 
         setState(prevState => ({
           ...prevState,
-          data: { ...prevState.data, ...response.data }
+          error: false,
+          data: response.data
         }));
       } catch (err) {
         console.log(err);
@@ -56,7 +57,7 @@ const GoToPost = ({ match = {} }) => {
 
   return (
     <>
-      {state.error ? (
+      {!state.error ? (
         <BasicTemplate>
           <div className="GTP">
             <div className="GTP__WPI">

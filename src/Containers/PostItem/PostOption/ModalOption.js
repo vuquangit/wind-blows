@@ -28,7 +28,18 @@ const ModalOption = ({
   // delete comments
   const [isDeleleting, setIsDeleting] = useState(false);
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
+  const confirmDelete = () => {
+    Modal.confirm({
+      title: "Delete this post",
+      content:
+        "Do you want to delete this post?\nAll notices of this post will be deleted",
+      okText: "Delete",
+      cancelText: "Cancel",
+      onOk: () => {
+        handleDeteleComments();
+      }
+    });
+  };
   const handleDeteleComments = async () => {
     const sourceLikePost = axios.CancelToken.source();
     setIsDeleting(true);
@@ -47,19 +58,15 @@ const ModalOption = ({
       });
 
       setIsDeleting(false);
-      message.success("Deleted post");
+      message.success("Deleted post", 3);
       console.log("delete", res);
 
-      //...
+      // go back
       if (startsWith(match.path, "/p/:id")) {
         history.goBack();
       } else if (startsWith(match.path, "/:username")) {
-        // delete post
-
         handleCancelModal();
         handleCancelModalPost();
-
-        console.log("delete post in data ");
       }
     } catch (err) {
       setIsDeleting(false);
@@ -103,7 +110,7 @@ const ModalOption = ({
         {idMyPost ? (
           <Button
             className="modal__content--btn btn-red"
-            onClick={() => handleDeteleComments()}
+            onClick={confirmDelete}
             disabled={isDeleleting}
           >
             Delete

@@ -56,7 +56,7 @@ const LoginForm = ({ form, history }) => {
       if (!err) {
         // save local storage
         window.sessionStorage.setItem("login_username", values.username);
-        window.sessionStorage.setItem("login_password", values.password);
+        // window.sessionStorage.setItem("login_password", values.password);
         const typeInput = await confirmInput(values.username);
 
         if (typeInput.type === "email")
@@ -74,7 +74,7 @@ const LoginForm = ({ form, history }) => {
 
         if (!isEmpty(profileData)) {
           window.sessionStorage.removeItem("login_username");
-          window.sessionStorage.removeItem("login_password");
+          // window.sessionStorage.removeItem("login_password");
           history.push("/");
         }
       }
@@ -84,8 +84,8 @@ const LoginForm = ({ form, history }) => {
   useEffect(() => {
     if (get(window, "sessionStorage.login_username"))
       setFieldsValue({
-        username: get(window, "sessionStorage.login_username") || "",
-        password: get(window, "sessionStorage.login_password") || ""
+        username: get(window, "sessionStorage.login_username") || ""
+        // password: get(window, "sessionStorage.login_password") || ""
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

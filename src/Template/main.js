@@ -180,7 +180,7 @@ const Main = () => {
         }
       });
 
-      console.log("response fetch", response);
+      console.log("response notification save", response);
 
       message.success("Token is saved in server");
     } catch (error) {

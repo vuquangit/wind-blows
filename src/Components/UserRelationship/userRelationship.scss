@@ -12,6 +12,7 @@
 
   &:hover {
     text-decoration: none !important;
+    background-color: rgb(191, 213, 221);
   }
 
   &::after {
@@ -25,7 +26,7 @@
   }
 
   &__unread {
-    background-color: #cdddec;
+    background-color: #d5ebff;
   }
 
   &__avatar {

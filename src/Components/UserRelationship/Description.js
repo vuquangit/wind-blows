@@ -36,12 +36,12 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
         " liked your photo."
       ) : typeNotification === 3 ? (
         <>
-          like your comments:
+          {` like your comments: `}
           <span style={{ fontStyle: "italic" }}>{text}</span>
         </>
       ) : (
         <>
-          mentioned you in a comment:
+          {` mentioned you in a comment: `}
           <span style={{ fontStyle: "italic" }}>{text}</span>
         </>
       )}
