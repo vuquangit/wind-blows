@@ -1,13 +1,15 @@
 import React from "react";
-import BasicTemplate from "Template/BasicTemplate";
-import ResetPassword from "./ResetPassword";
+// import BasicTemplate from "Template/BasicTemplate";
+import UpdatePassword from "../Update";
 import "./reset.scss";
 
 const Reset = () => {
   return (
-    <BasicTemplate>
-      <ResetPassword />
-    </BasicTemplate>
+    <div className="reset-password">
+      <div className="reset-password__content">
+        <UpdatePassword isResetPassword />
+      </div>
+    </div>
   );
 };
 

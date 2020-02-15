@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, message, Typography } from "antd";
-import { Link, withRouter } from "react-router-dom";
+import { Form, Input, Button, Typography } from "antd";
+import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
 
@@ -9,7 +9,7 @@ import "./signup.scss";
 
 const Registration = ({ form = {}, history = {} }) => {
   const dispatch = useDispatch();
-  const { data: profileData, isFetching, message } = useSelector(
+  const { data: profileData, message } = useSelector(
     (state = {}) => state.profile
   );
 
