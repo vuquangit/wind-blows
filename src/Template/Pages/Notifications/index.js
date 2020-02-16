@@ -12,6 +12,13 @@ import { clearNewNotifications } from "Redux/Notifications/notification.action";
 import "./notification.scss";
 
 const Notifications = () => {
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const dispatch = useDispatch();
   const [state, setState] = useState({
     isLoading: false,
@@ -21,9 +28,7 @@ const Notifications = () => {
     page: 1,
     totalItem: 0
   });
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
-  );
+
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
@@ -42,7 +47,8 @@ const Notifications = () => {
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: source.token
         });

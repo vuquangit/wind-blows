@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Button, message } from "antd";
 import Axios from "axios";
+import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 const PostSubmit = ({ status = {}, clearStatus }) => {
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const enablePost = !status.sidecarChildren.length > 0;
 
   // post
@@ -23,7 +29,8 @@ const PostSubmit = ({ status = {}, clearStatus }) => {
         url: `${SERVER_BASE_URL}/post/add`,
         data: { ...status },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
 

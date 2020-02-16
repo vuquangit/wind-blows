@@ -7,11 +7,13 @@ import { withRouter } from "react-router-dom";
 import { get } from "lodash";
 
 const Followers = ({ match = {} }) => {
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => state.profile.data.user
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user")
   );
-
-  const username = get(match, "params.username");
+  const username = get(match, "params.username", "");
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
 
   const [state, setState] = useState({
     data: [],
@@ -39,7 +41,8 @@ const Followers = ({ match = {} }) => {
           },
           headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           }
         });
 
@@ -56,7 +59,7 @@ const Followers = ({ match = {} }) => {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
     })();
-  }, [SERVER_BASE_URL, username, viewerId, state.page]);
+  }, [SERVER_BASE_URL, username, viewerId, state.page, tokenUser]);
 
   const hasMoreItems = state.data.length < state.totalItems;
 

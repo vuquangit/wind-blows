@@ -21,8 +21,11 @@ const PostAction = ({
   savedByViewer,
   postId = ""
 }) => {
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
   );
 
   // Modal share button
@@ -49,7 +52,8 @@ const PostAction = ({
           postId: postId
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         },
         cancelToken: source.token
       });

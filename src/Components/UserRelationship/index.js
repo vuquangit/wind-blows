@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import classNames from "classnames";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { get } from "lodash";
 import { message } from "antd";
 import { withRouter } from "react-router-dom";
@@ -27,7 +27,10 @@ const UserRelationship = ({
     media = {},
     read: notiReaded = false
   } = notifications;
-  const postId = get(media, "id") || "";
+  const postId = get(media, "id", "");
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
 
   // handle click div
   const fetchReadItem = async () => {
@@ -39,7 +42,8 @@ const UserRelationship = ({
           id: notificationId
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
     } catch (error) {

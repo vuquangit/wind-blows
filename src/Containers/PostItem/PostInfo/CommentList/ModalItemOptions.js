@@ -13,7 +13,10 @@ const ModalItemOptions = ({
   handleDeleteComments = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
   );
 
   const canDeleteComment = isEqual(viewerId, postOwnerId)
@@ -35,7 +38,8 @@ const ModalItemOptions = ({
           commentsId: commentId
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
 

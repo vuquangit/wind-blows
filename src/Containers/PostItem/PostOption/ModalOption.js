@@ -19,8 +19,11 @@ const ModalOption = ({
   history,
   handleCancelModalPost = () => {}
 }) => {
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
   );
 
   const idMyPost = isEqual(viewerId, get(owner, "id"));
@@ -52,7 +55,8 @@ const ModalOption = ({
           postId: postId
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         },
         cancelToken: sourceLikePost.token
       });

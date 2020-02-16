@@ -26,6 +26,9 @@ const CommentListItem = ({
   isHomePage = false,
   handleDeleteComments = () => {}
 }) => {
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);
   const showModalOptions = () => {
@@ -53,7 +56,8 @@ const CommentListItem = ({
           userId: get(viewerProfile, "id") || ""
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         },
         cancelToken: sourceLikesComments.token
       });
@@ -103,7 +107,8 @@ const CommentListItem = ({
           method: "get",
           url: `${SERVER_BASE_URL}/user/${commentOwnerId}`,
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: source.token
         });

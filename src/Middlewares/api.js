@@ -11,7 +11,7 @@ const callApi = async (
   headers = {}
 ) => {
   const fullUrl = `${SERVER_BASE_URL}/${endpoint}`;
-  // console.log("call Api:", endpoint, options, method, headers);
+  console.log("call Api:", endpoint, options, method, headers);
 
   const result = await axios({
     method,
@@ -40,6 +40,7 @@ export default store => next => async action => {
     method = "get",
     headers = {}
   } = requestAPI;
+
   // Expect type of requestApi action consist of: start fetch action, get success action, get fail action
   if (!isArray(types) || types.length !== 3) {
     throw new Error("Expected an array of three action types.");

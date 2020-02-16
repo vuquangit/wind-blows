@@ -20,8 +20,11 @@ const PostInfo = ({
   savedByViewer = false,
   handleLikePost = () => {}
 }) => {
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
   );
 
   // fetch comments data
@@ -48,7 +51,8 @@ const PostInfo = ({
             page: stateComments.page
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           }
         });
 

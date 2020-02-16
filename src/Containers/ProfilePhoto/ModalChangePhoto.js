@@ -45,7 +45,11 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
     id: userId = "",
     email = "",
     profilePictureUrl: profilePictureUrlBefore = ""
-  } = useSelector(state => get(state, "profile.data.user"));
+  } = useSelector(state => get(state, "profile.data.user", {}));
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const keyMessage = "updatable";
 
@@ -101,7 +105,8 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
         url: `${SERVER_BASE_URL}/users/change-profile-photo`,
         data: { userId, profilePictureUrl, profilePicturePublicId: publicId },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
 

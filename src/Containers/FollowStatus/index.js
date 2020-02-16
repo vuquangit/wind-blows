@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { get } from "lodash";
 
 import AvatarUser from "Components/AvatarUser";
+import { stopPropagation } from "utils/stopPropagation";
 import "./followStatus.scss";
 
 const FollowStatus = ({
@@ -98,24 +99,25 @@ const FollowStatus = ({
   // Modal unfollow
   const [visibleModal, setVisibleModal] = useState(false);
   const showModal = e => {
-    // A cross browser compatible way to stop propagation of the event:
-    // if (!e) var e = window.event;
-    // e.cancelBubble = true; //IE
-    // // if (e.stopPropagation) e.stopPropagation(); //FF
-    // e.stopPropagation();
-    var ev = !e ? window.event : e; //IE:Moz
-    ev.stopPropagation ? ev.stopPropagation() : (ev.cancelBubble = true);
+    stopPropagation(e);
 
     state.followStatus === "Following"
       ? setVisibleModal(true)
       : handleFollows();
   };
-  const handleCancelModal = () => setVisibleModal(false);
+  const handleCancelModal = e => {
+    stopPropagation(e);
 
-  const handleFollows = () =>
+    setVisibleModal(false);
+  };
+
+  const handleFollows = e => {
+    stopPropagation(e);
+
     state.followStatus === "Follow"
       ? fetchFollows("add")
       : fetchFollows("unfollow");
+  };
 
   const followBtnClass = classNames(
     "follow-status__btn",

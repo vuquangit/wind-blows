@@ -14,10 +14,13 @@ const FetchPosts = ({
   textEmpty = ""
 }) => {
   const { id: ownerId = "" } = useSelector((state = {}) =>
-    get(state, "personalProfile.data.user")
+    get(state, "personalProfile.data.user", {})
   );
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
   );
 
   const [state, setState] = useState({
@@ -49,7 +52,8 @@ const FetchPosts = ({
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: source.token
         });
@@ -89,6 +93,7 @@ const FetchPosts = ({
     ownerId,
     state.limit,
     state.page,
+    tokenUser,
     viewerId
   ]);
 

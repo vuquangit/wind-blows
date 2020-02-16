@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import axios from "axios";
 import { get } from "lodash";
+import { useSelector } from "react-redux";
 
 import FollowList from "Components/FollowList";
 
@@ -11,6 +12,10 @@ const ModalLikes = ({
   endpoint = "",
   params = {}
 }) => {
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   // fetch list likes
   const [state, setState] = useState({
     isLoading: true,
@@ -36,7 +41,8 @@ const ModalLikes = ({
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: source.token
         });
@@ -74,6 +80,7 @@ const ModalLikes = ({
     params,
     state.limit,
     state.page,
+    tokenUser,
     visibleModal
   ]);
 

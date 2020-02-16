@@ -11,17 +11,21 @@ import Page404 from "Template/Pages/404";
 import "./goToPost.scss";
 
 const GoToPost = ({ match = {} }) => {
+  const postId = match.params.id;
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
+  );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
+  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
+
   const [state, setState] = useState({
     isLoading: true,
     data: {},
     error: null
   });
-
-  const postId = match.params.id;
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
-  );
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
     const feactPostData = async () => {
@@ -34,7 +38,8 @@ const GoToPost = ({ match = {} }) => {
             viewerId: viewerId
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           }
         });
 

@@ -18,11 +18,16 @@ import ProfilePhoto from "Containers/ProfilePhoto";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 
 const EditProfile = props => {
+  const profile = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+  const { getFieldDecorator, setFieldsValue } = props.form;
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const dispatch = useDispatch();
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const profile =
-    useSelector((state = {}) => get(state, "profile.data.user")) || {};
-  const { getFieldDecorator, setFieldsValue } = props.form;
 
   const formItemLayout = {
     labelCol: {
@@ -88,7 +93,8 @@ const EditProfile = props => {
         url: `${SERVER_BASE_URL}/users/update`,
         data: { id: get(profile, "id"), ...values },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
       console.log("Edited profile :", res);

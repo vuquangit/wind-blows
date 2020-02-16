@@ -24,9 +24,13 @@ const PostItem = ({
   handleCancelModalPost = () => {}
 }) => {
   // fetch likes
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
   );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const sourceLikePost = axios.CancelToken.source();
   const fetchLikePost = useCallback(
@@ -40,7 +44,8 @@ const PostItem = ({
             userId: viewerId
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: sourceLikePost.token
         });
@@ -54,7 +59,7 @@ const PostItem = ({
         }
       }
     },
-    [SERVER_BASE_URL, postId, sourceLikePost.token, viewerId]
+    [SERVER_BASE_URL, postId, sourceLikePost.token, tokenUser, viewerId]
   );
 
   // Event post like

@@ -6,6 +6,7 @@ import { Button, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import classNames from "classnames";
 
 import NotiLoading from "./NotificationLoading";
 import UserRelationship from "Components/UserRelationship";
@@ -20,11 +21,15 @@ const Notification = ({
   hasMoreItems = false,
   match = {}
 }) => {
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+
   const dispatch = useDispatch();
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
-  );
 
   // handle read all notifications
   const handleReadAllNoti = async () => {
@@ -36,7 +41,8 @@ const Notification = ({
           userId: viewerId
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
 
@@ -64,10 +70,14 @@ const Notification = ({
   );
 
   const isDropdown = !startsWith(match.path, "/notifications");
-  const threshold = isDropdown ? 50 : 250;
+  // const threshold = isDropdown ? 50 : 250;
+
+  const classNotification = classNames("notification", {
+    "notification-dropdown": isDropdown
+  });
 
   return (
-    <div className="notification">
+    <div className={classNotification}>
       <div className="notification__header">
         <h1 className="notification__header--title">Notifications</h1>
         <div>
@@ -87,7 +97,7 @@ const Notification = ({
         pageStart={0}
         loadMore={getMoreItems}
         hasMore={hasMoreItems}
-        threshold={threshold}
+        // threshold={threshold}
         useWindow={!isDropdown}
       >
         {_renderItem()}

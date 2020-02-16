@@ -16,19 +16,14 @@ import IsLoading from "Components/IsLoading";
 import "./home.scss";
 
 const HomePage = () => {
-  const _renderPostItem = () =>
-    state &&
-    state.data.length > 0 &&
-    state.data.map((item, idx) => (
-      <div key={item.id || idx} className="home-post__item">
-        <PostItem {...item} isHomePage />
-      </div>
-    ));
-
-  // fetch posts home
+  // get posts
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const [state, setState] = useState({
     isLoading: true,
     data: [],
@@ -55,7 +50,8 @@ const HomePage = () => {
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           },
           cancelToken: source.token
         });
@@ -91,7 +87,7 @@ const HomePage = () => {
     return () => {
       source.cancel();
     };
-  }, [SERVER_BASE_URL, state.limit, state.page, viewerId]);
+  }, [SERVER_BASE_URL, state.limit, state.page, tokenUser, viewerId]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
@@ -99,6 +95,16 @@ const HomePage = () => {
     state.data.length === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
+
+  // render items
+  const _renderPostItem = () =>
+    state &&
+    state.data.length > 0 &&
+    state.data.map((item, idx) => (
+      <div key={item.id || idx} className="home-post__item">
+        <PostItem {...item} isHomePage />
+      </div>
+    ));
 
   return (
     <BasicTemplate footer={false}>

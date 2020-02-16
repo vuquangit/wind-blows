@@ -10,7 +10,11 @@ const AddComments = ({
   handleAddComments = () => {},
   setIsViewerComments = () => {}
 }) => {
-  const viewerId = useSelector(state => get(state, "profile.data.user.id"));
+  const viewerId = useSelector(state => get(state, "profile.data.user.id", ""));
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const textInput = useRef(null);
   const [text, setText] = useState("");
   const handleChangeText = e => setText(e.target.value);
@@ -35,7 +39,8 @@ const AddComments = ({
           text: text
         },
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenUser}`
         }
       });
 

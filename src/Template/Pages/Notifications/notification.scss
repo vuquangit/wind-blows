@@ -4,7 +4,6 @@
   flex-direction: column;
   text-align: left;
   background-color: #fff;
-
   overflow: auto;
 
   &__header {
@@ -60,4 +59,8 @@
     align-items: center;
     justify-content: center;
   }
+}
+
+.notification-dropdown {
+  max-height: 360px;
 }

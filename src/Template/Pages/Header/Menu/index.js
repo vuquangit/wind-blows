@@ -19,11 +19,14 @@ const Menu = ({ match = {} }) => {
     id = "",
     profilePictureUrl = "",
     profilePicturePublicId = ""
-  } = useSelector((state = {}) => get(state, "profile.data.user") || "");
-
-  const { totalUnread: totalNotiUnread = 0 } = useSelector(
-    (state = {}) => get(state, "notifications") || ""
+  } = useSelector((state = {}) => get(state, "profile.data.user", ""));
+  const { totalUnread: totalNotiUnread = 0 } = useSelector((state = {}) =>
+    get(state, "notifications", {})
   );
+  const tokenUser = useSelector((state = {}) =>
+    get(state, "profile.data.token", "")
+  );
+
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
@@ -36,7 +39,8 @@ const Menu = ({ match = {} }) => {
             userId: id
           },
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenUser}`
           }
         });
 

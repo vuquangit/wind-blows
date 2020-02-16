@@ -1,6 +1,6 @@
 import HomePage from "./Pages/Home";
 import Login from "./Pages/Accounts/Login";
-import EmailSignup from "./Pages/Accounts/EmailSignup";
+import EmailSignup from "./Pages/Accounts/Signup";
 import PersonalPost from "./Pages/PersonalPage/PersonalPosts";
 import PersonalSaved from "./Pages/PersonalPage/PersonalSaved";
 import ForgotPassword from "Template/Pages/Accounts/Password/Forgot";
