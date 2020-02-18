@@ -12,7 +12,7 @@ const AddComments = ({
 }) => {
   const viewerId = useSelector(state => get(state, "profile.data.user.id", ""));
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const textInput = useRef(null);

@@ -24,7 +24,7 @@ const PostInfo = ({
     get(state, "profile.data.user", {})
   );
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   // fetch comments data

@@ -12,7 +12,7 @@ const Followers = ({ match = {} }) => {
   );
   const username = get(match, "params.username", "");
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const [state, setState] = useState({

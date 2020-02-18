@@ -13,7 +13,7 @@ const ModalLikes = ({
   params = {}
 }) => {
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   // fetch list likes

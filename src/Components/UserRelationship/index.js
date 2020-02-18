@@ -29,7 +29,7 @@ const UserRelationship = ({
   } = notifications;
   const postId = get(media, "id", "");
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   // handle click div

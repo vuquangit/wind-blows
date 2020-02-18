@@ -1,4 +1,4 @@
-import * as firebase from "firebase";
+import firebase from "firebase/app";
 import { firebaseConfig } from "./firebaseConfig";
 
 export default !firebase.apps.length

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { pick, isEmpty, get } from "lodash";
@@ -18,13 +18,12 @@ import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const [isError, toggleError] = useState(false);
   const {
     data: profileData = {},
     isFetching = false
   } = useSelector((state = {}) => get(state, "profile"));
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
@@ -41,48 +40,43 @@ const Main = () => {
   useEffect(
     () => {
       if (isEmpty(profileData)) {
-        try {
-          // Local Storage
-          firebase &&
-            firebase.auth().onAuthStateChanged(async user => {
-              console.log("use Effect Homapage");
-              if (user) {
-                // User is signed in.
-                const {
-                  displayName: fullName,
-                  photoURL: profilePictureUrl,
-                  ...rest
-                } = pick(user, [
-                  "displayName",
-                  "email",
-                  "phoneNumber",
-                  "photoURL",
-                  "emailVerified"
-                ]);
+        // Local Storage
+        firebase &&
+          firebase.auth().onAuthStateChanged(async user => {
+            console.log("use Effect Homapage");
+            if (user) {
+              // User is signed in.
+              const {
+                displayName: fullName,
+                photoURL: profilePictureUrl,
+                ...rest
+              } = pick(user, [
+                "displayName",
+                "email",
+                "phoneNumber",
+                "photoURL",
+                "emailVerified"
+              ]);
 
-                const data = { fullName, profilePictureUrl, ...rest };
-                await dispatch(
-                  updateProfileInfo({ data, endpoint: "auth/me" })
-                );
+              const data = { fullName, profilePictureUrl, ...rest };
+              await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
 
-                console.log("firebase login");
-
-                !isEmpty(profileData) && notificationPermission();
-              } else {
-                dispatch(signOut());
-              }
-            });
-        } catch (error) {
-          console.log(error);
-          toggleError(true);
-        }
-      } else {
-        !isEmpty(profileData) && notificationPermission();
+              console.log("firebase login");
+            } else {
+              dispatch(signOut());
+            }
+          });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  useEffect(() => {
+    console.log("notifications", !isEmpty(tokenUser));
+
+    !isEmpty(tokenUser) && notificationPermission();
+  }, [tokenUser]);
 
   // notifications
   const sourceNoti = axios.CancelToken.source();
@@ -204,8 +198,6 @@ const Main = () => {
       message.error("save token failed");
     }
   };
-
-  if (isError) return <span>something error....</span>;
 
   return isFetching ? (
     <Loading />

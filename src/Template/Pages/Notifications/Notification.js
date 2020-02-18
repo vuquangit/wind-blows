@@ -22,7 +22,7 @@ const Notification = ({
   match = {}
 }) => {
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})

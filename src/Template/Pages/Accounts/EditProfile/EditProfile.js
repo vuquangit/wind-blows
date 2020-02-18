@@ -23,7 +23,7 @@ const EditProfile = props => {
   );
   const { getFieldDecorator, setFieldsValue } = props.form;
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const dispatch = useDispatch();

@@ -16,7 +16,7 @@ const GoToPost = ({ match = {} }) => {
     (state = {}) => get(state, "profile.data.user") || {}
   );
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";

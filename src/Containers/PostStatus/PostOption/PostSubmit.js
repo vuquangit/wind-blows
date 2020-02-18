@@ -6,7 +6,7 @@ import { get } from "lodash";
 
 const PostSubmit = ({ status = {}, clearStatus }) => {
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const enablePost = !status.sidecarChildren.length > 0;

@@ -27,7 +27,7 @@ const CommentListItem = ({
   handleDeleteComments = () => {}
 }) => {
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);

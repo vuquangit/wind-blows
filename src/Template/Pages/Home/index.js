@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col } from "antd";
 import axios from "axios";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -21,7 +21,7 @@ const HomePage = () => {
     get(state, "profile.data.user", {})
   );
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   const [state, setState] = useState({
@@ -80,8 +80,8 @@ const HomePage = () => {
       }
     };
 
-    console.log("fetch home posts");
-    feactData();
+    console.log("fetch home posts", !isEmpty(tokenUser), tokenUser);
+    !isEmpty(tokenUser) && feactData();
 
     // unmount
     return () => {

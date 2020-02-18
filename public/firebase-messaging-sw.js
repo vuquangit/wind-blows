@@ -1,13 +1,23 @@
 // importScripts("https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js");
 // importScripts("https://www.gstatic.com/firebasejs/7.8.1/firebase-messaging.js");
-importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-messaging.js");
+// importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js");
+// importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/6.1.0/firebase-messaging.js");
 
 firebase.initializeApp({
   messagingSenderId: "631590918663"
 });
 
-const messaging = firebase.messaging();
+// try {
+if (firebase.messaging.isSupported()) {
+  const messaging = firebase.messaging();
+} else {
+  console.log("Your broswer unsupport notification of cloud messaging !!");
+}
+// } catch (e) {
+//   console.log("Error", e);
+// }
 
 // messaging.setBackgroundMessageHandler(function(payload) {
 // console.log("payload FCM:", payload);

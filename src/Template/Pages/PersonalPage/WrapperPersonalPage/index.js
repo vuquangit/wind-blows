@@ -34,7 +34,7 @@ const PersonalPage = ({ match = {}, children }) => {
     get(state, "personalProfile.data.user.username", "")
   );
   const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.token", "")
+    get(state, "profile.data.tokens.token", "")
   );
 
   useEffect(() => {
