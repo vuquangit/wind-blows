@@ -3,7 +3,7 @@ import { Modal, Button, message } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { get, isEqual, startsWith } from "lodash";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import FollowStatus from "Containers/FollowStatus";
@@ -22,15 +22,11 @@ const ModalOption = ({
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   const idMyPost = isEqual(viewerId, get(owner, "id"));
 
   // delete comments
   const [isDeleleting, setIsDeleting] = useState(false);
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const confirmDelete = () => {
     Modal.confirm({
       title: "Delete this post",
@@ -50,13 +46,12 @@ const ModalOption = ({
     try {
       const res = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/post/delete`,
+        url: "/post/delete",
         data: {
           postId: postId
         },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         },
         cancelToken: sourceLikePost.token
       });

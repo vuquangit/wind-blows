@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 
 import { get } from "lodash";
 import { useSelector } from "react-redux";
@@ -11,9 +11,6 @@ const AddComments = ({
   setIsViewerComments = () => {}
 }) => {
   const viewerId = useSelector(state => get(state, "profile.data.user.id", ""));
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   const textInput = useRef(null);
   const [text, setText] = useState("");
@@ -21,7 +18,6 @@ const AddComments = ({
 
   // fetch comments data
   const [isLoading, setIsLoading] = useState(false);
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const handleSubmit = async () => {
     if (!text) {
       return;
@@ -32,15 +28,14 @@ const AddComments = ({
     try {
       const response = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/post/comments/add`,
+        url: "/post/comments/add",
         data: {
           userId: viewerId,
           postId: postId,
           text: text
         },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         }
       });
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import Axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 
@@ -15,11 +15,6 @@ const GoToPost = ({ match = {} }) => {
   const { id: viewerId = "" } = useSelector(
     (state = {}) => get(state, "profile.data.user") || {}
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
-
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   const [state, setState] = useState({
     isLoading: true,
@@ -30,16 +25,15 @@ const GoToPost = ({ match = {} }) => {
   useEffect(() => {
     const feactPostData = async () => {
       try {
-        const response = await Axios({
+        const response = await axios({
           method: "post",
-          url: `${SERVER_BASE_URL}/post`,
+          url: "/post",
           data: {
             postId: postId,
             viewerId: viewerId
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
+            "Content-Type": "application/json"
           }
         });
 

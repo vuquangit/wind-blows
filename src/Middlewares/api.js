@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { isArray, isString } from "lodash";
 
 const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
@@ -11,7 +11,6 @@ const callApi = async (
   headers = {}
 ) => {
   const fullUrl = `${SERVER_BASE_URL}/${endpoint}`;
-  console.log("call Api:", endpoint, options, method, headers);
 
   const result = await axios({
     method,

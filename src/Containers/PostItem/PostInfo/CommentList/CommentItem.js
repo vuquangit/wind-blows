@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
@@ -26,9 +26,6 @@ const CommentListItem = ({
   isHomePage = false,
   handleDeleteComments = () => {}
 }) => {
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);
   const showModalOptions = () => {
@@ -42,7 +39,7 @@ const CommentListItem = ({
   const [_likedByViewer, setLikedByViewer] = useState(likedByViewer);
   const [_likeCount, setLikeCount] = useState(likeCount);
   const [isLiking, setIsLiking] = useState(false);
-  const sourceLikesComments = axios.CancelToken.source();
+  // const sourceLikesComments = axios.CancelToken.source();
 
   const fetchLikesComments = async endpoint => {
     try {
@@ -50,16 +47,15 @@ const CommentListItem = ({
 
       await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/post/comments/likes/${endpoint}`,
+        url: `/post/comments/likes/${endpoint}`,
         data: {
           commentsId: commentId,
           userId: get(viewerProfile, "id") || ""
         },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
-        },
-        cancelToken: sourceLikesComments.token
+          "Content-Type": "application/json"
+        }
+        // cancelToken: sourceLikesComments.token
       });
 
       setIsLiking(false);
@@ -79,7 +75,7 @@ const CommentListItem = ({
     setLikedByViewer(!_likedByViewer);
     setLikeCount(!_likedByViewer ? _likeCount + 1 : _likeCount - 1);
 
-    isLiking && sourceLikesComments.cancel("Request canceled.");
+    // isLiking && sourceLikesComments.cancel("Request canceled.");
     !_likedByViewer ? fetchLikesComments("like") : fetchLikesComments("unlike");
   };
 
@@ -97,20 +93,18 @@ const CommentListItem = ({
     error: null
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    // const source = axios.CancelToken.source();
 
     const fetchOwnerComments = async () => {
       try {
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/user/${commentOwnerId}`,
+          url: `/user/${commentOwnerId}`,
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
-          },
-          cancelToken: source.token
+            "Content-Type": "application/json"
+          }
+          // cancelToken: source.token
         });
 
         setOwnerComments(prevState => ({
@@ -142,10 +136,10 @@ const CommentListItem = ({
       }));
     }
 
-    // unmounth
-    return () => {
-      source.cancel();
-    };
+    // // unmounth
+    // return () => {
+    //   source.cancel();
+    // };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

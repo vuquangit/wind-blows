@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import InfiniteScroll from "react-infinite-scroller";
 import { get, startsWith } from "lodash";
 import { Button, message } from "antd";
@@ -21,28 +21,23 @@ const Notification = ({
   hasMoreItems = false,
   match = {}
 }) => {
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
 
   const dispatch = useDispatch();
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   // handle read all notifications
   const handleReadAllNoti = async () => {
     try {
       await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/notifications/read-all`,
+        url: "/users/notifications/read-all",
         data: {
           userId: viewerId
         },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         }
       });
 

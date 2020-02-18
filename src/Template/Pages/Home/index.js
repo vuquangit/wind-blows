@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col } from "antd";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
@@ -20,8 +20,10 @@ const HomePage = () => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
+  const tokenUser = get(
+    JSON.parse(localStorage.getItem("state") || {}),
+    "profile.data.tokens.token",
+    ""
   );
 
   const [state, setState] = useState({
@@ -32,10 +34,9 @@ const HomePage = () => {
     page: 1,
     totalItem: 0
   });
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    // const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -43,17 +44,16 @@ const HomePage = () => {
 
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/posts-following`,
+          url: "/posts-following",
           params: {
             userId: viewerId,
             limit: state.limit,
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
-          },
-          cancelToken: source.token
+            "Content-Type": "application/json"
+          }
+          // cancelToken: source.token
         });
 
         console.log("response fetch home", response);
@@ -74,20 +74,16 @@ const HomePage = () => {
           }));
           console.log(error);
         }
-      } finally {
-        // !isEmpty(state) &&
-        //   setState(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
-    console.log("fetch home posts", !isEmpty(tokenUser), tokenUser);
     !isEmpty(tokenUser) && feactData();
 
     // unmount
-    return () => {
-      source.cancel();
-    };
-  }, [SERVER_BASE_URL, state.limit, state.page, tokenUser, viewerId]);
+    // return () => {
+    //   source.cancel();
+    // };
+  }, [state.limit, state.page, tokenUser, viewerId]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

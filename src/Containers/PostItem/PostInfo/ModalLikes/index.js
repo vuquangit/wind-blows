@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
-import axios from "axios";
 import { get } from "lodash";
-import { useSelector } from "react-redux";
 
+import axios from "utils/axiosConfig";
 import FollowList from "Components/FollowList";
 
 const ModalLikes = ({
@@ -12,10 +11,6 @@ const ModalLikes = ({
   endpoint = "",
   params = {}
 }) => {
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
-
   // fetch list likes
   const [state, setState] = useState({
     isLoading: true,
@@ -26,25 +21,23 @@ const ModalLikes = ({
     totalLikes: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    // const source = axios.CancelToken.source();
 
     const fetchLikesList = async () => {
       try {
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}${endpoint}`,
+          url: endpoint,
           params: {
             ...params,
             limit: state.limit,
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
-          },
-          cancelToken: source.token
+            "Content-Type": "application/json"
+          }
+          // cancelToken: source.token
         });
 
         console.log("modal like res", response);
@@ -70,19 +63,11 @@ const ModalLikes = ({
 
     visibleModal && fetchLikesList();
 
-    // unmount
-    return () => {
-      source.cancel();
-    };
-  }, [
-    SERVER_BASE_URL,
-    endpoint,
-    params,
-    state.limit,
-    state.page,
-    tokenUser,
-    visibleModal
-  ]);
+    // // unmount
+    // return () => {
+    //   source.cancel();
+    // };
+  }, [endpoint, params, state.limit, state.page, visibleModal]);
 
   // scroll items
   const hasMoreItems =

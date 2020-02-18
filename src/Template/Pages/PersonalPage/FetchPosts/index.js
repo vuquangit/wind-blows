@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
@@ -19,9 +19,6 @@ const FetchPosts = ({
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   const [state, setState] = useState({
     isLoading: false,
@@ -32,11 +29,9 @@ const FetchPosts = ({
     totalItem: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   // fetch data items
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    // const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -44,7 +39,7 @@ const FetchPosts = ({
 
         const response = await axios({
           method: method,
-          url: `${SERVER_BASE_URL}${endpoint}`,
+          url: endpoint,
           params: {
             ownerId: ownerId,
             viewerId: viewerId,
@@ -52,10 +47,9 @@ const FetchPosts = ({
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
-          },
-          cancelToken: source.token
+            "Content-Type": "application/json"
+          }
+          // cancelToken: source.token
         });
 
         console.log("response fetch", response);
@@ -83,19 +77,10 @@ const FetchPosts = ({
     feactData();
 
     // unmount
-    return () => {
-      source.cancel();
-    };
-  }, [
-    SERVER_BASE_URL,
-    endpoint,
-    method,
-    ownerId,
-    state.limit,
-    state.page,
-    tokenUser,
-    viewerId
-  ]);
+    // return () => {
+    //   source.cancel();
+    // };
+  }, [endpoint, method, ownerId, state.limit, state.page, viewerId]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { get } from "lodash";
-import Axios from "axios";
+import axios from "utils/axiosConfig";
 
 import ProfilePhoto from "Containers/ProfilePhoto";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
@@ -22,12 +22,8 @@ const EditProfile = props => {
     get(state, "profile.data.user", {})
   );
   const { getFieldDecorator, setFieldsValue } = props.form;
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   const dispatch = useDispatch();
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   const formItemLayout = {
     labelCol: {
@@ -88,13 +84,12 @@ const EditProfile = props => {
     try {
       setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
 
-      const res = await Axios({
+      const res = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/update`,
+        url: "/users/update",
         data: { id: get(profile, "id"), ...values },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         }
       });
       console.log("Edited profile :", res);

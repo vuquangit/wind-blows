@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { Modal, message } from "antd";
 import classNames from "classnames";
 import { withRouter } from "react-router";
@@ -45,14 +45,13 @@ const FollowStatus = ({
     setState(prevState => ({ ...prevState, followStatus: relationshipStatus }));
   }, [followStatus, textFollowing]);
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const fetchFollows = async (endpoint = "") => {
     try {
       setState(prevState => ({ ...prevState, isLoading: true }));
 
       const response = await axios({
         method: "POST",
-        url: `${SERVER_BASE_URL}/follows/${endpoint}`,
+        url: `/follows/${endpoint}`,
         data: {
           userId: userId,
           viewerId: viewerId

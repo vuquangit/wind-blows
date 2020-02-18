@@ -3,7 +3,7 @@ import { Input, Button, Divider, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import MouseParallax from "./MouseParallax";
 import { useSpring } from "react-spring";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 
 const ResetPassword = ({ match = {}, location = {} }) => {
   // animition
@@ -32,7 +32,6 @@ const ResetPassword = ({ match = {}, location = {} }) => {
   });
 
   const handleForgotPassord = async values => {
-    const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
     const localhost = window.location.origin;
     console.log(match, location, window.location);
 
@@ -41,7 +40,7 @@ const ResetPassword = ({ match = {}, location = {} }) => {
 
       const res = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/forgot-password`,
+        url: "/users/forgot-password",
         data: {
           email: email,
           localhost: localhost

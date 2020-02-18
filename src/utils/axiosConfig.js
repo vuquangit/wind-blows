@@ -1,17 +1,10 @@
 import axios from "axios";
-import { get, merge, endsWith } from "lodash";
-// import { useDispatch  } from "react-redux";
-
-// const dispatch = useDispatch();
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL || "";
+import { get, merge, isEqual } from "lodash";
 
 const instance = axios.create();
-
-// instance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+instance.defaults.baseURL = process.env.REACT_APP_SERVER_URL || "";
 
 // You can intercept requests or responses before they are handled by then or catch.
-
 // Add a request interceptor
 instance.interceptors.request.use(
   // Do something before request is sent
@@ -26,7 +19,6 @@ instance.interceptors.request.use(
       config.headers["Authorization"] = "Bearer " + token;
     }
     // config.headers['Content-Type'] = 'application/json';
-
     return config;
   },
   error => {
@@ -47,33 +39,25 @@ instance.interceptors.response.use(
     // Do something with response error
     const originalRequest = error.config;
     const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-    console.log(originalRequest);
+    console.log(error);
 
     if (
       error.response.status === 401 &&
       originalRequest.url === `${SERVER_BASE_URL}/auth/token`
     ) {
       // router.push("/login");
-      console.log(
-        "Go to page login",
-        window.location.origin + endsWith(window.location.origin, "/")
-          ? "/"
-          : "" + "accounts/login"
-      );
+      console.log("Expired refresh token");
 
-      // window.location.replace(
-      //   window.location.origin + endsWith(window.location.origin, "/") &&
-      //     "/" + "accounts/login"
-      // );
-
-      // dispatch(signOut());
-
+      //  useEffect to signOut
       localStorage.removeItem("state");
-
       return Promise.reject(error);
     }
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      isEqual(error.response.data.message.message, "jwt expired")
+    ) {
       originalRequest._retry = true;
 
       const refreshToken = get(
@@ -83,12 +67,14 @@ instance.interceptors.response.use(
       );
 
       return instance
-        .post(`auth/token`, {
+        .post("auth/token", {
           refreshToken: refreshToken
         })
         .then(res => {
           if (res.status === 201) {
             const token = get(res, "data.token", "");
+            console.log("new token: ", token);
+
             const newToken = {
               profile: {
                 data: {
@@ -99,17 +85,12 @@ instance.interceptors.response.use(
               }
             };
 
-            console.log("new token", newToken);
-            // console.log(originalRequest);
-
             const state = JSON.parse(localStorage.getItem("state")) || {};
             const serializedState = JSON.stringify(merge(state, newToken));
             localStorage.setItem("state", serializedState);
 
             if (token)
               originalRequest.headers["Authorization"] = "Bearer " + token;
-
-            // console.log("set new token: ", originalRequest);
 
             return axios(originalRequest);
           }

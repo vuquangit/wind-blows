@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { get, filter } from "lodash";
 
 import PostAction from "./PostAction";
@@ -23,9 +23,6 @@ const PostInfo = ({
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   // fetch comments data
   const [stateComments, setComments] = useState({
@@ -37,13 +34,12 @@ const PostInfo = ({
     commentsTotalCount: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   useEffect(() => {
     const feactCommentsData = async () => {
       try {
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/post/comments`,
+          url: "/post/comments",
           params: {
             postId: postId,
             viewerId: viewerId,
@@ -51,8 +47,7 @@ const PostInfo = ({
             page: stateComments.page
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
+            "Content-Type": "application/json"
           }
         });
 

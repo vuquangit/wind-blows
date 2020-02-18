@@ -1,42 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Button, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import Axios from "axios";
+import axios from "utils/axiosConfig";
 import { get } from "lodash";
 
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import IsLoading from "Components/IsLoading";
-
-const toBase64 = file => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = event => {
-      const img = new Image();
-      img.src = event.target.result;
-      img.onload = () => {
-        // Landscape: 1080x608
-        // Square: 1080x1080
-        // Portait: 1080x1350
-        const width = img.width > 1080 ? 1080 : img.width;
-        const elem = document.createElement("canvas");
-        const scaleFactor = width / img.width;
-        elem.width = width;
-        elem.height = img.height * scaleFactor;
-
-        const ctx = elem.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, img.height * scaleFactor);
-        const type = "image/jpeg";
-
-        resolve({ data: ctx.canvas.toDataURL(type, 1), type });
-      };
-    };
-
-    reader.onerror = error => {
-      reject(error);
-    };
-  });
-};
+import { toBase64 } from "utils/toBase64";
 
 const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
   const dispatch = useDispatch();
@@ -46,11 +16,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
     email = "",
     profilePictureUrl: profilePictureUrlBefore = ""
   } = useSelector(state => get(state, "profile.data.user", {}));
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const keyMessage = "updatable";
 
   const fetchUploadPhoto = async event => {
@@ -70,7 +36,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
       setUpdating(true);
       // upload image
       try {
-        const res = await Axios.post(`${SERVER_BASE_URL}/upload-image/upload`, {
+        const res = await axios.post("/upload-image/upload", {
           data: data,
           headers: {
             "Content-Type": "multipart/form-data"
@@ -100,13 +66,12 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
 
     try {
       // change profile photo
-      await Axios({
+      await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/change-profile-photo`,
+        url: "/users/change-profile-photo",
         data: { userId, profilePictureUrl, profilePicturePublicId: publicId },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         }
       });
 
@@ -118,9 +83,9 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
         );
 
         try {
-          await Axios({
+          await axios({
             method: "POST",
-            url: `${SERVER_BASE_URL}/upload-image/delete`,
+            url: "/upload-image/delete",
             data: {
               publicId
             },

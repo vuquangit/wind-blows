@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import classNames from "classnames";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 
@@ -27,27 +27,22 @@ const PostItem = ({
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const sourceLikePost = axios.CancelToken.source();
+  // const sourceLikePost = axios.CancelToken.source();
   const fetchLikePost = useCallback(
     async (endpoint = "") => {
       try {
         await axios({
           method: "post",
-          url: `${SERVER_BASE_URL}/post/likes/${endpoint}`,
+          url: `/post/likes/${endpoint}`,
           data: {
             postId: postId,
             userId: viewerId
           },
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
-          },
-          cancelToken: sourceLikePost.token
+            "Content-Type": "application/json"
+          }
+          // cancelToken: sourceLikePost.token
         });
 
         console.log(endpoint === "like" ? "liked post" : "unlike post");
@@ -59,7 +54,7 @@ const PostItem = ({
         }
       }
     },
-    [SERVER_BASE_URL, postId, sourceLikePost.token, tokenUser, viewerId]
+    [postId, viewerId]
   );
 
   // Event post like

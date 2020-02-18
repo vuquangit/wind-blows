@@ -3,7 +3,7 @@ import { Form, Input, Button, message, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import ProfilePhoto from "Containers/ProfilePhoto";
@@ -16,7 +16,6 @@ const ChangePassword = ({
   history = {}
 }) => {
   const dispatch = useDispatch();
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const profile =
     useSelector((state = {}) => get(state, "profile.data.user")) || {};
   const { isAuthenticateLogin = false } = profile;
@@ -33,7 +32,7 @@ const ChangePassword = ({
         try {
           const res = await axios({
             method: "get",
-            url: `${SERVER_BASE_URL}/users/reset-password`,
+            url: "/users/reset-password",
             params: { resetPasswordToken },
             headers: {
               "Content-Type": "application/json"
@@ -112,7 +111,7 @@ const ChangePassword = ({
 
       const res = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/change-password`,
+        url: "/users/change-password",
         data: {
           ...values,
           userId: profileData.id || "",

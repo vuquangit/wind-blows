@@ -33,8 +33,10 @@ const PersonalPage = ({ match = {}, children }) => {
   const usernameStore = useSelector(state =>
     get(state, "personalProfile.data.user.username", "")
   );
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
+  const tokenUser = get(
+    JSON.parse(localStorage.getItem("state") || {}),
+    "profile.data.tokens.token",
+    ""
   );
 
   useEffect(() => {

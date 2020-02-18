@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BasicTemplate from "Template/BasicTemplate";
 import FollowList from "Components/FollowList";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { get } from "lodash";
@@ -21,8 +21,6 @@ const Following = ({ match = {} }) => {
     totalItems: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   useEffect(() => {
     (async () => {
       try {
@@ -30,7 +28,7 @@ const Following = ({ match = {} }) => {
 
         const response = await axios({
           method: "GET",
-          url: `${SERVER_BASE_URL}/follows/following/username`,
+          url: "/follows/following/username",
           params: {
             page: state.page,
             limit: 20,
@@ -54,7 +52,7 @@ const Following = ({ match = {} }) => {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
     })();
-  }, [SERVER_BASE_URL, username, viewerId, state.page]);
+  }, [username, viewerId, state.page]);
 
   const hasMoreItems = state.data.length < state.totalItems;
 

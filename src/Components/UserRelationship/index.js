@@ -1,7 +1,7 @@
 import React from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { get } from "lodash";
 import { message } from "antd";
 import { withRouter } from "react-router-dom";
@@ -19,7 +19,6 @@ const UserRelationship = ({
   history = {}
 }) => {
   const dispatch = useDispatch();
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const { username = "" } = user;
   const {
     id: notificationId = "",
@@ -28,22 +27,18 @@ const UserRelationship = ({
     read: notiReaded = false
   } = notifications;
   const postId = get(media, "id", "");
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
-  );
 
   // handle click div
   const fetchReadItem = async () => {
     try {
       await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/users/notifications/read`,
+        url: "/users/notifications/read",
         data: {
           id: notificationId
         },
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenUser}`
+          "Content-Type": "application/json"
         }
       });
     } catch (error) {

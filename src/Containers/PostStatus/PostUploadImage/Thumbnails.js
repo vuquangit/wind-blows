@@ -3,19 +3,18 @@ import { Image, Transformation } from "cloudinary-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Modal, message } from "antd";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 
 const Thumbnails = ({ public_id, handleRemoveImage = () => {} }) => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const handleShowModalEdit = () => setVisibleModalEdit(true);
   const handleCancelModalEdit = () => setVisibleModalEdit(false);
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   const fecthDeleteImage = async publicId => {
     try {
       await axios({
         method: "POST",
-        url: `${SERVER_BASE_URL}/upload-image/delete`,
+        url: "/upload-image/delete",
         data: {
           publicId
         },

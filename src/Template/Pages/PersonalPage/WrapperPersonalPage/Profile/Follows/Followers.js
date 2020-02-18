@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BasicTemplate from "Template/BasicTemplate";
 import FollowList from "Components/FollowList";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { get } from "lodash";
@@ -11,8 +11,10 @@ const Followers = ({ match = {} }) => {
     get(state, "profile.data.user")
   );
   const username = get(match, "params.username", "");
-  const tokenUser = useSelector((state = {}) =>
-    get(state, "profile.data.tokens.token", "")
+  const tokenUser = get(
+    JSON.parse(localStorage.getItem("state") || {}),
+    "profile.data.tokens.token",
+    ""
   );
 
   const [state, setState] = useState({
@@ -23,8 +25,6 @@ const Followers = ({ match = {} }) => {
     totalItems: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   useEffect(() => {
     (async () => {
       try {
@@ -32,7 +32,7 @@ const Followers = ({ match = {} }) => {
 
         const response = await axios({
           method: "GET",
-          url: `${SERVER_BASE_URL}/follows/followers/username/`,
+          url: "/follows/followers/username/",
           params: {
             page: state.page,
             limit: 20,
@@ -41,8 +41,7 @@ const Followers = ({ match = {} }) => {
           },
           headers: {
             Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenUser}`
+            "Content-Type": "application/json"
           }
         });
 
@@ -59,7 +58,7 @@ const Followers = ({ match = {} }) => {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
     })();
-  }, [SERVER_BASE_URL, username, viewerId, state.page, tokenUser]);
+  }, [username, viewerId, state.page, tokenUser]);
 
   const hasMoreItems = state.data.length < state.totalItems;
 
