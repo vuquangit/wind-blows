@@ -2,6 +2,9 @@ import axios from "axios";
 import { get, merge, isEqual } from "lodash";
 
 const instance = axios.create();
+instance.CancelToken = axios.CancelToken;
+instance.isCancel = axios.isCancel;
+instance.defaults.timeout = 300000; // wait 300 second
 instance.defaults.baseURL = process.env.REACT_APP_SERVER_URL || "";
 
 // You can intercept requests or responses before they are handled by then or catch.
@@ -19,6 +22,7 @@ instance.interceptors.request.use(
       config.headers["Authorization"] = "Bearer " + token;
     }
     // config.headers['Content-Type'] = 'application/json';
+
     return config;
   },
   error => {
@@ -34,12 +38,15 @@ instance.interceptors.response.use(
     // Do something with response data
     return response;
   },
-  function(error) {
+  error => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const originalRequest = error.config;
     const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-    console.log(error);
+
+    if (instance.isCancel(error)) {
+      return Promise.reject(error);
+    }
 
     if (
       error.response.status === 401 &&
@@ -99,6 +106,8 @@ instance.interceptors.response.use(
           console.log(error);
         });
     }
+
+    // finally
     return Promise.reject(error);
   }
 );

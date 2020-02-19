@@ -39,7 +39,7 @@ const CommentListItem = ({
   const [_likedByViewer, setLikedByViewer] = useState(likedByViewer);
   const [_likeCount, setLikeCount] = useState(likeCount);
   const [isLiking, setIsLiking] = useState(false);
-  // const sourceLikesComments = axios.CancelToken.source();
+  const sourceLikesComments = axios.CancelToken.source();
 
   const fetchLikesComments = async endpoint => {
     try {
@@ -54,8 +54,8 @@ const CommentListItem = ({
         },
         headers: {
           "Content-Type": "application/json"
-        }
-        // cancelToken: sourceLikesComments.token
+        },
+        cancelToken: sourceLikesComments.token
       });
 
       setIsLiking(false);
@@ -75,7 +75,7 @@ const CommentListItem = ({
     setLikedByViewer(!_likedByViewer);
     setLikeCount(!_likedByViewer ? _likeCount + 1 : _likeCount - 1);
 
-    // isLiking && sourceLikesComments.cancel("Request canceled.");
+    isLiking && sourceLikesComments.cancel("Request canceled.");
     !_likedByViewer ? fetchLikesComments("like") : fetchLikesComments("unlike");
   };
 
@@ -94,7 +94,7 @@ const CommentListItem = ({
   });
 
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const fetchOwnerComments = async () => {
       try {
@@ -103,8 +103,8 @@ const CommentListItem = ({
           url: `/user/${commentOwnerId}`,
           headers: {
             "Content-Type": "application/json"
-          }
-          // cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         setOwnerComments(prevState => ({
@@ -123,8 +123,6 @@ const CommentListItem = ({
           }));
           console.log(error);
         }
-      } finally {
-        // setOwnerComments(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
@@ -136,10 +134,10 @@ const CommentListItem = ({
       }));
     }
 
-    // // unmounth
-    // return () => {
-    //   source.cancel();
-    // };
+    // unmounth
+    return () => {
+      source.cancel();
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

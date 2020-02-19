@@ -27,7 +27,7 @@ const Notifications = () => {
   });
 
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -43,8 +43,8 @@ const Notifications = () => {
           },
           headers: {
             "Content-Type": "application/json"
-          }
-          // cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         console.log("respone notifications", response);
@@ -72,10 +72,10 @@ const Notifications = () => {
 
     feactData();
 
-    // // unmount
-    // return () => {
-    //   source.cancel();
-    // };
+    // unmount
+    return () => {
+      source.cancel();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.page]);
 

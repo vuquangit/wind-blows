@@ -31,7 +31,7 @@ const FetchPosts = ({
 
   // fetch data items
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -48,8 +48,8 @@ const FetchPosts = ({
           },
           headers: {
             "Content-Type": "application/json"
-          }
-          // cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         console.log("response fetch", response);
@@ -77,9 +77,9 @@ const FetchPosts = ({
     feactData();
 
     // unmount
-    // return () => {
-    //   source.cancel();
-    // };
+    return () => {
+      source.cancel();
+    };
   }, [endpoint, method, ownerId, state.limit, state.page, viewerId]);
 
   // load more item

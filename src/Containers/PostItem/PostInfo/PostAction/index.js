@@ -38,8 +38,6 @@ const PostAction = ({
   const [isSavePost, setIsSavePost] = useState(savedByViewer);
 
   const fetchSavePost = async (endpoint = "") => {
-    // const source = axios.CancelToken.source();
-
     try {
       const res = await axios({
         method: "post",
@@ -51,7 +49,6 @@ const PostAction = ({
         headers: {
           "Content-Type": "application/json"
         }
-        // cancelToken: source.token
       });
 
       console.log("saved res:", res);

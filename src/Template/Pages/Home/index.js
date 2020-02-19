@@ -36,7 +36,7 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const feactData = async () => {
       try {
@@ -52,8 +52,8 @@ const HomePage = () => {
           },
           headers: {
             "Content-Type": "application/json"
-          }
-          // cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         console.log("response fetch home", response);
@@ -64,15 +64,17 @@ const HomePage = () => {
           isLoading: false
         }));
       } catch (error) {
+        console.log("error reponse homapage:", error);
+
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch home");
+          console.log("cancelled fetch homepage");
         } else {
           setState(prevState => ({
             ...prevState,
             error: error,
             isLoading: false
           }));
-          console.log(error);
+          console.log("Error fetch homepage", error);
         }
       }
     };
@@ -80,9 +82,9 @@ const HomePage = () => {
     !isEmpty(tokenUser) && feactData();
 
     // unmount
-    // return () => {
-    //   source.cancel();
-    // };
+    return async () => {
+      source.cancel();
+    };
   }, [state.limit, state.page, tokenUser, viewerId]);
 
   // load more item

@@ -22,7 +22,7 @@ const ModalLikes = ({
   });
 
   useEffect(() => {
-    // const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source();
 
     const fetchLikesList = async () => {
       try {
@@ -36,8 +36,8 @@ const ModalLikes = ({
           },
           headers: {
             "Content-Type": "application/json"
-          }
-          // cancelToken: source.token
+          },
+          cancelToken: source.token
         });
 
         console.log("modal like res", response);
@@ -63,10 +63,10 @@ const ModalLikes = ({
 
     visibleModal && fetchLikesList();
 
-    // // unmount
-    // return () => {
-    //   source.cancel();
-    // };
+    // unmount
+    return () => {
+      source.cancel();
+    };
   }, [endpoint, params, state.limit, state.page, visibleModal]);
 
   // scroll items
