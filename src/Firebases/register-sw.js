@@ -1,4 +1,5 @@
-import firebase from "firebase";
+// import firebase from "firebase";
+import firebase from "firebase/app";
 import { messaging } from "Firebases/init-fcm";
 
 const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";

@@ -1,7 +1,6 @@
-// importScripts("https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js");
-// importScripts("https://www.gstatic.com/firebasejs/7.8.1/firebase-messaging.js");
-// importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-app.js");
-// importScripts("https://www.gstatic.com/firebasejs/5.9.4/firebase-messaging.js");
+// importScripts("https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js");
+// importScripts("https://www.gstatic.com/firebasejs/7.8.2/firebase-messaging.js");
+
 importScripts("https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/6.1.0/firebase-messaging.js");
 

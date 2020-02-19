@@ -64,8 +64,6 @@ const HomePage = () => {
           isLoading: false
         }));
       } catch (error) {
-        console.log("error reponse homapage:", error);
-
         if (axios.isCancel(error)) {
           console.log("cancelled fetch homepage");
         } else {
@@ -85,7 +83,9 @@ const HomePage = () => {
     return async () => {
       source.cancel();
     };
-  }, [state.limit, state.page, tokenUser, viewerId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.page, tokenUser]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

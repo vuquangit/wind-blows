@@ -80,7 +80,9 @@ const FetchPosts = ({
     return () => {
       source.cancel();
     };
-  }, [endpoint, method, ownerId, state.limit, state.page, viewerId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.page]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

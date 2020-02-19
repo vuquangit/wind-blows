@@ -6,8 +6,8 @@ import { withRouter } from "react-router-dom";
 import { get } from "lodash";
 
 const Follows = ({ match = {} }) => {
-  const { counts = {} } = useSelector(
-    (state = {}) => state.personalProfile.data.user
+  const { counts = {} } = useSelector((state = {}) =>
+    get(state, "personalProfile.data.user", {})
   );
   const { followedBy = 0, follows = 0, media = 0 } = counts;
   const username = get(match, "params.username");

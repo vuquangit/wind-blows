@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import axios from "utils/axiosConfig";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 
 import PostTimeAgo from "Components/TimeFromNow";
@@ -107,14 +107,16 @@ const CommentListItem = ({
           cancelToken: source.token
         });
 
-        setOwnerComments(prevState => ({
-          ...prevState,
-          data: { ...prevState.data, ...response.data },
-          isLoading: false
-        }));
+        // console.log("response user coment: ", response);
+        if (!isEmpty(response))
+          setOwnerComments(prevState => ({
+            ...prevState,
+            data: { ...prevState.data, ...response.data },
+            isLoading: false
+          }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch personal");
+          console.log("cancelled fetch user comment");
         } else {
           setOwnerComments(prevState => ({
             ...prevState,

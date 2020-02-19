@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import axios from "utils/axiosConfig";
-import { get, filter } from "lodash";
+import { get, filter, isEmpty } from "lodash";
 
 import PostAction from "./PostAction";
 import PostLikes from "./PostLikes";
@@ -35,6 +35,8 @@ const PostInfo = ({
   });
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     const feactCommentsData = async () => {
       try {
         const response = await axios({
@@ -48,29 +50,42 @@ const PostInfo = ({
           },
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          cancelToken: source.token
         });
 
-        setComments(prevState => ({
-          ...prevState,
-          data: {
-            ...prevState.data,
-            ...response.data,
-            comments: [
-              ...(get(prevState, "data.comments") || []),
-              ...get(response, "data.comments")
-            ]
-          },
-          commentsTotalCount: get(response, "data.commentsTotalCount")
-        }));
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setComments(prevState => ({ ...prevState, isLoading: false }));
+        // console.log("reponse comments", response);
+
+        if (!isEmpty(response.data)) {
+          setComments(prevState => ({
+            ...prevState,
+            data: {
+              ...prevState.data,
+              ...response.data,
+              comments: [
+                ...(get(prevState, "data.comments") || []),
+                ...get(response, "data.comments")
+              ]
+            },
+            commentsTotalCount: get(response, "data.commentsTotalCount")
+          }));
+        }
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled fetch comments");
+        } else {
+          setComments(prevState => ({ ...prevState, isLoading: false }));
+          console.log(error);
+        }
       }
     };
 
     feactCommentsData();
+
+    // unmount
+    return async () => {
+      source.cancel();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateComments.page]);
 

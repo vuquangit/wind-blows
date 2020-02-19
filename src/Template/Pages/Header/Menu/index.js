@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "utils/axiosConfig";
 import { Badge } from "antd";
-import { get, startsWith, isEmpty } from "lodash";
+import { get, startsWith } from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +30,8 @@ const Menu = ({ match = {} }) => {
   // );
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     const fetchNotiNew = async () => {
       try {
         const response = await axios({
@@ -40,7 +42,8 @@ const Menu = ({ match = {} }) => {
           },
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          cancelToken: source.token
         });
 
         const total = get(response, "data.totalUnread") || 0;
@@ -52,6 +55,12 @@ const Menu = ({ match = {} }) => {
 
     // !isEmpty(tokenUser) && fetchNotiNew();
     fetchNotiNew();
+
+    // unmount
+    return async () => {
+      source.cancel();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
