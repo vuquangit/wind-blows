@@ -77,55 +77,54 @@
   }
 
   &__search {
-    height: 28px;
-    flex: 0 1 auto;
-    min-width: 125px;
-    width: 215px;
-    border: solid 1px #dbdbdb;
-    border-radius: 3px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // width: 100%;
 
-    &--input {
-      font-size: 16px;
-      border: 0;
-      color: #262626;
-      outline: 0;
-      padding: 3px 20px 3px 26px;
-      z-index: 2;
-      box-sizing: border-box;
-      height: 100%;
-      width: 100%;
+    &--item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 60px;
+      padding: 8px 16px;
+      text-align: left;
+      text-decoration: none;
 
-      &-collapse {
-        padding: 0 0 0 5px;
-      }
-    }
-
-    &--icon {
-      position: absolute;
-      top: 9px;
-      z-index: 4;
-      padding-left: 10px;
-
-      &-center {
-        position: relative;
-        padding-left: 80px;
+      &:hover {
+        text-decoration: none;
       }
 
-      svg {
-        height: 10px !important;
-        width: 10px !important;
-      }
-    }
+      .result {
+        &__avatar {
+          margin-right: 12px;
+        }
 
-    &--clear {
-      z-index: 3;
-      right: 61px;
-      top: 6px;
-      position: absolute;
+        &__description {
+          &--username {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            color: rgba(var(--i1d, 38, 38, 38), 1);
+            margin: 0 !important;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 18px;
+          }
 
-      svg {
-        height: 16px !important;
+          &--fullName {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            margin: -3px 0 -4px;
+            color: rgba(var(--f52, 153, 153, 153), 1);
+          }
+        }
       }
     }
   }

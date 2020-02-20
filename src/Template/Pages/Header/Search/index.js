@@ -1,67 +1,119 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
+import React, { useState, useEffect } from "react";
+import { Input } from "antd";
+import { get } from "lodash";
+import { useSelector } from "react-redux";
 
-function Search() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isSearchFocus, setIsSearchFocus] = useState(false);
+import axios from "utils/axiosConfig";
+import BasicTemplate from "Template/BasicTemplate";
+import SearchResults from "./SearchResults";
 
-  // #region handle
-  const _handleSearchChange = e => {
-    setSearchTerm(e.target.value);
+const SearchComponent = () => {
+  const { id: viewerId = "" } = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
+
+  const source = axios.CancelToken.source();
+
+  const [value, setValue] = useState("");
+  const handleSearchChanged = e => {
+    source.cancel("Cancel search");
+
+    setValue(e.target.value.toLowerCase());
+    setState(prevState => ({
+      ...prevState,
+      data: [],
+      error: null,
+      isLoading: false,
+      page: 1,
+      limit: 10,
+      totalItems: 0
+    }));
   };
-  const _handleClearSearchTerm = () => {
-    setSearchTerm("");
-    setIsSearchFocus(false);
-  };
 
-  const _handleSearchIsFocus = () => {
-    setIsSearchFocus(true);
-  };
-  // #endregion
-
-  // #region classNames
-  const searchIconClass = classNames("header__search--icon", {
-    "header__search--icon-center": !isSearchFocus
+  const [state, setState] = useState({
+    data: [],
+    error: null,
+    isLoading: false,
+    page: 1,
+    limit: 10,
+    totalItems: 0
   });
 
-  const searchClearClass = classNames("header__search--clear", {
-    "header__search--clear-center": !isSearchFocus
-  });
+  useEffect(() => {
+    const fetchSearch = async () => {
+      try {
+        setState(prevState => ({ ...prevState, isLoading: true }));
 
-  const searchInputClass = classNames("header__search--input", {
-    "header__search--input-collapse": !isSearchFocus
-  });
-  // #endregion
+        const response = await axios({
+          method: "get",
+          url: "/explore/people/search",
+          params: {
+            value: value,
+            viewerId
+          },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          cancelToken: source.token
+        });
+
+        setState(prevState => ({
+          ...prevState,
+          data: [...prevState.data, ...response.data.data],
+          totalItems: response.data.totalItems,
+          isLoading: false
+        }));
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("cancelled fetch relationship");
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            error: error,
+            isLoading: false
+          }));
+          console.log(error);
+        }
+      }
+    };
+
+    if (value) fetchSearch();
+
+    // unmount
+    return () => {
+      source.cancel();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, state.page]);
+
+  // get more page
+  const hasMoreItems = state.data.length < state.totalItems;
+  const getMoreItems = async () => {
+    state.data.length === state.page * state.limit &&
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+  };
 
   return (
-    <div className="d-flex align-items-center justify-content-center">
+    // <BasicTemplate>
       <div className="header__search">
-        <div className={searchIconClass} onClick={_handleSearchIsFocus}>
-          <FontAwesomeIcon icon={faSearch} />
-        </div>
-        <input
-          className={searchInputClass}
-          type="text"
-          autoCapitalize="none"
+        <Input.Search
           placeholder="Search"
-          value={searchTerm}
-          onChange={_handleSearchChange}
-          onClick={_handleSearchIsFocus}
+          allowClear
+          loading={state.isLoading}
+          onChange={handleSearchChanged}
         />
-        {searchTerm && (
-          <div
-            className={searchClearClass}
-            role="button"
-            onClick={_handleClearSearchTerm}
-          >
-            <FontAwesomeIcon icon={faTimesCircle} />
-          </div>
-        )}
+        <SearchResults
+          value={value}
+          items={state.data}
+          isLoading={state.isLoading}
+          hasMoreItems={hasMoreItems}
+          getMoreItems={getMoreItems}
+        />
       </div>
-    </div>
+    {/* </BasicTemplate> */}
   );
-}
+};
 
-export default Search;
+export default SearchComponent;

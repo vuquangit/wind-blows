@@ -12,6 +12,7 @@ import Following from "Template/Pages/PersonalPage/WrapperPersonalPage/Profile/F
 import GoToPost from "Containers/GoToPost";
 import Notifications from "Template/Pages/Notifications";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
+import Search from "Template/Pages/Header/Search";
 
 const pageConfigs = [
   {
@@ -59,6 +60,11 @@ const pageConfigs = [
   {
     path: "/explore/people/suggested/",
     component: Suggested,
+    exact: true
+  },
+  {
+    path: "/explore/people/search/",
+    component: Search,
     exact: true
   },
   {

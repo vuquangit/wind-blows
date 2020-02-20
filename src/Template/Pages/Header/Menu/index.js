@@ -5,7 +5,7 @@ import { get, startsWith } from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import AvatarUser from "Components/AvatarUser";
@@ -71,6 +71,16 @@ const Menu = ({ match = {} }) => {
   return (
     <div className="header__menu">
       <div className="header__menu--items">
+        {!isSmallScreen && (
+          <div className="menu-item">
+            <NavLink to={`/explore/people/search/`}>
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="header__search--icon"
+              />
+            </NavLink>
+          </div>
+        )}
         <div className="menu-item">
           {!isSmallScreen && !enableDropdownNoti ? (
             <DropdownNotification count={totalNotiUnread} />
