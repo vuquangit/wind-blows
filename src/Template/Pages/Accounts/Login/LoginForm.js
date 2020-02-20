@@ -1,14 +1,13 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Form, Icon, Input, Button, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { isEmpty } from "lodash";
+import { isEmpty, get } from "lodash";
 
 import { requestProfileInfo } from "Redux/Profile/profile.action";
-// import Loading from "Template/Pages/Loading";
 
 const LoginForm = ({ form, history }) => {
-  const { getFieldDecorator, validateFields } = form;
+  const { getFieldDecorator, validateFields, setFieldsValue } = form;
 
   // Check login
   const dispatch = useDispatch();
@@ -55,6 +54,9 @@ const LoginForm = ({ form, history }) => {
     e.preventDefault();
     validateFields(async (err, values) => {
       if (!err) {
+        // save local storage
+        window.sessionStorage.setItem("login_username", values.username);
+        // window.sessionStorage.setItem("login_password", values.password);
         const typeInput = await confirmInput(values.username);
 
         if (typeInput.type === "email")
@@ -71,11 +73,23 @@ const LoginForm = ({ form, history }) => {
           });
 
         if (!isEmpty(profileData)) {
+          window.sessionStorage.removeItem("login_username");
+          // window.sessionStorage.removeItem("login_password");
           history.push("/");
         }
       }
     });
   };
+
+  useEffect(() => {
+    if (get(window, "sessionStorage.login_username"))
+      setFieldsValue({
+        username: get(window, "sessionStorage.login_username") || ""
+        // password: get(window, "sessionStorage.login_password") || ""
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form onSubmit={handleSubmit} className="login-form">

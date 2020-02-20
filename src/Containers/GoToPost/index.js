@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import Axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
+import { get } from "lodash";
 
 import PostItem from "Containers/PostItem";
 import BasicTemplate from "Template/BasicTemplate";
 import IsLoading from "Components/IsLoading";
+import Page404 from "Template/Pages/404";
 import "./goToPost.scss";
 
 const GoToPost = ({ match = {} }) => {
+  const postId = match.params.id;
+  const { id: viewerId = "" } = useSelector(
+    (state = {}) => get(state, "profile.data.user") || {}
+  );
+
   const [state, setState] = useState({
     isLoading: true,
     data: {},
     error: null
   });
 
-  const postId = match.params.id;
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => state.profile.data.user
-  );
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   useEffect(() => {
     const feactPostData = async () => {
       try {
-        const response = await Axios({
+        const response = await axios({
           method: "post",
-          url: `${SERVER_BASE_URL}/post`,
+          url: "/post",
           data: {
             postId: postId,
             viewerId: viewerId
@@ -38,10 +39,12 @@ const GoToPost = ({ match = {} }) => {
 
         setState(prevState => ({
           ...prevState,
-          data: { ...prevState.data, ...response.data }
+          error: false,
+          data: response.data
         }));
       } catch (err) {
         console.log(err);
+        setState(prevState => ({ ...prevState, error: err }));
       } finally {
         setState(prevState => ({ ...prevState, isLoading: false }));
       }
@@ -52,19 +55,25 @@ const GoToPost = ({ match = {} }) => {
   }, []);
 
   return (
-    <BasicTemplate>
-      <div className="GTP">
-        <div className="GTP__WPI">
-          {state.isLoading ? (
-            <div className="GTP__WPI--is-loading">
-              <IsLoading isLoading size={100} />
+    <>
+      {!state.error ? (
+        <BasicTemplate>
+          <div className="GTP">
+            <div className="GTP__WPI">
+              {state.isLoading ? (
+                <div className="GTP__WPI--is-loading">
+                  <IsLoading isLoading size={100} />
+                </div>
+              ) : (
+                <PostItem {...state.data} isHomePage={false} />
+              )}
             </div>
-          ) : (
-            <PostItem {...state.data} isHomePage={false} />
-          )}
-        </div>
-      </div>
-    </BasicTemplate>
+          </div>
+        </BasicTemplate>
+      ) : (
+        <Page404 />
+      )}
+    </>
   );
 };
 

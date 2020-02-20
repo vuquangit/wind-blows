@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, message } from "antd";
 import { useSelector } from "react-redux";
 import { get, isEqual } from "lodash";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 
 const ModalItemOptions = ({
   commentOwnerId = "",
@@ -13,7 +13,7 @@ const ModalItemOptions = ({
   handleDeleteComments = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
 
   const canDeleteComment = isEqual(viewerId, postOwnerId)
@@ -22,7 +22,6 @@ const ModalItemOptions = ({
 
   // delete comments
   const [isLoading, setIsLoading] = useState(false);
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   const handleDelete = async () => {
     setIsLoading(true);
@@ -30,7 +29,7 @@ const ModalItemOptions = ({
     try {
       await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/post/comments/delete`,
+        url: "/post/comments/delete",
         data: {
           commentsId: commentId
         },

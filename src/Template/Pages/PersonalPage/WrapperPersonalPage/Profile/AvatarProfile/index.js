@@ -12,11 +12,11 @@ const AvatarProfile = ({ match }) => {
   const {
     profilePictureUrl = "",
     profilePicturePublicId = ""
-  } = useSelector((state = {}) => get(state, "personalProfile.data.user"));
+  } = useSelector((state = {}) => get(state, "personalProfile.data.user", {}));
   const { username: viewerUsername = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
-  const isOwner = isEqual(viewerUsername, get(match, "params.username"));
+  const isOwner = isEqual(viewerUsername, get(match, "params.username", ""));
 
   // modal change profile photo
   const [visibleModal, setVisibleModal] = useState(false);

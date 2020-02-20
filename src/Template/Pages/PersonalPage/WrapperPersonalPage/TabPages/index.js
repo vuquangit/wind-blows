@@ -6,10 +6,10 @@ import TabMenu from "./TabMenu";
 
 const TabPages = ({ children }) => {
   const { id: viewerId = "" } = useSelector(state =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
   const { id: ownerId = "" } = useSelector(state =>
-    get(state, "personalProfile.data.user")
+    get(state, "personalProfile.data.user", {})
   );
   const isOwner = isEqual(viewerId, ownerId);
 

@@ -1,7 +1,7 @@
 import { REQUEST_API } from "Middlewares/api";
 import * as actionTypes from "./actionType";
 
-const requestPersonalInfo = (data = "") => ({
+const requestPersonalInfo = ({ data = "", headers = {} }) => ({
   [REQUEST_API]: {
     types: [
       actionTypes.PERSONAL_PROFILE_REQUEST,
@@ -10,7 +10,8 @@ const requestPersonalInfo = (data = "") => ({
     ],
     endpoint: "username",
     method: "POST",
-    options: { data }
+    options: { data },
+    headers
   }
 });
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import axios from "axios";
-import { get } from "lodash";
+import axios from "utils/axiosConfig";
+import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 
 import PostTimeAgo from "Components/TimeFromNow";
@@ -47,7 +47,7 @@ const CommentListItem = ({
 
       await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/post/comments/likes/${endpoint}`,
+        url: `/post/comments/likes/${endpoint}`,
         data: {
           commentsId: commentId,
           userId: get(viewerProfile, "id") || ""
@@ -64,7 +64,7 @@ const CommentListItem = ({
       setIsLiking(false);
 
       if (axios.isCancel(err)) {
-        console.log("cancelled like post");
+        console.log("cancelled like comment");
       } else {
         console.log(err);
       }
@@ -93,7 +93,6 @@ const CommentListItem = ({
     error: null
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -101,21 +100,23 @@ const CommentListItem = ({
       try {
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/user/${commentOwnerId}`,
+          url: `/user/${commentOwnerId}`,
           headers: {
             "Content-Type": "application/json"
           },
           cancelToken: source.token
         });
 
-        setOwnerComments(prevState => ({
-          ...prevState,
-          data: { ...prevState.data, ...response.data },
-          isLoading: false
-        }));
+        // console.log("response user coment: ", response);
+        if (!isEmpty(response))
+          setOwnerComments(prevState => ({
+            ...prevState,
+            data: { ...prevState.data, ...response.data },
+            isLoading: false
+          }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch personal");
+          console.log("cancelled fetch user comment");
         } else {
           setOwnerComments(prevState => ({
             ...prevState,
@@ -124,8 +125,6 @@ const CommentListItem = ({
           }));
           console.log(error);
         }
-      } finally {
-        // setOwnerComments(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 

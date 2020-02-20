@@ -39,7 +39,7 @@ const requestProfileInfo = ({
   }
 });
 
-const updateProfileInfo = ({ data, endpoint = "auth" } = {}) => ({
+const updateProfileInfo = ({ data = {}, endpoint = "auth" } = {}) => ({
   [REQUEST_API]: {
     types: [
       actionTypes.PROFILE_REQUEST,

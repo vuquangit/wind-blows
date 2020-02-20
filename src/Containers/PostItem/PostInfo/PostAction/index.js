@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "antd";
 import classNames from "classnames";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 
@@ -22,7 +22,7 @@ const PostAction = ({
   postId = ""
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
 
   // Modal share button
@@ -36,22 +36,19 @@ const PostAction = ({
 
   // Event save post
   const [isSavePost, setIsSavePost] = useState(savedByViewer);
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const fetchSavePost = async (endpoint = "") => {
-    const source = axios.CancelToken.source();
 
+  const fetchSavePost = async (endpoint = "") => {
     try {
       const res = await axios({
         method: "post",
-        url: `${SERVER_BASE_URL}/saved/${endpoint}`,
+        url: `/saved/${endpoint}`,
         data: {
           userId: viewerId,
           postId: postId
         },
         headers: {
           "Content-Type": "application/json"
-        },
-        cancelToken: source.token
+        }
       });
 
       console.log("saved res:", res);
@@ -62,7 +59,6 @@ const PostAction = ({
       } else {
         console.log(error);
       }
-    } finally {
     }
   };
 

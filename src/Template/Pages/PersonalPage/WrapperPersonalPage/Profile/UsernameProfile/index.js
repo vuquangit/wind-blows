@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import firebase from "firebase";
+import { auth as firebaseAuth } from "firebase/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -38,7 +38,7 @@ const Username = ({ history }) => {
   const onLogoutClick = useCallback(() => {
     const signout = async () => {
       try {
-        await firebase.auth().signOut();
+        await firebaseAuth().signOut();
         // signed out
         dispatch(signOut());
       } catch (e) {
@@ -143,17 +143,19 @@ const Username = ({ history }) => {
           </div>
         )}
       </Row>
-      <Row>
-        <Col xs={24} sm={24} md={0}>
-          <Link
-            to="/accounts/edit/"
-            className="edit-profile"
-            title="Edit Profile"
-          >
-            <button type="button">Edit Profile</button>
-          </Link>
-        </Col>
-      </Row>
+      {viewerIsOwner && (
+        <Row>
+          <Col xs={24} sm={24} md={0}>
+            <Link
+              to="/accounts/edit/"
+              className="edit-profile"
+              title="Edit Profile"
+            >
+              <button type="button">Edit Profile</button>
+            </Link>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };

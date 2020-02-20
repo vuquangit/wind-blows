@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
@@ -14,10 +14,10 @@ const FetchPosts = ({
   textEmpty = ""
 }) => {
   const { id: ownerId = "" } = useSelector((state = {}) =>
-    get(state, "personalProfile.data.user")
+    get(state, "personalProfile.data.user", {})
   );
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
 
   const [state, setState] = useState({
@@ -29,8 +29,6 @@ const FetchPosts = ({
     totalItem: 0
   });
 
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-
   // fetch data items
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -41,7 +39,7 @@ const FetchPosts = ({
 
         const response = await axios({
           method: method,
-          url: `${SERVER_BASE_URL}${endpoint}`,
+          url: endpoint,
           params: {
             ownerId: ownerId,
             viewerId: viewerId,
@@ -82,15 +80,9 @@ const FetchPosts = ({
     return () => {
       source.cancel();
     };
-  }, [
-    SERVER_BASE_URL,
-    endpoint,
-    method,
-    ownerId,
-    state.limit,
-    state.page,
-    viewerId
-  ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.page]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;

@@ -9,7 +9,7 @@ import { signOut } from "Redux/Profile/profile.action";
 const RedirectRoute = props => (
   <Redirect
     to={{
-      pathname: "/accounts/emailsignup/",
+      pathname: "/accounts/login/",
       state: { from: props.location }
     }}
   />

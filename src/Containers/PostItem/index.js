@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import classNames from "classnames";
-import axios from "axios";
+import axios from "utils/axiosConfig";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 
@@ -25,34 +25,28 @@ const PostItem = ({
 }) => {
   // fetch likes
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
-  const [isLikingPost, setIsLikingPost] = useState(false);
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
-  const sourceLikePost = axios.CancelToken.source();
+
+  // const sourceLikePost = axios.CancelToken.source();
   const fetchLikePost = useCallback(
     async (endpoint = "") => {
-      setIsLikingPost(true);
-
       try {
         await axios({
           method: "post",
-          url: `${SERVER_BASE_URL}/post/likes/${endpoint}`,
+          url: `/post/likes/${endpoint}`,
           data: {
             postId: postId,
             userId: viewerId
           },
           headers: {
             "Content-Type": "application/json"
-          },
-          cancelToken: sourceLikePost.token
+          }
+          // cancelToken: sourceLikePost.token
         });
 
-        setIsLikingPost(false);
-        console.log(endpoint === "like" ? "liked" : "unlike");
+        console.log(endpoint === "like" ? "liked post" : "unlike post");
       } catch (err) {
-        setIsLikingPost(false);
-
         if (axios.isCancel(err)) {
           console.log("cancelled like post");
         } else {
@@ -60,7 +54,7 @@ const PostItem = ({
         }
       }
     },
-    [SERVER_BASE_URL, postId, sourceLikePost.token, viewerId]
+    [postId, viewerId]
   );
 
   // Event post like
@@ -71,7 +65,6 @@ const PostItem = ({
     setLikeTotal(!isLikePost ? likeTotal + 1 : likeTotal - 1);
 
     // not watting
-    isLikingPost && sourceLikePost.cancel("cancelled like post");
     isLikePost ? fetchLikePost("unlike") : fetchLikePost("like");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLikePost]);

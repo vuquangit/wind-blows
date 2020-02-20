@@ -4,7 +4,7 @@ import { get } from "lodash";
 
 const Description = () => {
   const profile = useSelector((state = {}) =>
-    get(state, "personalProfile.data.user")
+    get(state, "personalProfile.data.user", {})
   );
   const { bio = "", fullName = "", website = "" } = profile;
 

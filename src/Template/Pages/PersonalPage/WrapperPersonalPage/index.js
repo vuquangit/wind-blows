@@ -18,27 +18,43 @@ import TabPages from "./TabPages";
 const PersonalPage = ({ match = {}, children }) => {
   const dispatch = useDispatch();
   const isFetching = useSelector(state =>
-    get(state, "personalProfile.isFetching")
+    get(state, "personalProfile.isFetching", false)
   );
-  const error = useSelector(state => get(state, "personalProfile.error"));
+  const error = useSelector(state =>
+    get(state, "personalProfile.error", false)
+  );
   const {
     id: viewerId = "",
     username: viewerUsername = ""
-  } = useSelector(state => get(state, "profile.data.user"));
+  } = useSelector(state => get(state, "profile.data.user", ""));
 
   // fetch data username view
-  const username = get(match, "params.username");
+  const username = get(match, "params.username", "");
   const usernameStore = useSelector(state =>
-    get(state, "personalProfile.data.user.username")
+    get(state, "personalProfile.data.user.username", "")
   );
+  const tokenUser = get(
+    JSON.parse(localStorage.getItem("state") || {}),
+    "profile.data.tokens.token",
+    ""
+  );
+
   useEffect(() => {
     const _requestPersonalInfo = async () => {
-      await dispatch(requestPersonalInfo({ username, viewerId }));
+      await dispatch(
+        requestPersonalInfo({
+          data: { username, viewerId },
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${tokenUser}`
+          }
+        })
+      );
     };
 
     (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
       _requestPersonalInfo();
-  }, [match, dispatch, viewerId, username, usernameStore]);
+  }, [match, dispatch, viewerId, username, usernameStore, tokenUser]);
 
   const isOwner = isEqual(viewerUsername, username);
 

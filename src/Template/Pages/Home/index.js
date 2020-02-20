@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col } from "antd";
-import axios from "axios";
-import { get } from "lodash";
+import axios from "utils/axiosConfig";
+import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -10,34 +10,30 @@ import BasicTemplate from "Template/BasicTemplate";
 import PostItem from "Containers/PostItem";
 import PostStatus from "Containers/PostStatus";
 import Profile from "./HomeProfile";
-import SuggestionFollow from "./SuggestionFollow";
+import SuggestionForUser from "../Explore/Suggestion";
 import Footer from "Template/Pages/Footer";
 import IsLoading from "Components/IsLoading";
 import "./home.scss";
 
 const HomePage = () => {
-  const _renderPostItem = () =>
-    state &&
-    state.data.length > 0 &&
-    state.data.map((item, idx) => (
-      <div key={item.id || idx} className="home-post__item">
-        <PostItem {...item} isHomePage />
-      </div>
-    ));
-
-  // fetch posts home
+  // get posts
   const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
+  const tokenUser = get(
+    JSON.parse(localStorage.getItem("state") || {}),
+    "profile.data.tokens.token",
+    ""
+  );
+
   const [state, setState] = useState({
     isLoading: true,
     data: [],
     error: null,
-    limit: 3,
+    limit: 12,
     page: 1,
     totalItem: 0
   });
-  const SERVER_BASE_URL = process.env.REACT_APP_SERVER_URL || "";
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -48,10 +44,9 @@ const HomePage = () => {
 
         const response = await axios({
           method: "get",
-          url: `${SERVER_BASE_URL}/posts`,
+          url: "/posts-following",
           params: {
-            ownerId: viewerId,
-            viewerId: viewerId,
+            userId: viewerId,
             limit: state.limit,
             page: state.page
           },
@@ -70,29 +65,27 @@ const HomePage = () => {
         }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch home");
+          console.log("cancelled fetch homepage");
         } else {
           setState(prevState => ({
             ...prevState,
             error: error,
             isLoading: false
           }));
-          console.log(error);
+          console.log("Error fetch homepage", error);
         }
-      } finally {
-        // !isEmpty(state) &&
-        //   setState(prevState => ({ ...prevState, isLoading: false }));
       }
     };
 
-    console.log("fetch home posts");
-    feactData();
+    !isEmpty(tokenUser) && feactData();
 
     // unmount
-    return () => {
+    return async () => {
       source.cancel();
     };
-  }, [SERVER_BASE_URL, state.limit, state.page, viewerId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.page, tokenUser]);
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
@@ -100,6 +93,16 @@ const HomePage = () => {
     state.data.length === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
+
+  // render items
+  const _renderPostItem = () =>
+    state &&
+    state.data.length > 0 &&
+    state.data.map((item, idx) => (
+      <div key={item.id || idx} className="home-post__item">
+        <PostItem {...item} isHomePage />
+      </div>
+    ));
 
   return (
     <BasicTemplate footer={false}>
@@ -116,6 +119,7 @@ const HomePage = () => {
                     pageStart={0}
                     loadMore={getMoreItems}
                     hasMore={hasMoreItems}
+                    threshold={300}
                   >
                     {_renderPostItem()}
                   </InfiniteScroll>
@@ -130,7 +134,7 @@ const HomePage = () => {
             <Col xs={0} lg={7}>
               <div className="home__content--advance">
                 <Profile />
-                <SuggestionFollow />
+                <SuggestionForUser />
                 <Footer isHomePage />
               </div>
             </Col>
