@@ -3,10 +3,10 @@ import FollowItem from "Components/UserRelationship";
 import IsLoading from "Components/IsLoading";
 import InfiniteScroll from "react-infinite-scroller";
 
-import "./followList.scss";
+import "./Relationship.scss";
 
 const FollowList = ({
-  headerFollow = "",
+  headerText = "",
   items = [],
   isLoading = false,
   hasMoreItems = false,
@@ -14,6 +14,8 @@ const FollowList = ({
 }) => {
   const _renderFollowItem = useCallback(
     () =>
+      items &&
+      items.length > 0 &&
       items.map((item, idx) => (
         <FollowItem
           key={item.user.id || idx}
@@ -26,22 +28,19 @@ const FollowList = ({
 
   return (
     <div className="follow-list">
-      <div className="follow-list__header">
-        <h1>{headerFollow}</h1>
-      </div>
+      {headerText && (
+        <div className="follow-list__header">
+          <h1>{headerText}</h1>
+        </div>
+      )}
       <InfiniteScroll
         pageStart={0}
         loadMore={getMoreItems}
         hasMore={hasMoreItems}
-        loader={
-          <div className="loader" key={0}>
-            <IsLoading isLoading size={64} />
-          </div>
-        }
       >
         <div>{_renderFollowItem()}</div>
       </InfiniteScroll>
-      <IsLoading isLoading={isLoading} size={64} />
+      <IsLoading isLoading={isLoading} size={48} />
     </div>
   );
 };

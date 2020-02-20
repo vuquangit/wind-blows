@@ -11,10 +11,7 @@ import Follows from "./Profile/Follows";
 import IsLoading from "Components/IsLoading";
 import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
-import {
-  requestPersonalInfo,
-  clearPersonalProfile
-} from "Redux/PersonalProfile/personalProfile.action";
+import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import "./scss/personalPage.scss";
 import TabPages from "./TabPages";
 

@@ -10,7 +10,7 @@ import BasicTemplate from "Template/BasicTemplate";
 import PostItem from "Containers/PostItem";
 import PostStatus from "Containers/PostStatus";
 import Profile from "./HomeProfile";
-import SuggestionFollow from "./SuggestionFollow";
+import SuggestionForUser from "../Explore/Suggestion";
 import Footer from "Template/Pages/Footer";
 import IsLoading from "Components/IsLoading";
 import "./home.scss";
@@ -134,7 +134,7 @@ const HomePage = () => {
             <Col xs={0} lg={7}>
               <div className="home__content--advance">
                 <Profile />
-                <SuggestionFollow />
+                <SuggestionForUser />
                 <Footer isHomePage />
               </div>
             </Col>

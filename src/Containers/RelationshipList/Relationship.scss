@@ -3,16 +3,18 @@
 
     &__header {
         border-bottom: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
-        height: 43px;
+        height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
+        text-transform: uppercase;
 
         h1 {
             font-size: 16px;
             font-weight: 600;
             line-height: 24px;
             text-align: center;
+            margin: 0;
         }
     }
 }

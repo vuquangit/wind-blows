@@ -11,6 +11,7 @@ import Followers from "Template/Pages/PersonalPage/WrapperPersonalPage/Profile/F
 import Following from "Template/Pages/PersonalPage/WrapperPersonalPage/Profile/Follows/Following";
 import GoToPost from "Containers/GoToPost";
 import Notifications from "Template/Pages/Notifications";
+import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 
 const pageConfigs = [
   {
@@ -53,6 +54,11 @@ const pageConfigs = [
   {
     path: "/accounts/edit/",
     component: EditProfile,
+    exact: true
+  },
+  {
+    path: "/explore/people/suggested/",
+    component: Suggested,
     exact: true
   },
   {
