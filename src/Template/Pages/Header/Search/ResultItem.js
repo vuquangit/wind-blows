@@ -1,6 +1,7 @@
 import React from "react";
-import AvatarUser from "Components/AvatarUser";
 import { Link } from "react-router-dom";
+
+import AvatarUser from "Components/AvatarUser";
 
 const ResultItem = ({
   username = "",

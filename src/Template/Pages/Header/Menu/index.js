@@ -3,7 +3,7 @@ import axios from "utils/axiosConfig";
 import { Badge } from "antd";
 import { get, startsWith } from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
+
 import { useSelector, useDispatch } from "react-redux";
 import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,7 @@ import AvatarUser from "Components/AvatarUser";
 import DropdownNotification from "./DropdownNotification";
 import { updateNotifications } from "Redux/Notifications/notification.action";
 
-const Menu = ({ match = {} }) => {
+const Menu = ({ match = {}, isSmallScreen = false }) => {
   const dispatch = useDispatch();
   const {
     username = "",
@@ -64,8 +64,6 @@ const Menu = ({ match = {} }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // notifications
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
   const enableDropdownNoti = startsWith(match.path, "/notifications");
 
   return (
@@ -73,7 +71,7 @@ const Menu = ({ match = {} }) => {
       <div className="header__menu--items">
         {!isSmallScreen && (
           <div className="menu-item">
-            <NavLink to={`/explore/people/search/`}>
+            <NavLink to="/explore/people/search/">
               <FontAwesomeIcon
                 icon={faSearch}
                 className="header__search--icon"

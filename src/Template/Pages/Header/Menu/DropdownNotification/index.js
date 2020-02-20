@@ -19,17 +19,15 @@ const DropdownNotification = ({ count = 0 }) => {
         <FontAwesomeIcon icon={faBell} title="Notifications" />
       </Badge>
       {isOpenDropdown && (
-        <div>
-          <div className="dropdown__modal">
-            <div
-              className="dropdown__modal--a"
-              onClick={() => setIsOpenDropdown(false)}
-            />
-            <div className="dropdown__modal--b" />
-            <div className="dropdown__modal--c" />
-            <div className="dropdown__modal--d">
-              <Notifications />
-            </div>
+        <div className="dropdown__modal">
+          <div
+            className="dropdown__modal--a"
+            onClick={() => setIsOpenDropdown(false)}
+          />
+          <div className="dropdown__modal--b" />
+          <div className="dropdown__modal--c" />
+          <div className="dropdown__modal--d">
+            <Notifications />
           </div>
         </div>
       )}

@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../Pages/Header";
 import "./basicTemplate.scss";
 import Footer from "Template/Pages/Footer";
 
 const BasicTemplate = ({ children }) => {
-  // eslint-disable-next-line
-  const [isScroll, setScroll] = useState(false);
+  /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleScroll = e => {
-    // let element = e.target.scrollingElement;
-    // if (element && element.scrollTop > 0) {
-    //   // do something at end of scroll
-    //   setScroll(true);
-    // } else setScroll(false);
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = function() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      document.getElementById("navbar").style.top = "0";
+      setIsScrolled(false);
+    } else {
+      document.getElementById("navbar").style.top = "-60px";
+      setIsScrolled(true);
+    }
+    prevScrollpos = currentScrollPos;
   };
 
   return (
-    <div className="basic-template" onScroll={handleScroll}>
-      <div className="basic-template__header">
-        <Header isScroll={isScroll} />
+    <div className="basic-template">
+      <div className="basic-template__header" id="navbar">
+        <Header isScrolled={isScrolled} />
       </div>
       <div className="basic-template__children">
         <div className="basic-template__children--content">{children}</div>
