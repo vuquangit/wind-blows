@@ -12,7 +12,7 @@ import AvatarUser from "Components/AvatarUser";
 import DropdownNotification from "./DropdownNotification";
 import { updateNotifications } from "Redux/Notifications/notification.action";
 
-const Menu = ({ match = {}, isSmallScreen = false }) => {
+const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
   const dispatch = useDispatch();
   const {
     username = "",
@@ -48,6 +48,15 @@ const Menu = ({ match = {}, isSmallScreen = false }) => {
 
         const total = get(response, "data.totalUnread") || 0;
         await dispatch(updateNotifications(total));
+
+        // document.title
+        // /\([\d]+\)/.test(title)
+        const title = "The wind blows";
+        if (total && total > 0) {
+          document.title = `(${total}) ${title}`;
+        } else {
+          document.title = title;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -69,7 +78,7 @@ const Menu = ({ match = {}, isSmallScreen = false }) => {
   return (
     <div className="header__menu">
       <div className="header__menu--items">
-        {!isSmallScreen && (
+        {isSmallScreen && (
           <div className="menu-item">
             <NavLink to="/explore/people/search/">
               <FontAwesomeIcon
@@ -81,7 +90,10 @@ const Menu = ({ match = {}, isSmallScreen = false }) => {
         )}
         <div className="menu-item">
           {!isSmallScreen && !enableDropdownNoti ? (
-            <DropdownNotification count={totalNotiUnread} />
+            <DropdownNotification
+              count={totalNotiUnread}
+              isScrolled={isScrolled}
+            />
           ) : (
             <NavLink to="/notifications">
               <Badge count={totalNotiUnread} overflowCount={99}>

@@ -12,8 +12,8 @@ import "./goToPost.scss";
 
 const GoToPost = ({ match = {} }) => {
   const postId = match.params.id;
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
   const [state, setState] = useState({

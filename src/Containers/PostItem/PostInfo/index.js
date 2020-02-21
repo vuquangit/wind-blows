@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import axios from "utils/axiosConfig";
 import { get, filter, isEmpty } from "lodash";
+import { Link } from "react-router-dom";
 
 import PostAction from "./PostAction";
 import PostLikes from "./PostLikes";
@@ -10,18 +11,20 @@ import PostedAt from "./PostedAt";
 import AddComments from "./AddComments";
 import "./postInfo.scss";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 const PostInfo = ({
   postId = "",
   owner = {},
   numLikes = 0,
+  postAt = "",
   isHomePage = false,
   likedByViewer = false,
   savedByViewer = false,
   handleLikePost = () => {}
 }) => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
   // fetch comments data
@@ -96,9 +99,6 @@ const PostInfo = ({
       setComments(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
-  //
-  const { postedAt = new Date() } = get(stateComments, "data");
-
   // add post comments
   const handleAddComments = res => {
     setComments(prevState => ({
@@ -147,13 +147,23 @@ const PostInfo = ({
         setIsViewerComments={setIsViewerComments}
         handleDeleteComments={handleDeleteComments}
       />
-      <PostedAt isHomePage={isHomePage} postedAt={postedAt} />
-      <AddComments
-        isHomePage={isHomePage}
-        postId={postId}
-        handleAddComments={handleAddComments}
-        setIsViewerComments={setIsViewerComments}
-      />
+      <PostedAt isHomePage={isHomePage} postedAt={postAt} />
+      {viewerId ? (
+        <AddComments
+          isHomePage={isHomePage}
+          postId={postId}
+          handleAddComments={handleAddComments}
+          setIsViewerComments={setIsViewerComments}
+        />
+      ) : (
+        <div className="PI__info--post-comment">
+          <Link to="/accounts/login">
+            <Button type="primary" block>
+              Login to comment
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

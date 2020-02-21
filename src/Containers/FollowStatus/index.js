@@ -14,7 +14,8 @@ const FollowStatus = ({
   viewerId = "",
   relationship = { followedByViewer: { state: "" } },
   textFollowing = "",
-  classNamesBtn = ""
+  classNamesBtn = "",
+  history = {}
 }) => {
   const {
     id: userId = "",
@@ -125,9 +126,24 @@ const FollowStatus = ({
     classNamesBtn
   );
 
+  const requestLogin = () => {
+    Modal.confirm({
+      title: "The Wind Blows",
+      content: "Please log in to continue...",
+      okText: "Login",
+      cancelText: "Cancel",
+      onOk() {
+        history.push("/accounts/login");
+      }
+    });
+  };
+
   return (
     <div className="follow-status">
-      <button className={followBtnClass} onClick={showModal}>
+      <button
+        className={followBtnClass}
+        onClick={viewerId ? showModal : requestLogin}
+      >
         {state.followStatus === "Following" && textFollowing
           ? textFollowing
           : state.followStatus}

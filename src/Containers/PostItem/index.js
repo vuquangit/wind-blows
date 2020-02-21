@@ -16,6 +16,7 @@ const PostItem = ({
   isHomePage = false,
   owner = {},
   numLikes = 0,
+  postAt = "",
   likedByViewer = false,
   savedByViewer = false,
   location = {},
@@ -24,8 +25,8 @@ const PostItem = ({
   handleCancelModalPost = () => {}
 }) => {
   // fetch likes
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
   // const sourceLikePost = axios.CancelToken.source();
@@ -92,6 +93,7 @@ const PostItem = ({
         postId={postId}
         owner={owner}
         numLikes={likeTotal}
+        postAt={postAt}
         likedByViewer={isLikePost}
         savedByViewer={savedByViewer}
         handleLikePost={handleLikePost}

@@ -70,7 +70,7 @@ const pageConfigs = [
   {
     path: "/p/:id/",
     component: GoToPost,
-    exact: true
+    exact: false
   },
   {
     path: "/:username/",

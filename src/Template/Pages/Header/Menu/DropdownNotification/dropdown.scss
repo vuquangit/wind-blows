@@ -1,8 +1,9 @@
-.dropdown {
+.noti-dropdown {
   position: relative;
   display: flex;
   align-items: stretch;
   flex-direction: column;
+  transition: top 0.2s ease-in-out;
 
   &__modal {
     cursor: default;
@@ -122,4 +123,8 @@
       right: 12px;
     }
   }
+}
+
+.noti-dropdown-hidden {
+  display: none !important;
 }

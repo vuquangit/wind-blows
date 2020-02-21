@@ -4,6 +4,7 @@ import IsLoading from "Components/IsLoading";
 import ResultItem from "./ResultItem";
 
 const SearchResults = ({
+  value = "",
   items = [],
   isLoading = false,
   hasMoreItems = false,
@@ -25,8 +26,8 @@ const SearchResults = ({
         hasMore={hasMoreItems}
         className="search-result"
       >
-        <div>{_renderFollowItem()}</div>
-        {!isLoading && items && items.length === 0 && (
+        {_renderFollowItem()}
+        {!isLoading && items && items.length === 0 && value && (
           <div className="search-result__empty">No result</div>
         )}
       </InfiniteScroll>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router";
-import { isEmpty } from "lodash";
+import { isEmpty, get } from "lodash";
 import { Row, Col } from "antd";
 
 import PanelImage from "./PanelImage";
@@ -10,10 +10,10 @@ import Loading from "Template/Pages/Loading";
 import "./signup.scss";
 
 const EmailSignup = ({ history }) => {
-  //Is signed
-
-  const { data: profileData, isFetching } =
-    useSelector((state = {}) => state.profile) || {};
+  const {
+    data: profileData = {},
+    isFetching = false
+  } = useSelector((state = {}) => get(state, "profile", {}));
 
   useEffect(() => {
     if (!isEmpty(profileData)) {

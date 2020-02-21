@@ -37,12 +37,12 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
       ) : typeNotification === 3 ? (
         <>
           {` like your comments: `}
-          <span style={{ fontStyle: "italic" }}>{text}</span>
+          <span>"{text}"</span>
         </>
       ) : (
         <>
           {` mentioned you in a comment: `}
-          <span style={{ fontStyle: "italic" }}>{text}</span>
+          <span>"{text}"</span>
         </>
       )}
       {typeNotification !== 0 && (

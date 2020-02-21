@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "antd";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, startsWith } from "lodash";
 import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import axios from "utils/axiosConfig";
 import BasicTemplate from "Template/BasicTemplate";
 import SearchResults from "./SearchResults";
 
-const SearchComponent = ({ isSmallScreen = false, isScrolled = false }) => {
+const SearchComponent = ({ isSearchPage = false, isScrolled = false }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const source = axios.CancelToken.source();
   const [value, setValue] = useState("");
+  const [state, setState] = useState({
+    data: [],
+    error: null,
+    isLoading: false,
+    page: 1,
+    limit: 10,
+    totalItems: 0
+  });
+
   const handleSearchChanged = e => {
     source.cancel("Cancel search");
 
@@ -35,15 +46,6 @@ const SearchComponent = ({ isSmallScreen = false, isScrolled = false }) => {
   const handleSearchClick = () => {
     value && state.data && setIsOpenDropdown(true);
   };
-
-  const [state, setState] = useState({
-    data: [],
-    error: null,
-    isLoading: false,
-    page: 1,
-    limit: 10,
-    totalItems: 0
-  });
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -107,10 +109,7 @@ const SearchComponent = ({ isSmallScreen = false, isScrolled = false }) => {
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-
   return (
-    // <BasicTemplate>
     <div className="header__search">
       <Input.Search
         placeholder="Search"
@@ -119,40 +118,59 @@ const SearchComponent = ({ isSmallScreen = false, isScrolled = false }) => {
         onChange={handleSearchChanged}
         onClick={handleSearchClick}
       />
-      {!isOpenDropdown
-        ? isSmallScreen && (
-            <SearchResults
-              value={value}
-              items={state.data}
-              isLoading={state.isLoading}
-              hasMoreItems={hasMoreItems}
-              getMoreItems={getMoreItems}
+      {isSearchPage ? (
+        <SearchResults
+          value={value}
+          items={state.data}
+          isLoading={state.isLoading}
+          hasMoreItems={hasMoreItems}
+          getMoreItems={getMoreItems}
+        />
+      ) : (
+        isOpenDropdown &&
+        !isScrolled && (
+          <>
+            <div
+              className="header__search--close-dropdown"
+              role="dialog"
+              onClick={() => setIsOpenDropdown(false)}
             />
-          )
-        : !isScrolled && (
-            <>
-              <div
-                className="header__search--close-dropdown"
-                role="dialog"
-                onClick={() => setIsOpenDropdown(false)}
-              />
-              <div className="header__search--dropdown-content">
-                <div className="header__search--arrow-up" />
-                <div className="header__search--dropdown">
-                  <SearchResults
-                    value={value}
-                    items={state.data}
-                    isLoading={state.isLoading}
-                    hasMoreItems={hasMoreItems}
-                    getMoreItems={getMoreItems}
-                  />
-                </div>
+            <div className="header__search--dropdown-content">
+              <div className="header__search--arrow-up" />
+              <div className="header__search--dropdown">
+                <SearchResults
+                  value={value}
+                  items={state.data}
+                  isLoading={state.isLoading}
+                  hasMoreItems={hasMoreItems}
+                  getMoreItems={getMoreItems}
+                />
               </div>
-            </>
-          )}
+            </div>
+          </>
+        )
+      )}
     </div>
-    //  {/* </BasicTemplate>  */}
   );
 };
 
-export default SearchComponent;
+const WrappedSearch = ({ match = {}, isScrolled = false }) => {
+  const isSearchPage = startsWith(match.path, "/explore/people/search");
+
+  return (
+    <>
+      {isSearchPage ? (
+        <BasicTemplate>
+          <SearchComponent
+            isScrolled={isScrolled}
+            isSearchPage={isSearchPage}
+          />
+        </BasicTemplate>
+      ) : (
+        <SearchComponent isScrolled={isScrolled} isSearchPage={isSearchPage} />
+      )}
+    </>
+  );
+};
+
+export default withRouter(WrappedSearch);

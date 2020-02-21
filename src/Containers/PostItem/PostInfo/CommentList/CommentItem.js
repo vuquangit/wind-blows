@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Modal } from "antd";
+import { Link, withRouter } from "react-router-dom";
 import classNames from "classnames";
 import axios from "utils/axiosConfig";
 import { get, isEmpty } from "lodash";
@@ -24,7 +24,8 @@ const CommentListItem = ({
   likeCount = 0,
   likedByViewer = false,
   isHomePage = false,
-  handleDeleteComments = () => {}
+  handleDeleteComments = () => {},
+  history = {}
 }) => {
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);
@@ -84,7 +85,7 @@ const CommentListItem = ({
 
   // fetch data of owner comment
   const viewerProfile = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+    get(state, "profile.data.user", {})
   );
 
   const [stateOwnerComments, setOwnerComments] = useState({
@@ -160,11 +161,23 @@ const CommentListItem = ({
     setVisibleModalLikes(false);
   };
 
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user")
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
   const endpoint = "/post/comments/likes";
   const params = { commentsId: commentId, viewerId: viewerId };
+
+  const requestLogin = () => {
+    Modal.confirm({
+      title: "The Wind Blows",
+      content: "Please log in to continue......",
+      okText: "Login",
+      cancelText: "Cancel",
+      onOk() {
+        history.push("/accounts/login");
+      }
+    });
+  };
 
   return (
     <div className="CL__item">
@@ -208,7 +221,7 @@ const CommentListItem = ({
                           <>
                             <button
                               className="info__content--item"
-                              onClick={showModalLikes}
+                              onClick={viewerId ? showModalLikes : requestLogin}
                             >
                               {_likeCount} like
                             </button>
@@ -220,7 +233,9 @@ const CommentListItem = ({
                             />
                           </>
                         )}
-                        <button className="info__content--item">Reply</button>
+                        {viewerId && (
+                          <button className="info__content--item">Reply</button>
+                        )}
                       </>
                     )}
                   </div>
@@ -228,7 +243,7 @@ const CommentListItem = ({
               )}
             </div>
           </div>
-          {!isCaption && (
+          {!isCaption && viewerId && (
             <>
               {!isHomePage && (
                 <div className="CL__item--option">
@@ -259,4 +274,4 @@ const CommentListItem = ({
   );
 };
 
-export default CommentListItem;
+export default withRouter(CommentListItem);

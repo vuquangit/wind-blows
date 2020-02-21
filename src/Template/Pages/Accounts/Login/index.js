@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
-import LoginForm from "./LoginForm";
-import { isEmpty } from "lodash";
+import { isEmpty, get } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import { Row, Col } from "antd";
 
-import SiteName from "Components/SiteName";
-import Authorization from "Containers/Authorization";
+import Login from "./Login";
+import PanelImage from "./PanelImage";
+import Loading from "Template/Pages/Loading";
 import "./login.scss";
 
-const Login = ({ history }) => {
+const WrapperLogin = ({ history }) => {
   const dispatch = useDispatch();
-  const { data: profileData } =
-    useSelector((state = {}) => state.profile) || {};
+  const {
+    data: profileData = {},
+    isFetching = false
+  } = useSelector((state = {}) => get(state, "profile", {}));
 
   useEffect(() => {
     if (!isEmpty(profileData)) {
@@ -22,39 +24,20 @@ const Login = ({ history }) => {
 
   return (
     <div className="login">
-      <div className="login__sign">
-        <div className="login__sign--content">
-          <div className="form">
-            <div className="form--header">
-              <SiteName />
-            </div>
-            <div className="form--content">
-              <LoginForm />
-              <div className="divide">
-                <div className="divide__line" />
-                <div className="divide__text">or</div>
-                <div className="divide__line" />
-              </div>
-              <Authorization />
-              <div>
-                <Link to="/accounts/password/reset" className="forgot-password">
-                  Forgot password?
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="switch-sign">
-            <p className="switch-sign--text">
-              Don't have an account?
-              <Link to="/accounts/emailsignup">
-                <button className="switch-btn">Sign up</button>
-              </Link>
-            </p>
-          </div>
-        </div>
-      </div>
+      {isFetching && !isEmpty(profileData) ? (
+        <Loading />
+      ) : (
+        <Row>
+          <Col xs={0} sm={0} md={12}>
+            <PanelImage />
+          </Col>
+          <Col xs={24} sm={24} md={12}>
+            <Login />
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };
 
-export default withRouter(Login);
+export default withRouter(WrapperLogin);

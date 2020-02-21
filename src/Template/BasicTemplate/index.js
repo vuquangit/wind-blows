@@ -8,16 +8,19 @@ const BasicTemplate = ({ children }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   var prevScrollpos = window.pageYOffset;
-  window.onscroll = function() {
-    var currentScrollPos = window.pageYOffset;
-    if (prevScrollpos > currentScrollPos) {
-      document.getElementById("navbar").style.top = "0";
-      setIsScrolled(false);
-    } else {
-      document.getElementById("navbar").style.top = "-60px";
-      setIsScrolled(true);
+  window.onscroll = () => {
+    if (document.getElementById("navbar")) {
+      var currentScrollPos = window.pageYOffset;
+
+      if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+        setIsScrolled(false);
+      } else if (currentScrollPos > 50) {
+        document.getElementById("navbar").style.top = "-60px";
+        setIsScrolled(true);
+      }
+      prevScrollpos = currentScrollPos;
     }
-    prevScrollpos = currentScrollPos;
   };
 
   return (

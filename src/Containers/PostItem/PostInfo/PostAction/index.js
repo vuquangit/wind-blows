@@ -21,8 +21,8 @@ const PostAction = ({
   savedByViewer,
   postId = ""
 }) => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
   // Modal share button
@@ -76,12 +76,16 @@ const PostAction = ({
   return (
     <section className={actionClass}>
       <div className="action-item__content">
-        <Button className="action-item__item" onClick={handleLikePost}>
-          <Heart isLiked={likedByViewer} />
-        </Button>
-        <Button className="action-item__item">
-          <FontAwesomeIcon icon={faComment} title="Comment" />
-        </Button>
+        {viewerId && (
+          <>
+            <Button className="action-item__item" onClick={handleLikePost}>
+              <Heart isLiked={likedByViewer} />
+            </Button>
+            <Button className="action-item__item">
+              <FontAwesomeIcon icon={faComment} title="Comment" />
+            </Button>
+          </>
+        )}
         <Button className="action-item__item">
           <FontAwesomeIcon
             icon={faShareSquare}
@@ -90,14 +94,16 @@ const PostAction = ({
           />
         </Button>
       </div>
-      <div className="action-item__content">
-        <Button className="action-item__item" onClick={handleSavePost}>
-          <FontAwesomeIcon
-            icon={isSavePost ? faBookmarkBlack : faBookmark}
-            title={isSavePost ? "Bookmarked" : "Bookmark"}
-          />
-        </Button>
-      </div>
+      {viewerId && (
+        <div className="action-item__content">
+          <Button className="action-item__item" onClick={handleSavePost}>
+            <FontAwesomeIcon
+              icon={isSavePost ? faBookmarkBlack : faBookmark}
+              title={isSavePost ? "Bookmarked" : "Bookmark"}
+            />
+          </Button>
+        </div>
+      )}
       <ModalShare
         visibleModal={visibleModal}
         handleCancelModal={cancelModalShare}
