@@ -1,11 +1,15 @@
 &--caption {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
 
-    .ant-avatar {
-        margin-left: 8px;
-        margin-right: 8px;
-    }
+  .ant-avatar {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .ant-input-textarea-clear-icon {
+    margin: 3px 19px 0 0;
+  }
 }

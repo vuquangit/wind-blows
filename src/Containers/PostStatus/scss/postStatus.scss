@@ -1,16 +1,37 @@
 .post-status {
+  position: relative;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid rgb(219, 219, 219);
+
+  &__external {
+    bottom: 0%;
+    transition: opacity 0.3s;
+    background: #000;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 310;
+  }
+
+  .status-focused {
+    opacity: 0.6;
+  }
+
+  @import "formPost";
+
+  &__content {
+    position: relative;
+    z-index: 311 !important;
     background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid rgb(219, 219, 219);
 
-    @import 'formPost';
-
-    &__content {
-        @import 'header';
-        @import 'caption';
-        @import 'option';
-        @import 'location';
-        @import 'commentsPrivate';
-        @import 'submit';
-    }
+    @import "header";
+    @import "caption";
+    @import "option";
+    @import "location";
+    @import "commentsPrivate";
+    @import "submit";
+  }
 }

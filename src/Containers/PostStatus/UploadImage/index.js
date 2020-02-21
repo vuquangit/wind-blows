@@ -6,26 +6,26 @@ import "./uploadImage.scss";
 
 const PostUploadImage = ({
   sidecarChildren = [],
-  handleAddImage = () => {},
+  handleAddDataImages = () => {},
+  handleUpdateImages = () => {},
   handleRemoveImage = () => {}
 }) => {
-  const images = sidecarChildren;
-
   return (
     <div className="post-upload-image">
       <div className="upload-image__wrapper">
         <div className="upload-image__items">
           <div className="thumbnails">
-            {images.length > 0 &&
-              images.map((item, idx) => (
+            {sidecarChildren.length > 0 &&
+              sidecarChildren.map((item, idx) => (
                 <Thumbnails
-                  public_id={item.public_id}
-                  key={item.public_id || idx}
+                  key={idx}
+                  {...item}
+                  handleUpdateImages={handleUpdateImages}
                   handleRemoveImage={handleRemoveImage}
                 />
               ))}
           </div>
-          <AddImage images={images} handleAddImage={handleAddImage} />
+          <AddImage handleAddDataImages={handleAddDataImages} />
         </div>
       </div>
     </div>
