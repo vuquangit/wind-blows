@@ -8,7 +8,7 @@ import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
 // import Highlights from "./Highlights";
 import Follows from "./Profile/Follows";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
@@ -64,7 +64,7 @@ const PersonalPage = ({ match = {}, children }) => {
         <BasicTemplate>
           {isFetching ? (
             <div className="personal__loading">
-              <IsLoading isLoading size={128} />
+              <Pinwheel isLoading size={128} />
             </div>
           ) : (
             <div className="personal">

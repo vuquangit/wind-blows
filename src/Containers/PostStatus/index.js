@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { isEqual, get } from "lodash";
+import { isEqual, get, mergeWith } from "lodash";
 import classNames from "classnames";
 
 import PostHeader from "./Header";
@@ -44,41 +44,32 @@ const PostStatus = () => {
 
   // upload image
   const handleAddDataImages = data => {
-    const uId = () =>
-      Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));
     if (data) {
-      const _data = { ...data, idImageSelect: uId(), isUploaded: false };
-
-      console.log("add", _data);
-
       setStatus(prevState => ({
         ...prevState,
-        sidecarChildren: [...prevState.sidecarChildren, _data]
+        sidecarChildren: [...prevState.sidecarChildren, data]
       }));
     }
   };
   const handleUpdateImages = data => {
-    const images = status.sidecarChildren || [];
-
-    const _sidecarChildren = images.map(item => {
-      if (item.idImageSelect === data.idImageSelect) {
-        return data;
-      } else return item;
-    });
-
     setStatus(prevState => ({
       ...prevState,
-      sidecarChildren: _sidecarChildren
+      sidecarChildren:
+        prevState.sidecarChildren && prevState.sidecarChildren.length > 0
+          ? prevState.sidecarChildren.map(item => {
+              if (item.uuidFile === data.uuidFile) return { ...item, ...data };
+              else return item;
+            })
+          : []
     }));
   };
-  const handleRemoveImage = publicIdRemove => {
-    const images = status.sidecarChildren || [];
-    const _sidecarChildren = images.filter(
-      item => item.public_id !== publicIdRemove
-    );
+  const handleRemoveImage = uuidFile => {
     setStatus(prevState => ({
       ...prevState,
-      sidecarChildren: _sidecarChildren
+      sidecarChildren:
+        prevState.sidecarChildren && prevState.sidecarChildren.length > 0
+          ? prevState.sidecarChildren.filter(item => item.uuidFile !== uuidFile)
+          : []
     }));
   };
 
@@ -89,11 +80,13 @@ const PostStatus = () => {
 
   return (
     <div className="post-status">
-      <div
-        className={classFocus}
-        role="presentation"
-        onClick={handleCancelStatusFocus}
-      />
+      {isStatusFocus && (
+        <div
+          className={classFocus}
+          role="presentation"
+          onClick={handleCancelStatusFocus}
+        />
+      )}
       <div className="post-status__content" onClick={handleIsStatusFocused}>
         <PostHeader isClearStatus={isClearStatus} clearStatus={clearStatus} />
         <PostCation caption={status.caption} setStatus={setStatus} />
@@ -120,6 +113,7 @@ const PostStatus = () => {
           handleToggleOption={handleToggleOption}
           status={status}
           clearStatus={clearStatus}
+          handleCancelStatusFocus={handleCancelStatusFocus}
         />
       </div>
     </div>

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFan } from "@fortawesome/free-solid-svg-icons";
 import "./isLoading.scss";
 
-const IsLoading = ({ isLoading = false, size = 24 }) => {
+const Pinwheel = ({ isLoading = false, size = 24 }) => {
   return (
     <div className="is-loading">
       {isLoading && (
@@ -19,4 +19,4 @@ const IsLoading = ({ isLoading = false, size = 24 }) => {
   );
 };
 
-export default IsLoading;
+export default Pinwheel;

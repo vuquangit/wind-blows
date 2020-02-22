@@ -6,7 +6,8 @@ const PostOption = ({
   status = {},
   clearStatus,
   isShowOption,
-  handleToggleOption
+  handleToggleOption,
+  handleCancelStatusFocus
 }) => {
   return (
     <div className="post-status__content--option">
@@ -14,7 +15,11 @@ const PostOption = ({
         isShowOption={isShowOption}
         handleToggleOption={handleToggleOption}
       />
-      <PostSubmit status={status} clearStatus={clearStatus} />
+      <PostSubmit
+        status={status}
+        clearStatus={clearStatus}
+        handleCancelStatusFocus={handleCancelStatusFocus}
+      />
     </div>
   );
 };

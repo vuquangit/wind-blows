@@ -5,7 +5,7 @@ import axios from "utils/axiosConfig";
 import { get } from "lodash";
 
 import { updateProfileInfo } from "Redux/Profile/profile.action";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import { toBase64 } from "utils/toBase64";
 
 const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
@@ -24,11 +24,11 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
 
     const filesSeleted = Array.from(event.target.files);
     const getDataImages = filesSeleted.map(async file => {
-      const { data, type } = await toBase64(file);
+      const { base64 = "", type = "" } = await toBase64(file);
       return {
         name: file.name,
-        type: type,
-        base64: data
+        type,
+        base64
       };
     });
 
@@ -36,7 +36,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
       setUpdating(true);
       // upload image
       try {
-        const res = await axios.post("/upload-image/upload", {
+        const res = await axios.post("/images/upload", {
           data: data,
           headers: {
             "Content-Type": "multipart/form-data"
@@ -143,7 +143,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
       {updating && (
         <div className="profile-photo__modal--loading">
           <div className="loading-content">
-            <IsLoading isLoading size={64} />
+            <Pinwheel isLoading size={64} />
           </div>
         </div>
       )}

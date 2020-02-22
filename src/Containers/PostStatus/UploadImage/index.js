@@ -25,7 +25,10 @@ const PostUploadImage = ({
                 />
               ))}
           </div>
-          <AddImage handleAddDataImages={handleAddDataImages} />
+          <AddImage
+            handleAddDataImages={handleAddDataImages}
+            handleUpdateImages={handleUpdateImages}
+          />
         </div>
       </div>
     </div>

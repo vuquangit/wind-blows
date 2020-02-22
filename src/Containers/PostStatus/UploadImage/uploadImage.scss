@@ -23,8 +23,11 @@
     &__item {
       position: relative;
       margin-left: 5px;
+      height: 100px;
+      width: 100px;
 
       &:hover {
+
         .thumbnails__item--btn-remove,
         .thumbnails__item--option {
           opacity: 1;
@@ -32,26 +35,56 @@
       }
 
       &--image {
-        height: 100px;
-        width: 100px;
+        height: 100%;
+        width: 100%;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
       }
 
-      &--btn-remove {
-        opacity: 0;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        z-index: 1;
-        background-color: transparent;
-        border: 0 none;
-        cursor: pointer;
-        color: #fff;
+      &--center {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px dashed #dddfe2;
+        border-radius: 2px;
+        box-sizing: border-box;
+      }
 
-        &:focus {
-          outline: none;
+      &--info {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 2px;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.2);
+
+        .item-btn-retry {
+          // width: 100%;
+          // height: 100%;
+          height: auto;
+          width: auto;
+          background: transparent;
+          border: 0;
+        }
+
+        .item-error-remove {
+          opacity: 0.8;
+          background-color: cadetblue;
+          right: 0px;
+          top: 0px;
+
+          &:hover {
+            opacity: 1;
+          }
         }
       }
 
@@ -75,6 +108,22 @@
           left: 0;
           right: 0;
           top: 0;
+        }
+      }
+
+      &--btn-remove {
+        opacity: 0;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        z-index: 1;
+        background-color: transparent;
+        border: 0 none;
+        cursor: pointer;
+        color: #fff;
+
+        &:focus {
+          outline: none;
         }
       }
 
@@ -163,17 +212,6 @@
       outline: none;
     }
 
-    &__is-loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100px;
-      width: 100px;
-      border: 1px solid #dddfe2;
-      background: #e8e8e8;
-      margin-left: 5px;
-      margin-right: 5px;
-    }
   }
 }
 

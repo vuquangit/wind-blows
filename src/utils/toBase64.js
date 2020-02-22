@@ -19,7 +19,7 @@ export const toBase64 = file => {
         ctx.drawImage(img, 0, 0, width, img.height * scaleFactor);
         const type = "image/jpeg";
 
-        resolve({ data: ctx.canvas.toDataURL(type, 1), type });
+        resolve({ base64: ctx.canvas.toDataURL(type, 1), type });
       };
     };
 

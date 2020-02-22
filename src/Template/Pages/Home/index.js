@@ -12,7 +12,7 @@ import PostStatus from "Containers/PostStatus";
 import Profile from "./HomeProfile";
 import SuggestionForUser from "../Explore/Suggestion";
 import Footer from "Template/Pages/Footer";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import "./home.scss";
 
 const HomePage = () => {
@@ -125,7 +125,7 @@ const HomePage = () => {
                   </InfiniteScroll>
                   {state.isLoading && (
                     <div className="post-list__is-loading">
-                      <IsLoading isLoading size={100} />
+                      <Pinwheel isLoading size={100} />
                     </div>
                   )}
                 </div>

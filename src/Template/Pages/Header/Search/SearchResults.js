@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import ResultItem from "./ResultItem";
 
 const SearchResults = ({
@@ -31,8 +31,7 @@ const SearchResults = ({
           <div className="search-result__empty">No result</div>
         )}
       </InfiniteScroll>
-
-      <IsLoading isLoading={isLoading} size={48} />
+      <Pinwheel isLoading={isLoading} size={48} />
     </>
   );
 };

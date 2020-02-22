@@ -1,56 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { Image, Transformation } from "cloudinary-react";
+// import { Image, Transformation } from "cloudinary-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faEdit } from "@fortawesome/free-solid-svg-icons";
-import { Modal, message } from "antd";
+import {
+  faTimes,
+  faEdit,
+  faExclamationTriangle
+} from "@fortawesome/free-solid-svg-icons";
+import { Modal, message, Button } from "antd";
+import { isEmpty } from "lodash";
+
 import axios from "utils/axiosConfig";
+import { stopPropagation } from "utils/stopPropagation";
+import Pinwheel from "Components/Loaders/Pinwheel";
+import Spinner from "Components/Loaders/Spinner";
 
 const Thumbnails = ({
   handleRemoveImage = () => {},
   handleUpdateImages = () => {},
+  public_id = "",
+  uuidFile = "",
   base64 = "",
   name = "",
-  idImageSelect = "",
+  isConverted = false,
   isUploaded = false,
   isUploadError = false,
-  ...props
+  ...restProps
 }) => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const handleShowModalEdit = () => setVisibleModalEdit(true);
   const handleCancelModalEdit = () => setVisibleModalEdit(false);
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
+  // upload
+  const source = axios.CancelToken.source();
+  const fetchUploadImage = async data => {
+    try {
+      handleUpdateImages({
+        isUploadError: false,
+        isUploaded: false,
+        uuidFile: uuidFile
+      });
 
-    const fetchUploadImage = async data => {
-      try {
-        const res = await axios.post("/upload-image/upload", {
-          data: data, //can upload mutile image
-          headers: {
-            "Content-Type": "multipart/form-data"
-          },
-          cancelToken: source.token
-        });
+      const res = await axios.post("/images/upload", {
+        data: data,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        cancelToken: source.token
+      });
 
+      console.log("res upload:", res);
+
+      if (!isEmpty(res.data))
         handleUpdateImages({
           ...res.data,
           isUploaded: true,
-          idImageSelect: idImageSelect
+          uuidFile: uuidFile
         });
-        console.log("res upload:", res);
-      } catch (err) {
-        message.error("Error: ", err);
-        console.log(err);
-        handleUpdateImages({
-          isUploadError: err,
-          idImageSelect: idImageSelect
-        });
-      }
-    };
+    } catch (err) {
+      message.error("Have a photo upload failed", 3);
+      console.log(err);
+      handleUpdateImages({
+        isUploadError: err,
+        uuidFile: uuidFile
+      });
+    }
+  };
 
-    if (base64) {
-      // fetchUploadImage([data.base64]);
-      console.log("uploading data", name);
+  useEffect(() => {
+    if (base64 && !public_id && !isUploadError) {
+      fetchUploadImage(base64);
     }
 
     // unmount
@@ -58,74 +76,113 @@ const Thumbnails = ({
       source.cancel();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [base64]);
 
-  const fecthDeleteImage = async publicId => {
-    try {
-      await axios({
-        method: "POST",
-        url: "/upload-image/delete",
-        data: {
-          publicId
-        },
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        }
-      });
-    } catch (err) {
-      message.error("Error: ", err);
-      console.log(err);
-    } finally {
-      handleRemoveImage(publicId);
+  const fecthDeleteImage = async e => {
+    stopPropagation(e);
+
+    if (isUploaded) {
+      try {
+        const res = await axios({
+          method: "POST",
+          url: "/images/delete",
+          data: {
+            publicId: public_id
+          },
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+          }
+        });
+
+        console.log(res);
+      } catch (err) {
+        message.error("Error: " + err, 3);
+        console.log(err);
+      }
     }
+
+    handleRemoveImage(uuidFile);
   };
-
-  console.log("props", props);
-
-  const public_id = base64;
 
   return (
     <div className="thumbnails__item">
-      <div
-        style={{ backgroundImage: `url(${base64})` }}
-        className="thumbnails__item--image"
-      />
-
-      {isUploadError && isUploaded && (
+      {!isConverted ? (
+        <div className="thumbnails__item--center">
+          <Pinwheel isLoading size={32} />
+        </div>
+      ) : base64 ? (
         <>
-          <button
-            className="thumbnails__item--btn-remove"
-            title="Remove this image"
-            onClick={() => fecthDeleteImage(public_id)}
-          >
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-          <div className="thumbnails__item--option">
-            <button
-              className="thumbnails__item--btn-edit-photo"
-              title="Edit photo"
-              onClick={handleShowModalEdit}
-            >
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-            <Modal
-              title={null}
-              visible={visibleModalEdit}
-              onCancel={handleCancelModalEdit}
-              className="thumbnails__item--modal"
-              // footer={null}
-              // closable={false}
-              centered
-            >
-              <div>
-                <Image
-                  publicId={public_id}
-                  style={{ height: "calc( 100vh - 120px)" }}
+          <div
+            style={{ backgroundImage: `url(${base64})` }}
+            className="thumbnails__item--image"
+          />
+          {!isUploadError ? (
+            <>
+              {isUploaded ? (
+                <div className="thumbnails__item--option">
+                  <button
+                    className="thumbnails__item--btn-remove"
+                    title="Remove this image"
+                    onClick={() => fecthDeleteImage()}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+
+                  <button
+                    className="thumbnails__item--btn-edit-photo"
+                    title="Edit photo"
+                    onClick={handleShowModalEdit}
+                  >
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <Modal
+                    title={null}
+                    visible={visibleModalEdit}
+                    onCancel={handleCancelModalEdit}
+                    className="thumbnails__item--modal"
+                    // footer={null}
+                    // closable={false}
+                    centered
+                  >
+                    <div
+                      style={{
+                        backgroundImage: `url(${base64})`,
+                        height: "calc( 100vh - 120px)",
+                        width: "auto"
+                      }}
+                    />
+                  </Modal>
+                </div>
+              ) : (
+                <div className="thumbnails__item--info">
+                  <Spinner size={44} color="#fff" />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="thumbnails__item--info">
+              <button
+                className="thumbnails__item--btn-remove item-error-remove"
+                title="Remove this image"
+                onClick={fecthDeleteImage}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+              <Button
+                onClick={() => fetchUploadImage(base64)}
+                className="item-btn-retry"
+              >
+                <FontAwesomeIcon
+                  icon={faExclamationTriangle}
+                  style={{ fontSize: "32px", color: "yellow" }}
                 />
-              </div>
-            </Modal>
-          </div>
+                <p style={{ color: "#fff", margin: "0" }}>Retry</p>
+              </Button>
+            </div>
+          )}
         </>
+      ) : (
+        <div className="thumbnails__item--center">Empty</div>
       )}
     </div>
   );

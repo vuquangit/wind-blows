@@ -16,8 +16,6 @@ const Header = ({ isScrolled = false }) => {
     (state = {}) => !isEmpty(get(state, "profile.data.user.id", ""))
   );
 
-  console.log("header scroll", isScrolled);
-
   return (
     <Layout.Header className="header">
       <div className="header__content">

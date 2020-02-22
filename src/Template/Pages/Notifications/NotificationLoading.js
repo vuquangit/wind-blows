@@ -1,10 +1,10 @@
 import React from "react";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 
 const NotificationLoading = () => {
   return (
     <div className="notification__is-loading">
-      <IsLoading isLoading size={48} />
+      <Pinwheel isLoading size={48} />
     </div>
   );
 };

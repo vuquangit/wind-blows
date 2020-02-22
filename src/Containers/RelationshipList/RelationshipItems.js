@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import FollowItem from "Components/UserRelationship";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import InfiniteScroll from "react-infinite-scroller";
 
 import "./Relationship.scss";
@@ -40,7 +40,7 @@ const FollowList = ({
       >
         <div>{_renderFollowItem()}</div>
       </InfiniteScroll>
-      <IsLoading isLoading={isLoading} size={48} />
+      <Pinwheel isLoading={isLoading} size={48} />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { get } from "lodash";
 
 import PostItem from "Containers/PostItem";
 import BasicTemplate from "Template/BasicTemplate";
-import IsLoading from "Components/IsLoading";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
 import "./goToPost.scss";
 
@@ -62,7 +62,7 @@ const GoToPost = ({ match = {} }) => {
             <div className="GTP__WPI">
               {state.isLoading ? (
                 <div className="GTP__WPI--is-loading">
-                  <IsLoading isLoading size={100} />
+                  <Pinwheel isLoading size={100} />
                 </div>
               ) : (
                 <PostItem {...state.data} isHomePage={false} />

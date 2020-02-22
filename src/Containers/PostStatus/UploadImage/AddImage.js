@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { message } from "antd";
-import IsLoading from "Components/IsLoading";
+import { uuid } from "utils/uuid";
 
 import { toBase64 } from "utils/toBase64";
 
-const AddImage = ({ handleAddDataImages = () => {} }) => {
+const AddImage = ({
+  handleAddDataImages = () => {},
+  handleUpdateImages = () => {}
+}) => {
   const fetchUploadImage = async e => {
     e.preventDefault();
 
@@ -18,16 +21,35 @@ const AddImage = ({ handleAddDataImages = () => {} }) => {
       return; // exit upload
     }
 
-    filesSeleted.map(async file => {
-      const { data, type } = await toBase64(file);
-      const image = {
-        name: file.name,
-        type: type,
-        base64: data
-      };
+    // thumbnail loading
+    const initList = () => {
+      const _init = filesSeleted.map(async item => {
+        const uuidFile = await uuid();
+        await handleAddDataImages({
+          uuidFile,
+          isConverted: false,
+          isUploaded: false
+        });
+        return { info: item, uuidFile };
+      });
 
-      console.log(image);
-      handleAddDataImages(image);
+      return Promise.all(_init);
+    };
+
+    // thumbnail uploading
+    initList().then(items => {
+      items.map(async file => {
+        const { base64 = "", type = "" } = await toBase64(file.info);
+        const image = {
+          name: file.info.name,
+          type,
+          base64,
+          uuidFile: file.uuidFile,
+          isConverted: true
+        };
+
+        handleUpdateImages(image);
+      });
     });
   };
 

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Button, message } from "antd";
+import { omit } from "lodash";
+
 import axios from "utils/axiosConfig";
 
-const PostSubmit = ({ status = {}, clearStatus }) => {
+const PostSubmit = ({
+  status = {},
+  clearStatus = () => {},
+  handleCancelStatusFocus = () => {}
+}) => {
   const enablePost = !status.sidecarChildren.length > 0;
 
   // post
@@ -16,10 +22,23 @@ const PostSubmit = ({ status = {}, clearStatus }) => {
     try {
       setState(prevState => ({ ...prevState, isPosting: true }));
 
+      const sidecarChildren =
+        status && status.sidecarChildren.length > 0
+          ? status.sidecarChildren.map(item => {
+              return omit(item, [
+                "uuidFile",
+                "isUploaded",
+                "isUploadError",
+                "isConverted",
+                "base64"
+              ]);
+            })
+          : [];
+
       const res = await axios({
         method: "post",
         url: "/post/add",
-        data: { ...status },
+        data: { ...status, sidecarChildren },
         headers: {
           "Content-Type": "application/json"
         }
@@ -29,9 +48,12 @@ const PostSubmit = ({ status = {}, clearStatus }) => {
 
       // clear post
       clearStatus();
+      handleCancelStatusFocus();
 
       // fetch personal post data
       // ....
+
+      message.success("Post status success ");
     } catch (err) {
       console.log(err);
       message.error("Post status error: ", err);

@@ -82,7 +82,7 @@ const CommentList = ({
         )}
         {!commentsDisabled && comments && (
           <>
-            {isHomePage && commentsTotalCount && (
+            {isHomePage && commentsTotalCount > 0 && (
               <Link to={`p/${postId}`} className="CL__comment--GTP">
                 {`View all ${commentsTotalCount} comments`}
               </Link>
