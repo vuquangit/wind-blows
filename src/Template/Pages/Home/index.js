@@ -17,8 +17,8 @@ import "./home.scss";
 
 const HomePage = () => {
   // get posts
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
   const tokenUser = get(
     JSON.parse(localStorage.getItem("state") || {}),
@@ -94,11 +94,17 @@ const HomePage = () => {
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
+  // new post status
+  const [newPosts, setNewPosts] = useState([]);
+  const handleAddNewPost = item => {
+    setNewPosts(prevState => [item, ...prevState]);
+  };
+
   // render items
-  const _renderPostItem = () =>
+  const _renderPostItem = items =>
     state &&
-    state.data.length > 0 &&
-    state.data.map((item, idx) => (
+    items.length > 0 &&
+    items.map((item, idx) => (
       <div key={item.id || idx} className="home-post__item">
         <PostItem {...item} isHomePage />
       </div>
@@ -113,15 +119,16 @@ const HomePage = () => {
               <div className="home__content--post">
                 <div className="post-list">
                   <div className="post-list__post-status">
-                    <PostStatus />
+                    <PostStatus handleAddNewPost={handleAddNewPost} />
                   </div>
+                  {newPosts && _renderPostItem(newPosts)}
                   <InfiniteScroll
                     pageStart={0}
                     loadMore={getMoreItems}
                     hasMore={hasMoreItems}
                     threshold={300}
                   >
-                    {_renderPostItem()}
+                    {_renderPostItem(state.data)}
                   </InfiniteScroll>
                   {state.isLoading && (
                     <div className="post-list__is-loading">

@@ -7,7 +7,8 @@ import axios from "utils/axiosConfig";
 const PostSubmit = ({
   status = {},
   clearStatus = () => {},
-  handleCancelStatusFocus = () => {}
+  handleCancelStatusFocus = () => {},
+  handleAddNewPost = () => {}
 }) => {
   const enablePost = !status.sidecarChildren.length > 0;
 
@@ -44,14 +45,15 @@ const PostSubmit = ({
         }
       });
 
+      console.log(res.data);
       setState(prevState => ({ ...prevState, data: res.data }));
 
       // clear post
-      clearStatus();
+      clearStatus({ posted: true });
       handleCancelStatusFocus();
 
-      // fetch personal post data
-      // ....
+      // show post
+      handleAddNewPost(res.data);
 
       message.success("Post status success ");
     } catch (err) {

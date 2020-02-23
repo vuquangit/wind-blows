@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { isEqual, get, mergeWith } from "lodash";
+import { isEqual, get } from "lodash";
 import classNames from "classnames";
+import { message } from "antd";
 
+import axios from "utils/axiosConfig";
 import PostHeader from "./Header";
 import PostCation from "./Caption";
 import PostUploadImage from "./UploadImage";
@@ -11,7 +13,7 @@ import PostOption from "./Option";
 import PostCommentsPrivate from "./CommentsPrivate";
 import "./scss/postStatus.scss";
 
-const PostStatus = () => {
+const PostStatus = ({ handleAddNewPost = () => {} }) => {
   const [isStatusFocus, setIsStatusFocus] = useState(false);
   const handleIsStatusFocused = () => {
     setIsStatusFocus(true);
@@ -40,8 +42,31 @@ const PostStatus = () => {
 
   // clear
   const isClearStatus = !isEqual(status, defaultStatus);
-  const clearStatus = () => setStatus(defaultStatus);
+  const clearStatus = async ({ posted = false }) => {
+    if (!posted && status && status.sidecarChildren.length > 0) {
+      const publicIds = status.sidecarChildren.map(item => item.public_id);
 
+      try {
+        const res = await axios({
+          method: "POST",
+          url: "/images/deletes",
+          data: {
+            publicIds
+          },
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+          }
+        });
+
+        console.log("clear all images:", res);
+      } catch (err) {
+        message.error("Error: " + err, 3);
+        console.log(err);
+      }
+    }
+
+    setStatus(defaultStatus);
+  };
   // upload image
   const handleAddDataImages = data => {
     if (data) {
@@ -114,6 +139,7 @@ const PostStatus = () => {
           status={status}
           clearStatus={clearStatus}
           handleCancelStatusFocus={handleCancelStatusFocus}
+          handleAddNewPost={handleAddNewPost}
         />
       </div>
     </div>

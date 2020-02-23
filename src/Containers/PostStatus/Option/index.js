@@ -6,8 +6,9 @@ const PostOption = ({
   status = {},
   clearStatus,
   isShowOption,
-  handleToggleOption,
-  handleCancelStatusFocus
+  handleToggleOption = () => {},
+  handleCancelStatusFocus = () => {},
+  handleAddNewPost = () => {}
 }) => {
   return (
     <div className="post-status__content--option">
@@ -19,6 +20,7 @@ const PostOption = ({
         status={status}
         clearStatus={clearStatus}
         handleCancelStatusFocus={handleCancelStatusFocus}
+        handleAddNewPost={handleAddNewPost}
       />
     </div>
   );

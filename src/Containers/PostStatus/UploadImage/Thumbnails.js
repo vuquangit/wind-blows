@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-// import { Image, Transformation } from "cloudinary-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
   faEdit,
   faExclamationTriangle
 } from "@fortawesome/free-solid-svg-icons";
-import { Modal, message, Button } from "antd";
+import { message, Button } from "antd";
 import { isEmpty } from "lodash";
 
 import axios from "utils/axiosConfig";
 import { stopPropagation } from "utils/stopPropagation";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import Spinner from "Components/Loaders/Spinner";
+import Modal from "Components/Modal";
 
 const Thumbnails = ({
   handleRemoveImage = () => {},
@@ -138,18 +138,18 @@ const Thumbnails = ({
                   <Modal
                     title={null}
                     visible={visibleModalEdit}
+                    onOk={handleCancelModalEdit}
                     onCancel={handleCancelModalEdit}
                     className="thumbnails__item--modal"
                     // footer={null}
-                    // closable={false}
+                    closable={false}
                     centered
                   >
                     <div
                       style={{
-                        backgroundImage: `url(${base64})`,
-                        height: "calc( 100vh - 120px)",
-                        width: "auto"
+                        backgroundImage: `url(${base64})`
                       }}
+                      className="modal-content"
                     />
                   </Modal>
                 </div>
