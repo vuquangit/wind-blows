@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, message } from "antd";
 import { Link, withRouter } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { get, isEqual, startsWith } from "lodash";
 import axios from "utils/axiosConfig";
 import { CopyToClipboard } from "react-copy-to-clipboard";

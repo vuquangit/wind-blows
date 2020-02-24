@@ -13,6 +13,7 @@ import GoToPost from "Containers/GoToPost";
 import Notifications from "Template/Pages/Notifications";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 import Search from "Template/Pages/Header/Search";
+import PricacyAndSecurity from "Template/Pages/Accounts/PrivacyAndSecurity";
 
 const pageConfigs = [
   {
@@ -55,6 +56,11 @@ const pageConfigs = [
   {
     path: "/accounts/edit/",
     component: EditProfile,
+    exact: true
+  },
+  {
+    path: "/accounts/privacy_and_security/",
+    component: PricacyAndSecurity,
     exact: true
   },
   {

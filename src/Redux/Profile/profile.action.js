@@ -39,7 +39,12 @@ const requestProfileInfo = ({
   }
 });
 
-const updateProfileInfo = ({ data = {}, endpoint = "auth" } = {}) => ({
+const updateProfileInfo = ({
+  data = {},
+  endpoint = "auth",
+  method = "PUT",
+  headers = {}
+} = {}) => ({
   [REQUEST_API]: {
     types: [
       actionTypes.PROFILE_REQUEST,
@@ -47,8 +52,9 @@ const updateProfileInfo = ({ data = {}, endpoint = "auth" } = {}) => ({
       actionTypes.PROFILE_FAILURE
     ],
     endpoint,
-    method: "put",
-    options: { data }
+    method,
+    options: { data },
+    headers
   }
 });
 

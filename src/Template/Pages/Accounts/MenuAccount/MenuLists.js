@@ -6,6 +6,10 @@ const MenuLists = [
   {
     label: "Change Password",
     href: "/accounts/password/change/"
+  },
+  {
+    label: "Privacy and Security",
+    href: "/accounts/privacy_and_security/"
   }
 ];
 

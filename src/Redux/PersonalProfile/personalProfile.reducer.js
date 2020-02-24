@@ -1,4 +1,4 @@
-import { merge, isNumber, get, isEmpty } from "lodash";
+import { merge, isNumber, get } from "lodash";
 import * as actionType from "./actionType";
 
 const initState = {

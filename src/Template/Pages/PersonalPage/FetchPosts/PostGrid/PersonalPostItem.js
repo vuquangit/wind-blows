@@ -24,7 +24,7 @@ const PersonalPostItem = ({
   relationship = {},
   savedByViewer = false,
   history = {},
-  handleRemovePersonalPost = { handleRemovePersonalPost }
+  handleRemovePersonalPost = () => {}
 }) => {
   // show info image
   const [isHover, setIsHouver] = React.useState(false);
