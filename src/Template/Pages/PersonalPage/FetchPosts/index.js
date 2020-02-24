@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import axios from "utils/axiosConfig";
-import { get } from "lodash";
-import { useSelector } from "react-redux";
+import { get, filter, find } from "lodash";
+import { useSelector, useDispatch } from "react-redux";
 
 import PostGrid from "./PostGrid";
 import PostsEmpty from "./PostsEmpty";
 import PostsLoading from "./PostsLoading";
+import {
+  increaseCountPosts,
+  decreaseCountPosts
+} from "Redux/PersonalProfile/personalProfile.action";
 
 const FetchPosts = ({
   method = "get",
   endpoint = "",
   iconEmpty = "",
-  textEmpty = ""
+  textEmpty = "",
+  newPosts = []
 }) => {
+  const dispatch = useDispatch();
   const { id: ownerId = "" } = useSelector((state = {}) =>
     get(state, "personalProfile.data.user", {})
   );
@@ -55,7 +61,13 @@ const FetchPosts = ({
         console.log("response fetch", response);
         setState(prevState => ({
           ...prevState,
-          data: [...prevState.data, ...response.data.data],
+          data: [
+            ...prevState.data,
+            ...filter(
+              response.data.data,
+              o => find(prevState.data, p => p.id === o.id) === undefined
+            )
+          ],
           totalItem: get(response, "data.totalItem"),
           isLoading: false
         }));
@@ -84,11 +96,50 @@ const FetchPosts = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.page]);
 
+  useEffect(() => {
+    if (newPosts && newPosts.length > 0) {
+      setState(prevState => ({
+        ...prevState,
+        data: [...newPosts, ...prevState.data],
+        totalItem: prevState.totalItem + 1
+      }));
+
+      dispatch(increaseCountPosts());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newPosts]);
+
+  const [countItemRemoved, setCountItemRemoved] = useState(0);
+  const handleRemovePersonalPost = postId => {
+    setState(prevState => ({
+      ...prevState,
+      data:
+        prevState.data && prevState.data.length > 0
+          ? filter(prevState.data, o => o.id !== postId)
+          : prevState.data,
+      totalItem:
+        prevState.totalItem - 1 >= 0
+          ? prevState.totalItem - 1
+          : prevState.totalItem
+    }));
+
+    dispatch(decreaseCountPosts());
+    setCountItemRemoved(prevState => prevState + 1);
+  };
+
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
   const getMoreItems = () => {
-    state.data.length === state.page * state.limit &&
+    state.data.length + countItemRemoved === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
+
+    console.log(
+      "getmorepost:",
+      state.data.length,
+      countItemRemoved,
+      state.page * state.limit,
+      state.data.length + countItemRemoved === state.page * state.limit
+    );
   };
 
   return (
@@ -101,6 +152,7 @@ const FetchPosts = ({
           isLoading={state.isLoading}
           hasMoreItems={hasMoreItems}
           getMoreItems={() => getMoreItems()}
+          handleRemovePersonalPost={handleRemovePersonalPost}
         />
       ) : (
         <PostsEmpty icon={iconEmpty} text={textEmpty} />

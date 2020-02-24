@@ -20,11 +20,9 @@ const Thumbnails = ({
   public_id = "",
   uuidFile = "",
   base64 = "",
-  name = "",
   isConverted = false,
   isUploaded = false,
-  isUploadError = false,
-  ...restProps
+  isUploadError = false
 }) => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const handleShowModalEdit = () => setVisibleModalEdit(true);
@@ -57,12 +55,16 @@ const Thumbnails = ({
           uuidFile: uuidFile
         });
     } catch (err) {
-      message.error("Have a photo upload failed", 3);
-      console.log(err);
-      handleUpdateImages({
-        isUploadError: err,
-        uuidFile: uuidFile
-      });
+      if (axios.isCancel(err)) {
+        console.log("cancelled uploading photo");
+      } else {
+        message.error("Have a photo upload failed", 3);
+        console.log(err);
+        handleUpdateImages({
+          isUploadError: err,
+          uuidFile: uuidFile
+        });
+      }
     }
   };
 
@@ -81,7 +83,7 @@ const Thumbnails = ({
   const fecthDeleteImage = async e => {
     stopPropagation(e);
 
-    if (isUploaded) {
+    if (public_id) {
       try {
         const res = await axios({
           method: "POST",
@@ -120,21 +122,20 @@ const Thumbnails = ({
             <>
               {isUploaded ? (
                 <div className="thumbnails__item--option">
-                  <button
+                  <Button
                     className="thumbnails__item--btn-remove"
                     title="Remove this image"
                     onClick={() => fecthDeleteImage()}
                   >
                     <FontAwesomeIcon icon={faTimes} />
-                  </button>
-
-                  <button
+                  </Button>
+                  <Button
                     className="thumbnails__item--btn-edit-photo"
                     title="Edit photo"
                     onClick={handleShowModalEdit}
                   >
                     <FontAwesomeIcon icon={faEdit} />
-                  </button>
+                  </Button>
                   <Modal
                     title={null}
                     visible={visibleModalEdit}
@@ -161,13 +162,13 @@ const Thumbnails = ({
             </>
           ) : (
             <div className="thumbnails__item--info">
-              <button
+              <Button
                 className="thumbnails__item--btn-remove item-error-remove"
                 title="Remove this image"
                 onClick={fecthDeleteImage}
               >
                 <FontAwesomeIcon icon={faTimes} />
-              </button>
+              </Button>
               <Button
                 onClick={() => fetchUploadImage(base64)}
                 className="item-btn-retry"

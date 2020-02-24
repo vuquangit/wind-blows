@@ -35,6 +35,7 @@ export const profileReducer = (state = initState, action = {}) => {
         message: null,
         data: {}
       };
+
     default:
       return state;
   }

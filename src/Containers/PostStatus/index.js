@@ -32,7 +32,6 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
   );
   const defaultStatus = {
     caption: "",
-    captionIsEdited: "",
     commentsDisabled: false,
     location: { name: "" },
     ownerId: ownerId,

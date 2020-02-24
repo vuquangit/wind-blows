@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, message } from "antd";
 import { Link, withRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { get, isEqual, startsWith } from "lodash";
 import axios from "utils/axiosConfig";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -17,7 +17,8 @@ const ModalOption = ({
   owner,
   match,
   history,
-  handleCancelModalPost = () => {}
+  handleCancelModalPost = () => {},
+  handleRemovePersonalPost = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
@@ -39,6 +40,7 @@ const ModalOption = ({
       }
     });
   };
+
   const handleDeteleComments = async () => {
     const sourceLikePost = axios.CancelToken.source();
     setIsDeleting(true);
@@ -66,6 +68,7 @@ const ModalOption = ({
       } else if (startsWith(match.path, "/:username")) {
         handleCancelModal();
         handleCancelModalPost();
+        handleRemovePersonalPost(postId);
       }
     } catch (err) {
       setIsDeleting(false);

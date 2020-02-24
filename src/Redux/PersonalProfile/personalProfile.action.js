@@ -19,4 +19,13 @@ const clearPersonalProfile = () => ({
   type: actionTypes.PERSONAL_PROFILE_CLEAR
 });
 
-export { requestPersonalInfo, clearPersonalProfile };
+const increaseCountPosts = () => ({ type: actionTypes.PROFILE_POSTS_INCREASE });
+
+const decreaseCountPosts = () => ({ type: actionTypes.PROFILE_POSTS_DECREASE });
+
+export {
+  requestPersonalInfo,
+  clearPersonalProfile,
+  increaseCountPosts,
+  decreaseCountPosts
+};

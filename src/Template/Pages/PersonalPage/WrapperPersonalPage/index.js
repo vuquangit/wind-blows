@@ -11,11 +11,15 @@ import Follows from "./Profile/Follows";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
+import TabPages from "./TabPages";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import "./scss/personalPage.scss";
-import TabPages from "./TabPages";
 
-const PersonalPage = ({ match = {}, children }) => {
+const PersonalPage = ({
+  match = {},
+  children,
+  handleAddNewPost = () => {}
+}) => {
   const dispatch = useDispatch();
   const isFetching = useSelector(state =>
     get(state, "personalProfile.isFetching", false)
@@ -38,6 +42,7 @@ const PersonalPage = ({ match = {}, children }) => {
     "profile.data.tokens.token",
     ""
   );
+  const isOwner = isEqual(viewerUsername, username);
 
   useEffect(() => {
     const _requestPersonalInfo = async () => {
@@ -56,8 +61,6 @@ const PersonalPage = ({ match = {}, children }) => {
       _requestPersonalInfo();
   }, [match, dispatch, viewerId, username, usernameStore, tokenUser]);
 
-  const isOwner = isEqual(viewerUsername, username);
-
   return (
     <>
       {!error ? (
@@ -75,7 +78,7 @@ const PersonalPage = ({ match = {}, children }) => {
                   <Follows />
                 </Col>
               </Row>
-              {isOwner && <PostStatus />}
+              {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
               <TabPages>{children}</TabPages>
             </div>
           )}

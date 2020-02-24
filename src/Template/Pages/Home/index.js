@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Row, Col } from "antd";
 import axios from "utils/axiosConfig";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, filter, find } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -59,7 +59,13 @@ const HomePage = () => {
         console.log("response fetch home", response);
         setState(prevState => ({
           ...prevState,
-          data: [...prevState.data, ...response.data.data],
+          data: [
+            ...prevState.data,
+            ...filter(
+              response.data.data,
+              o => find(prevState.data, p => p.id === o.id) === undefined
+            )
+          ],
           totalItem: get(response, "data.totalItem"),
           isLoading: false
         }));
@@ -95,14 +101,17 @@ const HomePage = () => {
   };
 
   // new post status
-  const [newPosts, setNewPosts] = useState([]);
   const handleAddNewPost = item => {
-    setNewPosts(prevState => [item, ...prevState]);
+    setState(prevState => ({
+      ...prevState,
+      data: [item, ...prevState.data],
+      totalItem: prevState.totalItem + 1
+    }));
   };
 
   // render items
   const _renderPostItem = items =>
-    state &&
+    items &&
     items.length > 0 &&
     items.map((item, idx) => (
       <div key={item.id || idx} className="home-post__item">
@@ -121,7 +130,6 @@ const HomePage = () => {
                   <div className="post-list__post-status">
                     <PostStatus handleAddNewPost={handleAddNewPost} />
                   </div>
-                  {newPosts && _renderPostItem(newPosts)}
                   <InfiniteScroll
                     pageStart={0}
                     loadMore={getMoreItems}

@@ -25,10 +25,13 @@ const PostUploadImage = ({
                 />
               ))}
           </div>
-          <AddImage
-            handleAddDataImages={handleAddDataImages}
-            handleUpdateImages={handleUpdateImages}
-          />
+          {sidecarChildren.length < 9 && (
+            <AddImage
+              totalFilesSelected={sidecarChildren.length}
+              handleAddDataImages={handleAddDataImages}
+              handleUpdateImages={handleUpdateImages}
+            />
+          )}
         </div>
       </div>
     </div>

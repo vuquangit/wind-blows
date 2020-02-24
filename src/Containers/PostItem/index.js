@@ -11,7 +11,7 @@ import PostOption from "./PostOption";
 import "./post.scss";
 
 const PostItem = ({
-  id: postId,
+  id: postId = "",
   isModal = false,
   isHomePage = false,
   owner = {},
@@ -22,7 +22,8 @@ const PostItem = ({
   location = {},
   sidecarChildren = [],
   relationship = {},
-  handleCancelModalPost = () => {}
+  handleCancelModalPost = () => {},
+  handleRemovePersonalPost = () => {}
 }) => {
   // fetch likes
   const viewerId = useSelector((state = {}) =>
@@ -103,6 +104,7 @@ const PostItem = ({
         owner={owner}
         relationship={relationship}
         handleCancelModalPost={handleCancelModalPost}
+        handleRemovePersonalPost={handleRemovePersonalPost}
       />
     </article>
   );

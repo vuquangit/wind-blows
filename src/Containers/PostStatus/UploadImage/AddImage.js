@@ -5,6 +5,7 @@ import { uuid } from "utils/uuid";
 import { toBase64 } from "utils/toBase64";
 
 const AddImage = ({
+  totalFilesSelected = 0,
   handleAddDataImages = () => {},
   handleUpdateImages = () => {}
 }) => {
@@ -12,7 +13,7 @@ const AddImage = ({
     e.preventDefault();
 
     const filesSeleted = Array.from(e.target.files);
-    if (filesSeleted.length > 9) {
+    if (totalFilesSelected + filesSeleted.length > 9) {
       message.warning({
         content: "You can only upload a maximum of 9 files",
         duration: 5

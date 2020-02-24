@@ -1,4 +1,4 @@
-import { merge } from "lodash";
+import { merge, isNumber, get, isEmpty } from "lodash";
 import * as actionType from "./actionType";
 
 const initState = {
@@ -27,6 +27,42 @@ export const personalProfileReducer = (state = initState, action = {}) => {
         error: false,
         data: {}
       };
+
+    case actionType.PROFILE_POSTS_INCREASE:
+      const increMedia = get(state, "data.user.counts.media", "");
+      console.log("increase Media:", increMedia, isNumber(increMedia));
+
+      if (isNumber(increMedia)) {
+        const _media = {
+          user: {
+            counts: {
+              media: increMedia + 1
+            }
+          }
+        };
+
+        return {
+          ...state,
+          data: merge(state.data, _media)
+        };
+      } else return state;
+    case actionType.PROFILE_POSTS_DECREASE:
+      const decreMedia = get(state, "data.user.counts.media", "");
+      console.log("decreMedia", decreMedia, isNumber(decreMedia));
+      if (isNumber(decreMedia) && decreMedia - 1 >= 0) {
+        const _media = {
+          user: {
+            counts: {
+              media: decreMedia - 1
+            }
+          }
+        };
+
+        return {
+          ...state,
+          data: merge(state.data, _media)
+        };
+      } else return state;
     default:
       return state;
   }

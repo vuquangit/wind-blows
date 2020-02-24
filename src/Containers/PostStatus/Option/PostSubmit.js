@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, message } from "antd";
-import { omit } from "lodash";
+import { omit, every } from "lodash";
 
 import axios from "utils/axiosConfig";
 
@@ -10,7 +10,10 @@ const PostSubmit = ({
   handleCancelStatusFocus = () => {},
   handleAddNewPost = () => {}
 }) => {
-  const enablePost = !status.sidecarChildren.length > 0;
+  const disabledSubmit =
+    status && status.sidecarChildren && status.sidecarChildren.length > 0
+      ? !every(status.sidecarChildren, ["isUploaded", true])
+      : true;
 
   // post
   const [state, setState] = useState({
@@ -35,6 +38,8 @@ const PostSubmit = ({
               ]);
             })
           : [];
+
+      console.log("submit:", { ...status, sidecarChildren });
 
       const res = await axios({
         method: "post",
@@ -70,7 +75,8 @@ const PostSubmit = ({
         type="primary"
         loading={state.isPosting}
         onClick={fetchPostStatus}
-        disabled={enablePost}
+        disabled={disabledSubmit}
+        className="btn-submit"
       >
         Post
       </Button>

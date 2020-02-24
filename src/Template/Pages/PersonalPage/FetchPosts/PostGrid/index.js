@@ -10,7 +10,8 @@ const PostGrid = ({
   items = [],
   isLoading = false,
   hasMoreItems = false,
-  getMoreItems = () => {}
+  getMoreItems = () => {},
+  handleRemovePersonalPost = () => {}
 }) => {
   const _renderFollowItem = useCallback(
     () =>
@@ -18,9 +19,13 @@ const PostGrid = ({
       items.length > 0 &&
       items.map((item, idx) => (
         <Col key={item.id || idx} span={8}>
-          <PersonalPostItem {...item} />
+          <PersonalPostItem
+            {...item}
+            handleRemovePersonalPost={handleRemovePersonalPost}
+          />
         </Col>
       )),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [items]
   );
 

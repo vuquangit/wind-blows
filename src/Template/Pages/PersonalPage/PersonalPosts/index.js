@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
 
-import PersonalPageCover from "../WrapperPersonalPage";
+import WrapperPersonalPage from "../WrapperPersonalPage";
 import FetchPosts from "../FetchPosts";
 
 const WrappedPersonalPost = () => {
+  const [newPosts, setNewPosts] = useState([]);
+  // new post status
+  const handleAddNewPost = item => {
+    setNewPosts([item]);
+  };
+
   return (
-    <PersonalPageCover>
+    <WrapperPersonalPage handleAddNewPost={handleAddNewPost}>
       <FetchPosts
         method={`get`}
         endpoint={`/posts`}
         iconEmpty={faCameraRetro}
         textEmpty={`No Post Yet`}
+        newPosts={newPosts}
       />
-    </PersonalPageCover>
+    </WrapperPersonalPage>
   );
 };
 

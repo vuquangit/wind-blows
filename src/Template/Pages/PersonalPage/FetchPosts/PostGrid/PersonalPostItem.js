@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { Image, Transformation } from "cloudinary-react";
 import { get } from "lodash";
-import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { withRouter } from "react-router-dom";
 
@@ -16,7 +15,16 @@ const PersonalPostItem = ({
   sidecarChildren = [],
   numLikes = 0,
   numComments = 0,
-  history = {}
+  caption = "",
+  captionIsEdited = false,
+  owner = {},
+  commentsDisabled = false,
+  likedByViewer = false,
+  postAt = "",
+  relationship = {},
+  savedByViewer = false,
+  history = {},
+  handleRemovePersonalPost = { handleRemovePersonalPost }
 }) => {
   // show info image
   const [isHover, setIsHouver] = React.useState(false);
@@ -31,10 +39,7 @@ const PersonalPostItem = ({
   };
   const handleCancelModal = e => setVisible(false);
 
-  //  relationship
-  const relationship = useSelector((state = {}) =>
-    get(state, "personalProfile.data.relationship")
-  );
+  const publicIdImage = get(sidecarChildren, "[0].public_id", "");
 
   return (
     <div className="personal-post">
@@ -44,10 +49,7 @@ const PersonalPostItem = ({
         onMouseLeave={handleMouseHover}
         onClick={handleShowImage}
       >
-        <Image
-          publicId={sidecarChildren[0].public_id}
-          className="thumbnail-post"
-        >
+        <Image publicId={publicIdImage} className="thumbnail-post">
           <Transformation height="320" width="320" crop="fill" />
         </Image>
         {sidecarChildren.length > 1 && (
@@ -78,12 +80,21 @@ const PersonalPostItem = ({
         className="personal-post__modal"
       >
         <PostItem
-          sidecarChildren={sidecarChildren}
+          id={postId}
+          caption={caption}
+          captionIsEdited={captionIsEdited}
           numLikes={numLikes}
           numComments={numComments}
+          commentsDisabled={commentsDisabled}
+          likedByViewer={likedByViewer}
+          postAt={postAt}
+          savedByViewer={savedByViewer}
           relationship={relationship}
+          owner={owner}
+          sidecarChildren={sidecarChildren}
           isModal
           handleCancelModalPost={handleCancelModal}
+          handleRemovePersonalPost={handleRemovePersonalPost}
         />
       </Modal>
     </div>
