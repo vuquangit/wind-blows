@@ -8,7 +8,7 @@ const callApi = async (
   method = "POST",
   headers = {}
 ) => {
-  console.log(endpoint, options, method, headers);
+  // console.log(endpoint, options, method, headers);
 
   const result = await axios({
     method,

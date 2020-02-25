@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "antd";
 
 import AvatarProfile from "./AvatarProfile";
-import UsernameProfile from "./UsernameProfile";
+import EditAccounts from "./EditAccounts";
 import Follows from "./Follows";
 import DescriptionProfile from "./DescriptionProfile";
 
@@ -18,7 +18,7 @@ const Profiles = () => {
         </Col>
         <Col xs={24} sm={18} md={16}>
           <Row gutter={24} className="m-0">
-            <UsernameProfile />
+            <EditAccounts />
           </Row>
           <Row>
             <Col xs={0} sm={0} md={24}>

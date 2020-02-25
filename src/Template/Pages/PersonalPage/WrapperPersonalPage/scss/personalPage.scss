@@ -7,12 +7,11 @@
   max-width: 935px;
   box-sizing: content-box;
   padding: 60px 20px 0;
-  width: calc(100% - 40px);
+  width: 100%;
 
   @include media-breakpoint-down(sm) {
     padding: 0;
     margin: 0;
-    width: 100%;
   }
 
   @import 'profile';

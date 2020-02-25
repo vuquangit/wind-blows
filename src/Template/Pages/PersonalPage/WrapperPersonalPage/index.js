@@ -13,6 +13,7 @@ import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
 import TabPages from "./TabPages";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
+import PrivateAccount from "./PrivateAccount";
 import "./scss/personalPage.scss";
 
 const PersonalPage = ({
@@ -31,6 +32,9 @@ const PersonalPage = ({
     id: viewerId = "",
     username: viewerUsername = ""
   } = useSelector(state => get(state, "profile.data.user", ""));
+  const relationship = useSelector(state =>
+    get(state, "profile.data.relationship", "")
+  );
 
   // fetch data username view
   const username = get(match, "params.username", "");
@@ -44,6 +48,7 @@ const PersonalPage = ({
   );
   const isOwner = isEqual(viewerUsername, username);
 
+  // fetch personal data
   useEffect(() => {
     const _requestPersonalInfo = async () => {
       await dispatch(
@@ -60,6 +65,12 @@ const PersonalPage = ({
     (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
       _requestPersonalInfo();
   }, [match, dispatch, viewerId, username, usernameStore, tokenUser]);
+
+  const isRequested = isEqual(
+    get(relationship, "relationship.restrictedByViewer", ""),
+    "RESTRICT_STATUS_UNRESTRICTED"
+  );
+  console.log("isRequested", isRequested);
 
   return (
     <>
@@ -79,7 +90,11 @@ const PersonalPage = ({
                 </Col>
               </Row>
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
-              <TabPages>{children}</TabPages>
+              {!isRequested ? (
+                <TabPages>{children}</TabPages>
+              ) : (
+                <PrivateAccount />
+              )}
             </div>
           )}
         </BasicTemplate>

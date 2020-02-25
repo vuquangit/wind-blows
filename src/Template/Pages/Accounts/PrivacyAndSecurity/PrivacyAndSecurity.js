@@ -21,7 +21,6 @@ const PrivacyAndSecurity = () => {
     e.preventDefault();
 
     const data = { userId, isPrivate: e.target.checked };
-    console.log("private:", data);
 
     await dispatch(
       updateProfileInfo({

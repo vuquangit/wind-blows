@@ -6,18 +6,18 @@ import { faSave } from "@fortawesome/free-regular-svg-icons";
 import PersonalPageCover from "../WrapperPersonalPage";
 import FetchPosts from "../FetchPosts";
 import Page404 from "Template/Pages/404";
+import { withRouter } from "react-router-dom";
 
-const WrappedPersonalSaved = () => {
-  const { id: viewerId = "" } = useSelector(
-    state => get(state, "profile.data.user") || ""
+const WrappedPersonalSaved = ({ match = {} }) => {
+  const ownerUsername = get(match, "params.username", "");
+  const viewerUsername = useSelector(state =>
+    get(state, "profile.data.user.username", "")
   );
-  const { id: ownerId = "" } = useSelector(
-    state => get(state, "personalProfile.data.user") || ""
-  );
-  const isOwner = isEqual(viewerId, ownerId);
+
+  const isOwner = isEqual(ownerUsername, viewerUsername);
 
   return (
-    <div>
+    <>
       {isOwner ? (
         <PersonalPageCover>
           <FetchPosts
@@ -30,8 +30,8 @@ const WrappedPersonalSaved = () => {
       ) : (
         <Page404 />
       )}
-    </div>
+    </>
   );
 };
 
-export default WrappedPersonalSaved;
+export default withRouter(WrappedPersonalSaved);

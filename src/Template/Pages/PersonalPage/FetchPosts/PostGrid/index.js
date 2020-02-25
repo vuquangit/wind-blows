@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Col } from "antd";
 import InfiniteScroll from "react-infinite-scroller";
+import { isEmpty } from "lodash";
 
 import PersonalPostItem from "./PersonalPostItem";
 import PostsLoading from "../PostsLoading";
@@ -17,14 +18,17 @@ const PostGrid = ({
     () =>
       items &&
       items.length > 0 &&
-      items.map((item, idx) => (
-        <Col key={item.id || idx} span={8}>
-          <PersonalPostItem
-            {...item}
-            handleRemovePersonalPost={handleRemovePersonalPost}
-          />
-        </Col>
-      )),
+      items.map(
+        (item, idx) =>
+          !isEmpty(item) && (
+            <Col key={item.id || idx} span={8}>
+              <PersonalPostItem
+                {...item}
+                handleRemovePersonalPost={handleRemovePersonalPost}
+              />
+            </Col>
+          )
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [items]
   );

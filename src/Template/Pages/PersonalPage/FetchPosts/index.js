@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "utils/axiosConfig";
-import { get, filter, find } from "lodash";
+import { get, filter, find, isEmpty } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 
 import PostGrid from "./PostGrid";
@@ -59,18 +59,21 @@ const FetchPosts = ({
         });
 
         console.log("response fetch", response);
-        setState(prevState => ({
-          ...prevState,
-          data: [
-            ...prevState.data,
-            ...filter(
-              response.data.data,
-              o => find(prevState.data, p => p.id === o.id) === undefined
-            )
-          ],
-          totalItem: get(response, "data.totalItem"),
-          isLoading: false
-        }));
+
+        if (!isEmpty(response.data.data)) {
+          setState(prevState => ({
+            ...prevState,
+            data: [
+              ...prevState.data,
+              ...filter(
+                response.data.data,
+                o => find(prevState.data, p => p.id === o.id) === undefined
+              )
+            ],
+            totalItem: get(response, "data.totalItem"),
+            isLoading: false
+          }));
+        }
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled fetch personal");
@@ -132,14 +135,6 @@ const FetchPosts = ({
   const getMoreItems = () => {
     state.data.length + countItemRemoved === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-
-    console.log(
-      "getmorepost:",
-      state.data.length,
-      countItemRemoved,
-      state.page * state.limit,
-      state.data.length + countItemRemoved === state.page * state.limit
-    );
   };
 
   return (
