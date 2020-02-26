@@ -31,19 +31,21 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
       {typeNotification === 0 ? (
         <div className="description-suggestions">{subDescription}</div>
       ) : typeNotification === 1 ? (
-        "started following you."
+        " started following you."
       ) : typeNotification === 2 ? (
         " liked your photo."
       ) : typeNotification === 3 ? (
         <>
-          {` like your comments: `}
+          like your comments:
+          <span>"{text}"</span>
+        </>
+      ) : typeNotification === 4 ? (
+        <>
+          mentioned you in a comment:
           <span>"{text}"</span>
         </>
       ) : (
-        <>
-          {` mentioned you in a comment: `}
-          <span>"{text}"</span>
-        </>
+        " accepted your follow request. "
       )}
       {typeNotification !== 0 && (
         <div className="SGI__description-more">

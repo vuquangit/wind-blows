@@ -8,8 +8,8 @@ import FollowRequestItem from "./FollowRequestItem";
 import NotiLoading from "../NotificationItems/NotificationLoading";
 
 const FollowRequests = () => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
   // const dispatch = useDispatch();
   const [state, setState] = useState({
@@ -90,7 +90,7 @@ const FollowRequests = () => {
 
   return (
     <div className="follow-request">
-      <h1>Follow Requests</h1>
+      <h1 className="follow-request__header">Follow Requests</h1>
       <InfiniteScroll
         pageStart={0}
         loadMore={getMoreItems}
