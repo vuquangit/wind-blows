@@ -30,7 +30,6 @@ export const personalProfileReducer = (state = initState, action = {}) => {
 
     case actionType.PROFILE_POSTS_INCREASE:
       const increMedia = get(state, "data.user.counts.media", "");
-      console.log("increase Media:", increMedia, isNumber(increMedia));
 
       if (isNumber(increMedia)) {
         const _media = {
@@ -45,10 +44,11 @@ export const personalProfileReducer = (state = initState, action = {}) => {
           ...state,
           data: merge(state.data, _media)
         };
-      } else return state;
+      }
+      break;
     case actionType.PROFILE_POSTS_DECREASE:
       const decreMedia = get(state, "data.user.counts.media", "");
-      console.log("decreMedia", decreMedia, isNumber(decreMedia));
+
       if (isNumber(decreMedia) && decreMedia - 1 >= 0) {
         const _media = {
           user: {
@@ -62,7 +62,46 @@ export const personalProfileReducer = (state = initState, action = {}) => {
           ...state,
           data: merge(state.data, _media)
         };
-      } else return state;
+      }
+      break;
+
+    case actionType.PROFILE_FOLLOWER_INCREASE:
+      const increFollower = get(state, "data.user.counts.followedBy", "");
+
+      if (isNumber(increFollower)) {
+        const _media = {
+          user: {
+            counts: {
+              media: increFollower + 1
+            }
+          }
+        };
+
+        return {
+          ...state,
+          data: merge(state.data, _media)
+        };
+      }
+      break;
+    case actionType.PROFILE_FOLLOWER_DECREASE:
+      const decreFollower = get(state, "data.user.counts.followedBy", "");
+
+      if (isNumber(decreFollower) && decreFollower - 1 >= 0) {
+        const _media = {
+          user: {
+            counts: {
+              media: decreFollower - 1
+            }
+          }
+        };
+
+        return {
+          ...state,
+          data: merge(state.data, _media)
+        };
+      }
+      break;
+
     default:
       return state;
   }

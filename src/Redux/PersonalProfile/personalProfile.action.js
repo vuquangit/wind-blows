@@ -23,9 +23,19 @@ const increaseCountPosts = () => ({ type: actionTypes.PROFILE_POSTS_INCREASE });
 
 const decreaseCountPosts = () => ({ type: actionTypes.PROFILE_POSTS_DECREASE });
 
+const increaseFollower = () => ({
+  type: actionTypes.PROFILE_FOLLOWER_INCREASE
+});
+
+const decreaseFollower = () => ({
+  type: actionTypes.PROFILE_FOLLOWER_DECREASE
+});
+
 export {
   requestPersonalInfo,
   clearPersonalProfile,
   increaseCountPosts,
-  decreaseCountPosts
+  decreaseCountPosts,
+  increaseFollower,
+  decreaseFollower
 };

@@ -6,7 +6,6 @@ import { get, isEqual, isEmpty } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
-// import Highlights from "./Highlights";
 import Follows from "./Profile/Follows";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
@@ -22,12 +21,11 @@ const PersonalPage = ({
   handleAddNewPost = () => {}
 }) => {
   const dispatch = useDispatch();
-  const isFetching = useSelector(state =>
-    get(state, "personalProfile.isFetching", false)
+  const { isFetching = false, error = false } = useSelector(
+    state => get(state, "personalProfile", {}),
+    isEqual()
   );
-  const error = useSelector(state =>
-    get(state, "personalProfile.error", false)
-  );
+
   const {
     id: viewerId = "",
     username: viewerUsername = ""
@@ -66,11 +64,15 @@ const PersonalPage = ({
       _requestPersonalInfo();
   }, [match, dispatch, viewerId, username, usernameStore, tokenUser]);
 
-  const isRequested = isEqual(
-    get(relationship, "relationship.restrictedByViewer", ""),
-    "RESTRICT_STATUS_UNRESTRICTED"
+  const isPrivate = useSelector(state =>
+    get(state, "personalProfile.data.user.isPrivate", false)
   );
-  console.log("isRequested", isRequested);
+  const isPrivated =
+    isPrivate &&
+    !isEqual(
+      get(relationship, "followedByViewer.state", ""),
+      "FOLLOW_STATUS_FOLLOWING"
+    );
 
   return (
     <>
@@ -83,14 +85,13 @@ const PersonalPage = ({
           ) : (
             <div className="personal">
               <Profile />
-              {/* <Highlights /> */}
               <Row>
                 <Col xs={24} sm={24} md={0}>
                   <Follows />
                 </Col>
               </Row>
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
-              {!isRequested ? (
+              {!isPrivated ? (
                 <TabPages>{children}</TabPages>
               ) : (
                 <PrivateAccount />

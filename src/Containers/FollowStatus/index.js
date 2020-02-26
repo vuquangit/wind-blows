@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "utils/axiosConfig";
 import { Modal, message } from "antd";
-import classNames from "classnames";
 import { withRouter } from "react-router";
-import { get } from "lodash";
+import { get, isEqual } from "lodash";
+import classNames from "classnames";
 
+import axios from "utils/axiosConfig";
 import AvatarUser from "Components/AvatarUser";
 import { stopPropagation } from "utils/stopPropagation";
 import "./followStatus.scss";
@@ -17,8 +17,17 @@ const FollowStatus = ({
   classNamesBtn = "",
   history = {}
 }) => {
+  const FOLLOW = "FOLLOW";
+  const FOLLOWING = "FOLLOWING";
+  const REQUESTED = "REQUESTED";
+  // const FOLLOW_NOT_STATUS_FOLLOWING = "FOLLOW_NOT_STATUS_FOLLOWING";
+  const FOLLOW_STATUS_FOLLOWING = "FOLLOW_STATUS_FOLLOWING";
+  const FOLLOW_STATUS_PRIVATE_REQUESTED = "FOLLOW_STATUS_PRIVATE_REQUESTED";
+
+  const keyMessage = "keyMessage";
+
   const {
-    id: userId = "",
+    id: ownerId = "",
     username = "",
     fullName = "",
     profilePictureUrl = "",
@@ -26,35 +35,31 @@ const FollowStatus = ({
     isPrivate = false
   } = user;
 
+  const followedByViewer = get(relationship, "followedByViewer.state", "");
+
   const [state, setState] = useState({
     status: null,
     data: "",
     error: null,
     message: null,
     isLoading: false,
-    followStatus: ""
+    followStatus: isEqual(followedByViewer, FOLLOW_STATUS_FOLLOWING)
+      ? FOLLOWING
+      : isEqual(followedByViewer, FOLLOW_STATUS_PRIVATE_REQUESTED)
+      ? REQUESTED
+      : FOLLOW
   });
-
-  const followStatus =
-    get(relationship, "followedByViewer.state") ||
-    "FOLLOW_NOT_STATUS_FOLLOWING";
-
-  useEffect(() => {
-    const relationshipStatus =
-      followStatus === "FOLLOW_STATUS_FOLLOWING" ? "Following" : "Follow";
-
-    setState(prevState => ({ ...prevState, followStatus: relationshipStatus }));
-  }, [followStatus, textFollowing]);
 
   const fetchFollows = async (endpoint = "") => {
     try {
+      message.loading({ content: "Please wait...", key: keyMessage });
       setState(prevState => ({ ...prevState, isLoading: true }));
 
       const response = await axios({
         method: "POST",
-        url: `/follows/${endpoint}`,
+        url: endpoint,
         data: {
-          userId: userId,
+          ownerId: ownerId,
           viewerId: viewerId
         },
         headers: {
@@ -68,8 +73,16 @@ const FollowStatus = ({
         data: response.data,
         error: null,
         message: null,
-        followStatus: endpoint === "add" ? "Following" : "Follow"
+        followStatus:
+          endpoint === "/follows/add"
+            ? FOLLOWING
+            : endpoint === "/follow-requests/add"
+            ? REQUESTED
+            : FOLLOW
       }));
+
+      message.success({ content: "You adready following", key: keyMessage });
+      handleCancelModal();
     } catch (error) {
       setState(prevState => ({
         ...prevState,
@@ -77,52 +90,41 @@ const FollowStatus = ({
         error: error || null,
         message: error.response ? error.response.data.message || null : null
       }));
+
+      message.error({ content: state.message, key: keyMessage });
     } finally {
       setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 
-  const keyMessage = "updatable";
-  useEffect(() => {
-    if (state.isLoading)
-      message.loading({ content: "Please wait...", key: keyMessage });
-    if (state.status === 200 || state.status === 201) {
-      // Update viewer profile
-      // ...
-
-      message.success({ content: "You adready following", key: keyMessage });
-      handleCancelModal();
-    } else if (state.error)
-      message.error({ content: state.message, key: keyMessage });
-  }, [state]);
-
   // Modal unfollow
   const [visibleModal, setVisibleModal] = useState(false);
-  const showModal = e => {
+  const handleFollows = e => {
     stopPropagation(e);
-
-    state.followStatus === "Following"
+    state.followStatus === FOLLOWING
       ? setVisibleModal(true)
-      : handleFollows();
+      : toggleFetchFollows();
   };
   const handleCancelModal = e => {
     stopPropagation(e);
-
     setVisibleModal(false);
   };
 
-  const handleFollows = e => {
+  const toggleFetchFollows = e => {
     stopPropagation(e);
-
-    state.followStatus === "Follow"
-      ? fetchFollows("add")
-      : fetchFollows("unfollow");
+    state.followStatus === FOLLOW
+      ? isPrivate
+        ? fetchFollows("/follow-requests/add")
+        : fetchFollows("/follows/add")
+      : isPrivate
+      ? fetchFollows("/follow-requests/unfollow")
+      : fetchFollows("/follows/unfollow");
   };
 
   const followBtnClass = classNames(
     "follow-status__btn",
-    { "follow-status__btn-follow": state.followStatus === "Follow" },
-    { "follow-status__btn-following": state.followStatus === "Following" },
+    { "follow-status__btn-follow": state.followStatus === FOLLOW },
+    { "follow-status__btn-following": state.followStatus === FOLLOWING },
     classNamesBtn
   );
 
@@ -142,9 +144,9 @@ const FollowStatus = ({
     <div className="follow-status">
       <button
         className={followBtnClass}
-        onClick={viewerId ? showModal : requestLogin}
+        onClick={viewerId ? handleFollows : requestLogin}
       >
-        {state.followStatus === "Following" && textFollowing
+        {state.followStatus === FOLLOWING && textFollowing
           ? textFollowing
           : state.followStatus}
       </button>
@@ -171,9 +173,9 @@ const FollowStatus = ({
             <div className="item__description--wrapper">
               {isPrivate
                 ? `If you change your mind, you'll have to request to follow ${
-                    username ? "@" + username : fullName || userId
+                    username ? "@" + username : fullName
                   } again.`
-                : `Unfollow ${username ? "@" + username : fullName || userId}`}
+                : `Unfollow ${username ? "@" + username : fullName}`}
             </div>
           </div>
           <button className="item__btn item__unfollow" onClick={handleFollows}>

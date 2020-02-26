@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "utils/axiosConfig";
-import { get, startsWith } from "lodash";
+import { get, startsWith, isEmpty } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Notification from "./Notification";
-import NotiLoading from "./NotificationLoading";
-import NotiEmpty from "./NotificationEmpty";
+import NotiLoading from "./NotificationItems/NotificationLoading";
+import NotiEmpty from "./NotificationItems/NotificationEmpty";
 import { clearNewNotifications } from "Redux/Notifications/notification.action";
 import "./notification.scss";
 
@@ -23,7 +23,8 @@ const Notifications = () => {
     error: null,
     limit: 18,
     page: 1,
-    totalItem: 0
+    totalItem: 0,
+    totalFollowRequests: 0
   });
 
   useEffect(() => {
@@ -48,12 +49,15 @@ const Notifications = () => {
         });
 
         console.log("respone notifications", response);
-        setState(prevState => ({
-          ...prevState,
-          data: [...prevState.data, ...response.data.data],
-          totalItem: get(response, "data.totalItem"),
-          isLoading: false
-        }));
+
+        if (!isEmpty(response.data))
+          setState(prevState => ({
+            ...prevState,
+            data: [...prevState.data, ...get(response, "data.data", [])],
+            totalItem: get(response, "data.totalItem", 0),
+            totalFollowRequests: get(response, "data.totalFollowRequests", 0),
+            isLoading: false
+          }));
 
         if (state.page === 1) await dispatch(clearNewNotifications());
       } catch (error) {
@@ -108,6 +112,7 @@ const Notifications = () => {
           items={state.data}
           isLoading={state.isLoading}
           setAllItemsReaded={setAllItemsReaded}
+          totalFollowRequests={state.totalFollowRequests}
           hasMoreItems={hasMoreItems}
           getMoreItems={() => getMoreItems()}
         />

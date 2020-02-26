@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "utils/axiosConfig";
 import InfiniteScroll from "react-infinite-scroller";
 import { get, startsWith } from "lodash";
@@ -8,14 +8,17 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import classNames from "classnames";
 
-import NotiLoading from "./NotificationLoading";
+import NotiLoading from "./NotificationItems/NotificationLoading";
 import UserRelationship from "Components/UserRelationship";
-import NotificationNew from "./NotificationsNew";
+import NotificationNew from "./NotificationItems/NotificationsNew";
 import { resetNotifications } from "Redux/Notifications/notification.action";
+import NotificationRequest from "./NotificationItems/NotificationRequest";
+import FollowRequests from "./FollowRequests";
 
 const Notification = ({
   items = [],
   isLoading = false,
+  totalFollowRequests = 0,
   setAllItemsReaded = () => {},
   getMoreItems = () => {},
   hasMoreItems = false,
@@ -65,39 +68,54 @@ const Notification = ({
   );
 
   const isDropdown = !startsWith(match.path, "/notifications");
-  // const threshold = isDropdown ? 50 : 250;
 
   const classNotification = classNames("notification", {
     "notification-dropdown": isDropdown
   });
 
+  const [isFollowRequest, setIsFollowRequest] = useState(false);
+  const toggleFollowRequest = () => {
+    setIsFollowRequest(!isFollowRequest);
+  };
+
   return (
     <div className={classNotification}>
-      <div className="notification__header">
-        <h1 className="notification__header--title">Notifications</h1>
-        <div>
-          <Button
-            onClick={handleReadAllNoti}
-            className="notification__header--btn"
+      {!isFollowRequest ? (
+        <>
+          <div className="notification__header">
+            <h1 className="notification__header--title">Notifications</h1>
+            <div>
+              <Button
+                onClick={handleReadAllNoti}
+                className="notification__header--btn"
+              >
+                Mark all as read
+              </Button>
+              <Link to="/notifications">
+                <Button className="notification__header--btn">See all</Button>
+              </Link>
+            </div>
+          </div>
+          <NotificationNew />
+          {totalFollowRequests ? (
+            <NotificationRequest
+              totalFollowRequests={totalFollowRequests}
+              toggleFollowRequest={toggleFollowRequest}
+            />
+          ) : null}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={getMoreItems}
+            hasMore={hasMoreItems}
+            useWindow={!isDropdown}
           >
-            Mark all as read
-          </Button>
-          <Link to="/notifications">
-            <Button className="notification__header--btn">See all</Button>
-          </Link>
-        </div>
-      </div>
-      <NotificationNew />
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={getMoreItems}
-        hasMore={hasMoreItems}
-        // threshold={threshold}
-        useWindow={!isDropdown}
-      >
-        {_renderItem()}
-      </InfiniteScroll>
-      {isLoading && <NotiLoading />}
+            {_renderItem()}
+          </InfiniteScroll>
+          {isLoading && <NotiLoading />}
+        </>
+      ) : (
+        <FollowRequests />
+      )}
     </div>
   );
 };
