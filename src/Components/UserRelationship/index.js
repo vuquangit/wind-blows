@@ -51,7 +51,7 @@ const UserRelationship = ({
     await dispatch(decreaseNotifications());
 
     history.push(
-      typeNotification === 0 || typeNotification === 1
+      typeNotification === 0 || typeNotification === 1 || typeNotification === 5
         ? `/${username}`
         : `/p/${postId}`
     );

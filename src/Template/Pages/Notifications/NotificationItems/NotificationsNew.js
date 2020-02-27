@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import UserRelationship from "Components/UserRelationship";
 
 const NotificationsNew = () => {
-  const itemsNew = useSelector(
-    (state = {}) => get(state, "notifications.newNotifications") || []
+  const itemsNew = useSelector((state = {}) =>
+    get(state, "notifications.newNotifications", [])
   );
 
   return (

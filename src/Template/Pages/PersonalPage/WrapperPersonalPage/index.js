@@ -26,18 +26,20 @@ const PersonalPage = ({
     isEqual()
   );
 
-  const {
-    id: viewerId = "",
-    username: viewerUsername = ""
-  } = useSelector(state => get(state, "profile.data.user", ""));
-  const relationship = useSelector(state =>
-    get(state, "profile.data.relationship", "")
+  const { id: viewerId = "", username: viewerUsername = "" } = useSelector(
+    state => get(state, "profile.data.user", ""),
+    isEqual()
+  );
+  const relationship = useSelector(
+    state => get(state, "personalProfile.data.relationship", ""),
+    isEqual()
   );
 
   // fetch data username view
   const username = get(match, "params.username", "");
-  const usernameStore = useSelector(state =>
-    get(state, "personalProfile.data.user.username", "")
+  const usernameStore = useSelector(
+    state => get(state, "personalProfile.data.user.username", ""),
+    isEqual()
   );
   const tokenUser = get(
     JSON.parse(localStorage.getItem("state") || {}),
@@ -68,11 +70,14 @@ const PersonalPage = ({
     get(state, "personalProfile.data.user.isPrivate", false)
   );
   const isPrivated =
+    !isOwner &&
     isPrivate &&
     !isEqual(
       get(relationship, "followedByViewer.state", ""),
       "FOLLOW_STATUS_FOLLOWING"
     );
+
+  console.log("isPrivated", isPrivated, relationship);
 
   return (
     <>
@@ -91,10 +96,10 @@ const PersonalPage = ({
                 </Col>
               </Row>
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
-              {!isPrivated ? (
-                <TabPages>{children}</TabPages>
-              ) : (
+              {isPrivated ? (
                 <PrivateAccount />
+              ) : (
+                <TabPages>{children}</TabPages>
               )}
             </div>
           )}

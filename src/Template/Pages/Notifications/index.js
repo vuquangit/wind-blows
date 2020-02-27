@@ -8,7 +8,10 @@ import BasicTemplate from "Template/BasicTemplate";
 import Notification from "./Notification";
 import NotiLoading from "./NotificationItems/NotificationLoading";
 import NotiEmpty from "./NotificationItems/NotificationEmpty";
-import { clearNewNotifications } from "Redux/Notifications/notification.action";
+import {
+  clearNewNotifications,
+  updateNotifications
+} from "Redux/Notifications/notification.action";
 import "./notification.scss";
 
 const Notifications = () => {
@@ -60,6 +63,9 @@ const Notifications = () => {
           }));
 
         if (state.page === 1) await dispatch(clearNewNotifications());
+
+        const totalUnread = get(response, "data.totalUnread", 0);
+        if (totalUnread) await dispatch(updateNotifications(totalUnread));
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled fetch notifications");

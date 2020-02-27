@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import axios from "utils/axiosConfig";
 import { get, isEmpty } from "lodash";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 import FollowRequestItem from "./FollowRequestItem";
 import NotiLoading from "../NotificationItems/NotificationLoading";
 
-const FollowRequests = () => {
+const FollowRequests = ({ toggleFollowRequest = () => {} }) => {
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );
-  // const dispatch = useDispatch();
+
   const [state, setState] = useState({
     isLoading: false,
     data: [],
@@ -90,7 +92,15 @@ const FollowRequests = () => {
 
   return (
     <div className="follow-request">
-      <h1 className="follow-request__header">Follow Requests</h1>
+      <div className="follow-request__header">
+        <div onClick={toggleFollowRequest}>
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="follow-request__header--go-back"
+          />
+        </div>
+        <h1 className="follow-request__header--text">Follow Requests</h1>
+      </div>
       <InfiniteScroll
         pageStart={0}
         loadMore={getMoreItems}

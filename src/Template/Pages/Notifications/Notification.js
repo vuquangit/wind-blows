@@ -114,7 +114,7 @@ const Notification = ({
           {isLoading && <NotiLoading />}
         </>
       ) : (
-        <FollowRequests />
+        <FollowRequests toggleFollowRequest={toggleFollowRequest} />
       )}
     </div>
   );

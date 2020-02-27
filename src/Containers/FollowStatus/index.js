@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, message } from "antd";
 import { withRouter } from "react-router";
 import { get, isEqual } from "lodash";
 import classNames from "classnames";
+import { useDispatch } from "react-redux";
 
 import axios from "utils/axiosConfig";
 import AvatarUser from "Components/AvatarUser";
 import { stopPropagation } from "utils/stopPropagation";
+import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import "./followStatus.scss";
 
 const FollowStatus = ({
@@ -15,15 +17,16 @@ const FollowStatus = ({
   relationship = { followedByViewer: { state: "" } },
   textFollowing = "",
   classNamesBtn = "",
-  history = {}
+  history = {},
+  match = {}
 }) => {
+  const dispatch = useDispatch();
+
   const FOLLOW = "Follow";
   const FOLLOWING = "Following";
   const REQUESTED = "Requested";
-  // const FOLLOW_NOT_STATUS_FOLLOWING = "FOLLOW_NOT_STATUS_FOLLOWING";
   const FOLLOW_STATUS_FOLLOWING = "FOLLOW_STATUS_FOLLOWING";
   const FOLLOW_STATUS_PRIVATE_REQUESTED = "FOLLOW_STATUS_PRIVATE_REQUESTED";
-
   const keyMessage = "keyMessage";
 
   const {
@@ -34,9 +37,7 @@ const FollowStatus = ({
     profilePicturePublicId = "",
     isPrivate = false
   } = user;
-
   const followedByViewer = get(relationship, "followedByViewer.state", "");
-
   const [state, setState] = useState({
     status: null,
     data: "",
@@ -67,33 +68,59 @@ const FollowStatus = ({
         }
       });
 
-      setState(prevState => ({
-        ...prevState,
-        status: response.status,
-        data: response.data,
-        error: null,
-        message: null,
-        followStatus:
-          endpoint === "/follows/add"
-            ? FOLLOWING
-            : endpoint === "/follow-requests/add"
-            ? REQUESTED
-            : FOLLOW
-      }));
+      console.log("reponse follow:", endpoint, response);
 
-      message.success({ content: "You adready following", key: keyMessage });
+      // message.success({ content: "You adready following", key: keyMessage });
       handleCancelModal();
+
+      // if in personal page: descrease follower, check private
+      console.log(isPrivate, "match", match);
+      if (
+        isPrivate &&
+        isEqual(username, get(match, "params.username")) &&
+        endpoint === "/follows/unfollow"
+      ) {
+        const tokenUser = get(
+          JSON.parse(localStorage.getItem("state") || {}),
+          "profile.data.tokens.token",
+          ""
+        );
+
+        await dispatch(
+          requestPersonalInfo({
+            data: { username, viewerId },
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+              Authorization: `Bearer ${tokenUser}`
+            }
+          })
+        );
+      } else {
+        await setState(prevState => ({
+          ...prevState,
+          status: response.status,
+          data: response.data,
+          error: null,
+          message: null,
+          isLoading: false,
+          followStatus:
+            endpoint === "/follows/add"
+              ? FOLLOWING
+              : endpoint === "/follow-requests/add"
+              ? REQUESTED
+              : FOLLOW
+        }));
+      }
     } catch (error) {
       setState(prevState => ({
         ...prevState,
         status: error.response.status,
         error: error || null,
+        isLoading: false,
         message: error.response ? error.response.data.message || null : null
       }));
 
       message.error({ content: state.message, key: keyMessage });
-    } finally {
-      setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 
@@ -101,7 +128,7 @@ const FollowStatus = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const handleFollows = e => {
     stopPropagation(e);
-    state.followStatus === FOLLOWING
+    state.followStatus === FOLLOWING || state.followStatus === REQUESTED
       ? setVisibleModal(true)
       : toggleFetchFollows();
   };
@@ -116,7 +143,7 @@ const FollowStatus = ({
       ? isPrivate
         ? fetchFollows("/follow-requests/add")
         : fetchFollows("/follows/add")
-      : isPrivate
+      : isPrivate && state.followStatus === REQUESTED
       ? fetchFollows("/follow-requests/unfollow")
       : fetchFollows("/follows/unfollow");
   };
@@ -178,7 +205,10 @@ const FollowStatus = ({
                 : `Unfollow ${username ? "@" + username : fullName}`}
             </div>
           </div>
-          <button className="item__btn item__unfollow" onClick={handleFollows}>
+          <button
+            className="item__btn item__unfollow"
+            onClick={toggleFetchFollows}
+          >
             Unfollow
           </button>
           <button className="item__btn" onClick={handleCancelModal}>

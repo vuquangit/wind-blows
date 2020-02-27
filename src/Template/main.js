@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pick, isEmpty, get } from "lodash";
+import { pick, isEmpty, get, filter } from "lodash";
 import { auth as firebaseAuth } from "firebase/app";
 import axios from "utils/axiosConfig";
-import { message, notification } from "antd";
+import { message, notification, Avatar } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFan } from "@fortawesome/free-solid-svg-icons";
 
@@ -119,8 +119,8 @@ const Main = () => {
         }
       });
 
-      console.log("respone notifications", response);
-      const data = get(response, "data.data") || [];
+      console.log("respone notifications GCM:", response);
+      const data = get(response, "data.data", []);
       await dispatch(newNotifications(data));
     } catch (error) {
       if (axios.isCancel(error)) {
@@ -171,12 +171,17 @@ const Main = () => {
   };
 
   const pushNotification = (data = {}) => {
+    const icon = get(data, "notification.icon", "");
+    console.log("icon noti:", icon);
+
     notification.info({
-      message: get(data, "notification.title") || "",
-      description: get(data, "notification.body") || "",
+      message: get(data, "notification.title", ""),
+      description: get(data, "notification.body", ""),
       placement: "bottomLeft",
       duration: 5,
-      icon: (
+      icon: icon ? (
+        <Avatar src={icon} />
+      ) : (
         <FontAwesomeIcon icon={faFan} style={{ color: "rgb(0, 123, 255)" }} />
       ),
       onClick() {
@@ -186,7 +191,8 @@ const Main = () => {
     });
 
     // update badge, store notification
-    feactNewNoti();
+    if (get(data, "notification.title", "") !== "New follow request")
+      feactNewNoti();
   };
 
   const registerPushListener = pushNotification =>

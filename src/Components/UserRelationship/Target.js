@@ -1,20 +1,21 @@
 import React from "react";
-import FollowStatus from "Containers/FollowStatus";
 import { Image } from "cloudinary-react";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { useSelector } from "react-redux";
 import { isEqual, get } from "lodash";
 
+import FollowStatus from "Containers/FollowStatus";
+
 const Target = ({ user = {}, notifications = {}, relationship = {} }) => {
-  const { id: viewerId = "" } = useSelector(
-    (state = {}) => get(state, "profile.data.user") || {}
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", {})
   );
   const { id = "", requestedByViewer = false } = user;
   const { typeNotification = 0, media = {} } = notifications;
   const isMe = isEqual(id, viewerId);
-  const photoPublicId = get(media, "sidecarChildren[0].public_id") || "";
-  const postId = get(media, "id") || "";
+  const photoPublicId = get(media, "sidecarChildren[0].public_id", "");
+  const postId = get(media, "id", "");
 
   return (
     <>

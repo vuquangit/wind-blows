@@ -45,11 +45,11 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
           <span>"{text}"</span>
         </>
       ) : (
-        " accepted your follow request. "
+        " accepted your follow request."
       )}
       {typeNotification !== 0 && (
         <div className="SGI__description-more">
-          {typeNotification === 1 ? (
+          {typeNotification === 1 || typeNotification === 5 ? (
             <FontAwesomeIcon
               icon={faUserPlus}
               className="SGI__description-more--icon-follow"

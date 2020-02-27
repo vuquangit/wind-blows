@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { get } from "lodash";
+import { get, isEqual } from "lodash";
 
 const Description = () => {
-  const profile = useSelector((state = {}) =>
-    get(state, "personalProfile.data.user", {})
+  const { bio = "", fullName = "", website = "" } = useSelector(
+    (state = {}) => get(state, "personalProfile.data.user", {}),
+    isEqual()
   );
-  const { bio = "", fullName = "", website = "" } = profile;
 
   const _bio = bio.split("\n").map((item, key) => {
     return (

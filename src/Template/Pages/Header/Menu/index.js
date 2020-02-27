@@ -46,7 +46,7 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
           cancelToken: source.token
         });
 
-        const total = get(response, "data.totalUnread") || 0;
+        const total = get(response, "data.totalUnread", 0);
         await dispatch(updateNotifications(total));
 
         // document.title

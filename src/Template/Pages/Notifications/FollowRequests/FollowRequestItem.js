@@ -6,21 +6,24 @@ import { get } from "lodash";
 import { useSelector } from "react-redux";
 
 import axios from "utils/axiosConfig";
+import FollowStatus from "Containers/FollowStatus";
 
 const FollowRequestItem = ({
-  id: ownerId = "",
+  id: viewerId = "",
   username = "",
   fullName = "",
   isVerified = false,
   profilePictureUrl = "",
   profilePicturePublicId = ""
 }) => {
-  const viewerId = useSelector((state = {}) =>
+  const ownerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );
 
   const [isLoadingConfirm, setIsLoadingConfirm] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isResponded, setIsResponded] = useState(false);
+  const [userData, setUserData] = useState({});
   const source = axios.CancelToken.source();
 
   const fetchFollowRequest = async endpoint => {
@@ -48,6 +51,8 @@ const FollowRequestItem = ({
         ? setIsLoadingConfirm(false)
         : setIsLoadingDelete(false);
 
+      setIsResponded(true);
+      setUserData(prevState => ({ ...prevState, ...res.data }));
       console.log("follow request :", res);
     } catch (error) {
       endpoint === "approve"
@@ -84,24 +89,34 @@ const FollowRequestItem = ({
         <span className="full-name">{fullName}</span>
       </div>
       <div className="follow-request__content--action">
-        <Button
-          onClick={handleConfirmFollow}
-          loading={isLoadingConfirm}
-          disabled={!isLoadingConfirm && isLoadingDelete}
-          type="primary"
-          className="btn-action"
-        >
-          Confirm
-        </Button>
-        <Button
-          onClick={handleDeleteFollow}
-          loading={isLoadingDelete}
-          disabled={!isLoadingDelete && isLoadingConfirm}
-          type="danger"
-          className="btn-action"
-        >
-          Delete
-        </Button>
+        {!isResponded ? (
+          <>
+            <Button
+              onClick={handleConfirmFollow}
+              loading={isLoadingConfirm}
+              disabled={!isLoadingConfirm && isLoadingDelete}
+              type="primary"
+              className="btn-action"
+            >
+              Confirm
+            </Button>
+            <Button
+              onClick={handleDeleteFollow}
+              loading={isLoadingDelete}
+              disabled={!isLoadingDelete && isLoadingConfirm}
+              type="danger"
+              className="btn-action"
+            >
+              Delete
+            </Button>
+          </>
+        ) : (
+          <FollowStatus
+            user={userData.user || {}}
+            viewerId={viewerId}
+            relationship={userData.relationship || {}}
+          />
+        )}
       </div>
     </div>
   );
