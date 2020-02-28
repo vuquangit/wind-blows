@@ -1,15 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDotCircle } from "@fortawesome/free-solid-svg-icons";
-import axios from "utils/axiosConfig";
-import { useDispatch } from "react-redux";
-import { message, Popconfirm, Button } from "antd";
 
+import { useDispatch } from "react-redux";
+import { message, Popconfirm } from "antd";
+
+import axios from "utils/axiosConfig";
+import { stopPropagation } from "utils/stopPropagation";
 import {
   increaseNotifications,
   decreaseNotifications
 } from "Redux/Notifications/notification.action";
-import { stopPropagation } from "utils/stopPropagation";
 
 const Options = ({
   readNotification = false,
@@ -55,19 +56,20 @@ const Options = ({
     <div className="SGI__options" onClick={e => stopPropagation(e)}>
       <Popconfirm
         placement="bottomRight"
-        title={`Are you sure to delete this notification?`}
+        title="Are you sure to delete this notification?"
         onConfirm={handleDeleteNotification}
         okText="Yes"
         cancelText="No"
       >
-        <span className=" sprite-icon__glyphs SGI__options--option" />
+        <span className=" sprite-icon__glyphs option-delete" />
       </Popconfirm>
-      <div onClick={handleUnreadItem} style={{ lineHeight: 0 }}>
-        <FontAwesomeIcon
-          icon={faDotCircle}
-          title={readNotification ? `Unread` : "Read"}
-          className="SGI__options--unread"
-        />
+      <div
+        onClick={handleUnreadItem}
+        style={{ lineHeight: 0 }}
+        title={readNotification ? "Mark as unread" : "Mark as read"}
+        className="SGI__options--mark-as"
+      >
+        <FontAwesomeIcon icon={faDotCircle} className="option-read" />
       </div>
     </div>
   );

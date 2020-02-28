@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import axios from "utils/axiosConfig";
 import InfiniteScroll from "react-infinite-scroller";
 import { get, startsWith } from "lodash";
 import { Button, message } from "antd";
@@ -8,8 +7,9 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import classNames from "classnames";
 
+import axios from "utils/axiosConfig";
 import NotiLoading from "./NotificationItems/NotificationLoading";
-import UserRelationship from "Components/UserRelationship";
+import UserRelationship from "Containers/UserRelationship";
 import NotificationNew from "./NotificationItems/NotificationsNew";
 import { resetNotifications } from "Redux/Notifications/notification.action";
 import NotificationRequest from "./NotificationItems/NotificationRequest";

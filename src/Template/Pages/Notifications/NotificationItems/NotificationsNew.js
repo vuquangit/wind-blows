@@ -2,7 +2,7 @@ import React from "react";
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 
-import UserRelationship from "Components/UserRelationship";
+import UserRelationship from "Containers/UserRelationship";
 
 const NotificationsNew = () => {
   const itemsNew = useSelector((state = {}) =>

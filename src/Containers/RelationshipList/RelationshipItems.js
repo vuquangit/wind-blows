@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import UserRelationship from "Components/UserRelationship";
-import Pinwheel from "Components/Loaders/Pinwheel";
 import InfiniteScroll from "react-infinite-scroller";
 
+import UserRelationship from "Containers/UserRelationship";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import "./Relationship.scss";
 
 const FollowList = ({

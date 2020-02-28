@@ -53,7 +53,7 @@ const Notifications = () => {
 
         console.log("respone notifications", response);
 
-        if (!isEmpty(response.data))
+        if (response && !isEmpty(response.data))
           setState(prevState => ({
             ...prevState,
             data: [...prevState.data, ...get(response, "data.data", [])],

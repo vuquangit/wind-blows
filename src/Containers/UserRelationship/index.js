@@ -33,8 +33,8 @@ const UserRelationship = ({
   // toggle read notification
   const [readNotification, setReadNotification] = useState(false);
   useEffect(() => {
-    setReadNotification(notifications.read);
-  }, [notifications.read]);
+    setReadNotification(read);
+  }, [read]);
   const toggleReadNotification = () => {
     setReadNotification(!readNotification);
   };
