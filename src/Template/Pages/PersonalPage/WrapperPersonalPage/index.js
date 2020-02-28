@@ -77,8 +77,6 @@ const PersonalPage = ({
       "FOLLOW_STATUS_FOLLOWING"
     );
 
-  console.log("isPrivated", isPrivated, relationship);
-
   return (
     <>
       {!error ? (

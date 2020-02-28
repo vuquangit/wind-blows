@@ -18,7 +18,7 @@ import FollowRequests from "./FollowRequests";
 const Notification = ({
   items = [],
   isLoading = false,
-  totalFollowRequests = 0,
+
   setAllItemsReaded = () => {},
   getMoreItems = () => {},
   hasMoreItems = false,
@@ -26,6 +26,9 @@ const Notification = ({
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
+  );
+  const totalFollowRequests = useSelector((state = {}) =>
+    get(state, "notifications.totalFollowRequest", 0)
   );
 
   const dispatch = useDispatch();
@@ -114,7 +117,10 @@ const Notification = ({
           {isLoading && <NotiLoading />}
         </>
       ) : (
-        <FollowRequests toggleFollowRequest={toggleFollowRequest} />
+        <FollowRequests
+          totalFollowRequests={totalFollowRequests}
+          toggleFollowRequest={toggleFollowRequest}
+        />
       )}
     </div>
   );

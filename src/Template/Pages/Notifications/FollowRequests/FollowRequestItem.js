@@ -3,10 +3,11 @@ import AvatarUser from "Components/AvatarUser";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { get } from "lodash";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import axios from "utils/axiosConfig";
 import FollowStatus from "Containers/FollowStatus";
+import { decreaseFollowRequest } from "Redux/Notifications/notification.action";
 
 const FollowRequestItem = ({
   id: viewerId = "",
@@ -16,6 +17,7 @@ const FollowRequestItem = ({
   profilePictureUrl = "",
   profilePicturePublicId = ""
 }) => {
+  const dispatch = useDispatch();
   const ownerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );
@@ -47,13 +49,17 @@ const FollowRequestItem = ({
         console.log("error request", err);
       });
 
+      console.log("request reposne: ", res);
+
       endpoint === "approve"
         ? setIsLoadingConfirm(false)
         : setIsLoadingDelete(false);
 
       setIsResponded(true);
-      setUserData(prevState => ({ ...prevState, ...res.data }));
-      console.log("follow request :", res);
+      if (res && res.data)
+        setUserData(prevState => ({ ...prevState, ...res.data }));
+
+      await dispatch(decreaseFollowRequest());
     } catch (error) {
       endpoint === "approve"
         ? setIsLoadingConfirm(false)
@@ -113,7 +119,7 @@ const FollowRequestItem = ({
         ) : (
           <FollowStatus
             user={userData.user || {}}
-            viewerId={viewerId}
+            viewerId={ownerId}
             relationship={userData.relationship || {}}
           />
         )}

@@ -15,7 +15,7 @@ const Follows = ({ match = {}, history = {} }) => {
     isEqual()
   );
   const username = get(match, "params.username");
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 425px)" });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 575px)" });
 
   // modal
   const [visibleModalFollowing, setVisibleModalFollowing] = useState(false);

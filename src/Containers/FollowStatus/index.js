@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, message } from "antd";
 import { withRouter } from "react-router";
 import { get, isEqual } from "lodash";
@@ -37,19 +37,25 @@ const FollowStatus = ({
     profilePicturePublicId = "",
     isPrivate = false
   } = user;
-  const followedByViewer = get(relationship, "followedByViewer.state", "");
+
   const [state, setState] = useState({
     status: null,
     data: "",
     error: null,
     message: null,
     isLoading: false,
-    followStatus: isEqual(followedByViewer, FOLLOW_STATUS_FOLLOWING)
-      ? FOLLOWING
-      : isEqual(followedByViewer, FOLLOW_STATUS_PRIVATE_REQUESTED)
-      ? REQUESTED
-      : FOLLOW
+    followStatus: ""
   });
+
+  const followedByViewer = get(relationship, "followedByViewer.state", "");
+  const followStatus = isEqual(followedByViewer, FOLLOW_STATUS_FOLLOWING)
+    ? FOLLOWING
+    : isEqual(followedByViewer, FOLLOW_STATUS_PRIVATE_REQUESTED)
+    ? REQUESTED
+    : FOLLOW;
+  useEffect(() => {
+    setState(prevState => ({ ...prevState, followStatus }));
+  }, [followStatus]);
 
   const fetchFollows = async (endpoint = "") => {
     try {
@@ -68,13 +74,11 @@ const FollowStatus = ({
         }
       });
 
-      console.log("reponse follow:", endpoint, response);
+      // console.log("reponse follow:", endpoint, response);
 
-      // message.success({ content: "You adready following", key: keyMessage });
       handleCancelModal();
 
       // if in personal page: descrease follower, check private
-      console.log(isPrivate, "match", match);
       if (
         isPrivate &&
         isEqual(username, get(match, "params.username")) &&
@@ -112,13 +116,14 @@ const FollowStatus = ({
         }));
       }
     } catch (error) {
-      setState(prevState => ({
-        ...prevState,
-        status: error.response.status,
-        error: error || null,
-        isLoading: false,
-        message: error.response ? error.response.data.message || null : null
-      }));
+      if (error.response)
+        setState(prevState => ({
+          ...prevState,
+          status: error.response.status,
+          error: error || null,
+          isLoading: false,
+          message: error.response ? error.response.data.message || null : null
+        }));
 
       message.error({ content: state.message, key: keyMessage });
     }

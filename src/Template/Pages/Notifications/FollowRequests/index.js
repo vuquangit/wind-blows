@@ -9,7 +9,10 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import FollowRequestItem from "./FollowRequestItem";
 import NotiLoading from "../NotificationItems/NotificationLoading";
 
-const FollowRequests = ({ toggleFollowRequest = () => {} }) => {
+const FollowRequests = ({
+  totalFollowRequests = 0,
+  toggleFollowRequest = () => {}
+}) => {
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );

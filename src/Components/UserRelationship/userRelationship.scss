@@ -12,7 +12,7 @@
 
   &:hover {
     text-decoration: none !important;
-    background-color: rgb(191, 213, 221);
+    // background-color: rgb(191, 213, 221);
   }
 
   &::after {
@@ -166,6 +166,38 @@
       height: 40px;
       // vertical-align: middle;
     }
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: flex-end;
+    margin-left: 10px;
+    margin-right: -10px;
+
+
+    &--option {
+      background-repeat: no-repeat;
+      background-position: -312px -328px;
+      height: 16px;
+      width: 24px;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    &--unread {
+      height: 10px !important;
+      color: #b7b7b7 !important;
+      cursor: pointer;
+    }
+
+  }
+
+  &__deleted {
+    // height: 50px;
+    // animation: my-fancy-animation 5s 1;
+    // transition: visibility 0s, opacity 0.5s linear;
   }
 
   a {

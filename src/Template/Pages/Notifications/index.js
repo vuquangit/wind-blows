@@ -10,13 +10,14 @@ import NotiLoading from "./NotificationItems/NotificationLoading";
 import NotiEmpty from "./NotificationItems/NotificationEmpty";
 import {
   clearNewNotifications,
-  updateNotifications
+  updateNotifications,
+  updateFollowRequests
 } from "Redux/Notifications/notification.action";
 import "./notification.scss";
 
 const Notifications = () => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
   const dispatch = useDispatch();
@@ -26,8 +27,7 @@ const Notifications = () => {
     error: null,
     limit: 18,
     page: 1,
-    totalItem: 0,
-    totalFollowRequests: 0
+    totalItem: 0
   });
 
   useEffect(() => {
@@ -58,14 +58,25 @@ const Notifications = () => {
             ...prevState,
             data: [...prevState.data, ...get(response, "data.data", [])],
             totalItem: get(response, "data.totalItem", 0),
-            totalFollowRequests: get(response, "data.totalFollowRequests", 0),
+
             isLoading: false
           }));
 
+        // clear new notifications by GCM
         if (state.page === 1) await dispatch(clearNewNotifications());
 
+        // update total unread
         const totalUnread = get(response, "data.totalUnread", 0);
         if (totalUnread) await dispatch(updateNotifications(totalUnread));
+
+        // total follow requests
+        const totalFollowRequests = get(
+          response,
+          "data.totalFollowRequests",
+          0
+        );
+        if (totalFollowRequests)
+          await dispatch(updateFollowRequests(totalFollowRequests));
       } catch (error) {
         if (axios.isCancel(error)) {
           console.log("cancelled fetch notifications");
@@ -118,7 +129,6 @@ const Notifications = () => {
           items={state.data}
           isLoading={state.isLoading}
           setAllItemsReaded={setAllItemsReaded}
-          totalFollowRequests={state.totalFollowRequests}
           hasMoreItems={hasMoreItems}
           getMoreItems={() => getMoreItems()}
         />

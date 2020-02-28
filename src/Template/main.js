@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pick, isEmpty, get, filter } from "lodash";
+import { pick, isEmpty, get } from "lodash";
 import { auth as firebaseAuth } from "firebase/app";
 import axios from "utils/axiosConfig";
 import { message, notification, Avatar } from "antd";
@@ -13,7 +13,10 @@ import pageConfigs from "./pageConfigs";
 import { MainWrapper } from "./main.style";
 import { updateProfileInfo, signOut } from "Redux/Profile/profile.action";
 import Loading from "./Pages/Loading";
-import { newNotifications } from "Redux/Notifications/notification.action";
+import {
+  newNotifications,
+  increaseFollowRequest
+} from "Redux/Notifications/notification.action";
 import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
@@ -119,7 +122,8 @@ const Main = () => {
         }
       });
 
-      console.log("respone notifications GCM:", response);
+      // console.log("respone notifications GCM:", response);
+
       const data = get(response, "data.data", []);
       await dispatch(newNotifications(data));
     } catch (error) {
@@ -149,7 +153,7 @@ const Main = () => {
 
       await sendTokenToServer(localStorage.getItem("GCM_TOKEN"));
       registerPushListener(pushNotification);
-      console.log("register FCM success:", localStorage.getItem("GCM_TOKEN"));
+      console.log("register FCM success");
     } catch (err) {
       console.log(err);
       if (
@@ -170,9 +174,8 @@ const Main = () => {
     }
   };
 
-  const pushNotification = (data = {}) => {
+  const pushNotification = async (data = {}) => {
     const icon = get(data, "notification.icon", "");
-    console.log("icon noti:", icon);
 
     notification.info({
       message: get(data, "notification.title", ""),
@@ -193,6 +196,7 @@ const Main = () => {
     // update badge, store notification
     if (get(data, "notification.title", "") !== "New follow request")
       feactNewNoti();
+    else await dispatch(increaseFollowRequest());
   };
 
   const registerPushListener = pushNotification =>
@@ -205,7 +209,7 @@ const Main = () => {
   // save to server
   const sendTokenToServer = async token => {
     try {
-      const response = await axios({
+      await axios({
         method: "post",
         url: "/users/notifications/add",
         data: {
@@ -217,9 +221,9 @@ const Main = () => {
         }
       });
 
-      console.log("response notification save", response);
+      // console.log("response notification save", response);
 
-      message.success("Token is saved in server");
+      // message.success("Token is saved in server");
     } catch (error) {
       console.log(error);
       message.error("save token failed");

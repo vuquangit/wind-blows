@@ -36,7 +36,7 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
       try {
         const response = await axios({
           method: "post",
-          url: "users/notifications/unread",
+          url: "users/notifications/total-unread",
           data: {
             userId: id
           },

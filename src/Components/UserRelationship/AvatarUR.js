@@ -1,6 +1,8 @@
 import React from "react";
-import AvatarUser from "Components/AvatarUser";
 import { Link } from "react-router-dom";
+
+import AvatarUser from "Components/AvatarUser";
+import { stopPropagation } from "utils/stopPropagation";
 
 const AvatarUR = ({ user = {} }) => {
   const {
@@ -9,9 +11,17 @@ const AvatarUR = ({ user = {} }) => {
     username = ""
   } = user;
 
+  const handleStopPropagation = e => {
+    stopPropagation(e);
+  };
+
   return (
     <div className="SGI__avatar">
-      <Link to={`/${username}/`} title={username}>
+      <Link
+        to={`/${username}/`}
+        title={username}
+        onClick={handleStopPropagation}
+      >
         <AvatarUser
           profilePicturePublicId={profilePicturePublicId}
           profilePictureUrl={profilePictureUrl}

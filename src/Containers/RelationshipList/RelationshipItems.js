@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import FollowItem from "Components/UserRelationship";
+import UserRelationship from "Components/UserRelationship";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -17,7 +17,7 @@ const FollowList = ({
       items &&
       items.length > 0 &&
       items.map((item, idx) => (
-        <FollowItem
+        <UserRelationship
           key={item.user.id || idx}
           user={item.user}
           relationship={item.relationship}

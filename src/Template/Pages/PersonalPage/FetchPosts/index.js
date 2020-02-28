@@ -60,7 +60,7 @@ const FetchPosts = ({
 
         console.log("response fetch", response);
 
-        if (!isEmpty(response.data.data)) {
+        if (response && !isEmpty(response.data.data)) {
           setState(prevState => ({
             ...prevState,
             data: [

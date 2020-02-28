@@ -4,27 +4,43 @@ import { withRouter } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserPlus,
+  faUserCheck,
   faHeart,
   faCommentAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 import TimeFromNow from "Components/TimeFromNow";
+import { stopPropagation } from "utils/stopPropagation";
 
 const Description = ({ user = {}, notifications = {}, match = {} }) => {
   const { username = "", suggestionDescription = "", fullName = "" } = user;
   const { typeNotification = 0, text = "", timestamp = "" } = notifications;
   const subDescription = match.path === "/" ? suggestionDescription : fullName;
 
+  const handleStopPropagation = e => {
+    stopPropagation(e);
+  };
+
   return (
     <div className="SGI__info">
       {typeNotification === 0 || typeNotification === 1 ? (
         <div className="SGI__info--username">
-          <Link to={`/${username}/`} title={username} className="username">
+          <Link
+            to={`/${username}/`}
+            title={username}
+            onClick={handleStopPropagation}
+            className="username"
+          >
             {username}
           </Link>
         </div>
       ) : (
-        <Link to={`/${username}/`} title={username} className="username">
+        <Link
+          to={`/${username}/`}
+          title={username}
+          onClick={handleStopPropagation}
+          className="username"
+        >
           {username}
         </Link>
       )}
@@ -36,12 +52,12 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
         " liked your photo."
       ) : typeNotification === 3 ? (
         <>
-          like your comments:
+          {` like your comments: `}
           <span>"{text}"</span>
         </>
       ) : typeNotification === 4 ? (
         <>
-          mentioned you in a comment:
+          {` mentioned you in a comment: `}
           <span>"{text}"</span>
         </>
       ) : (
@@ -49,7 +65,7 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
       )}
       {typeNotification !== 0 && (
         <div className="SGI__description-more">
-          {typeNotification === 1 || typeNotification === 5 ? (
+          {typeNotification === 1 ? (
             <FontAwesomeIcon
               icon={faUserPlus}
               className="SGI__description-more--icon-follow"
@@ -59,11 +75,16 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
               icon={faHeart}
               className="SGI__description-more--icon-heart"
             />
+          ) : typeNotification === 4 ? (
+            <FontAwesomeIcon
+              icon={faCommentAlt}
+              className="SGI__description-more--icon-comment"
+            />
           ) : (
-            typeNotification === 4 && (
+            typeNotification === 5 && (
               <FontAwesomeIcon
-                icon={faCommentAlt}
-                className="SGI__description-more--icon-comment"
+                icon={faUserCheck}
+                className="SGI__description-more--icon-follow"
               />
             )
           )}

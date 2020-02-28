@@ -80,13 +80,13 @@ instance.interceptors.response.use(
         .then(res => {
           if (res.status === 201) {
             const token = get(res, "data.token", "");
-            console.log("new token: ", token);
+            console.log("New user token");
 
             const newToken = {
               profile: {
                 data: {
                   tokens: {
-                    token
+                    token: token
                   }
                 }
               }
