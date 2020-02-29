@@ -6,8 +6,8 @@ import { get, isEqual } from "lodash";
 import { useMediaQuery } from "react-responsive";
 
 import Modal from "Components/Modal";
-import Following from "./Following";
-import Follower from "./Followers";
+import Followers from "Template/Pages/Follower";
+import Following from "Template/Pages/Following";
 
 const Follows = ({ match = {}, history = {} }) => {
   const { followedBy = 0, follows = 0, media = 0 } = useSelector(
@@ -68,7 +68,7 @@ const Follows = ({ match = {}, history = {} }) => {
         destroyOnClose
         className=""
       >
-        <Follower isModal />
+        <Followers isModal />
       </Modal>
       <Modal
         title={null}

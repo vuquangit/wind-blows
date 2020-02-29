@@ -3,15 +3,15 @@ import classNames from "classnames";
 import axios from "utils/axiosConfig";
 import { get, filter, isEmpty } from "lodash";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 import PostAction from "./PostAction";
 import PostLikes from "./PostLikes";
 import CommentList from "./CommentList";
 import PostedAt from "./PostedAt";
 import AddComments from "./AddComments";
-import "./postInfo.scss";
-import { useSelector } from "react-redux";
-import { Button } from "antd";
+import "./scss/postInfo.scss";
 
 const PostInfo = ({
   postId = "",
@@ -21,6 +21,7 @@ const PostInfo = ({
   isHomePage = false,
   likedByViewer = false,
   savedByViewer = false,
+  sidecarChildren = {},
   handleLikePost = () => {}
 }) => {
   const viewerId = useSelector((state = {}) =>
@@ -86,7 +87,7 @@ const PostInfo = ({
     feactCommentsData();
 
     // unmount
-    return async () => {
+    return () => {
       source.cancel();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,6 +137,7 @@ const PostInfo = ({
         handleLikePost={handleLikePost}
         likedByViewer={likedByViewer}
         savedByViewer={savedByViewer}
+        sidecarChildren={sidecarChildren}
       />
       <PostLikes isHomePage={isHomePage} numLikes={numLikes} postId={postId} />
       <CommentList

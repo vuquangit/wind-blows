@@ -40,7 +40,7 @@ const FollowList = ({
       >
         <div>{_renderFollowItem()}</div>
       </InfiniteScroll>
-      <Pinwheel isLoading={isLoading} size={48} />
+      {isLoading && <Pinwheel size={48} />}
     </div>
   );
 };

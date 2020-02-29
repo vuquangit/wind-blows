@@ -23,6 +23,8 @@ const GoToPost = ({ match = {} }) => {
   });
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     const feactPostData = async () => {
       try {
         const response = await axios({
@@ -34,7 +36,8 @@ const GoToPost = ({ match = {} }) => {
           },
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          cancelToken: source.token
         });
 
         setState(prevState => ({
@@ -51,6 +54,11 @@ const GoToPost = ({ match = {} }) => {
     };
 
     feactPostData();
+
+    return () => {
+      source.cancel();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

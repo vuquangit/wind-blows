@@ -97,6 +97,7 @@ const PostItem = ({
         postAt={postAt}
         likedByViewer={isLikePost}
         savedByViewer={savedByViewer}
+        sidecarChildren={sidecarChildren}
         handleLikePost={handleLikePost}
       />
       <PostOption

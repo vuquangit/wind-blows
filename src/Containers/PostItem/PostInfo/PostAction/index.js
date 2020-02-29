@@ -19,7 +19,8 @@ const PostAction = ({
   likedByViewer,
   handleLikePost,
   savedByViewer,
-  postId = ""
+  postId = "",
+  sidecarChildren = {}
 }) => {
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
@@ -105,6 +106,8 @@ const PostAction = ({
         </div>
       )}
       <ModalShare
+        postId={postId}
+        sidecarChildren={sidecarChildren}
         visibleModal={visibleModal}
         handleCancelModal={cancelModalShare}
       />

@@ -1,0 +1,61 @@
+&--post-comment {
+    margin-top: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    order: 5;
+    border-top: 1px solid #efefef;
+    color: #999;
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 18px;
+    min-height: 56px;
+    justify-content: center !important;
+
+    @media (max-width: 736px) {
+        padding: 0;
+        min-height: 0;
+    }
+
+    .ant-comment-inner {
+        padding: 0 !important;
+    }
+
+    .post-comment__content {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        .ant-form-item {
+            margin: 0;
+            padding: 0;
+        }
+
+        .submit {
+            border-color: #fff;
+            border: 0;
+            font-weight: 600;
+            color: #3897f0;
+        }
+
+        .ant-btn.disabled,
+        .ant-btn[disabled] {
+            cursor: default;
+            background-color: #fff;
+            color: #c0e2f5;
+        }
+
+        .ant-input,
+        .ant-input:focus,
+        .ant-input:hover {
+            border-color: #fff;
+            border-right-width: 0px !important;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        .textarea.ant-input {
+            padding-left: 0;
+        }
+
+    }
+}

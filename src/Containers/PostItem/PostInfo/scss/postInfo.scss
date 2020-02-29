@@ -1,0 +1,57 @@
+.PI__info {
+    padding: 0;
+
+    @media (min-width: 736px) {
+        position: absolute !important;
+        border-left: 1px solid #efefef;
+        box-sizing: border-box;
+        top: 72px;
+        padding: 0;
+        right: 0;
+        width: 335px;
+        bottom: 0;
+    }
+
+    @import 'actions';
+    @import 'postLikes';
+    @import 'commentList';
+    @import 'postAt';
+    @import 'addComment';
+}
+
+// modidy style in home page
+.homepage-info {
+    position: relative !important;
+    border: 0;
+    padding: 0;
+    width: 100%;
+    top: 0;
+    margin: 0;
+
+    &__action {
+        order: 1 !important;
+    }
+
+    &__CL {
+        order: 4 !important;
+
+        &--content {
+            position: relative !important;
+            padding: 0 16px !important;
+            overflow: hidden;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-y: unset !important;
+
+            .CLCMT {
+                margin: 0;
+            }
+
+            .CL__CMTW1 {
+                padding: 0 0 !important;
+                margin: 0;
+            }
+
+        }
+    }
+}

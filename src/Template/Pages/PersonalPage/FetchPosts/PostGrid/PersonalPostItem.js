@@ -73,29 +73,34 @@ const PersonalPostItem = ({
         )}
       </div>
       <Modal
-        title={" "}
+        title={null}
         visible={visible}
         onCancel={handleCancelModal}
         footer={null}
         className="personal-post__modal"
       >
-        <PostItem
-          id={postId}
-          caption={caption}
-          captionIsEdited={captionIsEdited}
-          numLikes={numLikes}
-          numComments={numComments}
-          commentsDisabled={commentsDisabled}
-          likedByViewer={likedByViewer}
-          postAt={postAt}
-          savedByViewer={savedByViewer}
-          relationship={relationship}
-          owner={owner}
-          sidecarChildren={sidecarChildren}
-          isModal
-          handleCancelModalPost={handleCancelModal}
-          handleRemovePersonalPost={handleRemovePersonalPost}
-        />
+        <div className="personal-post__modal--content">
+          <div className="content--close" onClick={handleCancelModal} />
+          <div className="content--post">
+            <PostItem
+              id={postId}
+              caption={caption}
+              captionIsEdited={captionIsEdited}
+              numLikes={numLikes}
+              numComments={numComments}
+              commentsDisabled={commentsDisabled}
+              likedByViewer={likedByViewer}
+              postAt={postAt}
+              savedByViewer={savedByViewer}
+              relationship={relationship}
+              owner={owner}
+              sidecarChildren={sidecarChildren}
+              isModal
+              handleCancelModalPost={handleCancelModal}
+              handleRemovePersonalPost={handleRemovePersonalPost}
+            />
+          </div>
+        </div>
       </Modal>
     </div>
   );

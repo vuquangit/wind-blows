@@ -83,7 +83,7 @@ const ModalOption = ({
   };
 
   // copy post link
-  const postLink = get(window, "location.href") || "";
+  const postLink = `${get(window, "location.origin", "")}/p/${postId}`;
   const handleCopyLink = () => {
     message.success("Post link is copied");
   };

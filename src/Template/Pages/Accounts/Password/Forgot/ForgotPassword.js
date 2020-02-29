@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Input, Button, Divider, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import MouseParallax from "./MouseParallax";
@@ -33,7 +33,6 @@ const ResetPassword = ({ match = {}, location = {} }) => {
 
   const handleForgotPassord = async values => {
     const localhost = window.location.origin;
-    console.log(match, location, window.location);
 
     try {
       setState(prevState => ({ ...prevState, isLoading: true }));
@@ -61,9 +60,9 @@ const ResetPassword = ({ match = {}, location = {} }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(match);
-  }, [match]);
+  const handleResendEmail = () => {
+    setState(prevState => ({ ...prevState, isSendForgotPassword: false }));
+  };
 
   return (
     <div className="RP">
@@ -93,11 +92,12 @@ const ResetPassword = ({ match = {}, location = {} }) => {
                 allowClear
                 value={email}
                 onChange={handleChangeEmail}
+                onPressEnter={handleForgotPassord}
               />
             </div>
             {state.error && (
-              <Typography.Text type="danger">
-                Old password not correct
+              <Typography.Text type="danger" className="RP__content--item">
+                This email does not exist or has not been registered
               </Typography.Text>
             )}
             <div className="RP__content--item">
@@ -105,6 +105,7 @@ const ResetPassword = ({ match = {}, location = {} }) => {
                 type="primary"
                 block
                 onClick={handleForgotPassord}
+                loading={state.isLoading}
                 disabled={!email}
               >
                 Send Login Link
@@ -112,9 +113,20 @@ const ResetPassword = ({ match = {}, location = {} }) => {
             </div>
           </>
         ) : (
-          <div>
-            Success send link reset password to your email. Please open your
-            mail enter to reset password.
+          <div className="RP__content--sended">
+            <h1>Check your email</h1>
+            <p>
+              We've sent an email to{" "}
+              <span style={{ fontWeight: 600 }}>{email}</span>.
+            </p>
+            <p>
+              Click the link in the email to reset your password. If you don't
+              see the email, check other places it might be, like your junk,
+              spam, social, or other folders
+            </p>
+            <Button onClick={handleResendEmail} className="btn-resend-mail">
+              I didn't receive the email
+            </Button>
           </div>
         )}
 

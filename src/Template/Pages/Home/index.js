@@ -86,7 +86,7 @@ const HomePage = () => {
     !isEmpty(tokenUser) && feactData();
 
     // unmount
-    return async () => {
+    return () => {
       source.cancel();
     };
 

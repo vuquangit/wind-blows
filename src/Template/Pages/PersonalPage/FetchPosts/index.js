@@ -30,7 +30,7 @@ const FetchPosts = ({
     isLoading: false,
     data: [],
     error: null,
-    limit: 18,
+    limit: 24,
     page: 1,
     totalItem: 0
   });
@@ -71,6 +71,11 @@ const FetchPosts = ({
               )
             ],
             totalItem: get(response, "data.totalItem"),
+            isLoading: false
+          }));
+        } else {
+          setState(prevState => ({
+            ...prevState,
             isLoading: false
           }));
         }
@@ -139,7 +144,7 @@ const FetchPosts = ({
 
   return (
     <div className="personal-post">
-      {state.isLoading && state.data.length === 0 ? (
+      {state.isLoading ? (
         <PostsLoading />
       ) : state.data.length > 0 ? (
         <PostGrid

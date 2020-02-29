@@ -7,6 +7,7 @@ import axios from "utils/axiosConfig";
 
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import ProfilePhoto from "Containers/ProfilePhoto";
+import Pinwheel from "Components/Loaders/Pinwheel";
 import "./changePassword.scss";
 
 const ChangePassword = ({
@@ -16,19 +17,23 @@ const ChangePassword = ({
   history = {}
 }) => {
   const dispatch = useDispatch();
-  const profile =
-    useSelector((state = {}) => get(state, "profile.data.user")) || {};
+  const profile = useSelector((state = {}) =>
+    get(state, "profile.data.user", {})
+  );
   const { isAuthenticateLogin = false } = profile;
-
+  const [isCheckingTokenReset, setIsCheckingTokenReset] = useState(false);
   const [profileData, setProfileData] = useState(profile);
 
   // for Reset password
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     if (isEmpty(profile)) {
-      const resetPasswordToken = get(match, "params.token") || "";
-      console.log(resetPasswordToken);
+      const resetPasswordToken = get(match, "params.token", "");
 
       const fetchEmail = async () => {
+        setIsCheckingTokenReset(true);
+
         try {
           const res = await axios({
             method: "get",
@@ -36,48 +41,62 @@ const ChangePassword = ({
             params: { resetPasswordToken },
             headers: {
               "Content-Type": "application/json"
-            }
+            },
+            cancelToken: source.token
           });
 
-          console.log("get email :", res);
-
-          setProfileData(get(res, "data") || {});
-          console.log(profileData);
+          setProfileData(get(res, "data", {}));
+          setIsCheckingTokenReset(false);
         } catch (err) {
-          console.log("Change password error ", err);
-          message.error("Get email error ", 5);
+          if (axios.isCancel(err)) {
+            console.log("cancelled fetch token reset");
+          } else {
+            console.log("Change password error ", err);
+            message.error("Get email error ", 5);
+            setIsCheckingTokenReset(false);
+          }
         }
       };
 
       fetchEmail();
     }
+
+    // unmount
+    return () => {
+      source.cancel();
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [confirmDirty, setConfirmDirty] = useState(false);
   const { getFieldDecorator } = form;
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 7 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 17 }
-    }
-  };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0
-      },
-      sm: {
-        span: 16,
-        offset: 8
-      }
-    }
-  };
+  const formItemLayout = isResetPassword
+    ? {}
+    : {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 7 }
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 17 }
+        }
+      };
+  const tailFormItemLayout = isResetPassword
+    ? {}
+    : {
+        wrapperCol: {
+          xs: {
+            span: 24,
+            offset: 0
+          },
+          sm: {
+            span: 16,
+            offset: 8
+          }
+        }
+      };
 
   const validateToNextPassword = (rule, value, callback) => {
     if (value && confirmDirty) {
@@ -157,82 +176,98 @@ const ChangePassword = ({
 
   return (
     <div className="change-password">
-      {!isResetPassword && (
-        <div className="change-password__photo">
-          <ProfilePhoto {...formItemLayout} changePhoto={false} />
-        </div>
-      )}
-      <Form {...formItemLayout} onSubmit={handleSubmit}>
-        {!isEmpty(profileData) ? (
-          <>
-            {!isResetPassword && !isAuthenticateLogin && (
-              <Form.Item label="Old Password" hasFeedback>
-                {getFieldDecorator("oldPassword", {
-                  rules: [
-                    {
-                      required: true,
-                      message: "Please input your old password!"
-                    }
-                  ]
-                })(<Input.Password />)}
-              </Form.Item>
-            )}
-            <Form.Item label="New Password" hasFeedback>
-              {getFieldDecorator("newPassword", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input your new password!"
-                  },
-                  {
-                    min: 8,
-                    message: "Length greater than 8 characters"
-                  },
-                  {
-                    validator: validateToNextPassword
-                  }
-                ]
-              })(<Input.Password />)}
-            </Form.Item>
-            <Form.Item label="Confirm New Password" hasFeedback>
-              {getFieldDecorator("confirmNewPassword", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please confirm your new password!"
-                  },
+      {isCheckingTokenReset ? (
+        <Pinwheel size={48} />
+      ) : (
+        <>
+          {!isResetPassword && (
+            <div className="change-password__photo">
+              <ProfilePhoto {...formItemLayout} changePhoto={false} />
+            </div>
+          )}
+          <Form {...formItemLayout} onSubmit={handleSubmit}>
+            {!isEmpty(profileData) ? (
+              <>
+                {!isResetPassword && !isAuthenticateLogin && (
+                  <Form.Item label="Old Password" hasFeedback>
+                    {getFieldDecorator("oldPassword", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please input your old password!"
+                        }
+                      ]
+                    })(<Input.Password />)}
+                  </Form.Item>
+                )}
+                <Form.Item
+                  label={!isResetPassword && `New Password`}
+                  hasFeedback
+                >
+                  {getFieldDecorator("newPassword", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please input your new password!"
+                      },
+                      {
+                        min: 8,
+                        message: "Length greater than 8 characters"
+                      },
+                      {
+                        validator: validateToNextPassword
+                      }
+                    ]
+                  })(<Input.Password placeholder="New password" />)}
+                </Form.Item>
+                <Form.Item
+                  label={!isResetPassword && `Confirm New Password`}
+                  hasFeedback
+                >
+                  {getFieldDecorator("confirmNewPassword", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please confirm your new password!"
+                      },
 
-                  {
-                    min: 8,
-                    message: "Length greater than 8 characters"
-                  },
-                  {
-                    validator: compareToFirstPassword
-                  }
-                ]
-              })(<Input.Password onBlur={handleConfirmBlur} />)}
-            </Form.Item>
-            {!!stateUpdate.error && (
+                      {
+                        min: 8,
+                        message: "Length greater than 8 characters"
+                      },
+                      {
+                        validator: compareToFirstPassword
+                      }
+                    ]
+                  })(
+                    <Input.Password
+                      onBlur={handleConfirmBlur}
+                      placeholder="Confirm new password"
+                    />
+                  )}
+                </Form.Item>
+                {!!stateUpdate.error && (
+                  <Typography.Text type="danger">
+                    Old password not correct
+                  </Typography.Text>
+                )}
+                <Form.Item {...tailFormItemLayout}>
+                  <Button type="primary" htmlType="submit">
+                    Change Password
+                  </Button>
+                </Form.Item>
+              </>
+            ) : (
               <Typography.Text type="danger">
-                Old password not correct
+                Password reset link is invalid or has expried
               </Typography.Text>
             )}
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
-                Change Password
-              </Button>
+              <Link to="/accounts/password/reset/">Forgot password ?</Link>
             </Form.Item>
-          </>
-        ) : (
-          <Typography.Text type="danger">
-            Password reset link is invalid or has expried
-          </Typography.Text>
-        )}
-
-        <Form.Item {...tailFormItemLayout}>
-          <Link to="/accounts/password/reset/">Forgot password ?</Link>
-        </Form.Item>
-      </Form>
+          </Form>
+        </>
+      )}
     </div>
   );
 };
