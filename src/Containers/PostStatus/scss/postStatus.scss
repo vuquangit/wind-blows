@@ -33,5 +33,25 @@
     @import "location";
     @import "commentsPrivate";
     @import "submit";
+
+    &--advance {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+
+      position: relative;
+      height: 80px;
+      overflow-y: hidden;
+      transform-origin: left top;
+      transform: translateY(0);
+      transition: all 0.4s ease-in-out;
+    }
+
+    &--advance-close {
+      z-index: 311;
+      height: 0;
+      transform: translateY(-100%);
+    }
   }
 }

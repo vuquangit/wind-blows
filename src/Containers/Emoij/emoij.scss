@@ -1,0 +1,22 @@
+.emoij {
+  background: transparent;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  border: 0;
+  cursor: pointer;
+
+  .emoij-icon {
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: -153px -658px;
+    height: 16px;
+    width: 16px;
+
+    .picker-emoij {
+      background: transparent;
+      border: 0;
+    }
+  }
+}

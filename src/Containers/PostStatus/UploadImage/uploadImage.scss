@@ -1,5 +1,8 @@
 .post-upload-image {
   padding-top: 5px;
+  border-top: 1px solid #e9ebee;
+  background: #fff;
+  z-index: 313;
 
   .upload-image__wrapper {
     // height: 112px;
@@ -27,7 +30,6 @@
       width: 100px;
 
       &:hover {
-
         .thumbnails__item--btn-remove,
         .thumbnails__item--option {
           opacity: 1;

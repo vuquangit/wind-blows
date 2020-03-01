@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { isEqual, get } from "lodash";
 import classNames from "classnames";
@@ -67,15 +67,16 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
     setStatus(defaultStatus);
   };
   // upload image
-  const handleAddDataImages = data => {
+  const handleAddDataImages = useCallback(data => {
     if (data) {
       setStatus(prevState => ({
         ...prevState,
         sidecarChildren: [...prevState.sidecarChildren, data]
       }));
     }
-  };
-  const handleUpdateImages = data => {
+  }, []);
+
+  const handleUpdateImages = useCallback(data => {
     setStatus(prevState => ({
       ...prevState,
       sidecarChildren:
@@ -86,8 +87,9 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
             })
           : []
     }));
-  };
-  const handleRemoveImage = uuidFile => {
+  }, []);
+
+  const handleRemoveImage = useCallback(uuidFile => {
     setStatus(prevState => ({
       ...prevState,
       sidecarChildren:
@@ -95,11 +97,15 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
           ? prevState.sidecarChildren.filter(item => item.uuidFile !== uuidFile)
           : []
     }));
-  };
+  }, []);
 
   // style
   const classFocus = classNames("post-status__external", {
     "status-focused": isStatusFocus
+  });
+
+  const classOption = classNames("post-status__content--advance", {
+    "post-status__content--advance-close": !isShowOption
   });
 
   return (
@@ -120,18 +126,16 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
           handleUpdateImages={handleUpdateImages}
           handleRemoveImage={handleRemoveImage}
         />
-        {isShowOption && (
-          <div className="post-status__content--wrapper-option">
-            <PostLocation
-              location={status.location.name || ""}
-              setStatus={setStatus}
-            />
-            <PostCommentsPrivate
-              commentsDisabled={status.commentsDisabled}
-              setStatus={setStatus}
-            />
-          </div>
-        )}
+        <div className={classOption}>
+          <PostLocation
+            location={status.location.name || ""}
+            setStatus={setStatus}
+          />
+          <PostCommentsPrivate
+            commentsDisabled={status.commentsDisabled}
+            setStatus={setStatus}
+          />
+        </div>
         <PostOption
           isShowOption={isShowOption}
           handleToggleOption={handleToggleOption}

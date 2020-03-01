@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { uuid } from "utils/uuid";
 
 import { toBase64 } from "utils/toBase64";
+
+// const
 
 const AddImage = ({
   totalFilesSelected = 0,
   handleAddDataImages = () => {},
   handleUpdateImages = () => {}
 }) => {
+  const [data, setData] = useState(null);
   const fetchUploadImage = async e => {
     e.preventDefault();
 
@@ -22,9 +25,8 @@ const AddImage = ({
       return; // exit upload
     }
 
-    // thumbnail loading
-    const initList = () => {
-      const _init = filesSeleted.map(async item => {
+    const items = await Promise.all(
+      filesSeleted.map(async item => {
         const uuidFile = await uuid();
         await handleAddDataImages({
           uuidFile,
@@ -32,13 +34,10 @@ const AddImage = ({
           isUploaded: false
         });
         return { info: item, uuidFile };
-      });
+      })
+    );
 
-      return Promise.all(_init);
-    };
-
-    // thumbnail uploading
-    initList().then(items => {
+    await Promise.all(
       items.map(async file => {
         const { base64 = "", type = "" } = await toBase64(file.info);
         const image = {
@@ -49,10 +48,17 @@ const AddImage = ({
           isConverted: true
         };
 
-        handleUpdateImages(image);
-      });
-    });
+        // handleUpdateImages(image);
+        setData(image);
+      })
+    );
   };
+
+  useEffect(() => {
+    if (data) {
+      handleUpdateImages(data);
+    }
+  }, [data, handleUpdateImages]);
 
   return (
     <div className="add-image">

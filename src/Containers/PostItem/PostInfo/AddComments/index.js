@@ -1,16 +1,22 @@
 import React, { useState, useRef } from "react";
-import axios from "utils/axiosConfig";
-
 import { get } from "lodash";
 import { useSelector } from "react-redux";
 import { Comment, Button, Input, message } from "antd";
+
+import axios from "utils/axiosConfig";
+import AvatarUser from "Components/AvatarUser";
+import Emoij from "Containers/Emoij";
 
 const AddComments = ({
   postId = "",
   handleAddComments = () => {},
   setIsViewerComments = () => {}
 }) => {
-  const viewerId = useSelector(state => get(state, "profile.data.user.id", ""));
+  const {
+    id: viewerId = "",
+    profilePicturePublicId = "",
+    profilePictureUrl = ""
+  } = useSelector(state => get(state, "profile.data.user", {}));
 
   const textInput = useRef(null);
   const [text, setText] = useState("");
@@ -56,34 +62,49 @@ const AddComments = ({
     }
   };
 
+  const onSelectEmoij = emoji => setText(prevState => prevState + emoji.native);
+
   return (
     <section className="PI__info--post-comment">
-      <Comment
-        content={
-          <div className="post-comment__content">
-            <Input.TextArea
-              rows={1}
-              onChange={handleChangeText}
-              onPressEnter={() => handleSubmit()}
-              value={text}
-              placeholder="Add a comment..."
-              autoSize={{ minRows: 1, maxRows: 4 }}
-              disabled={isLoading}
-              ref={textInput}
-            />
-            <Button
-              htmlType="submit"
-              loading={isLoading}
-              onClick={() => handleSubmit()}
-              type="default"
-              className="submit"
-              disabled={!text}
-            >
-              Post
-            </Button>
-          </div>
-        }
-      />
+      <div className="post-comment">
+        <div className="post-comment__avatar">
+          <AvatarUser
+            profilePicturePublicId={profilePicturePublicId}
+            profilePictureUrl={profilePictureUrl}
+          />
+        </div>
+        <Comment
+          content={
+            <div className="post-comment__content">
+              <div className="post-comment__content--text">
+                <Input.TextArea
+                  rows={1}
+                  onChange={handleChangeText}
+                  onPressEnter={() => handleSubmit()}
+                  value={text}
+                  placeholder="Add a comment..."
+                  autoSize={{ minRows: 1, maxRows: 4 }}
+                  disabled={isLoading}
+                  ref={textInput}
+                />
+                <div className="comment-emoij">
+                  <Emoij onSelect={onSelectEmoij} />
+                </div>
+              </div>
+              <Button
+                htmlType="submit"
+                loading={isLoading}
+                onClick={() => handleSubmit()}
+                type="default"
+                className="submit"
+                disabled={!text}
+              >
+                Post
+              </Button>
+            </div>
+          }
+        />
+      </div>
     </section>
   );
 };
