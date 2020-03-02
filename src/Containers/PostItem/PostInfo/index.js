@@ -151,12 +151,14 @@ const PostInfo = ({
       />
       <PostedAt isHomePage={isHomePage} postedAt={postAt} />
       {viewerId ? (
-        <AddComments
-          isHomePage={isHomePage}
-          postId={postId}
-          handleAddComments={handleAddComments}
-          setIsViewerComments={setIsViewerComments}
-        />
+        <div className="PI__info--post-comment">
+          <AddComments
+            isHomePage={isHomePage}
+            postId={postId}
+            handleAddComments={handleAddComments}
+            setIsViewerComments={setIsViewerComments}
+          />
+        </div>
       ) : (
         <div className="PI__info--post-comment">
           <Link to="/accounts/login">

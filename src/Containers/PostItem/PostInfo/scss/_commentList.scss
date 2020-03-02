@@ -18,7 +18,7 @@
         height: calc(100% - 32px);
         overflow-y: scroll;
         left: 0;
-        padding: 16px 12px;
+        padding: 12px 8px;
         position: absolute;
         width: calc(100% - 8px);
 
@@ -87,6 +87,10 @@
                 justify-content: space-between !important;
             }
 
+            &--reply {
+                margin-left: 40px;
+            }
+
             &--content {
                 width: calc(100% - 24px);
                 display: flex;
@@ -102,7 +106,7 @@
                         display: block;
                         flex: none;
                         align-self: flex-start !important;
-                        margin: 0 18px 0 0;
+                        margin: 0 8px 0 0;
                     }
 
                     &__content {
@@ -151,7 +155,8 @@
                             }
 
                             .info__content {
-                                display: block;
+                                display: flex;
+                                flex-direction: row;
                                 color: rgba(var(--f52, 153, 153, 153), 1);
                                 font-weight: 400;
                                 font-size: 12px;
@@ -189,6 +194,12 @@
                                         line-height: 17px;
                                     }
                                 }
+
+                                &--reply {
+                                    // font-size: 13px;
+                                    // font-weight: 700;
+                                    color: rgba(var(--fe0, 0, 53, 105), 1);
+                                }
                             }
                         }
                     }
@@ -203,9 +214,9 @@
                 top: -4px;
                 padding-top: 10px;
 
-                @media (max-width: 736px) {
-                    display: block;
-                }
+                // @media (max-width: 736px) {
+                //     display: block;
+                // }
 
                 .option__btn {
                     display: flex;

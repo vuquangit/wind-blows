@@ -3,7 +3,7 @@ import { Input } from "antd";
 import { useSelector } from "react-redux";
 
 import AvatarUser from "Components/AvatarUser";
-import Emoij from "Containers/Emoij";
+import Emoji from "Containers/Emoji";
 
 const PostCaption = ({ caption = "", setStatus }) => {
   const { profilePictureUrl = "", profilePicturePublicId = "" } = useSelector(
@@ -16,7 +16,7 @@ const PostCaption = ({ caption = "", setStatus }) => {
     setStatus(prevState => ({ ...prevState, caption: e.target.value }));
   };
 
-  const onSelectEmoij = emoji =>
+  const onSelectEmoji = emoji =>
     setStatus(prevState => ({
       ...prevState,
       caption: prevState.caption + emoji.native
@@ -41,7 +41,7 @@ const PostCaption = ({ caption = "", setStatus }) => {
           className="caption-content__input"
         />
         <div className="caption-content__advance">
-          <Emoij onSelect={onSelectEmoij} />
+          <Emoji onSelect={onSelectEmoji} />
         </div>
       </div>
     </div>

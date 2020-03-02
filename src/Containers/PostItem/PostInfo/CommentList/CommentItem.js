@@ -11,6 +11,7 @@ import HeartIcon from "Components/HeartIcon";
 import ModalItemOptions from "./ModalItemOptions";
 import ModalLikes from "../ModalLikes";
 import AvatarUser from "Components/AvatarUser";
+import AddComment from "../AddComments";
 
 const CommentListItem = ({
   userId: commentOwnerId = "",
@@ -29,12 +30,8 @@ const CommentListItem = ({
 }) => {
   // Modal of Option comment
   const [visibleModalOptions, setVisibleModalOptions] = useState(false);
-  const showModalOptions = () => {
-    setVisibleModalOptions(true);
-  };
-  const handleCancelModalOptions = e => {
-    setVisibleModalOptions(false);
-  };
+  const showModalOptions = () => setVisibleModalOptions(true);
+  const handleCancelModalOptions = () => setVisibleModalOptions(false);
 
   // Event like comment
   const [_likedByViewer, setLikedByViewer] = useState(likedByViewer);
@@ -150,7 +147,7 @@ const CommentListItem = ({
     profilePicturePublicId: commentOwnerAvatarId = "",
     username: commentOwnerUsername = "",
     isVerified: isAuthorVerified = false
-  } = get(stateOwnerComments, "data");
+  } = get(stateOwnerComments, "data", {});
 
   // modal likes comments
   const [visibleModalLikes, setVisibleModalLikes] = useState(false);
@@ -178,6 +175,12 @@ const CommentListItem = ({
       }
     });
   };
+
+  const [isReply, setIsReply] = useState(false);
+  const toggleReply = () => setIsReply(!isReply);
+  const classRepply = classNames("info__content--item", {
+    "info__content--reply": isReply
+  });
 
   return (
     <div className="CL__item">
@@ -234,7 +237,9 @@ const CommentListItem = ({
                           </>
                         )}
                         {viewerId && (
-                          <button className="info__content--item">Reply</button>
+                          <button className={classRepply} onClick={toggleReply}>
+                            Reply
+                          </button>
                         )}
                       </>
                     )}
@@ -269,6 +274,11 @@ const CommentListItem = ({
             </>
           )}
         </div>
+        {isReply && (
+          <div className="CL__item--reply">
+            <AddComment isRepply replyTo={commentOwnerUsername} />{" "}
+          </div>
+        )}
       </div>
     </div>
   );

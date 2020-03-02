@@ -5,10 +5,12 @@ import { Comment, Button, Input, message } from "antd";
 
 import axios from "utils/axiosConfig";
 import AvatarUser from "Components/AvatarUser";
-import Emoij from "Containers/Emoij";
+import Emoji from "Containers/Emoji";
 
 const AddComments = ({
   postId = "",
+  isRepply = false,
+  replyTo = "",
   handleAddComments = () => {},
   setIsViewerComments = () => {}
 }) => {
@@ -19,7 +21,7 @@ const AddComments = ({
   } = useSelector(state => get(state, "profile.data.user", {}));
 
   const textInput = useRef(null);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(replyTo ? `@${replyTo} ` : "");
   const handleChangeText = e => setText(e.target.value);
 
   // fetch comments data
@@ -62,19 +64,35 @@ const AddComments = ({
     }
   };
 
-  const onSelectEmoij = emoji => setText(prevState => prevState + emoji.native);
+  const onSelectEmoji = emoji => setText(prevState => prevState + emoji.native);
+
+  const Submit = () => (
+    <Button
+      htmlType="submit"
+      loading={isLoading}
+      onClick={() => handleSubmit()}
+      type="default"
+      className="submit"
+      disabled={!text}
+    >
+      Post
+    </Button>
+  );
 
   return (
-    <section className="PI__info--post-comment">
-      <div className="post-comment">
-        <div className="post-comment__avatar">
-          <AvatarUser
-            profilePicturePublicId={profilePicturePublicId}
-            profilePictureUrl={profilePictureUrl}
-          />
-        </div>
-        <Comment
-          content={
+    <section className="post-comment">
+      <Comment
+        avatar={
+          <div className="post-comment__avatar">
+            <AvatarUser
+              profilePicturePublicId={profilePicturePublicId}
+              profilePictureUrl={profilePictureUrl}
+              size={32}
+            />
+          </div>
+        }
+        content={
+          <>
             <div className="post-comment__content">
               <div className="post-comment__content--text">
                 <Input.TextArea
@@ -86,25 +104,18 @@ const AddComments = ({
                   autoSize={{ minRows: 1, maxRows: 4 }}
                   disabled={isLoading}
                   ref={textInput}
+                  allowClear
                 />
-                <div className="comment-emoij">
-                  <Emoij onSelect={onSelectEmoij} />
+                <div className="comment-emoji">
+                  <Emoji onSelect={onSelectEmoji} style={{ top: "20px" }} />
                 </div>
               </div>
-              <Button
-                htmlType="submit"
-                loading={isLoading}
-                onClick={() => handleSubmit()}
-                type="default"
-                className="submit"
-                disabled={!text}
-              >
-                Post
-              </Button>
+              {!isRepply && <Submit />}
             </div>
-          }
-        />
-      </div>
+            {isRepply && <Submit />}
+          </>
+        }
+      />
     </section>
   );
 };
