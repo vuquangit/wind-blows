@@ -7,7 +7,6 @@ import { Button } from "antd";
 
 import CommentContent from "./CommentContent";
 import AddComment from "../AddComments";
-import UndoDeleted from "Containers/UndoDeleted";
 
 const CommentListItem = ({
   isCaption = true,
@@ -17,7 +16,6 @@ const CommentListItem = ({
   totalChildComments = 0,
   isHomePage = false,
   handleDeleteComment = () => {},
-  handleUndoDeleteComment = () => {},
   ...restProps
 }) => {
   const viewerId = useSelector((state = {}) =>
@@ -33,6 +31,7 @@ const CommentListItem = ({
     page: 0,
     totalChildComments: totalChildComments
   });
+
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -60,7 +59,7 @@ const CommentListItem = ({
         if (!isEmpty(response.data)) {
           setChildComments(prevState => ({
             ...prevState,
-            data: [...prevState.data, ...get(response, "data.childComments")],
+            data: [...get(response, "data.childComments"), ...prevState.data],
             totalChildComments: get(response, "data.totalChildComments"),
             isLoading: false
           }));
@@ -94,11 +93,7 @@ const CommentListItem = ({
   const handleDeleteChildComment = commentId => {
     setChildComments(prevState => ({
       ...prevState,
-      data: [
-        ...prevState.data.map(item => {
-          return item.id === commentId ? { ...item, deleted: true } : item;
-        })
-      ],
+      data: filter(prevState.data, item => item.id !== commentId),
       totalChildComments:
         prevState.totalChildComments - 1 > 0
           ? prevState.totalChildComments - 1
@@ -106,19 +101,6 @@ const CommentListItem = ({
     }));
 
     console.log("delete child comment", childComments);
-  };
-  const handleUndoDeleteChildComment = commentId => {
-    setChildComments(prevState => ({
-      ...prevState,
-      data: [
-        ...prevState.data.map(item => {
-          return item.id === commentId ? { ...item, deleted: false } : item;
-        })
-      ],
-      totalChildComments: prevState.totalChildComments + 1
-    }));
-
-    console.log("undo delete child comment", childComments);
   };
 
   // reply to
@@ -149,7 +131,7 @@ const CommentListItem = ({
       ? `View replies (${childComments.totalChildComments -
           childComments.data.length})`
       : isViewReplies
-      ? `Hide replies`
+      ? "Hide replies"
       : `View replies (${childComments.data.length})`;
 
   // className
@@ -157,71 +139,66 @@ const CommentListItem = ({
 
   return (
     <div className="CL__item">
-      {!deleted ? (
-        <div className={itemW1} role="menuitem">
-          <CommentContent
-            {...restProps}
-            isCaption={isCaption}
-            postId={postId}
-            id={commentId}
-            isHomePage={isHomePage}
-            isReply={!!replyTo}
-            toggleReplyTo={toggleReplyTo}
-            handleDeleteComment={handleDeleteComment}
-            // handleUndoDelete={handleUndoDeleteComment}
-          />
-          {childComments.totalChildComments &&
-          childComments.totalChildComments > 0 ? (
-            <div className="child-comments">
-              <div className="child-comments__view-replies">
-                <Button
-                  loading={childComments.isLoading}
-                  onClick={handleViewReplies}
-                  className="child-comments__view-replies--btn"
-                >
-                  <div className="dashed-line" />
-                  <span>{textViewReplies}</span>
-                </Button>
+      <div className={itemW1} role="menuitem">
+        <CommentContent
+          {...restProps}
+          isCaption={isCaption}
+          postId={postId}
+          id={commentId}
+          isHomePage={isHomePage}
+          isReply={!!replyTo}
+          toggleReplyTo={toggleReplyTo}
+          handleDeleteComment={handleDeleteComment}
+        />
+        {!isHomePage &&
+        childComments.totalChildComments &&
+        childComments.totalChildComments > 0 ? (
+          <div className="child-comments">
+            <div className="child-comments__view-replies">
+              <Button
+                loading={childComments.isLoading}
+                onClick={handleViewReplies}
+                className="child-comments__view-replies--btn"
+              >
+                <div className="dashed-line" />
+                <span>{textViewReplies}</span>
+              </Button>
+            </div>
+            {isViewReplies &&
+            childComments.data &&
+            childComments.data.length > 0 ? (
+              <div className="child-comments__items">
+                {childComments.data.map((item, idx) => (
+                  <div
+                    key={item.id || idx}
+                    className="child-comments__items--item"
+                  >
+                    <CommentContent
+                      {...item}
+                      isCaption={false}
+                      isHomePage={isHomePage}
+                      isReply={!!replyTo}
+                      toggleReplyTo={toggleReplyTo}
+                      handleDeleteComment={handleDeleteChildComment}
+                    />
+                  </div>
+                ))}
               </div>
-              {isViewReplies &&
-              childComments.data &&
-              childComments.data.length > 0 ? (
-                <div className="child-comments__items">
-                  {childComments.data.map((item, idx) => (
-                    <div
-                      key={item.id || idx}
-                      className="child-comments__items--item"
-                    >
-                      <CommentContent
-                        {...item}
-                        isCaption={false}
-                        isHomePage={isHomePage}
-                        isReply={!!replyTo}
-                        toggleReplyTo={toggleReplyTo}
-                        handleDeleteComment={handleDeleteChildComment}
-                        handleUndoDelete={handleUndoDeleteChildComment}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
-          {replyTo && (
-            <div className="CL__item--reply">
-              <AddComment
-                postId={postId}
-                isRepply={!!replyTo}
-                replyTo={replyTo}
-                parentCommentId={commentId}
-                handleAddComments={handleAddChildComment}
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <UndoDeleted handleUndoDelete={handleUndoDeleteComment} />
-      )}
+            ) : null}
+          </div>
+        ) : null}
+        {replyTo && (
+          <div className="CL__item--reply">
+            <AddComment
+              postId={postId}
+              isRepply={!!replyTo}
+              replyTo={replyTo}
+              parentCommentId={commentId}
+              handleAddComment={handleAddChildComment}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

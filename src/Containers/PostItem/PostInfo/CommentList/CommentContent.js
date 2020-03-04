@@ -12,7 +12,6 @@ import HeartIcon from "Components/HeartIcon";
 import ModalItemOptions from "./ModalItemOptions";
 import ModalLikes from "../ModalLikes";
 import AvatarUser from "Components/AvatarUser";
-import UndoDeleted from "Containers/UndoDeleted";
 
 const CommentContent = ({
   userId: commentOwnerId = "",
@@ -29,7 +28,6 @@ const CommentContent = ({
   isReply = false,
   toggleReplyTo = () => {},
   handleDeleteComment = () => {},
-  handleUndoDelete = () => {},
   history = {}
 }) => {
   // Modal of Option comment
@@ -181,107 +179,94 @@ const CommentContent = ({
     "info__content--reply": isReply
   });
 
-  const _handleUndoDelete = () => {
-    handleUndoDelete(commentId);
-  };
-
   return (
     <div className="CL__item--W2">
-      {!deleted ? (
-        <>
-          <div className="CL__item--content">
-            {!isHomePage && (
-              <div className="item__avatar">
-                <AvatarUser
-                  profilePicturePublicId={commentOwnerAvatarId}
-                  profilePictureUrl={commentOwnerAvatar}
-                  size={32}
-                />
-              </div>
+      <div className="CL__item--content">
+        {!isHomePage && (
+          <div className="item__avatar">
+            <AvatarUser
+              profilePicturePublicId={commentOwnerAvatarId}
+              profilePictureUrl={commentOwnerAvatar}
+              size={32}
+            />
+          </div>
+        )}
+        <div className="item__content">
+          <h2 className="item__content--owner">
+            <Link to={`/${commentOwnerUsername}/`} className="username">
+              {commentOwnerUsername}
+            </Link>
+            {isAuthorVerified && (
+              <span
+                className="sprite-icon__core verified__small"
+                title="Verified"
+              >
+                Verified
+              </span>
             )}
-            <div className="item__content">
-              <h2 className="item__content--owner">
-                <Link to={`/${commentOwnerUsername}/`} className="username">
-                  {commentOwnerUsername}
-                </Link>
-                {isAuthorVerified && (
-                  <span
-                    className="sprite-icon__core verified__small"
-                    title="Verified"
-                  >
-                    Verified
-                  </span>
-                )}
-              </h2>
-              <span>{text}</span>
-              {!isHomePage && (
-                <div className="item__content--posted-info">
-                  <div className="info__content">
-                    <PostTimeAgo
-                      className="info__content--item info__content--time "
-                      postedAt={postedAt || createdAt || new Date()}
-                    />
-                    {!isCaption && (
+          </h2>
+          <span>{text}</span>
+          {!isHomePage && (
+            <div className="item__content--posted-info">
+              <div className="info__content">
+                <PostTimeAgo
+                  className="info__content--item info__content--time "
+                  postedAt={postedAt || createdAt || new Date()}
+                />
+                {!isCaption && (
+                  <>
+                    {parseInt(_likeCount) > 0 && (
                       <>
-                        {parseInt(_likeCount) > 0 && (
-                          <>
-                            <button
-                              className="info__content--item"
-                              onClick={viewerId ? showModalLikes : requestLogin}
-                            >
-                              {_likeCount} like
-                            </button>
-                            <ModalLikes
-                              endpoint={endpoint}
-                              params={params}
-                              visibleModal={visibleModalLikes}
-                              handleCancelModal={handleCancelModalLikes}
-                            />
-                          </>
-                        )}
-                        {viewerId && (
-                          <button
-                            className={classRepply}
-                            onClick={() => toggleReplyTo(commentOwnerUsername)}
-                          >
-                            Reply
-                          </button>
-                        )}
+                        <button
+                          className="info__content--item"
+                          onClick={viewerId ? showModalLikes : requestLogin}
+                        >
+                          {_likeCount} like
+                        </button>
+                        <ModalLikes
+                          endpoint={endpoint}
+                          params={params}
+                          visibleModal={visibleModalLikes}
+                          handleCancelModal={handleCancelModalLikes}
+                        />
                       </>
                     )}
-                  </div>
-                </div>
-              )}
+                    {viewerId && (
+                      <button
+                        className={classRepply}
+                        onClick={() => toggleReplyTo(commentOwnerUsername)}
+                      >
+                        Reply
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-          {!isCaption && viewerId && (
-            <>
-              {!isHomePage && (
-                <div className="CL__item--option">
-                  <button className="option__btn" onClick={showModalOptions}>
-                    <span className=" sprite-icon__glyphs option__btn--icon" />
-                  </button>
-                  <ModalItemOptions
-                    commentOwnerId={commentOwnerId}
-                    commentId={commentId}
-                    postOwnerId={postOwnerId}
-                    visibleModal={visibleModalOptions}
-                    handleCancelModal={handleCancelModalOptions}
-                    handleDeleteComment={handleDeleteComment}
-                  />
-                </div>
-              )}
-              <Button
-                className="CL__item--btn-heart"
-                onClick={handleLikedByViewer}
-              >
-                <HeartIcon isLiked={_likedByViewer} size={12} />
-              </Button>
-            </>
           )}
+        </div>
+      </div>
+      {!isCaption && viewerId && (
+        <>
+          {!isHomePage && (
+            <div className="CL__item--option">
+              <button className="option__btn" onClick={showModalOptions}>
+                <span className=" sprite-icon__glyphs option__btn--icon" />
+              </button>
+              <ModalItemOptions
+                commentOwnerId={commentOwnerId}
+                commentId={commentId}
+                postOwnerId={postOwnerId}
+                visibleModal={visibleModalOptions}
+                handleCancelModal={handleCancelModalOptions}
+                handleDeleteComment={handleDeleteComment}
+              />
+            </div>
+          )}
+          <Button className="CL__item--btn-heart" onClick={handleLikedByViewer}>
+            <HeartIcon isLiked={_likedByViewer} size={12} />
+          </Button>
         </>
-      ) : (
-        <UndoDeleted handleUndoDelete={_handleUndoDelete} />
       )}
     </div>
   );

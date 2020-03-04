@@ -12,7 +12,7 @@ const AddComments = ({
   parentCommentId = "",
   isRepply = false,
   replyTo = "",
-  handleAddComments = () => {},
+  handleAddComment = () => {},
   setIsViewerComments = () => {}
 }) => {
   const {
@@ -51,7 +51,7 @@ const AddComments = ({
       });
 
       // console.log("fetch comments data", response);
-      handleAddComments(get(response, "data", {}));
+      handleAddComment(get(response, "data", {}));
       setText("");
 
       // scroll to bottom comments

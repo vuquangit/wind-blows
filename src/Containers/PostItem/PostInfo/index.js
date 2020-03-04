@@ -110,18 +110,15 @@ const PostInfo = ({
       },
       commentsTotalCount: prevState.commentsTotalCount + 1
     }));
+
+    console.log("add parent comment", stateComments);
   };
   const handleDeleteComment = commentId => {
     setComments(prevState => ({
       ...prevState,
       data: {
         ...prevState.data,
-        comments:
-          prevState.data && prevState.data.comments
-            ? prevState.data.map(item =>
-                item.id === commentId ? { ...item, deleted: true } : item
-              )
-            : []
+        comments: filter(prevState.data.comments, item => item.id !== commentId)
       },
       commentsTotalCount:
         prevState.commentsTotalCount - 1 > 0
@@ -129,21 +126,7 @@ const PostInfo = ({
           : 0
     }));
   };
-  const handleUndoDeleteComment = commentId => {
-    setComments(prevState => ({
-      ...prevState,
-      data: {
-        ...prevState.data,
-        comments:
-          prevState.data && prevState.data.comments
-            ? prevState.data.map(item =>
-                item.id === commentId ? { ...item, deleted: false } : item
-              )
-            : []
-      },
-      commentsTotalCount: prevState.commentsTotalCount + 1
-    }));
-  };
+
   const [IsViewerComments, setIsViewerComments] = useState(false);
 
   // classNames
@@ -170,7 +153,6 @@ const PostInfo = ({
         fetchMoreComments={fetchMoreComments}
         setIsViewerComments={setIsViewerComments}
         handleDeleteComment={handleDeleteComment}
-        handleUndoDeleteComment={handleUndoDeleteComment}
       />
       <PostedAt isHomePage={isHomePage} postedAt={postAt} />
       {viewerId ? (

@@ -18,7 +18,6 @@ const CommentList = ({
   fetchMoreComments = () => {},
   setIsViewerComments = () => {},
   handleDeleteComment = () => {},
-  handleUndoDeleteComment = () => {},
   IsViewerComments = false
 }) => {
   // add scroll events
@@ -99,7 +98,6 @@ const CommentList = ({
                     postOwnerId={owner.id}
                     postId={postId}
                     handleDeleteComment={handleDeleteComment}
-                    handleUndoDeleteComment={handleUndoDeleteComment}
                   />
                 </div>
               ))}
