@@ -10,7 +10,7 @@ const ModalItemOptions = ({
   postOwnerId = "",
   visibleModal = false,
   handleCancelModal = () => {},
-  handleDeleteComments = () => {}
+  handleDeleteComment = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
@@ -24,29 +24,32 @@ const ModalItemOptions = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    try {
-      await axios({
-        method: "post",
-        url: "/post/comments/delete",
-        data: {
-          commentsId: commentId
-        },
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+    await handleDeleteComment(commentId);
+    handleCancelModal();
 
-      handleDeleteComments(commentId);
-      setIsLoading(false);
-      handleCancelModal();
-    } catch (err) {
-      setIsLoading(false);
+    // try {
+    //   await axios({
+    //     method: "post",
+    //     url: "/post/comments/delete",
+    //     data: {
+    //       commentsId: commentId
+    //     },
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     }
+    //   });
 
-      console.log(err);
-      message.error("Comments this post error");
-    }
+    //   handleDeleteComments(commentId);
+    //   setIsLoading(false);
+    //   handleCancelModal();
+    // } catch (err) {
+    //   setIsLoading(false);
+
+    //   console.log(err);
+    //   message.error("Comments this post error");
+    // }
   };
 
   return (

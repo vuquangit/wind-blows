@@ -20,7 +20,7 @@
         left: 0;
         padding: 12px 8px;
         position: absolute;
-        width: calc(100% - 8px);
+        width: calc(100% + 1px);
 
         @media (max-width: 736px) {
             position: relative;
@@ -72,12 +72,6 @@
                 overflow: hidden;
                 word-wrap: break-word;
                 margin-top: -5px;
-
-                &:hover {
-                    .CL__item--option {
-                        display: block;
-                    }
-                }
             }
 
             &--W2 {
@@ -85,6 +79,12 @@
                 flex-direction: row !important;
                 align-items: flex-start !important;
                 justify-content: space-between !important;
+
+                &:hover {
+                    .CL__item--option {
+                        display: block;
+                    }
+                }
             }
 
             &--reply {
@@ -252,4 +252,48 @@
         }
     }
 
+    .child-comments {
+        padding-left: 40px;
+
+        &__view-replies {
+            margin-bottom: 8px;
+            width: fit-content;
+
+            &--btn {
+                border: 0;
+                // color: #3897f0;
+                color: rgba(var(--h5f, 56, 151, 240), 1);
+                display: inline;
+                padding: 0;
+                position: relative;
+                width: auto;
+                height: auto;
+                text-align: left;
+                border: 0;
+                box-shadow: none;
+
+                .dashed-line {
+                    border-bottom: 1px solid rgba(var(--f52, 153, 153, 153), 1);
+                    display: inline-block;
+                    height: 0;
+                    margin-right: 16px;
+                    vertical-align: middle;
+                    width: 24px;
+                }
+
+                span {
+                    color: rgba(var(--f52, 153, 153, 153), 1);
+                    font-size: 12px;
+                    font-weight: 600;
+                    line-height: 14px;
+                }
+            }
+        }
+
+        &__items {
+            &--item {
+                margin-bottom: 8px;
+            }
+        }
+    }
 }

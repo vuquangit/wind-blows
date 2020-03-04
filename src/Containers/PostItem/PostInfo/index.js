@@ -101,25 +101,47 @@ const PostInfo = ({
   };
 
   // add post comments
-  const handleAddComments = res => {
+  const handleAddComment = res => {
     setComments(prevState => ({
       ...prevState,
       data: {
         ...prevState.data,
-        comments: [...(get(prevState, "data.comments") || []), res]
-      }
+        comments: [...get(prevState, "data.comments", []), res]
+      },
+      commentsTotalCount: prevState.commentsTotalCount + 1
     }));
   };
-  const handleDeleteComments = commentsId => {
+  const handleDeleteComment = commentId => {
     setComments(prevState => ({
       ...prevState,
       data: {
         ...prevState.data,
-        comments: filter(
-          get(prevState, "data.comments") || [],
-          o => o.id !== commentsId
-        )
-      }
+        comments:
+          prevState.data && prevState.data.comments
+            ? prevState.data.map(item =>
+                item.id === commentId ? { ...item, deleted: true } : item
+              )
+            : []
+      },
+      commentsTotalCount:
+        prevState.commentsTotalCount - 1 > 0
+          ? prevState.commentsTotalCount - 1
+          : 0
+    }));
+  };
+  const handleUndoDeleteComment = commentId => {
+    setComments(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        comments:
+          prevState.data && prevState.data.comments
+            ? prevState.data.map(item =>
+                item.id === commentId ? { ...item, deleted: false } : item
+              )
+            : []
+      },
+      commentsTotalCount: prevState.commentsTotalCount + 1
     }));
   };
   const [IsViewerComments, setIsViewerComments] = useState(false);
@@ -147,7 +169,8 @@ const PostInfo = ({
         IsViewerComments={IsViewerComments}
         fetchMoreComments={fetchMoreComments}
         setIsViewerComments={setIsViewerComments}
-        handleDeleteComments={handleDeleteComments}
+        handleDeleteComment={handleDeleteComment}
+        handleUndoDeleteComment={handleUndoDeleteComment}
       />
       <PostedAt isHomePage={isHomePage} postedAt={postAt} />
       {viewerId ? (
@@ -155,7 +178,7 @@ const PostInfo = ({
           <AddComments
             isHomePage={isHomePage}
             postId={postId}
-            handleAddComments={handleAddComments}
+            handleAddComment={handleAddComment}
             setIsViewerComments={setIsViewerComments}
           />
         </div>

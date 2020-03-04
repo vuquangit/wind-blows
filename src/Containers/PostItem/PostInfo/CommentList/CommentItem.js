@@ -1,287 +1,229 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "antd";
-import { Link, withRouter } from "react-router-dom";
 import classNames from "classnames";
 import axios from "utils/axiosConfig";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, filter } from "lodash";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
-import PostTimeAgo from "Components/TimeFromNow";
-import HeartIcon from "Components/HeartIcon";
-import ModalItemOptions from "./ModalItemOptions";
-import ModalLikes from "../ModalLikes";
-import AvatarUser from "Components/AvatarUser";
+import CommentContent from "./CommentContent";
 import AddComment from "../AddComments";
+import UndoDeleted from "Containers/UndoDeleted";
 
 const CommentListItem = ({
-  userId: commentOwnerId = "",
   isCaption = true,
-  isEdited = false,
-  postedAt = "",
-  createdAt = "",
-  postOwnerId = "",
-  text = "",
+  postId = "",
   id: commentId = "",
-  likeCount = 0,
-  likedByViewer = false,
+  deleted = false,
+  totalChildComments = 0,
   isHomePage = false,
-  handleDeleteComments = () => {},
-  history = {}
+  handleDeleteComment = () => {},
+  handleUndoDeleteComment = () => {},
+  ...restProps
 }) => {
-  // Modal of Option comment
-  const [visibleModalOptions, setVisibleModalOptions] = useState(false);
-  const showModalOptions = () => setVisibleModalOptions(true);
-  const handleCancelModalOptions = () => setVisibleModalOptions(false);
-
-  // Event like comment
-  const [_likedByViewer, setLikedByViewer] = useState(likedByViewer);
-  const [_likeCount, setLikeCount] = useState(likeCount);
-  const [isLiking, setIsLiking] = useState(false);
-  const sourceLikesComments = axios.CancelToken.source();
-
-  const fetchLikesComments = async endpoint => {
-    try {
-      setIsLiking(true);
-
-      await axios({
-        method: "post",
-        url: `/post/comments/likes/${endpoint}`,
-        data: {
-          commentsId: commentId,
-          userId: get(viewerProfile, "id") || ""
-        },
-        headers: {
-          "Content-Type": "application/json"
-        },
-        cancelToken: sourceLikesComments.token
-      });
-
-      setIsLiking(false);
-      console.log(endpoint === "like" ? "liked comment" : "unlike comment");
-    } catch (err) {
-      setIsLiking(false);
-
-      if (axios.isCancel(err)) {
-        console.log("cancelled like comment");
-      } else {
-        console.log(err);
-      }
-    }
-  };
-
-  const handleLikedByViewer = () => {
-    setLikedByViewer(!_likedByViewer);
-    setLikeCount(!_likedByViewer ? _likeCount + 1 : _likeCount - 1);
-
-    isLiking && sourceLikesComments.cancel("Request canceled.");
-    !_likedByViewer ? fetchLikesComments("like") : fetchLikesComments("unlike");
-  };
-
-  // className
-  const itemW1 = classNames("CL__item--W1", { CL__CMTW1: isHomePage });
-
-  // fetch data of owner comment
-  const viewerProfile = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
   );
 
-  const [stateOwnerComments, setOwnerComments] = useState({
-    isLoading: true,
-    data: {},
-    error: null
+  // fetch comments data
+  const [childComments, setChildComments] = useState({
+    isLoading: false,
+    data: [],
+    error: null,
+    limit: 3,
+    page: 0,
+    totalChildComments: totalChildComments
   });
-
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    const fetchOwnerComments = async () => {
+    const feactCommentsData = async () => {
+      setChildComments(prevState => ({ ...prevState, isLoading: true }));
+
       try {
         const response = await axios({
           method: "get",
-          url: `/user/${commentOwnerId}`,
+          url: "/post/comments/child",
+          params: {
+            parentCommentId: commentId,
+            viewerId: viewerId,
+            limit: childComments.limit,
+            page: childComments.page
+          },
           headers: {
             "Content-Type": "application/json"
           },
           cancelToken: source.token
         });
 
-        // console.log("response user coment: ", response);
-        if (!isEmpty(response))
-          setOwnerComments(prevState => ({
+        console.log("reponse child comments", response);
+
+        if (!isEmpty(response.data)) {
+          setChildComments(prevState => ({
             ...prevState,
-            data: { ...prevState.data, ...response.data },
+            data: [...prevState.data, ...get(response, "data.childComments")],
+            totalChildComments: get(response, "data.totalChildComments"),
             isLoading: false
           }));
+        }
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch user comment");
+          console.log("cancelled fetch comments");
         } else {
-          setOwnerComments(prevState => ({
-            ...prevState,
-            error: error,
-            isLoading: false
-          }));
+          setChildComments(prevState => ({ ...prevState, isLoading: false }));
           console.log(error);
         }
       }
     };
 
-    if (viewerProfile.id !== commentOwnerId) fetchOwnerComments();
-    else {
-      setOwnerComments(prevState => ({
-        ...prevState,
-        data: { ...prevState.data, ...viewerProfile }
-      }));
-    }
+    if (!isCaption && isViewReplies) feactCommentsData();
 
-    // unmounth
+    // unmount
     return () => {
       source.cancel();
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [childComments.page]);
 
-  const {
-    profilePictureUrl: commentOwnerAvatar = "",
-    profilePicturePublicId: commentOwnerAvatarId = "",
-    username: commentOwnerUsername = "",
-    isVerified: isAuthorVerified = false
-  } = get(stateOwnerComments, "data", {});
-
-  // modal likes comments
-  const [visibleModalLikes, setVisibleModalLikes] = useState(false);
-  const showModalLikes = () => {
-    setVisibleModalLikes(true);
+  const handleAddChildComment = res => {
+    setChildComments(prevState => ({
+      ...prevState,
+      data: [...prevState.data, res],
+      totalChildComments: prevState.totalChildComments + 1
+    }));
   };
-  const handleCancelModalLikes = e => {
-    setVisibleModalLikes(false);
+  const handleDeleteChildComment = commentId => {
+    setChildComments(prevState => ({
+      ...prevState,
+      data: [
+        ...prevState.data.map(item => {
+          return item.id === commentId ? { ...item, deleted: true } : item;
+        })
+      ],
+      totalChildComments:
+        prevState.totalChildComments - 1 > 0
+          ? prevState.totalChildComments - 1
+          : 0
+    }));
+
+    console.log("delete child comment", childComments);
+  };
+  const handleUndoDeleteChildComment = commentId => {
+    setChildComments(prevState => ({
+      ...prevState,
+      data: [
+        ...prevState.data.map(item => {
+          return item.id === commentId ? { ...item, deleted: false } : item;
+        })
+      ],
+      totalChildComments: prevState.totalChildComments + 1
+    }));
+
+    console.log("undo delete child comment", childComments);
   };
 
-  const viewerId = useSelector((state = {}) =>
-    get(state, "profile.data.user.id", "")
-  );
-  const endpoint = "/post/comments/likes";
-  const params = { commentsId: commentId, viewerId: viewerId };
+  // reply to
+  const [replyTo, setReplyTo] = useState("");
+  const toggleReplyTo = (username = "") => setReplyTo(replyTo ? "" : username);
 
-  const requestLogin = () => {
-    Modal.confirm({
-      title: "The Wind Blows",
-      content: "Please log in to continue......",
-      okText: "Login",
-      cancelText: "Cancel",
-      onOk() {
-        history.push("/accounts/login");
+  // show replies
+  const [isViewReplies, setIsViewReplies] = useState(false);
+  const handleViewReplies = () => {
+    if (childComments.totalChildComments > 0) {
+      if (childComments.totalChildComments === childComments.data.length)
+        setIsViewReplies(!isViewReplies);
+      else {
+        setIsViewReplies(true);
+
+        if (childComments.totalChildComments > childComments.data.length) {
+          setChildComments(prevState => ({
+            ...prevState,
+            page: prevState.page + 1
+          }));
+        }
       }
-    });
+    }
   };
 
-  const [isReply, setIsReply] = useState(false);
-  const toggleReply = () => setIsReply(!isReply);
-  const classRepply = classNames("info__content--item", {
-    "info__content--reply": isReply
-  });
+  const textViewReplies =
+    childComments.totalChildComments - childComments.data.length
+      ? `View replies (${childComments.totalChildComments -
+          childComments.data.length})`
+      : isViewReplies
+      ? `Hide replies`
+      : `View replies (${childComments.data.length})`;
+
+  // className
+  const itemW1 = classNames("CL__item--W1", { CL__CMTW1: isHomePage });
 
   return (
     <div className="CL__item">
-      <div className={itemW1} role="menuitem">
-        <div className="CL__item--W2">
-          <div className="CL__item--content">
-            {!isHomePage && (
-              <div className="item__avatar">
-                <AvatarUser
-                  profilePicturePublicId={commentOwnerAvatarId}
-                  profilePictureUrl={commentOwnerAvatar}
-                  size={32}
-                />
+      {!deleted ? (
+        <div className={itemW1} role="menuitem">
+          <CommentContent
+            {...restProps}
+            isCaption={isCaption}
+            postId={postId}
+            id={commentId}
+            isHomePage={isHomePage}
+            isReply={!!replyTo}
+            toggleReplyTo={toggleReplyTo}
+            handleDeleteComment={handleDeleteComment}
+            // handleUndoDelete={handleUndoDeleteComment}
+          />
+          {childComments.totalChildComments &&
+          childComments.totalChildComments > 0 ? (
+            <div className="child-comments">
+              <div className="child-comments__view-replies">
+                <Button
+                  loading={childComments.isLoading}
+                  onClick={handleViewReplies}
+                  className="child-comments__view-replies--btn"
+                >
+                  <div className="dashed-line" />
+                  <span>{textViewReplies}</span>
+                </Button>
               </div>
-            )}
-            <div className="item__content">
-              <h2 className="item__content--owner">
-                <Link to={`/${commentOwnerUsername}/`} className="username">
-                  {commentOwnerUsername}
-                </Link>
-                {isAuthorVerified && (
-                  <span
-                    className="sprite-icon__core verified__small"
-                    title="Verified"
-                  >
-                    Verified
-                  </span>
-                )}
-              </h2>
-              <span>{text}</span>
-              {!isHomePage && (
-                <div className="item__content--posted-info">
-                  <div className="info__content">
-                    <PostTimeAgo
-                      className="info__content--item info__content--time "
-                      postedAt={postedAt || createdAt || new Date()}
-                    />
-                    {!isCaption && (
-                      <>
-                        {parseInt(_likeCount) > 0 && (
-                          <>
-                            <button
-                              className="info__content--item"
-                              onClick={viewerId ? showModalLikes : requestLogin}
-                            >
-                              {_likeCount} like
-                            </button>
-                            <ModalLikes
-                              endpoint={endpoint}
-                              params={params}
-                              visibleModal={visibleModalLikes}
-                              handleCancelModal={handleCancelModalLikes}
-                            />
-                          </>
-                        )}
-                        {viewerId && (
-                          <button className={classRepply} onClick={toggleReply}>
-                            Reply
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
+              {isViewReplies &&
+              childComments.data &&
+              childComments.data.length > 0 ? (
+                <div className="child-comments__items">
+                  {childComments.data.map((item, idx) => (
+                    <div
+                      key={item.id || idx}
+                      className="child-comments__items--item"
+                    >
+                      <CommentContent
+                        {...item}
+                        isCaption={false}
+                        isHomePage={isHomePage}
+                        isReply={!!replyTo}
+                        toggleReplyTo={toggleReplyTo}
+                        handleDeleteComment={handleDeleteChildComment}
+                        handleUndoDelete={handleUndoDeleteChildComment}
+                      />
+                    </div>
+                  ))}
                 </div>
-              )}
+              ) : null}
             </div>
-          </div>
-          {!isCaption && viewerId && (
-            <>
-              {!isHomePage && (
-                <div className="CL__item--option">
-                  <button className="option__btn" onClick={showModalOptions}>
-                    <span className=" sprite-icon__glyphs option__btn--icon" />
-                  </button>
-                  <ModalItemOptions
-                    commentOwnerId={commentOwnerId}
-                    commentId={commentId}
-                    postOwnerId={postOwnerId}
-                    visibleModal={visibleModalOptions}
-                    handleCancelModal={handleCancelModalOptions}
-                    handleDeleteComments={handleDeleteComments}
-                  />
-                </div>
-              )}
-              <Button
-                className="CL__item--btn-heart"
-                onClick={handleLikedByViewer}
-              >
-                <HeartIcon isLiked={_likedByViewer} size={12} />
-              </Button>
-            </>
+          ) : null}
+          {replyTo && (
+            <div className="CL__item--reply">
+              <AddComment
+                postId={postId}
+                isRepply={!!replyTo}
+                replyTo={replyTo}
+                parentCommentId={commentId}
+                handleAddComments={handleAddChildComment}
+              />
+            </div>
           )}
         </div>
-        {isReply && (
-          <div className="CL__item--reply">
-            <AddComment isRepply replyTo={commentOwnerUsername} />{" "}
-          </div>
-        )}
-      </div>
+      ) : (
+        <UndoDeleted handleUndoDelete={handleUndoDeleteComment} />
+      )}
     </div>
   );
 };
 
-export default withRouter(CommentListItem);
+export default CommentListItem;

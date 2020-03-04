@@ -17,7 +17,8 @@ const CommentList = ({
   commentsTotalCount = 0,
   fetchMoreComments = () => {},
   setIsViewerComments = () => {},
-  handleDeleteComments = () => {},
+  handleDeleteComment = () => {},
+  handleUndoDeleteComment = () => {},
   IsViewerComments = false
 }) => {
   // add scroll events
@@ -87,18 +88,21 @@ const CommentList = ({
                 {`View all ${commentsTotalCount} comments`}
               </Link>
             )}
-            {comments.map((item, idx) => (
-              <div key={item.id || idx} className={CLCommentClass}>
-                <CommentItem
-                  {...item}
-                  isCaption={false}
-                  isHomePage={isHomePage}
-                  postOwnerId={owner.id}
-                  postId={postId}
-                  handleDeleteComments={handleDeleteComments}
-                />
-              </div>
-            ))}
+            {comments &&
+              comments.length > 0 &&
+              comments.map((item, idx) => (
+                <div key={item.id || idx} className={CLCommentClass}>
+                  <CommentItem
+                    {...item}
+                    isCaption={false}
+                    isHomePage={isHomePage}
+                    postOwnerId={owner.id}
+                    postId={postId}
+                    handleDeleteComment={handleDeleteComment}
+                    handleUndoDeleteComment={handleUndoDeleteComment}
+                  />
+                </div>
+              ))}
             {!isHomePage && comments.length < commentsTotalCount && (
               <Divider className="CL__comment--divider">
                 <Button onClick={fetchMoreComments}>Read more</Button>

@@ -9,6 +9,7 @@ import Emoji from "Containers/Emoji";
 
 const AddComments = ({
   postId = "",
+  parentCommentId = "",
   isRepply = false,
   replyTo = "",
   handleAddComments = () => {},
@@ -28,6 +29,7 @@ const AddComments = ({
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     if (!text) {
+      console.log("comment empty");
       return;
     }
 
@@ -39,8 +41,9 @@ const AddComments = ({
         url: "/post/comments/add",
         data: {
           userId: viewerId,
-          postId: postId,
-          text: text
+          postId,
+          text: text,
+          parentCommentId
         },
         headers: {
           "Content-Type": "application/json"
@@ -48,7 +51,7 @@ const AddComments = ({
       });
 
       // console.log("fetch comments data", response);
-      handleAddComments(get(response, "data"));
+      handleAddComments(get(response, "data", {}));
       setText("");
 
       // scroll to bottom comments

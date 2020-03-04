@@ -35,6 +35,8 @@
       max-width: 935px;
       width: 100%;
       padding-top: 16px;
+      display: flex;
+      flex-direction: column;
     }
   }
 }
