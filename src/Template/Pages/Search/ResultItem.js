@@ -8,14 +8,11 @@ const ResultItem = ({
   isVerified = false,
   profilePictureUrl = "",
   profilePicturePublicId = "",
-  subTitle = " • Following"
+  subTitle = " • Following",
+  isTagPeople = false
 }) => {
-  return (
-    <Link
-      to={`/${username}/`}
-      title={username}
-      className="header__search--item"
-    >
+  const _renderItem = () => (
+    <>
       <div className="result__avatar">
         <AvatarUser
           profilePicturePublicId={profilePicturePublicId}
@@ -37,7 +34,23 @@ const ResultItem = ({
         </div>
         <div className="result__description--fullName">{subTitle}</div>
       </div>
-    </Link>
+    </>
+  );
+
+  return (
+    <>
+      {isTagPeople ? (
+        <div className="search-people__item">{_renderItem()}</div>
+      ) : (
+        <Link
+          to={`/${username}/`}
+          title={username}
+          className="search-people__item"
+        >
+          {_renderItem()}
+        </Link>
+      )}
+    </>
   );
 };
 

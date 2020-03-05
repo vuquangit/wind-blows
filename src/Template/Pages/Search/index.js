@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input } from "antd";
 import { get, isEmpty, startsWith } from "lodash";
 import { useSelector } from "react-redux";
@@ -7,8 +7,14 @@ import { withRouter } from "react-router-dom";
 import axios from "utils/axiosConfig";
 import BasicTemplate from "Template/BasicTemplate";
 import SearchResults from "./SearchResults";
+import "./search.scss";
 
-const SearchComponent = ({ isSearchPage = false, isScrolled = false }) => {
+const SearchComponent = ({
+  isSearchPage = false,
+  isScrolled = false,
+  isTagPeople = false,
+  valueSearch = ""
+}) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
   );
@@ -24,28 +30,43 @@ const SearchComponent = ({ isSearchPage = false, isScrolled = false }) => {
     totalItems: 0
   });
 
+  const initSearch = useCallback(
+    value => {
+      console.log("val search", value);
+      source.cancel("Cancel search");
+
+      const val = value.toLowerCase();
+      setValue(val);
+
+      setState(prevState => ({
+        ...prevState,
+        data: [],
+        error: null,
+        isLoading: false,
+        page: 1,
+        limit: 10,
+        totalItems: 0
+      }));
+
+      if (val) setIsOpenDropdown(true);
+      else setIsOpenDropdown(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
   const handleSearchChanged = e => {
-    source.cancel("Cancel search");
-
-    const val = e.target.value.toLowerCase();
-    setValue(val);
-
-    setState(prevState => ({
-      ...prevState,
-      data: [],
-      error: null,
-      isLoading: false,
-      page: 1,
-      limit: 10,
-      totalItems: 0
-    }));
-
-    if (val) setIsOpenDropdown(true);
-    else setIsOpenDropdown(false);
+    initSearch(e.target.value);
   };
+
   const handleSearchClick = () => {
     value && state.data && setIsOpenDropdown(true);
   };
+
+  useEffect(() => {
+    initSearch(valueSearch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueSearch]);
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -109,65 +130,65 @@ const SearchComponent = ({ isSearchPage = false, isScrolled = false }) => {
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
+  const _searchResult = () => (
+    <SearchResults
+      value={value}
+      items={state.data}
+      isLoading={state.isLoading}
+      hasMoreItems={hasMoreItems}
+      getMoreItems={getMoreItems}
+      isTagPeople={isTagPeople}
+    />
+  );
+
   return (
-    <div className="header__search">
-      <Input.Search
-        placeholder="Search"
-        allowClear
-        loading={state.isLoading}
-        onChange={handleSearchChanged}
-        onClick={handleSearchClick}
-      />
-      {isSearchPage ? (
-        <SearchResults
-          value={value}
-          items={state.data}
-          isLoading={state.isLoading}
-          hasMoreItems={hasMoreItems}
-          getMoreItems={getMoreItems}
+    <div className="search-people">
+      {!isTagPeople && (
+        <Input.Search
+          placeholder="Search"
+          allowClear
+          loading={state.isLoading}
+          onChange={handleSearchChanged}
+          onClick={handleSearchClick}
         />
-      ) : (
-        isOpenDropdown &&
-        !isScrolled && (
-          <>
-            <div
-              className="header__search--close-dropdown"
-              role="dialog"
-              onClick={() => setIsOpenDropdown(false)}
-            />
-            <div className="header__search--dropdown-content">
-              <div className="header__search--arrow-up" />
-              <div className="header__search--dropdown">
-                <SearchResults
-                  value={value}
-                  items={state.data}
-                  isLoading={state.isLoading}
-                  hasMoreItems={hasMoreItems}
-                  getMoreItems={getMoreItems}
-                />
+      )}
+      {!isTagPeople ? (
+        isSearchPage ? (
+          _searchResult()
+        ) : (
+          isOpenDropdown &&
+          !isScrolled && (
+            <>
+              <div
+                className="search-people__close-dropdown"
+                role="dialog"
+                onClick={() => setIsOpenDropdown(false)}
+              />
+              <div className="search-people__dropdown-content">
+                <div className="search-people__arrow-up" />
+                <div className="search-people__dropdown">{_searchResult()}</div>
               </div>
-            </div>
-          </>
+            </>
+          )
         )
+      ) : (
+        <div className="search-people__tag-people">{_searchResult()}</div>
       )}
     </div>
   );
 };
 
-const WrappedSearch = ({ match = {}, isScrolled = false }) => {
+const WrappedSearch = ({ match = {}, ...restProps }) => {
   const isSearchPage = startsWith(match.path, "/explore/people/search");
 
   return (
     <>
       {isSearchPage ? (
         <BasicTemplate>
-          <SearchComponent
-            isScrolled={isScrolled}
-            isSearchPage={isSearchPage}
-          />
+          <SearchComponent {...restProps} isSearchPage={isSearchPage} />
         </BasicTemplate>
       ) : (
-        <SearchComponent isScrolled={isScrolled} isSearchPage={isSearchPage} />
+        <SearchComponent {...restProps} isSearchPage={isSearchPage} />
       )}
     </>
   );

@@ -12,7 +12,7 @@ import Following from "Template/Pages/Following";
 import GoToPost from "Template/Pages/GoToPost";
 import Notifications from "Template/Pages/Notifications";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
-import Search from "Template/Pages/Header/Search";
+import Search from "Template/Pages/Search";
 import PricacyAndSecurity from "Template/Pages/Accounts/PrivacyAndSecurity";
 
 const pageConfigs = [

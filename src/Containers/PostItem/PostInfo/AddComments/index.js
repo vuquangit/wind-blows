@@ -6,6 +6,7 @@ import { Comment, Button, Input, message } from "antd";
 import axios from "utils/axiosConfig";
 import AvatarUser from "Components/AvatarUser";
 import Emoji from "Containers/Emoji";
+import Search from "Template/Pages/Search";
 
 const AddComments = ({
   postId = "",
@@ -23,7 +24,22 @@ const AddComments = ({
 
   const textInput = useRef(null);
   const [text, setText] = useState(replyTo ? `@${replyTo} ` : "");
-  const handleChangeText = e => setText(e.target.value);
+  const [valueSearch, setValSearch] = useState("");
+
+  const handleChangeText = e => {
+    const val = e.target.value;
+
+    const valSearch = val.match(/@([a-z\d_]+$)/gi);
+    if (valSearch) {
+      console.log("searching: ", String(valSearch).substring(1));
+      setValSearch(String(valSearch).substring(1));
+    } else {
+      setValSearch("");
+      console.log("searching close ");
+    }
+
+    setText(val);
+  };
 
   // fetch comments data
   const [isLoading, setIsLoading] = useState(false);
@@ -119,6 +135,8 @@ const AddComments = ({
           </>
         }
       />
+
+      {valueSearch && <Search isTagPeople valueSearch={valueSearch} />}
     </section>
   );
 };

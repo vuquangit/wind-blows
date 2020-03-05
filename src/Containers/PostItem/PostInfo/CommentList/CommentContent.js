@@ -26,7 +26,7 @@ const CommentContent = ({
   likedByViewer = false,
   isHomePage = false,
   isReply = false,
-  toggleReplyTo = () => {},
+  handleReplyTo = () => {},
   handleDeleteComment = () => {},
   history = {}
 }) => {
@@ -179,6 +179,17 @@ const CommentContent = ({
     "info__content--reply": isReply
   });
 
+  const createMarkup = () => {
+    const _text = text.replace(
+      /@([a-z\d_]+)/gi,
+      `<a href="${window.location.origin}/$1" className="notranslate">@$1</a>`
+    );
+
+    return {
+      __html: _text
+    };
+  };
+
   return (
     <div className="CL__item--W2">
       <div className="CL__item--content">
@@ -205,7 +216,10 @@ const CommentContent = ({
               </span>
             )}
           </h2>
-          <span>{text}</span>
+          <span
+            dangerouslySetInnerHTML={createMarkup()}
+            className="item__content--text notranslate"
+          ></span>
           {!isHomePage && (
             <div className="item__content--posted-info">
               <div className="info__content">
@@ -234,7 +248,7 @@ const CommentContent = ({
                     {viewerId && (
                       <button
                         className={classRepply}
-                        onClick={() => toggleReplyTo(commentOwnerUsername)}
+                        onClick={() => handleReplyTo(commentOwnerUsername)}
                       >
                         Reply
                       </button>

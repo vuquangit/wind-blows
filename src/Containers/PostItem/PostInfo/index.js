@@ -71,7 +71,7 @@ const PostInfo = ({
                 ...get(response, "data.comments")
               ]
             },
-            commentsTotalCount: get(response, "data.commentsTotalCount")
+            commentsTotalCount: get(response, "data.commentsTotalCount", 0)
           }));
         }
       } catch (error) {
@@ -118,7 +118,14 @@ const PostInfo = ({
       ...prevState,
       data: {
         ...prevState.data,
-        comments: filter(prevState.data.comments, item => item.id !== commentId)
+        comments: filter(
+          prevState.data.comments,
+          item => item.id !== commentId
+        ),
+        commentsTotalCount:
+          prevState.commentsTotalCount - 1 > 0
+            ? prevState.commentsTotalCount - 1
+            : 0
       },
       commentsTotalCount:
         prevState.commentsTotalCount - 1 > 0

@@ -8,14 +8,17 @@ const SearchResults = ({
   items = [],
   isLoading = false,
   hasMoreItems = false,
+  isTagPeople = false,
   getMoreItems = () => {}
 }) => {
   const _renderFollowItem = useCallback(
     () =>
       items &&
       items.length > 0 &&
-      items.map((item, idx) => <ResultItem key={item.id || idx} {...item} />),
-    [items]
+      items.map((item, idx) => (
+        <ResultItem key={item.id || idx} {...item} isTagPeople={isTagPeople} />
+      )),
+    [isTagPeople, items]
   );
 
   return (
@@ -31,7 +34,7 @@ const SearchResults = ({
           <div className="search-result__empty">No result</div>
         )}
       </InfiniteScroll>
-      <Pinwheel isLoading={isLoading} size={48} />
+      {isLoading && <Pinwheel isLoading={isLoading} size={48} />}
     </>
   );
 };

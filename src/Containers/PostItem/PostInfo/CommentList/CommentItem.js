@@ -105,7 +105,9 @@ const CommentListItem = ({
 
   // reply to
   const [replyTo, setReplyTo] = useState("");
-  const toggleReplyTo = (username = "") => setReplyTo(replyTo ? "" : username);
+  const handleReplyTo = (username = "") => {
+    setReplyTo(username);
+  };
 
   // show replies
   const [isViewReplies, setIsViewReplies] = useState(false);
@@ -147,7 +149,7 @@ const CommentListItem = ({
           id={commentId}
           isHomePage={isHomePage}
           isReply={!!replyTo}
-          toggleReplyTo={toggleReplyTo}
+          handleReplyTo={handleReplyTo}
           handleDeleteComment={handleDeleteComment}
         />
         {!isHomePage &&
@@ -178,7 +180,7 @@ const CommentListItem = ({
                       isCaption={false}
                       isHomePage={isHomePage}
                       isReply={!!replyTo}
-                      toggleReplyTo={toggleReplyTo}
+                      handleReplyTo={handleReplyTo}
                       handleDeleteComment={handleDeleteChildComment}
                     />
                   </div>

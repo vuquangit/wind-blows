@@ -5,7 +5,7 @@ import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 
 import Brand from "./Brand";
-import Search from "./Search";
+import Search from "Template/Pages/Search";
 import Menu from "./Menu";
 import Registration from "./Registration";
 import "./scss/header.scss";
