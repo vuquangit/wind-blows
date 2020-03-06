@@ -9,16 +9,22 @@ const SearchResults = ({
   isLoading = false,
   hasMoreItems = false,
   isTagPeople = false,
-  getMoreItems = () => {}
+  getMoreItems = () => {},
+  handleSelectSearchItem = () => {}
 }) => {
   const _renderFollowItem = useCallback(
     () =>
       items &&
       items.length > 0 &&
       items.map((item, idx) => (
-        <ResultItem key={item.id || idx} {...item} isTagPeople={isTagPeople} />
+        <ResultItem
+          key={item.id || idx}
+          {...item}
+          isTagPeople={isTagPeople}
+          handleSelectSearchItem={handleSelectSearchItem}
+        />
       )),
-    [isTagPeople, items]
+    [handleSelectSearchItem, isTagPeople, items]
   );
 
   return (
@@ -30,11 +36,15 @@ const SearchResults = ({
         className="search-result"
       >
         {_renderFollowItem()}
-        {!isLoading && items && items.length === 0 && value && (
+        {!isLoading && items && items.length === 0 && value && !isTagPeople && (
           <div className="search-result__empty">No result</div>
         )}
       </InfiniteScroll>
-      {isLoading && <Pinwheel isLoading={isLoading} size={48} />}
+      {isLoading && (
+        <div className="d-flex justify-content-center align-items-center m-1">
+          <Pinwheel isLoading={isLoading} size={40} />
+        </div>
+      )}
     </>
   );
 };

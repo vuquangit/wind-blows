@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import classNames from "classnames";
-
-import axios from "utils/axiosConfig";
 import { get, isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 
+import axios from "utils/axiosConfig";
 import PostTimeAgo from "Components/TimeFromNow";
 import HeartIcon from "Components/HeartIcon";
 import ModalItemOptions from "./ModalItemOptions";
@@ -218,7 +217,7 @@ const CommentContent = ({
           </h2>
           <span
             dangerouslySetInnerHTML={createMarkup()}
-            className="item__content--text notranslate"
+            className="item__content--text"
           ></span>
           {!isHomePage && (
             <div className="item__content--posted-info">

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "antd";
+import classNames from "classnames";
 
 import AvatarUser from "Components/AvatarUser";
 
@@ -9,15 +11,24 @@ const ResultItem = ({
   profilePictureUrl = "",
   profilePicturePublicId = "",
   subTitle = " • Following",
-  isTagPeople = false
+  isTagPeople = false,
+  handleSelectSearchItem = () => {}
 }) => {
+  const _subTitle = isTagPeople
+    ? subTitle.replace(" • Following", "")
+    : subTitle;
+
+  const classItem = classNames("search-people__item", {
+    "search-people__item-tag-people": isTagPeople
+  });
+
   const _renderItem = () => (
     <>
       <div className="result__avatar">
         <AvatarUser
           profilePicturePublicId={profilePicturePublicId}
           profilePictureUrl={profilePictureUrl}
-          size={44}
+          size={isTagPeople ? 30 : 44}
         />
       </div>
       <div className="result__description">
@@ -32,7 +43,7 @@ const ResultItem = ({
             </span>
           )}
         </div>
-        <div className="result__description--fullName">{subTitle}</div>
+        <div className="result__description--fullName">{_subTitle}</div>
       </div>
     </>
   );
@@ -40,13 +51,14 @@ const ResultItem = ({
   return (
     <>
       {isTagPeople ? (
-        <div className="search-people__item">{_renderItem()}</div>
-      ) : (
-        <Link
-          to={`/${username}/`}
-          title={username}
-          className="search-people__item"
+        <Button
+          onClick={() => handleSelectSearchItem(username)}
+          className={classItem}
         >
+          {_renderItem()}
+        </Button>
+      ) : (
+        <Link to={`/${username}/`} title={username} className={classItem}>
           {_renderItem()}
         </Link>
       )}

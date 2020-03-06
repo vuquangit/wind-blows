@@ -41,6 +41,13 @@ const AddComments = ({
     setText(val);
   };
 
+  const handleSelectSearchItem = val => {
+    const _text = text.endsWith("@" + valueSearch)
+      ? text.substring(0, text.length - valueSearch.length) + val + " "
+      : text;
+    setText(_text);
+  };
+
   // fetch comments data
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
@@ -136,7 +143,13 @@ const AddComments = ({
         }
       />
 
-      {valueSearch && <Search isTagPeople valueSearch={valueSearch} />}
+      {valueSearch && (
+        <Search
+          isTagPeople
+          valueSearch={valueSearch}
+          handleSelectSearchItem={handleSelectSearchItem}
+        />
+      )}
     </section>
   );
 };

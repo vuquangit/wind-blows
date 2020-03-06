@@ -13,7 +13,8 @@ const SearchComponent = ({
   isSearchPage = false,
   isScrolled = false,
   isTagPeople = false,
-  valueSearch = ""
+  valueSearch = "",
+  handleSelectSearchItem = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
@@ -32,7 +33,6 @@ const SearchComponent = ({
 
   const initSearch = useCallback(
     value => {
-      console.log("val search", value);
       source.cancel("Cancel search");
 
       const val = value.toLowerCase();
@@ -64,7 +64,7 @@ const SearchComponent = ({
   };
 
   useEffect(() => {
-    initSearch(valueSearch);
+    isTagPeople && initSearch(valueSearch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valueSearch]);
 
@@ -130,6 +130,11 @@ const SearchComponent = ({
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
 
+  const _handleSelectSearchItem = val => {
+    setIsOpenDropdown(false);
+    handleSelectSearchItem(val);
+  };
+
   const _searchResult = () => (
     <SearchResults
       value={value}
@@ -138,6 +143,7 @@ const SearchComponent = ({
       hasMoreItems={hasMoreItems}
       getMoreItems={getMoreItems}
       isTagPeople={isTagPeople}
+      handleSelectSearchItem={_handleSelectSearchItem}
     />
   );
 
@@ -152,28 +158,35 @@ const SearchComponent = ({
           onClick={handleSearchClick}
         />
       )}
-      {!isTagPeople ? (
-        isSearchPage ? (
-          _searchResult()
-        ) : (
-          isOpenDropdown &&
-          !isScrolled && (
+      {!isTagPeople
+        ? isSearchPage
+          ? _searchResult()
+          : isOpenDropdown &&
+            !isScrolled && (
+              <>
+                <div
+                  className="search-people__close-dropdown"
+                  role="dialog"
+                  onClick={() => setIsOpenDropdown(false)}
+                />
+                <div className="search-people__dropdown-content">
+                  <div className="search-people__arrow-up" />
+                  <div className="search-people__dropdown">
+                    {_searchResult()}
+                  </div>
+                </div>
+              </>
+            )
+        : isOpenDropdown && (
             <>
               <div
                 className="search-people__close-dropdown"
                 role="dialog"
                 onClick={() => setIsOpenDropdown(false)}
               />
-              <div className="search-people__dropdown-content">
-                <div className="search-people__arrow-up" />
-                <div className="search-people__dropdown">{_searchResult()}</div>
-              </div>
+              <div className="search-people__tag-people">{_searchResult()}</div>
             </>
-          )
-        )
-      ) : (
-        <div className="search-people__tag-people">{_searchResult()}</div>
-      )}
+          )}
     </div>
   );
 };

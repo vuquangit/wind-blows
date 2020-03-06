@@ -3,10 +3,9 @@ import Header from "../Pages/Header";
 import "./basicTemplate.scss";
 import Footer from "Template/Pages/Footer";
 
-const BasicTemplate = ({ children }) => {
+const BasicTemplate = ({ footer = true, children }) => {
   /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
   const [isScrolled, setIsScrolled] = useState(false);
-
   var prevScrollpos = window.pageYOffset;
   window.onscroll = () => {
     if (document.getElementById("navbar")) {
@@ -23,6 +22,13 @@ const BasicTemplate = ({ children }) => {
     }
   };
 
+  // // pass props to chidren component
+  // const _children = React.Children.map(children, child =>
+  //   React.cloneElement(child, {
+  //     isNavScrolled: isScrolled
+  //   })
+  // );
+
   return (
     <div className="basic-template">
       <div className="basic-template__header" id="navbar">
@@ -31,9 +37,11 @@ const BasicTemplate = ({ children }) => {
       <div className="basic-template__children">
         <div className="basic-template__children--content">{children}</div>
       </div>
-      <div className="basic-template__footer">
-        <Footer />
-      </div>
+      {footer && (
+        <div className="basic-template__footer">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 };

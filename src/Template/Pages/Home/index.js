@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import { Row, Col } from "antd";
 import axios from "utils/axiosConfig";
 import { get, isEmpty, filter, find } from "lodash";
@@ -15,7 +14,7 @@ import Footer from "Template/Pages/Footer";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import "./home.scss";
 
-const HomePage = () => {
+const HomePage = ({ width, height }) => {
   // get posts
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
@@ -101,13 +100,13 @@ const HomePage = () => {
   };
 
   // new post status
-  const handleAddNewPost = item => {
+  const handleAddNewPost = useCallback(item => {
     setState(prevState => ({
       ...prevState,
       data: [item, ...prevState.data],
       totalItem: prevState.totalItem + 1
     }));
-  };
+  }, []);
 
   // render items
   const _renderPostItem = items =>
@@ -160,4 +159,4 @@ const HomePage = () => {
   );
 };
 
-export default withRouter(HomePage);
+export default HomePage;
