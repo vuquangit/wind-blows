@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "utils/axiosConfig";
-import { get, filter, find, isEmpty } from "lodash";
+import React, { useState, useEffect, useCallback } from "react";
+import { get, filter, find, isEmpty, isEqual } from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 
+import axios from "utils/axiosConfig";
 import PostGrid from "./PostGrid";
 import PostsEmpty from "./PostsEmpty";
 import PostsLoading from "./PostsLoading";
@@ -19,11 +19,19 @@ const FetchPosts = ({
   newPosts = []
 }) => {
   const dispatch = useDispatch();
-  const { id: ownerId = "" } = useSelector((state = {}) =>
-    get(state, "personalProfile.data.user", {})
+  const ownerId = useSelector((state = {}) =>
+    get(state, "personalProfile.data.user.id", "")
   );
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const viewerId = useSelector((state = {}) =>
+    get(state, "profile.data.user.id", "")
+  );
+  const relationship = useSelector(
+    state => get(state, "personalProfile.data.relationship", ""),
+    isEqual()
+  );
+  const isBlocked = isEqual(
+    get(relationship, "blockedByViewer.state", ""),
+    "BLOCK_STATUS_BLOCKED"
   );
 
   const [state, setState] = useState({
@@ -94,7 +102,7 @@ const FetchPosts = ({
     };
 
     console.log("fetch data personal");
-    feactData();
+    !isBlocked && feactData();
 
     // unmount
     return () => {
@@ -118,42 +126,49 @@ const FetchPosts = ({
   }, [newPosts]);
 
   const [countItemRemoved, setCountItemRemoved] = useState(0);
-  const handleRemovePersonalPost = postId => {
-    setState(prevState => ({
-      ...prevState,
-      data:
-        prevState.data && prevState.data.length > 0
-          ? filter(prevState.data, o => o.id !== postId)
-          : prevState.data,
-      totalItem:
-        prevState.totalItem - 1 >= 0
-          ? prevState.totalItem - 1
-          : prevState.totalItem
-    }));
+  const handleRemovePersonalPost = useCallback(
+    postId => {
+      setState(prevState => ({
+        ...prevState,
+        data:
+          prevState.data && prevState.data.length > 0
+            ? filter(prevState.data, o => o.id !== postId)
+            : prevState.data,
+        totalItem:
+          prevState.totalItem - 1 >= 0
+            ? prevState.totalItem - 1
+            : prevState.totalItem
+      }));
 
-    dispatch(decreaseCountPosts());
-    setCountItemRemoved(prevState => prevState + 1);
-  };
+      dispatch(decreaseCountPosts());
+      setCountItemRemoved(prevState => prevState + 1);
+    },
+    [dispatch]
+  );
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
-  const getMoreItems = () => {
+  const getMoreItems = useCallback(() => {
     state.data.length + countItemRemoved === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+  }, [countItemRemoved, state.data.length, state.limit, state.page]);
 
   return (
     <div className="personal-post">
-      {state.isLoading ? (
-        <PostsLoading />
-      ) : state.data.length > 0 ? (
-        <PostGrid
-          items={state.data}
-          isLoading={state.isLoading}
-          hasMoreItems={hasMoreItems}
-          getMoreItems={() => getMoreItems()}
-          handleRemovePersonalPost={handleRemovePersonalPost}
-        />
+      {!isBlocked ? (
+        state.isLoading ? (
+          <PostsLoading />
+        ) : state.data.length > 0 ? (
+          <PostGrid
+            items={state.data}
+            isLoading={state.isLoading}
+            hasMoreItems={hasMoreItems}
+            getMoreItems={() => getMoreItems()}
+            handleRemovePersonalPost={handleRemovePersonalPost}
+          />
+        ) : (
+          <PostsEmpty icon={iconEmpty} text={textEmpty} />
+        )
       ) : (
         <PostsEmpty icon={iconEmpty} text={textEmpty} />
       )}

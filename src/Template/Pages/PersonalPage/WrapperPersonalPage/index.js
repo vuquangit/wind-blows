@@ -27,7 +27,7 @@ const PersonalPage = ({
   );
 
   const { id: viewerId = "", username: viewerUsername = "" } = useSelector(
-    state => get(state, "profile.data.user", ""),
+    state => get(state, "profile.data.user", {}),
     isEqual()
   );
   const relationship = useSelector(
@@ -41,11 +41,6 @@ const PersonalPage = ({
     state => get(state, "personalProfile.data.user.username", ""),
     isEqual()
   );
-  const tokenUser = get(
-    JSON.parse(localStorage.getItem("state") || {}),
-    "profile.data.tokens.token",
-    ""
-  );
   const isOwner = isEqual(viewerUsername, username);
 
   // fetch personal data
@@ -55,8 +50,7 @@ const PersonalPage = ({
         requestPersonalInfo({
           data: { username, viewerId },
           headers: {
-            "Content-Type": "application/json;charset=UTF-8",
-            Authorization: `Bearer ${tokenUser}`
+            "Content-Type": "application/json;charset=UTF-8"
           }
         })
       );
@@ -64,7 +58,7 @@ const PersonalPage = ({
 
     (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
       _requestPersonalInfo();
-  }, [match, dispatch, viewerId, username, usernameStore, tokenUser]);
+  }, [match, dispatch, viewerId, username, usernameStore]);
 
   const isPrivate = useSelector(state =>
     get(state, "personalProfile.data.user.isPrivate", false)
@@ -76,6 +70,11 @@ const PersonalPage = ({
       get(relationship, "followedByViewer.state", ""),
       "FOLLOW_STATUS_FOLLOWING"
     );
+
+  const isBlocked = isEqual(
+    get(relationship, "blockedByViewer.state", ""),
+    "BLOCK_STATUS_BLOCKED"
+  );
 
   return (
     <>
@@ -94,7 +93,7 @@ const PersonalPage = ({
                 </Col>
               </Row>
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
-              {isPrivated ? (
+              {isPrivated || isBlocked ? (
                 <PrivateAccount />
               ) : (
                 <TabPages>{children}</TabPages>

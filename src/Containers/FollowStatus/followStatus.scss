@@ -76,6 +76,23 @@
                 line-height: 18px;
                 font-weight: 400;
             }
+
+            &--title {
+                display: block;
+                color: rgba(var(--i1d, 38, 38, 38), 1);
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 24px;
+            }
+
+            &--content {
+                padding-top: 16px;
+                display: block;
+                color: rgba(var(--f52, 153, 153, 153), 1);
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+            }
         }
 
         &__btn {
@@ -103,6 +120,10 @@
             color: rgba(var(--g2b, 237, 73, 86), 1);
             font-weight: 700;
         }
+    }
 
+    .primary {
+        color: rgba(var(--h5f, 56, 151, 240), 1);
+        font-weight: 700;
     }
 }

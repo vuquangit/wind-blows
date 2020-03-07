@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Row, Col } from "antd";
-import axios from "utils/axiosConfig";
 import { get, isEmpty, filter, find } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
+import { StickyContainer, Sticky } from "react-sticky";
 
+import axios from "utils/axiosConfig";
 import BasicTemplate from "Template/BasicTemplate";
 import PostItem from "Containers/PostItem";
 import PostStatus from "Containers/PostStatus";
@@ -14,7 +15,7 @@ import Footer from "Template/Pages/Footer";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import "./home.scss";
 
-const HomePage = ({ width, height }) => {
+const HomePage = () => {
   // get posts
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
@@ -94,10 +95,10 @@ const HomePage = ({ width, height }) => {
 
   // load more item
   const hasMoreItems = state.data.length < state.totalItem;
-  const getMoreItems = () => {
+  const getMoreItems = useCallback(() => {
     state.data.length === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+  }, [state.data.length, state.limit, state.page]);
 
   // new post status
   const handleAddNewPost = useCallback(item => {
@@ -109,17 +110,40 @@ const HomePage = ({ width, height }) => {
   }, []);
 
   // render items
-  const _renderPostItem = items =>
-    items &&
-    items.length > 0 &&
-    items.map((item, idx) => (
-      <div key={item.id || idx} className="home-post__item">
-        <PostItem {...item} isHomePage />
-      </div>
-    ));
+  const _renderPostItem = useCallback(
+    items =>
+      items &&
+      items.length > 0 &&
+      items.map((item, idx) => (
+        <div key={item.id || idx} className="home-post__item">
+          <PostItem {...item} isHomePage />
+        </div>
+      )),
+    []
+  );
+
+  // scroll
+  const [isScrolled, setIsScrolled] = useState(false);
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = () => {
+    if (document.getElementById("navbar")) {
+      var currentScrollPos = window.pageYOffset;
+      if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navbar").style.top = "0";
+        setIsScrolled(false);
+      } else if (currentScrollPos > 50) {
+        document.getElementById("navbar").style.top = "-60px";
+        setIsScrolled(true);
+      }
+      prevScrollpos = currentScrollPos;
+    }
+  };
+  const stylesAdvanceScroll = {
+    marginTop: isScrolled ? `30px` : `90px`
+  };
 
   return (
-    <BasicTemplate footer={false}>
+    <StickyContainer>
       <div className="home">
         <div className="home__content">
           <Row>
@@ -146,17 +170,30 @@ const HomePage = ({ width, height }) => {
               </div>
             </Col>
             <Col xs={0} lg={7}>
-              <div className="home__content--advance">
-                <Profile />
-                <SuggestionForUser />
-                <Footer isHomePage />
-              </div>
+              <Sticky topOffset={0}>
+                {({ style }) => (
+                  <div className="home__content--advance" style={style}>
+                    <div style={stylesAdvanceScroll} />
+                    <Profile />
+                    <SuggestionForUser />
+                    <Footer isHomePage />
+                  </div>
+                )}
+              </Sticky>
             </Col>
           </Row>
         </div>
       </div>
-    </BasicTemplate>
+    </StickyContainer>
   );
 };
 
-export default HomePage;
+// export default HomePage;
+
+const WrappedHomePage = () => (
+  <BasicTemplate footer={false}>
+    <HomePage />
+  </BasicTemplate>
+);
+
+export default WrappedHomePage;

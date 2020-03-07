@@ -25,8 +25,10 @@ const FollowStatus = ({
   const FOLLOW = "Follow";
   const FOLLOWING = "Following";
   const REQUESTED = "Requested";
+  const BLOCKED = "Unblock";
   const FOLLOW_STATUS_FOLLOWING = "FOLLOW_STATUS_FOLLOWING";
   const FOLLOW_STATUS_PRIVATE_REQUESTED = "FOLLOW_STATUS_PRIVATE_REQUESTED";
+  const BLOCK_STATUS_BLOCKED = "BLOCK_STATUS_BLOCKED";
   const keyMessage = "keyMessage";
 
   const {
@@ -48,11 +50,15 @@ const FollowStatus = ({
   });
 
   const followedByViewer = get(relationship, "followedByViewer.state", "");
-  const followStatus = isEqual(followedByViewer, FOLLOW_STATUS_FOLLOWING)
+  const blockedByViewer = get(relationship, "blockedByViewer.state", "");
+  const followStatus = isEqual(blockedByViewer, BLOCK_STATUS_BLOCKED)
+    ? BLOCKED
+    : isEqual(followedByViewer, FOLLOW_STATUS_FOLLOWING)
     ? FOLLOWING
     : isEqual(followedByViewer, FOLLOW_STATUS_PRIVATE_REQUESTED)
     ? REQUESTED
     : FOLLOW;
+
   useEffect(() => {
     setState(prevState => ({ ...prevState, followStatus }));
   }, [followStatus]);
@@ -80,22 +86,16 @@ const FollowStatus = ({
 
       // if in personal page: descrease follower, check private
       if (
-        isPrivate &&
-        isEqual(username, get(match, "params.username")) &&
-        endpoint === "/follows/unfollow"
+        (isPrivate &&
+          isEqual(username, get(match, "params.username")) &&
+          endpoint === "/follows/unfollow") ||
+        endpoint === "/user/blocks/unblock"
       ) {
-        const tokenUser = get(
-          JSON.parse(localStorage.getItem("state") || {}),
-          "profile.data.tokens.token",
-          ""
-        );
-
         await dispatch(
           requestPersonalInfo({
             data: { username, viewerId },
             headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-              Authorization: `Bearer ${tokenUser}`
+              "Content-Type": "application/json;charset=UTF-8"
             }
           })
         );
@@ -133,7 +133,9 @@ const FollowStatus = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const handleFollows = e => {
     stopPropagation(e);
-    state.followStatus === FOLLOWING || state.followStatus === REQUESTED
+    state.followStatus === FOLLOWING ||
+    state.followStatus === REQUESTED ||
+    state.followStatus === BLOCKED
       ? setVisibleModal(true)
       : toggleFetchFollows();
   };
@@ -153,8 +155,13 @@ const FollowStatus = ({
       : fetchFollows("/follows/unfollow");
   };
 
+  const handleUnblock = () => {
+    fetchFollows("/user/blocks/unblock");
+  };
+
   const followBtnClass = classNames(
     "follow-status__btn",
+    { "follow-status__btn-follow": state.followStatus === BLOCKED },
     { "follow-status__btn-follow": state.followStatus === FOLLOW },
     { "follow-status__btn-following": state.followStatus === FOLLOWING },
     classNamesBtn
@@ -192,30 +199,49 @@ const FollowStatus = ({
         centered
       >
         <div className="follow-status__modal--items">
-          <div className="item__avatar">
-            <div className="item__avatar--wrapper">
-              <AvatarUser
-                profilePicturePublicId={profilePicturePublicId}
-                profilePictureUrl={profilePictureUrl}
-                size={96}
-              />
-            </div>
-          </div>
-          <div className="item__description">
-            <div className="item__description--wrapper">
-              {isPrivate
-                ? `If you change your mind, you'll have to request to follow ${
-                    username ? "@" + username : fullName
-                  } again.`
-                : `Unfollow ${username ? "@" + username : fullName}`}
-            </div>
-          </div>
-          <button
-            className="item__btn item__unfollow"
-            onClick={toggleFetchFollows}
-          >
-            Unfollow
-          </button>
+          {state.followStatus !== BLOCKED ? (
+            <>
+              <div className="item__avatar">
+                <div className="item__avatar--wrapper">
+                  <AvatarUser
+                    profilePicturePublicId={profilePicturePublicId}
+                    profilePictureUrl={profilePictureUrl}
+                    size={96}
+                  />
+                </div>
+              </div>
+              <div className="item__description">
+                <div className="item__description--wrapper">
+                  {isPrivate
+                    ? `If you change your mind, you'll have to request to follow ${
+                        username ? "@" + username : fullName
+                      } again.`
+                    : `Unfollow ${username ? "@" + username : fullName}`}
+                </div>
+              </div>
+              <button
+                className="item__btn item__unfollow"
+                onClick={toggleFetchFollows}
+              >
+                Unfollow
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="item__description">
+                <h3 className="item__description--title">
+                  {`Unblock ${username}?`}
+                </h3>
+                <div className="item__description--content">
+                  {`They will now be able to see your posts and follow you on Instagram. Instagram won't let them known you unblocked them.`}
+                </div>
+              </div>
+              <button className="item__btn primary" onClick={handleUnblock}>
+                Unblock
+              </button>
+            </>
+          )}
+
           <button className="item__btn" onClick={handleCancelModal}>
             Cancel
           </button>
