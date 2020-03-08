@@ -25,24 +25,29 @@ const UserOptions = ({ match = {} }) => {
   const handleCancelModal = () => {
     setVisibleModal_UserOption(false);
     setIsBlock(false);
-    isBlocked && handleDissmis();
+    isBlock && isBlocked && handleDissmis();
   };
 
-  //
+  // block
   const [isBlock, setIsBlock] = useState(false);
   const handleBlockClick = () => {
     setIsBlock(true);
   };
   const [isBlocking, setIsBlocking] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(
+    isEqual(
+      get(relationship, "blockedByViewer.state", ""),
+      "BLOCK_STATUS_BLOCKED"
+    )
+  );
 
-  const handleBlock = async () => {
+  const fetchBlockUser = async (endpoint = "") => {
     try {
       setIsBlocking(true);
 
-      const response = await axios({
+      await axios({
         method: "post",
-        url: "/user/blocks/block",
+        url: endpoint,
         data: {
           ownerId,
           viewerId
@@ -52,13 +57,26 @@ const UserOptions = ({ match = {} }) => {
         }
       });
 
-      setIsBlocking(false);
-      setIsBlocked(true);
-      message.success("Blocked user", 3);
+      if (endpoint === "/user/blocks/block") {
+        setIsBlocking(false);
+        setIsBlocked(true);
+        message.success("Blocked this user", 3);
+      } else if (endpoint === "/user/blocks/unblock") {
+        message.success("Unblock this user", 3);
+      }
     } catch (error) {
       setIsBlocking(false);
       console.log(error);
     }
+  };
+
+  const handleBlock = () => {
+    fetchBlockUser("/user/blocks/block");
+  };
+
+  const handleUnblock = async () => {
+    await fetchBlockUser("/user/blocks/unblock");
+    handleDissmis();
   };
 
   const handleDissmis = async () => {
@@ -108,8 +126,8 @@ const UserOptions = ({ match = {} }) => {
                 </h3>
                 <div className="description">
                   {isBlocked
-                    ? `You can unblock them anytime from their profile.`
-                    : `They won't be able to find your profile, posts on The Wind Blows. The Wind Blows won't let them know you blocked them.`}
+                    ? "You can unblock them anytime from their profile."
+                    : "They won't be able to find your profile, posts on The Wind Blows. The Wind Blows won't let them know you blocked them."}
                 </div>
               </div>
             )}
@@ -140,10 +158,27 @@ const UserOptions = ({ match = {} }) => {
                     Cancel
                   </Button>
                 </>
-              ) : (
+              ) : isBlock ? (
                 <Button className="edit-item" onClick={handleDissmis}>
                   Dissmis
                 </Button>
+              ) : (
+                <>
+                  <Button
+                    className="edit-item primary"
+                    onClick={handleUnblock}
+                    loading={isBlocking}
+                  >
+                    Unblock this user
+                  </Button>
+                  <Button
+                    className="edit-item"
+                    onClick={handleCancelModal}
+                    disabled={isBlocking}
+                  >
+                    Cancel
+                  </Button>
+                </>
               )}
             </div>
           </div>
