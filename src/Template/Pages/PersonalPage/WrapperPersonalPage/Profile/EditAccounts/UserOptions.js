@@ -3,12 +3,14 @@ import { Modal, Button, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { get, isEqual } from "lodash";
 import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
 
 import axios from "utils/axiosConfig";
 import FollowStatus from "Containers/FollowStatus";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 
-const UserOptions = ({ match = {} }) => {
+const UserOptions = ({ match = {}, handleToggleSuggested = () => {} }) => {
   const dispatch = useDispatch();
   const { user: userProfile = {}, relationship = {} } = useSelector(
     (state = {}) => get(state, "personalProfile.data", {}),
@@ -103,6 +105,12 @@ const UserOptions = ({ match = {} }) => {
         />
       </div>
       <div className="user-options__option">
+        <Button
+          onClick={handleToggleSuggested}
+          className="user-options__option--btn-suggest"
+        >
+          <FontAwesomeIcon icon={faCaretSquareDown} />
+        </Button>
         <Button onClick={handleShowModal} style={{ border: "0" }}>
           <span className="sprite-icon__glyphs user-options__option--btn" />
         </Button>

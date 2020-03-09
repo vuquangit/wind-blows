@@ -12,6 +12,7 @@
 
   &:hover {
     text-decoration: none !important;
+
     // background-color: rgb(191, 213, 221);
     .SGI__options {
       opacity: 1;
@@ -221,5 +222,23 @@
     &:hover {
       text-decoration: none !important;
     }
+  }
+}
+
+.SGI-slider {
+  opacity: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+  background: rgba(var(--cdc, 255, 255, 255), 1);
+  border-radius: 3px;
+  margin-left: 24px;
+
+  div {
+    height: auto !important;
   }
 }

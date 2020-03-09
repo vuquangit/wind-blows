@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +11,10 @@ import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
 import TabPages from "./TabPages";
-import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import PrivateAccount from "./PrivateAccount";
+import Suggested from "./Suggested";
+import Highlight from "./Highlights";
+import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import "./scss/personalPage.scss";
 
 const PersonalPage = ({
@@ -76,6 +78,12 @@ const PersonalPage = ({
     "BLOCK_STATUS_BLOCKED"
   );
 
+  // toggle suggested
+  const [toggleSuggested, setToggleSuggested] = useState(true);
+  const handleToggleSuggested = () => {
+    setToggleSuggested(!toggleSuggested);
+  };
+
   return (
     <>
       {!error ? (
@@ -86,12 +94,14 @@ const PersonalPage = ({
             </div>
           ) : (
             <div className="personal">
-              <Profile />
+              <Profile handleToggleSuggested={handleToggleSuggested} />
               <Row>
                 <Col xs={24} sm={24} md={0}>
                   <Follows />
                 </Col>
               </Row>
+              <Highlight />
+              {toggleSuggested && <Suggested />}
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
               {isPrivated || isBlocked ? (
                 <PrivateAccount />

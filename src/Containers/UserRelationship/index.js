@@ -18,7 +18,8 @@ const UserRelationship = ({
   user = {},
   relationship = {},
   notifications = {},
-  history = {}
+  history = {},
+  isSlider = false
 }) => {
   const dispatch = useDispatch();
   const { username = "" } = user;
@@ -92,20 +93,26 @@ const UserRelationship = ({
   };
 
   // styles
-  const classSGI = classNames("SGI", {
-    SGI__unread: typeNotification !== 0 && !readNotification
-  });
+  const classSGI = classNames(
+    "SGI",
+    {
+      SGI__unread: typeNotification !== 0 && !readNotification
+    },
+    {
+      "SGI-slider": isSlider
+    }
+  );
 
   return (
     <>
-      {!isDeleted ? (
+      {!isDeleted && (
         <div
           className={classSGI}
           onClick={() => {
             typeNotification !== 0 && handleClickItem();
           }}
         >
-          <AvatarUR user={user} />
+          <AvatarUR user={user} size={isSlider ? 54 : 32} />
           <Description user={user} notifications={notifications} />
           <Target
             user={user}
@@ -122,8 +129,6 @@ const UserRelationship = ({
             />
           )}
         </div>
-      ) : (
-        <div className="SGI__deleted" />
       )}
     </>
   );

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import BasicTemplate from "Template/BasicTemplate";
 import RelationshipList from "Containers/RelationshipList";
 
-const Suggested = ({ isHomepage = false }) => {
+const Suggested = ({ isHomepage = false, isSlider = false }) => {
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );
@@ -25,8 +25,8 @@ const Suggested = ({ isHomepage = false }) => {
 
   return (
     <>
-      {isHomepage ? (
-        <RelationshipList {...apiConfig} />
+      {isHomepage || isSlider ? (
+        <RelationshipList {...apiConfig} isSlider={isSlider} />
       ) : (
         <BasicTemplate>
           <RelationshipList {...apiConfig} headerText="Suggested" />

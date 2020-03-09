@@ -11,7 +11,8 @@ const RelationshipList = ({
     Accept: "application/json",
     "Content-Type": "application/json"
   },
-  headerText = ""
+  headerText = "",
+  isSlider = false
 }) => {
   const [state, setState] = useState({
     data: [],
@@ -80,6 +81,7 @@ const RelationshipList = ({
       isLoading={state.isLoading}
       hasMoreItems={hasMoreItems}
       getMoreItems={getMoreItems}
+      isSlider={isSlider}
     />
   );
 };

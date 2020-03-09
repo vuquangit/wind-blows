@@ -6,7 +6,7 @@ import EditAccounts from "./EditAccounts";
 import Follows from "./Follows";
 import DescriptionProfile from "./DescriptionProfile";
 
-const Profiles = () => {
+const Profiles = ({ handleToggleSuggested = () => {} }) => {
   return (
     <div className="personal__profile">
       <Row>
@@ -18,7 +18,7 @@ const Profiles = () => {
         </Col>
         <Col xs={24} sm={18} md={16}>
           <Row gutter={24} className="m-0">
-            <EditAccounts />
+            <EditAccounts handleToggleSuggested={handleToggleSuggested} />
           </Row>
           <Row>
             <Col xs={0} sm={0} md={24}>

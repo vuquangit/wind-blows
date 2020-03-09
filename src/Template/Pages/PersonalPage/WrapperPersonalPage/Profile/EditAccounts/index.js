@@ -9,7 +9,7 @@ import EditProfileModal from "./EditProfileModal";
 import UserOptions from "./UserOptions";
 import EditProfile from "./EditProfile";
 
-const EditProfiles = () => {
+const EditProfiles = ({ handleToggleSuggested = () => {} }) => {
   const { username = "", isVerified = false, id: ownerId = "" } = useSelector(
     (state = {}) => get(state, "personalProfile.data.user", {}),
     isEqual()
@@ -38,7 +38,7 @@ const EditProfiles = () => {
             </Col>
           </>
         ) : (
-          <UserOptions />
+          <UserOptions handleToggleSuggested={handleToggleSuggested} />
         )}
       </Row>
       {viewerIsOwner && (
