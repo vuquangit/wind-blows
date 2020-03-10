@@ -24,7 +24,7 @@ const AvatarProfile = ({ match }) => {
   const handleCancelModal = () => setVisibleModal(false);
 
   return (
-    <div className="personal__profile--avatar">
+    <div className="profile-avatar">
       <div className="avatar-content">
         <AvatarUser
           profilePictureUrl={profilePictureUrl}

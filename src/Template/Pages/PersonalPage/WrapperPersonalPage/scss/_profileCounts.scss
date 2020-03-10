@@ -1,0 +1,53 @@
+.profile-counts {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    @media (max-width: 767px) {
+        align-items: center;
+        justify-content: space-around;
+
+        border-top: 1px solid rgba(var(--b38, 219, 219, 219), 1);
+        border-bottom: 1px solid rgba(var(--b38, 219, 219, 219), 1);
+        padding: 12px 0;
+    }
+
+    .follow__item {
+        font-size: 16px;
+        margin-right: 40px;
+        text-align: center;
+
+        @media (max-width: 767px) {
+            margin: 0;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &--btn {
+            cursor: pointer;
+            // color: rgba(var(--f52, 153, 153, 153), 1);
+        }
+
+        &--number {
+            // color: #262626;
+            color: rgba(var(--i1d, 38, 38, 38), 1);
+            font-weight: 600;
+
+            @media (max-width: 767px) {
+                display: block;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+}

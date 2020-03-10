@@ -6,14 +6,13 @@ import { get, isEqual, isEmpty } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
-import Follows from "./Profile/Follows";
+import Follows from "./Profile/ProfileCounts";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import Page404 from "Template/Pages/404";
 import PostStatus from "Containers/PostStatus";
 import TabPages from "./TabPages";
 import PrivateAccount from "./PrivateAccount";
 import Suggested from "./Suggested";
-import Highlight from "./Highlights";
 import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
 import "./scss/personalPage.scss";
 
@@ -79,7 +78,7 @@ const PersonalPage = ({
   );
 
   // toggle suggested
-  const [toggleSuggested, setToggleSuggested] = useState(true);
+  const [toggleSuggested, setToggleSuggested] = useState(false);
   const handleToggleSuggested = () => {
     setToggleSuggested(!toggleSuggested);
   };
@@ -100,8 +99,7 @@ const PersonalPage = ({
                   <Follows />
                 </Col>
               </Row>
-              <Highlight />
-              {toggleSuggested && <Suggested />}
+              {!isOwner && <Suggested toggleSuggested={toggleSuggested} />}
               {isOwner && <PostStatus handleAddNewPost={handleAddNewPost} />}
               {isPrivated || isBlocked ? (
                 <PrivateAccount />

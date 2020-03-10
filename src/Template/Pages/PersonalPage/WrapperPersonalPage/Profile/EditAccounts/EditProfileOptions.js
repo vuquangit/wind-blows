@@ -2,13 +2,13 @@ import React, { useState, useCallback } from "react";
 import { auth as firebaseAuth } from "firebase/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router";
 
 import { signOut } from "Redux/Profile/profile.action";
 
-const EditProfileModal = ({ history = {} }) => {
+const EditProfileOptions = ({ history = {} }) => {
   // Modal edit account
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const showModalEdit = () => setVisibleModalEdit(true);
@@ -33,24 +33,24 @@ const EditProfileModal = ({ history = {} }) => {
     history.push("/accounts/privacy_and_security/");
 
   return (
-    <div className="edit-account item-center">
-      <div
-        className="edit-account__show-modal item-center"
+    <div className="profile-edit-profile-options">
+      <Button
+        className="profile-edit-profile-options__btn"
         title="Edit Account"
         onClick={showModalEdit}
       >
-        <FontAwesomeIcon icon={faUserCog} />
-      </div>
+        <FontAwesomeIcon icon={faUserCog} style={{ fontSize: "24px" }} />
+      </Button>
       <Modal
         title={null}
         visible={visibleModalEdit}
         onCancel={handleCancelEdit}
-        className="edit-account__modal"
+        className="user-option-modal"
         footer={null}
         closable={false}
         centered
       >
-        <div className="edit-account__modal--items">
+        <div className="user-option-modal__content">
           <button className="edit-item" onClick={handleChangePassword}>
             Change Password
           </button>
@@ -69,4 +69,4 @@ const EditProfileModal = ({ history = {} }) => {
   );
 };
 
-export default withRouter(EditProfileModal);
+export default withRouter(EditProfileOptions);

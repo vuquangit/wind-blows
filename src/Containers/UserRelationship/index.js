@@ -3,7 +3,7 @@ import axios from "utils/axiosConfig";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
-import { message } from "antd";
+import { message, Button } from "antd";
 import { withRouter } from "react-router-dom";
 
 import { decreaseNotifications } from "Redux/Notifications/notification.action";
@@ -13,6 +13,8 @@ import Target from "./Target";
 import Options from "./Options";
 import "./userRelationship.scss";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const UserRelationship = ({
   user = {},
@@ -112,6 +114,11 @@ const UserRelationship = ({
             typeNotification !== 0 && handleClickItem();
           }}
         >
+          {isSlider && (
+            <Button className="SGI__btn-dismiss">
+              <FontAwesomeIcon icon={faTimes} />
+            </Button>
+          )}
           <AvatarUR user={user} size={isSlider ? 54 : 32} />
           <Description user={user} notifications={notifications} />
           <Target

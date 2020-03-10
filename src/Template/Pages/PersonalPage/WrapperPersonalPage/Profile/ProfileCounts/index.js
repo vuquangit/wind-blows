@@ -10,7 +10,7 @@ import Modal from "Components/Modal";
 import Followers from "Template/Pages/Follower";
 import Following from "Template/Pages/Following";
 
-const Follows = ({ match = {}, history = {} }) => {
+const ProfileCounts = ({ match = {}, history = {} }) => {
   const relationship = useSelector(
     state => get(state, "personalProfile.data.relationship", ""),
     isEqual()
@@ -60,7 +60,7 @@ const Follows = ({ match = {}, history = {} }) => {
   });
 
   return (
-    <div className="personal__profile--follow">
+    <div className="profile-counts">
       <div className="follow__item">
         <span>
           <span className="follow__item--number">
@@ -126,4 +126,4 @@ const Follows = ({ match = {}, history = {} }) => {
   );
 };
 
-export default withRouter(Follows);
+export default withRouter(ProfileCounts);

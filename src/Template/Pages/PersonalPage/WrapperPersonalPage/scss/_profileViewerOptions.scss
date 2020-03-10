@@ -1,0 +1,15 @@
+.profile-viewer-options {
+    &__btn {
+        border: 0px;
+        background-color: transparent;
+        box-shadow: none;
+        height: 30px;
+
+        &--icon {
+            background-repeat: no-repeat;
+            background-position: -338px -321px;
+            height: 24px;
+            width: 24px;
+        }
+    }
+}

@@ -37,5 +37,39 @@
             }
 
         }
+
+
     }
+
+    $btnSlider: 26px !important;
+    $slider-lineHeight: 0;
+    $color-arrow: rgb(78, 78, 78);
+
+    .slick-prev {
+        left: 10px;
+        z-index: 1;
+
+        &:before {
+            font-size: $btnSlider;
+            line-height: $slider-lineHeight;
+            color: $color-arrow;
+        }
+    }
+
+    .slick-next {
+        right: 10px;
+        z-index: 1;
+
+        &:before {
+            font-size: $btnSlider;
+            line-height: $slider-lineHeight;
+            color: $color-arrow;
+        }
+    }
+
+    .slick-disabled {
+        display: none !important;
+    }
+
+
 }

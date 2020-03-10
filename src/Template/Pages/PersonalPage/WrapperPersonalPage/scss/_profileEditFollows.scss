@@ -1,0 +1,9 @@
+.profile-edit-follows {
+    margin-left: 20px;
+    margin-right: 8px;
+    width: 92px;
+
+    @media (max-width: 767px) {
+        margin-left: -8px;
+    }
+}

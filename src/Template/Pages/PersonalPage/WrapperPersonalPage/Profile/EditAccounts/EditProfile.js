@@ -4,7 +4,11 @@ import { Button } from "antd";
 
 const EditProfile = () => {
   return (
-    <Link to="/accounts/edit/" className="edit-profile" title="Edit Profile">
+    <Link
+      to="/accounts/edit/"
+      className="profile-edit-profile"
+      title="Edit Profile"
+    >
       <Button>Edit Profile</Button>
     </Link>
   );

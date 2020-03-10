@@ -18,7 +18,7 @@ const Description = () => {
   });
 
   return (
-    <div className="personal__profile--description">
+    <div className="profile-description">
       <h1 className="description-name">{fullName}</h1>
       <span className="description-bio">{_bio}</span>
       {website && (
