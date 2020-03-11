@@ -65,6 +65,7 @@ const PostHeader = ({
                 user={owner}
                 viewerId={viewerId}
                 relationship={relationship}
+                classNamesButton="button-text-primary"
               />
             </div>
           )}

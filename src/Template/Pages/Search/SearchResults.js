@@ -41,7 +41,7 @@ const SearchResults = ({
         )}
       </InfiniteScroll>
       {isLoading && (
-        <div className="d-flex justify-content-center align-items-center m-1">
+        <div className="search-result__is-loading">
           <Pinwheel isLoading={isLoading} size={40} />
         </div>
       )}

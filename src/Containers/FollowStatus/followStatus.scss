@@ -28,6 +28,15 @@
         color: #262626;
     }
 
+    .button-text-primary {
+        background-color: transparent;
+        color: rgba(var(--h5f, 56, 151, 240), 1);
+    }
+
+    .button-text-danger {
+        background-color: transparent;
+        color: red;
+    }
 
 }
 

@@ -28,10 +28,19 @@ const ProfileCounts = ({ match = {}, history = {} }) => {
 
   // state media
   const [state, setState] = useState({
-    followedBy,
-    follows,
-    media
+    followedBy: 0,
+    follows: 0,
+    media: 0
   });
+
+  useEffect(() => {
+    setState({
+      followedBy: followedBy,
+      follows: follows,
+      media: media
+    });
+  }, [followedBy, follows, media]);
+
   useEffect(() => {
     if (isBlocked) setState({ followedBy: 0, follows: 0, media: 0 });
   }, [isBlocked]);

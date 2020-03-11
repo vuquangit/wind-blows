@@ -3,6 +3,7 @@
     flex-direction: column;
     padding: 20px 0;
     background: rgba(var(--cdc, 255, 255, 255), 1);
+    animation: slide-down .3s ease-in-out;
 
     @media (min-width: 736px) {
         border-radius: 4px;
@@ -43,9 +44,33 @@
     &__content {
         height: 202px;
     }
-
 }
 
 .personal-suggested-hidden {
+    animation: slide-up .3s ease-in-out;
     display: none;
+}
+
+@keyframes slide-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
 }

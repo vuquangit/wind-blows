@@ -19,6 +19,7 @@ const PostItem = ({
   postAt = "",
   likedByViewer = false,
   savedByViewer = false,
+  commentsDisabled = false,
   location = {},
   sidecarChildren = [],
   relationship = {},
@@ -97,6 +98,7 @@ const PostItem = ({
         postAt={postAt}
         likedByViewer={isLikePost}
         savedByViewer={savedByViewer}
+        commentsDisabled={commentsDisabled}
         sidecarChildren={sidecarChildren}
         handleLikePost={handleLikePost}
       />

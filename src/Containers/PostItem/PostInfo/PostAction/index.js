@@ -15,11 +15,12 @@ import Heart from "Components/HeartIcon";
 import ModalShare from "./ModalShare";
 
 const PostAction = ({
-  isHomePage,
-  likedByViewer,
-  handleLikePost,
-  savedByViewer,
   postId = "",
+  isHomePage = false,
+  likedByViewer = false,
+  handleLikePost = false,
+  savedByViewer = false,
+  commentsDisabled = false,
   sidecarChildren = {}
 }) => {
   const viewerId = useSelector((state = {}) =>
@@ -82,9 +83,11 @@ const PostAction = ({
             <Button className="action-item__item" onClick={handleLikePost}>
               <Heart isLiked={likedByViewer} />
             </Button>
-            <Button className="action-item__item">
-              <FontAwesomeIcon icon={faComment} title="Comment" />
-            </Button>
+            {!commentsDisabled && (
+              <Button className="action-item__item">
+                <FontAwesomeIcon icon={faComment} title="Comment" />
+              </Button>
+            )}
           </>
         )}
         <Button className="action-item__item">

@@ -105,6 +105,10 @@ const UserRelationship = ({
     }
   );
 
+  // const handleDismissItem = () => {
+  //   setIsDeleted(true);
+  // };
+
   return (
     <>
       {!isDeleted && (
@@ -114,11 +118,11 @@ const UserRelationship = ({
             typeNotification !== 0 && handleClickItem();
           }}
         >
-          {isSlider && (
-            <Button className="SGI__btn-dismiss">
+          {/* {isSlider && (
+            <Button className="SGI__btn-dismiss" onClick={handleDismissItem}>
               <FontAwesomeIcon icon={faTimes} />
             </Button>
-          )}
+          )} */}
           <AvatarUR user={user} size={isSlider ? 54 : 32} />
           <Description user={user} notifications={notifications} />
           <Target

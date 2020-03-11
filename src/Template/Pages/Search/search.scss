@@ -19,6 +19,13 @@
       align-items: center;
       justify-content: center;
     }
+
+    &__is-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+    }
   }
 
   &__close-dropdown {
@@ -137,7 +144,7 @@
     overflow-y: auto;
     background-color: #fff;
     background: rgba(var(--cdc, 255, 255, 255), 1);
-    border: solid 1px rgba(var(--b6a, 219, 219, 219), 1);
+    // border: solid 1px rgba(var(--b6a, 219, 219, 219), 1);
     border-radius: 3px;
     box-shadow: 0 0 5px rgba(var(--jb7, 0, 0, 0), 0.0975);
     z-index: 10;

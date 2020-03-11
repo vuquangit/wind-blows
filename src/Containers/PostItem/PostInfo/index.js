@@ -21,6 +21,7 @@ const PostInfo = ({
   isHomePage = false,
   likedByViewer = false,
   savedByViewer = false,
+  commentsDisabled = false,
   sidecarChildren = {},
   handleLikePost = () => {}
 }) => {
@@ -149,6 +150,7 @@ const PostInfo = ({
         handleLikePost={handleLikePost}
         likedByViewer={likedByViewer}
         savedByViewer={savedByViewer}
+        commentsDisabled={commentsDisabled}
         sidecarChildren={sidecarChildren}
       />
       <PostLikes isHomePage={isHomePage} numLikes={numLikes} postId={postId} />
@@ -162,24 +164,25 @@ const PostInfo = ({
         handleDeleteComment={handleDeleteComment}
       />
       <PostedAt isHomePage={isHomePage} postedAt={postAt} />
-      {viewerId ? (
-        <div className="PI__info--post-comment">
-          <AddComments
-            isHomePage={isHomePage}
-            postId={postId}
-            handleAddComment={handleAddComment}
-            setIsViewerComments={setIsViewerComments}
-          />
-        </div>
-      ) : (
-        <div className="PI__info--post-comment">
-          <Link to="/accounts/login">
-            <Button type="primary" block>
-              Login to comment
-            </Button>
-          </Link>
-        </div>
-      )}
+      {!commentsDisabled &&
+        (viewerId ? (
+          <div className="PI__info--post-comment">
+            <AddComments
+              isHomePage={isHomePage}
+              postId={postId}
+              handleAddComment={handleAddComment}
+              setIsViewerComments={setIsViewerComments}
+            />
+          </div>
+        ) : (
+          <div className="PI__info--post-comment">
+            <Link to="/accounts/login">
+              <Button type="primary" block>
+                Login to comment
+              </Button>
+            </Link>
+          </div>
+        ))}
     </div>
   );
 };

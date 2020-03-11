@@ -16,7 +16,7 @@ const FollowStatus = ({
   viewerId = "",
   relationship = { followedByViewer: { state: "" } },
   textFollowing = "",
-  classNamesBtn = "",
+  classNamesButton = "",
   history = {},
   match = {}
 }) => {
@@ -164,7 +164,7 @@ const FollowStatus = ({
     { "follow-status__btn-follow": state.followStatus === BLOCKED },
     { "follow-status__btn-follow": state.followStatus === FOLLOW },
     { "follow-status__btn-following": state.followStatus === FOLLOWING },
-    classNamesBtn
+    classNamesButton
   );
 
   const requestLogin = () => {

@@ -24,6 +24,13 @@ const ModalOption = ({
     get(state, "profile.data.user", {})
   );
 
+  const followedByViewer = isEqual(
+    useSelector((state = {}) =>
+      get(state, "personalProfile.data.relationship.followedByViewer.state", "")
+    ),
+    "FOLLOW_STATUS_FOLLOWING"
+  );
+
   const idMyPost = isEqual(viewerId, get(owner, "id"));
 
   // delete comments
@@ -129,8 +136,10 @@ const ModalOption = ({
               user={owner}
               viewerId={viewerId}
               relationship={relationship}
-              textFollowing="Unfollow"
-              classNamesBtn="modal__content--btn btn-red"
+              textFollowing={followedByViewer ? "Unfollow" : null}
+              classNamesButton={`modal__content--btn ${
+                followedByViewer ? "button-text-danger" : "button-text-primary"
+              }`}
             />
           </>
         )}

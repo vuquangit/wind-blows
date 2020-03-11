@@ -7,7 +7,7 @@ import "./suggested.scss";
 
 const Suggested = ({ toggleSuggested = false }) => {
   const classSuggested = classNames("personal-suggested", {
-    "personal-suggested-hidden": toggleSuggested
+    "personal-suggested-hidden": !toggleSuggested
   });
 
   return (

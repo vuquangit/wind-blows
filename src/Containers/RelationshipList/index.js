@@ -69,7 +69,7 @@ const RelationshipList = ({
 
   // get more page
   const hasMoreItems = state.data.length < state.totalItems;
-  const getMoreItems = async () => {
+  const getMoreItems = () => {
     state.data.length === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
   };
