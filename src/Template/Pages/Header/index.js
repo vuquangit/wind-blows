@@ -20,22 +20,22 @@ const Header = ({ isScrolled = false }) => {
     <Layout.Header className="header">
       <div className="header__content">
         <Row className="header__content--row">
-          <Col xs={12} sm={10} md={8}>
-            <Brand isSigned={isSigned} />
+          <Col xs={12} sm={8} md={8}>
+            <Brand />
           </Col>
           {isSigned ? (
             <>
               {!isSmallScreen && (
-                <Col xs={0} sm={8} md={8}>
+                <Col xs={0} sm={10} md={8}>
                   <Search isScrolled={isScrolled} />
                 </Col>
               )}
-              <Col xs={12} sm={4} md={8}>
+              <Col xs={12} sm={6} md={8}>
                 <Menu isScrolled={isScrolled} isSmallScreen={isSmallScreen} />
               </Col>
             </>
           ) : (
-            <Col xs={12} sm={14} md={16}>
+            <Col xs={12} sm={16} md={16}>
               <Registration />
             </Col>
           )}

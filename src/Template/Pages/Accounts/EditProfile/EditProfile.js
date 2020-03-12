@@ -66,8 +66,8 @@ const EditProfile = props => {
       website: get(profile, "website"),
       bio: get(profile, "bio"),
       email: get(profile, "email"),
-      phoneNumber: get(profile, "phoneNumber"),
-      gender: get(profile, "gender")
+      phoneNumber: get(profile, "phoneNumber")
+      // gender: get(profile, "gender")
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
@@ -121,14 +121,14 @@ const EditProfile = props => {
     });
   };
 
-  const genderLists = (
-    <Menu>
-      <Menu.Item key="1">Male</Menu.Item>
-      <Menu.Item key="2">Female</Menu.Item>
-      <Menu.Item key="3">Custom</Menu.Item>
-      <Menu.Item key="4">Prefer Not To Say</Menu.Item>
-    </Menu>
-  );
+  // const genderLists = (
+  //   <Menu>
+  //     <Menu.Item key="1">Male</Menu.Item>
+  //     <Menu.Item key="2">Female</Menu.Item>
+  //     <Menu.Item key="3">Custom</Menu.Item>
+  //     <Menu.Item key="4">Prefer Not To Say</Menu.Item>
+  //   </Menu>
+  // );
 
   return (
     <div className="edit-profile">
@@ -198,7 +198,7 @@ const EditProfile = props => {
         <Form.Item label="Phone Number">
           {getFieldDecorator("phoneNumber")(<Input />)}
         </Form.Item>
-        <Form.Item label="Gender">
+        {/* <Form.Item label="Gender">
           {getFieldDecorator("gender")(
             <Dropdown overlay={genderLists}>
               <Button block className="edit-profile__form--gender">
@@ -206,7 +206,7 @@ const EditProfile = props => {
               </Button>
             </Dropdown>
           )}
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
             valuePropName: "checked",
@@ -236,7 +236,8 @@ const EditProfile = props => {
           <Button
             type="danger"
             style={{ marginLeft: "16px" }}
-            disabled={stateUpdate.isUpdating}
+            // disabled={stateUpdate.isUpdating}
+            disabled
           >
             Disable my account
           </Button>

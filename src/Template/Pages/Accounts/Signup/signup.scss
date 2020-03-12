@@ -12,6 +12,16 @@
     max-height: 700px;
   }
 
+  .ant-form-item {
+    margin-bottom: 8px !important;
+  }
+
+  .ant-form-item-children {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__panel-image {
     height: 100%;
     display: flex;

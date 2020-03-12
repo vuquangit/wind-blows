@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import axios from "utils/axiosConfig";
 import { Badge } from "antd";
 import { get, startsWith } from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
 
+import axios from "utils/axiosConfig";
 import AvatarUser from "Components/AvatarUser";
 import DropdownNotification from "./DropdownNotification";
 import { updateNotifications } from "Redux/Notifications/notification.action";
@@ -22,11 +22,6 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
   const { totalUnread: totalNotiUnread = 0 } = useSelector((state = {}) =>
     get(state, "notifications", {})
   );
-  // const tokenUser = get(
-  //   JSON.parse(localStorage.getItem("state") || {}),
-  //   "profile.data.tokens.token",
-  //   ""
-  // );
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -73,10 +68,18 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
   }, []);
 
   const enableDropdownNoti = startsWith(match.path, "/notifications");
+  const isPersonalPage = startsWith(match.path, "/:username");
 
   return (
     <div className="header__menu">
       <div className="header__menu--items">
+        {!isSmallScreen && (
+          <div className="menu-item">
+            <NavLink to={`/`}>
+              <FontAwesomeIcon icon={faHome} title="Home" />
+            </NavLink>
+          </div>
+        )}
         {isSmallScreen && (
           <div className="menu-item">
             <NavLink to="/explore/people/search/">
@@ -87,6 +90,7 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
             </NavLink>
           </div>
         )}
+
         <div className="menu-item">
           {!isSmallScreen && !enableDropdownNoti ? (
             <DropdownNotification
@@ -102,7 +106,8 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
           )}
         </div>
         <div className="menu-item">
-          <NavLink to={`/${username || id}`}>
+          {isPersonalPage && <div className="menu-item__wrapper" />}
+          <NavLink to={`/${username}`}>
             <AvatarUser
               profilePicturePublicId={profilePicturePublicId}
               profilePictureUrl={profilePictureUrl}

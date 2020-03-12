@@ -3,16 +3,23 @@ import { auth as firebaseAuth } from "firebase/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Button } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router";
+import { get } from "lodash";
 
 import { signOut } from "Redux/Profile/profile.action";
 
 const EditProfileOptions = ({ history = {} }) => {
+  const { isFetching = false } = useSelector((state = {}) =>
+    get(state, "profile", {})
+  );
+
   // Modal edit account
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const showModalEdit = () => setVisibleModalEdit(true);
-  const handleCancelEdit = () => setVisibleModalEdit(false);
+  const handleCancelEdit = () => {
+    !isFetching && setVisibleModalEdit(false);
+  };
 
   // handles
   const dispatch = useDispatch();
@@ -51,18 +58,34 @@ const EditProfileOptions = ({ history = {} }) => {
         centered
       >
         <div className="user-option-modal__content">
-          <button className="edit-item" onClick={handleChangePassword}>
+          <Button
+            className="edit-item"
+            onClick={handleChangePassword}
+            disabled={isFetching}
+          >
             Change Password
-          </button>
-          <button className="edit-item" onClick={handlePrivacyAndSecurity}>
+          </Button>
+          <Button
+            className="edit-item"
+            onClick={handlePrivacyAndSecurity}
+            disabled={isFetching}
+          >
             Privacy and Security
-          </button>
-          <button className="edit-item" onClick={handleLogoutClick}>
+          </Button>
+          <Button
+            className="edit-item"
+            onClick={handleLogoutClick}
+            loading={isFetching}
+          >
             Log Out
-          </button>
-          <button className="edit-item" onClick={handleCancelEdit}>
+          </Button>
+          <Button
+            className="edit-item"
+            onClick={handleCancelEdit}
+            disabled={isFetching}
+          >
             Cancel
-          </button>
+          </Button>
         </div>
       </Modal>
     </div>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, message, Typography } from "antd";
+import { Form, Button, message, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
 import axios from "utils/axiosConfig";
 
+import { PasswordAdvance } from "Components/Input";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
 import ProfilePhoto from "Containers/ProfilePhoto";
 import Pinwheel from "Components/Loaders/Pinwheel";
@@ -197,7 +198,7 @@ const ChangePassword = ({
                           message: "Please input your old password!"
                         }
                       ]
-                    })(<Input.Password />)}
+                    })(<PasswordAdvance />)}
                   </Form.Item>
                 )}
                 <Form.Item
@@ -218,7 +219,7 @@ const ChangePassword = ({
                         validator: validateToNextPassword
                       }
                     ]
-                  })(<Input.Password placeholder="New password" />)}
+                  })(<PasswordAdvance placeholder="New password" />)}
                 </Form.Item>
                 <Form.Item
                   label={!isResetPassword && `Confirm New Password`}
@@ -240,7 +241,7 @@ const ChangePassword = ({
                       }
                     ]
                   })(
-                    <Input.Password
+                    <PasswordAdvance
                       onBlur={handleConfirmBlur}
                       placeholder="Confirm new password"
                     />

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Input, Button, Divider, Typography } from "antd";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState, useCallback } from "react";
+import { Button, Divider, Typography } from "antd";
+import { Link } from "react-router-dom";
 import MouseParallax from "./MouseParallax";
 import { useSpring } from "react-spring";
-import axios from "utils/axiosConfig";
 
-const ResetPassword = ({ match = {}, location = {} }) => {
+import axios from "utils/axiosConfig";
+import { InputAdvance } from "Components/Input";
+
+const ResetPassword = () => {
   // animition
   const [mouseParallax: props, setMouseParallax: set] = useSpring(() => ({
     xy: [0, 0],
@@ -31,13 +33,13 @@ const ResetPassword = ({ match = {}, location = {} }) => {
     error: null
   });
 
-  const handleForgotPassord = async values => {
+  const handleForgotPassord = useCallback(async () => {
     const localhost = window.location.origin;
 
     try {
       setState(prevState => ({ ...prevState, isLoading: true }));
 
-      const res = await axios({
+      await axios({
         method: "post",
         url: "/users/forgot-password",
         data: {
@@ -49,7 +51,6 @@ const ResetPassword = ({ match = {}, location = {} }) => {
         }
       });
 
-      console.log("Edited profile :", res);
       setState(prevState => ({ ...prevState, isSendForgotPassword: true }));
     } catch (err) {
       console.log("Change password error ", err);
@@ -58,11 +59,11 @@ const ResetPassword = ({ match = {}, location = {} }) => {
     } finally {
       setState(prevState => ({ ...prevState, isLoading: false }));
     }
-  };
+  }, [email]);
 
-  const handleResendEmail = () => {
+  const handleResendEmail = useCallback(() => {
     setState(prevState => ({ ...prevState, isSendForgotPassword: false }));
-  };
+  }, []);
 
   return (
     <div className="RP">
@@ -87,8 +88,8 @@ const ResetPassword = ({ match = {}, location = {} }) => {
               </div>
             </div>
             <div className="RP__content--item">
-              <Input
-                placeholder="Email..."
+              <InputAdvance
+                placeholder={email ? "Email" : "Email..."}
                 allowClear
                 value={email}
                 onChange={handleChangeEmail}
@@ -150,4 +151,4 @@ const ResetPassword = ({ match = {}, location = {} }) => {
   );
 };
 
-export default withRouter(ResetPassword);
+export default ResetPassword;

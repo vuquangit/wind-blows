@@ -3,7 +3,7 @@ import axios from "utils/axiosConfig";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
-import { message, Button } from "antd";
+import { message } from "antd";
 import { withRouter } from "react-router-dom";
 
 import { decreaseNotifications } from "Redux/Notifications/notification.action";
@@ -13,8 +13,8 @@ import Target from "./Target";
 import Options from "./Options";
 import "./userRelationship.scss";
 import { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const UserRelationship = ({
   user = {},

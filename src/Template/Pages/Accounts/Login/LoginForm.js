@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from "react";
-import { Form, Icon, Input, Button, Typography } from "antd";
+import { Form, Icon, Button, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isEmpty, get } from "lodash";
 
+import { InputAdvance, PasswordAdvance } from "Components/Input";
 import { requestProfileInfo } from "Redux/Profile/profile.action";
 
 const LoginForm = ({ form, history }) => {
@@ -95,9 +96,9 @@ const LoginForm = ({ form, history }) => {
     <Form onSubmit={handleSubmit} className="login-form">
       <Form.Item>
         {getFieldDecorator("username", {
-          rules: [{ required: true, message: "Username, or email" }]
+          rules: [{ required: true, message: "Username or email request" }]
         })(
-          <Input
+          <InputAdvance
             prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
             placeholder="Username"
           />
@@ -105,9 +106,9 @@ const LoginForm = ({ form, history }) => {
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("password", {
-          rules: [{ required: true, message: "Password" }]
+          rules: [{ required: true, message: "Password request" }]
         })(
-          <Input.Password
+          <PasswordAdvance
             prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
             placeholder="Password"
           />

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Button, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { get, isEmpty } from "lodash";
 
+import { InputAdvance, PasswordAdvance } from "Components/Input";
 import { createProfile } from "Redux/Profile/profile.action";
 import "./signup.scss";
 
@@ -119,7 +120,7 @@ const Registration = ({ form = {}, history = {} }) => {
                 message: "Please input your E-mail!"
               }
             ]
-          })(<Input placeholder="Email" allowClear title="Email" />)}
+          })(<InputAdvance placeholder="Email" allowClear title="Email" />)}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("fullName", {
@@ -129,7 +130,7 @@ const Registration = ({ form = {}, history = {} }) => {
                 message: "Please input your full name!"
               }
             ]
-          })(<Input placeholder="Full Name" title="Full Name" />)}
+          })(<InputAdvance placeholder="Full Name" title="Full Name" />)}
         </Form.Item>
         <Form.Item hasFeedback>
           {getFieldDecorator("username", {
@@ -143,7 +144,9 @@ const Registration = ({ form = {}, history = {} }) => {
                 validator: validateUsername
               }
             ]
-          })(<Input placeholder="Username" allowClear title="Username" />)}
+          })(
+            <InputAdvance placeholder="Username" allowClear title="Username" />
+          )}
         </Form.Item>
         <Form.Item hasFeedback>
           {getFieldDecorator("password", {
@@ -160,7 +163,7 @@ const Registration = ({ form = {}, history = {} }) => {
                 validator: validateToNextPassword
               }
             ]
-          })(<Input.Password placeholder="Password" />)}
+          })(<PasswordAdvance placeholder="Password" />)}
         </Form.Item>
         <Form.Item hasFeedback>
           {getFieldDecorator("confirmPassword", {
@@ -179,7 +182,7 @@ const Registration = ({ form = {}, history = {} }) => {
               }
             ]
           })(
-            <Input.Password
+            <PasswordAdvance
               placeholder="Confirm password"
               onBlur={handleConfirmBlur}
             />
