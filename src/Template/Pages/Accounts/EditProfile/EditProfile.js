@@ -1,29 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Menu,
-  Dropdown,
-  Checkbox,
-  Button,
-  message
-} from "antd";
+import React, { useEffect, useState, useCallback } from "react";
+import { Form, Input, Tooltip, Icon, Checkbox, Button, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { get } from "lodash";
-import axios from "utils/axiosConfig";
+import { get, isEqual } from "lodash";
 
+import axios from "utils/axiosConfig";
 import ProfilePhoto from "Containers/ProfilePhoto";
 import { updateProfileInfo } from "Redux/Profile/profile.action";
+import { withRouter } from "react-router-dom";
 
-const EditProfile = props => {
-  const profile = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
-  );
-  const { getFieldDecorator, setFieldsValue } = props.form;
-
+const EditProfile = ({ form, history = {} }) => {
   const dispatch = useDispatch();
+
+  const profile = useSelector(
+    (state = {}) => get(state, "profile.data.user", {}),
+    isEqual()
+  );
+
+  const { getFieldDecorator, setFieldsValue } = form;
 
   const formItemLayout = {
     labelCol: {
@@ -35,7 +28,6 @@ const EditProfile = props => {
       sm: { span: 18 }
     }
   };
-
   const tailFormItemLayout = {
     wrapperCol: {
       xs: {
@@ -49,6 +41,27 @@ const EditProfile = props => {
     }
   };
 
+  const [stateUpdate, setStateUpdate] = useState({
+    isUpdating: false,
+    data: {},
+    error: null
+  });
+
+  // set values profile
+  useEffect(() => {
+    setFieldsValue({
+      fullName: get(profile, "fullName"),
+      username: get(profile, "username"),
+      website: get(profile, "website"),
+      bio: get(profile, "bio"),
+      email: get(profile, "email"),
+      phoneNumber: get(profile, "phoneNumber")
+    });
+
+    // return () => {};
+  }, [profile, setFieldsValue]);
+
+  // check uppercase username
   const validateUsername = (rule, value, callback) => {
     if (value && /^\S+$/gi.test(value) === false) {
       callback("Username contain whitespace");
@@ -59,76 +72,57 @@ const EditProfile = props => {
     }
   };
 
-  useEffect(() => {
-    setFieldsValue({
-      fullName: get(profile, "fullName"),
-      username: get(profile, "username"),
-      website: get(profile, "website"),
-      bio: get(profile, "bio"),
-      email: get(profile, "email"),
-      phoneNumber: get(profile, "phoneNumber")
-      // gender: get(profile, "gender")
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile]);
-
-  // post
-  const [stateUpdate, setStateUpdate] = useState({
-    isUpdating: false,
-    data: {},
-    error: null
-  });
-
   // update profile
-  const fetchUpdateProfile = async values => {
-    try {
-      setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
+  const fetchUpdateProfile = useCallback(
+    async values => {
+      try {
+        setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
 
-      const res = await axios({
-        method: "post",
-        url: "/users/update",
-        data: { id: get(profile, "id"), ...values },
-        headers: {
-          "Content-Type": "application/json"
+        const res = await axios({
+          method: "post",
+          url: "/users/update",
+          data: { id: get(profile, "id", ""), ...values },
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        console.log("Edited profile :", res);
+        setStateUpdate(prevState => ({ ...prevState, data: res.data }));
+
+        // refresh personal store
+        if (res.status === 200 || res.status === 201) {
+          const data = { email: values.email };
+          await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+
+          message.success("Updated your profile", 5);
+        }
+      } catch (err) {
+        console.log("Edit profile error ", err);
+        message.error("Edit profile error: ", err);
+      } finally {
+        setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
+      }
+    },
+    [dispatch, profile]
+  );
+
+  // submit
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          fetchUpdateProfile(values);
         }
       });
-      console.log("Edited profile :", res);
-      setStateUpdate(prevState => ({ ...prevState, data: res.data }));
+    },
+    [fetchUpdateProfile, form]
+  );
 
-      // refresh personal store
-      if (res.status === 200 || res.status === 201) {
-        const data = { email: values.email };
-        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
-
-        message.success("Updated your profile", 5);
-      }
-    } catch (err) {
-      console.log("Edit profile error ", err);
-      message.error("Edit profile error: ", err);
-    } finally {
-      setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
-    }
+  // disable account
+  const handleDisableAccount = async () => {
+    history.push("/accounts/remove/request/temporary/");
   };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-
-        fetchUpdateProfile(values);
-      }
-    });
-  };
-
-  // const genderLists = (
-  //   <Menu>
-  //     <Menu.Item key="1">Male</Menu.Item>
-  //     <Menu.Item key="2">Female</Menu.Item>
-  //     <Menu.Item key="3">Custom</Menu.Item>
-  //     <Menu.Item key="4">Prefer Not To Say</Menu.Item>
-  //   </Menu>
-  // );
 
   return (
     <div className="edit-profile">
@@ -198,15 +192,6 @@ const EditProfile = props => {
         <Form.Item label="Phone Number">
           {getFieldDecorator("phoneNumber")(<Input />)}
         </Form.Item>
-        {/* <Form.Item label="Gender">
-          {getFieldDecorator("gender")(
-            <Dropdown overlay={genderLists}>
-              <Button block className="edit-profile__form--gender">
-                Male <Icon type="down" />
-              </Button>
-            </Dropdown>
-          )}
-        </Form.Item> */}
         <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
             valuePropName: "checked",
@@ -218,7 +203,7 @@ const EditProfile = props => {
             ]
           })(
             <div className="edit-profile__form--agreement">
-              <Checkbox>
+              <Checkbox defaultChecked>
                 Include your account when recommending similar accounts people
                 might want to follow.
               </Checkbox>
@@ -236,10 +221,10 @@ const EditProfile = props => {
           <Button
             type="danger"
             style={{ marginLeft: "16px" }}
-            // disabled={stateUpdate.isUpdating}
-            disabled
+            disabled={stateUpdate.isUpdating}
+            onClick={handleDisableAccount}
           >
-            Disable my account
+            Temporarily disable my account
           </Button>
         </Form.Item>
       </Form>
@@ -247,6 +232,4 @@ const EditProfile = props => {
   );
 };
 
-const WrappedEditProfile = Form.create({ name: "editProfile" })(EditProfile);
-
-export default WrappedEditProfile;
+export default Form.create({ name: "editProfile" })(withRouter(EditProfile));

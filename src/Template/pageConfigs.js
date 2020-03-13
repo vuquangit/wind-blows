@@ -14,6 +14,7 @@ import Notifications from "Template/Pages/Notifications";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 import Search from "Template/Pages/Search";
 import PricacyAndSecurity from "Template/Pages/Accounts/PrivacyAndSecurity";
+import TemporaryDisableAccount from "Template/Pages/Accounts/Remove";
 
 const pageConfigs = [
   {
@@ -61,6 +62,11 @@ const pageConfigs = [
   {
     path: "/accounts/privacy_and_security/",
     component: PricacyAndSecurity,
+    exact: true
+  },
+  {
+    path: "/accounts/remove/request/temporary/",
+    component: TemporaryDisableAccount,
     exact: true
   },
   {

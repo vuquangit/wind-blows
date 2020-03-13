@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Modal, Button, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "utils/axiosConfig";
-import { get } from "lodash";
+import { get, isEqual } from "lodash";
 
-import { updateProfileInfo } from "Redux/Profile/profile.action";
+import { updateUserProfile } from "Redux/Profile/profile.action";
+import { updateUserProfile as updateUserPersonalProfile } from "Redux/PersonalProfile/personalProfile.action";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import { toBase64 } from "utils/toBase64";
 
@@ -13,109 +14,127 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
   const [updating, setUpdating] = useState(false);
   const {
     id: userId = "",
-    email = "",
     profilePictureUrl: profilePictureUrlBefore = ""
-  } = useSelector(state => get(state, "profile.data.user", {}));
+  } = useSelector(
+    (state = {}) => get(state, "profile.data.user", {}),
+    isEqual()
+  );
 
-  const keyMessage = "updatable";
+  const personalId = useSelector((state = {}) =>
+    get(state, "personalProfile.data.user.id", "")
+  );
 
-  const fetchUploadPhoto = async event => {
-    message.loading({ content: "Please wait...", key: keyMessage });
-
-    const filesSeleted = Array.from(event.target.files);
-    const getDataImages = filesSeleted.map(async file => {
-      const { base64 = "", type = "" } = await toBase64(file);
-      return {
-        name: file.name,
-        type,
-        base64
-      };
-    });
-
-    Promise.all(getDataImages).then(async data => {
+  const fetchChangePhoto = useCallback(
+    async ({ profilePictureUrl = "", publicId = "" }) => {
       setUpdating(true);
-      // upload image
+
       try {
-        const res = await axios.post("/images/upload", {
-          data: data,
+        // change profile photo
+        await axios({
+          method: "post",
+          url: "/users/change-profile-photo",
+          data: {
+            userId,
+            profilePictureUrl,
+            profilePicturePublicId: publicId
+          },
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "application/json"
           }
         });
 
-        const dataProfile = {
-          profilePictureUrl: get(res, "data[0].url"),
-          publicId: get(res, "data[0].public_id")
-        };
-        await fetchChangePhoto(dataProfile);
+        // delete old profile photo in cloudinary
+        if (profilePictureUrlBefore && profilePictureUrlBefore.length > 2) {
+          const publicId = profilePictureUrlBefore.substring(
+            profilePictureUrlBefore.lastIndexOf("/") + 1,
+            profilePictureUrlBefore.lastIndexOf(".")
+          );
+          try {
+            await axios({
+              method: "POST",
+              url: "/images/delete",
+              data: {
+                publicId
+              },
+              headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+              }
+            });
+            // message.success({ content: "Deleted old profile photo", keyMessage });
+          } catch (err) {}
+        }
+
+        message.success({
+          content: "Updated your profile photo",
+          keyMessage,
+          duration: 3
+        });
+
+        // reload profile
+        const data = { profilePictureUrl, profilePicturePublicId: publicId };
+        await dispatch(updateUserProfile(data));
+        if (isEqual(userId, personalId))
+          await dispatch(updateUserPersonalProfile(data));
+
+        handleCancelModal(true);
       } catch (err) {
+        setUpdating(false);
         message.error({ content: `Error: ${err}`, key: keyMessage });
         console.log(err);
-      } finally {
-        setUpdating(false);
       }
-    });
-  };
+    },
+    [dispatch, handleCancelModal, profilePictureUrlBefore, userId, personalId]
+  );
 
-  const fetchChangePhoto = async ({
-    profilePictureUrl = "",
-    publicId = ""
-  }) => {
-    console.log(profilePictureUrl, publicId);
-    setUpdating(true);
+  // upload image
+  const keyMessage = "updatable";
+  const handleUploadPhoto = useCallback(
+    async event => {
+      message.loading({ content: "Please wait...", key: keyMessage });
 
-    try {
-      // change profile photo
-      await axios({
-        method: "post",
-        url: "/users/change-profile-photo",
-        data: { userId, profilePictureUrl, profilePicturePublicId: publicId },
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const filesSeleted = Array.from(event.target.files);
+      if (filesSeleted.length === 0) {
+        message.error("No image selected");
+        return;
+      }
 
-      // delete old profile photo in cloudinary
-      if (profilePictureUrlBefore && profilePictureUrlBefore.length > 2) {
-        const publicId = profilePictureUrlBefore.substring(
-          profilePictureUrlBefore.lastIndexOf("/") + 1,
-          profilePictureUrlBefore.lastIndexOf(".")
-        );
+      const { base64 = "" } = await toBase64(filesSeleted[0]);
+      setUpdating(true);
+      const source = axios.CancelToken.source();
 
-        try {
-          await axios({
-            method: "POST",
-            url: "/upload-image/delete",
-            data: {
-              publicId
-            },
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8"
-            }
-          });
-          message.success({ content: "Deleted old profile photo", keyMessage });
-        } catch (err) {
+      // upload image
+      try {
+        const res = await axios.post("/images/upload", {
+          data: base64,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          cancelToken: source.token
+        });
+
+        console.log(res);
+
+        const dataProfile = {
+          profilePictureUrl: get(res, "data.url", ""),
+          publicId: get(res, "data.public_id", "")
+        };
+        await fetchChangePhoto(dataProfile);
+
+        // setUpdating(false);
+      } catch (err) {
+        if (axios.isCancel(err)) {
+          console.log("cancelled uploading photo");
+        } else {
+          // setUpdating(false);
           message.error({ content: `Error: ${err}`, key: keyMessage });
           console.log(err);
         }
+      } finally {
+        setUpdating(false);
       }
-
-      // fetch personal post data
-      const data = { email: email };
-      await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
-      message.success({
-        content: "Updated your profile photo",
-        keyMessage,
-        duration: 3
-      });
-    } catch (err) {
-      message.error({ content: `Error: ${err}`, key: keyMessage });
-      console.log(err);
-    } finally {
-      setUpdating(false);
-      handleCancelModal();
-    }
-  };
+    },
+    [fetchChangePhoto]
+  );
 
   const handleSelectPhoto = () => {
     document.getElementById("selectImage").click();
@@ -168,7 +187,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
           accept="image/jpeg,image/png"
           type="file"
           className="input-upload-image"
-          onChange={e => fetchUploadPhoto(e)}
+          onChange={e => handleUploadPhoto(e)}
         />
       </div>
     </Modal>

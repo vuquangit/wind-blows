@@ -9,12 +9,12 @@ import ModalChangePhoto from "Containers/ProfilePhoto/ModalChangePhoto";
 import AvatarUser from "Components/AvatarUser";
 
 const AvatarProfile = ({ match }) => {
-  const {
-    profilePictureUrl = "",
-    profilePicturePublicId = ""
-  } = useSelector((state = {}) => get(state, "personalProfile.data.user", {}));
-  const { username: viewerUsername = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const { profilePictureUrl = "", profilePicturePublicId = "" } = useSelector(
+    (state = {}) => get(state, "personalProfile.data.user", {}),
+    isEqual()
+  );
+  const viewerUsername = useSelector((state = {}) =>
+    get(state, "profile.data.user.username", "")
   );
   const isOwner = isEqual(viewerUsername, get(match, "params.username", ""));
 

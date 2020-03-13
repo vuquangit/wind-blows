@@ -9,8 +9,15 @@ import { Input } from "antd";
 import classNames from "classnames";
 import "./input.scss";
 
-const WrappedInput = ({ ref, props, children }) => {
-  const { value = "", onChange, placeholder, prefix, ...restProps } = props;
+const WrappedInput = ({ forwardedRef, props, children }) => {
+  const {
+    value = "",
+    onChange,
+    placeholder = "",
+    prefix = null,
+    className = "",
+    ...restProps
+  } = props;
   const [isChanged, setIsChanged] = useState(false);
 
   useEffect(() => {
@@ -21,9 +28,14 @@ const WrappedInput = ({ ref, props, children }) => {
     if (onChange) onChange(e);
   };
 
-  const classInput = classNames("input-advance__content--input", {
-    "input-advance__content--input-change": isChanged
-  });
+  const classInput = classNames(
+    "input-advance__content--input",
+    {
+      "input-advance__content--input-change": isChanged
+    },
+    className
+  );
+
   const classLabel = classNames(
     "input-advance__content--label",
     {
@@ -42,7 +54,7 @@ const WrappedInput = ({ ref, props, children }) => {
       className: classInput,
       value,
       onChange: handleInputOnchange,
-      ref
+      ref: forwardedRef
     })
   );
 
@@ -59,13 +71,13 @@ const WrappedInput = ({ ref, props, children }) => {
 };
 
 const InputAdvance = forwardRef((props, ref) => (
-  <WrappedInput props={props} ref={ref}>
+  <WrappedInput props={props} forwardedRef={ref}>
     <Input />
   </WrappedInput>
 ));
 
 const PasswordAdvance = forwardRef((props, ref) => (
-  <WrappedInput props={props} ref={ref}>
+  <WrappedInput props={props} forwardedRef={ref}>
     <Input.Password />
   </WrappedInput>
 ));

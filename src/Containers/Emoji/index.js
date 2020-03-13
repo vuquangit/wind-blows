@@ -22,7 +22,12 @@ const Emoji = ({ onSelect = () => {}, style = {} }) => {
 
   return (
     <>
-      <Popover content={emojiPicker} title={null} trigger="click">
+      <Popover
+        content={emojiPicker}
+        title={null}
+        trigger="click"
+        overlayClassName="emoij-popover"
+      >
         <Button className="emoji" title="Insert emoji">
           <div
             className="emoji-icon"

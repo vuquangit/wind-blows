@@ -102,6 +102,15 @@ export const personalProfileReducer = (state = initState, action = {}) => {
       }
       break;
 
+    case actionType.PROFILE_UPDATE_USER:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          user: merge(state.data.user, action.data)
+        }
+      };
+
     default:
       return state;
   }

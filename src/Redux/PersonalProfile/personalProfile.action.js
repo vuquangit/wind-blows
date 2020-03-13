@@ -31,11 +31,17 @@ const decreaseFollower = () => ({
   type: actionTypes.PROFILE_FOLLOWER_DECREASE
 });
 
+const updateUserProfile = data => ({
+  type: actionTypes.PROFILE_UPDATE_USER,
+  data
+});
+
 export {
   requestPersonalInfo,
   clearPersonalProfile,
   increaseCountPosts,
   decreaseCountPosts,
   increaseFollower,
-  decreaseFollower
+  decreaseFollower,
+  updateUserProfile
 };

@@ -5,10 +5,11 @@
     width: 100%;
     border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
     border-radius: 3px;
-    margin: 60px auto 0;
+    margin: 40px auto 0;
 
     @include media-breakpoint-down(sm) {
         margin: 0;
+        border: 0;
     }
 
     &__menu {
@@ -22,6 +23,5 @@
         @include media-breakpoint-down(sm) {
             padding: 0 16px;
         }
-
     }
 }

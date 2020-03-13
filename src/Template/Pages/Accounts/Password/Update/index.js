@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, message, Typography } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, isEqual } from "lodash";
 import axios from "utils/axiosConfig";
 
 import { PasswordAdvance } from "Components/Input";
@@ -18,14 +18,16 @@ const ChangePassword = ({
   history = {}
 }) => {
   const dispatch = useDispatch();
-  const profile = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
+  const profile = useSelector(
+    (state = {}) => get(state, "profile.data.user", {}),
+    isEqual()
   );
   const { isAuthenticateLogin = false } = profile;
   const [isCheckingTokenReset, setIsCheckingTokenReset] = useState(false);
   const [profileData, setProfileData] = useState(profile);
+  console.log("isAuthenticateLogin", isAuthenticateLogin);
 
-  // for Reset password
+  // check token reset password
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -45,6 +47,7 @@ const ChangePassword = ({
             },
             cancelToken: source.token
           });
+          console.log(res);
 
           setProfileData(get(res, "data", {}));
           setIsCheckingTokenReset(false);
@@ -53,13 +56,13 @@ const ChangePassword = ({
             console.log("cancelled fetch token reset");
           } else {
             console.log("Change password error ", err);
-            message.error("Get email error ", 5);
+            message.error("Password reset link is invalid or has expried", 5);
             setIsCheckingTokenReset(false);
           }
         }
       };
 
-      fetchEmail();
+      resetPasswordToken && fetchEmail();
     }
 
     // unmount
@@ -121,7 +124,6 @@ const ChangePassword = ({
   // handle change
   const [stateUpdate, setStateUpdate] = useState({
     isUpdating: false,
-    data: {},
     error: null
   });
 
@@ -129,7 +131,7 @@ const ChangePassword = ({
     try {
       setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
 
-      const res = await axios({
+      await axios({
         method: "post",
         url: "/users/change-password",
         data: {
@@ -142,19 +144,13 @@ const ChangePassword = ({
         }
       });
 
-      console.log("Edited profile :", res);
-      setStateUpdate(prevState => ({ ...prevState, data: res.data }));
-      // message.success("Updated your profile", 5);
+      const data = { email: profileData.email || "" };
+      await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
 
-      // refresh personal store
-      if (res.status === 200 || res.status === 201) {
-        const data = { email: profileData.email || "" };
-        await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+      message.success("Updated your password", 5);
 
-        message.success("Updated your password", 5);
-        if (isResetPassword) {
-          history.push("/");
-        }
+      if (isResetPassword) {
+        window.location.href = "/";
       }
     } catch (err) {
       console.log("Change password error ", err);
@@ -198,7 +194,7 @@ const ChangePassword = ({
                           message: "Please input your old password!"
                         }
                       ]
-                    })(<PasswordAdvance />)}
+                    })(<PasswordAdvance placeholder="Old password" />)}
                   </Form.Item>
                 )}
                 <Form.Item
@@ -253,7 +249,11 @@ const ChangePassword = ({
                   </Typography.Text>
                 )}
                 <Form.Item {...tailFormItemLayout}>
-                  <Button type="primary" htmlType="submit">
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={stateUpdate.isUpdating}
+                  >
                     Change Password
                   </Button>
                 </Form.Item>
@@ -273,8 +273,12 @@ const ChangePassword = ({
   );
 };
 
-const WrappedChangePassword = Form.create({ name: "changePassword" })(
-  ChangePassword
-);
+// const WrappedChangePassword = Form.create({ name: "changePassword" })(
+//   ChangePassword
+// );
 
-export default withRouter(WrappedChangePassword);
+// export default withRouter(WrappedChangePassword);
+
+export default Form.create({ name: "changePassword" })(
+  withRouter(ChangePassword)
+);

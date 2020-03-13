@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pick, isEmpty, get } from "lodash";
+import { pick, isEmpty, get, isEqual } from "lodash";
 import { auth as firebaseAuth } from "firebase/app";
 import axios from "utils/axiosConfig";
 import { message, notification, Avatar } from "antd";
@@ -21,10 +21,10 @@ import { messaging } from "Firebases/init-fcm";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const {
-    data: profileData = {},
-    isFetching = false
-  } = useSelector((state = {}) => get(state, "profile"));
+  const { data: profileData = {}, isFetching = false } = useSelector(
+    (state = {}) => get(state, "profile", {}),
+    isEqual()
+  );
 
   // when refersh ???
   const tokenUser = useSelector((state = {}) =>

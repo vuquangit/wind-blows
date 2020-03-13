@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { get, isEqual, isEmpty } from "lodash";
+import { get, isEqual } from "lodash";
 
 import BasicTemplate from "Template/BasicTemplate";
 import Profile from "./Profile";
@@ -38,7 +38,7 @@ const PersonalPage = ({
 
   // fetch data username view
   const username = get(match, "params.username", "");
-  const usernameStore = useSelector(
+  const usernameBefore = useSelector(
     state => get(state, "personalProfile.data.user.username", ""),
     isEqual()
   );
@@ -57,9 +57,8 @@ const PersonalPage = ({
       );
     };
 
-    (isEmpty(usernameStore) || !isEqual(username, usernameStore)) &&
-      _requestPersonalInfo();
-  }, [match, dispatch, viewerId, username, usernameStore]);
+    if (!isEqual(username, usernameBefore)) _requestPersonalInfo();
+  }, [match, dispatch, viewerId, username, usernameBefore]);
 
   const isPrivate = useSelector(state =>
     get(state, "personalProfile.data.user.isPrivate", false)

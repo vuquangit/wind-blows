@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col } from "antd";
 import { useSelector } from "react-redux";
-import { get } from "lodash";
+import { get, isEqual } from "lodash";
 
 import AvatarUser from "Components/AvatarUser";
 import ModalChangePhoto from "./ModalChangePhoto";
@@ -26,7 +26,7 @@ const ProfilePhoto = props => {
     profilePictureUrl = "",
     username = "",
     profilePicturePublicId = ""
-  } = useSelector(state => get(state, "profile.data.user"));
+  } = useSelector(state => get(state, "profile.data.user"), isEqual());
 
   return (
     <div className="profile-photo">

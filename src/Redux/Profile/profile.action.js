@@ -58,6 +58,17 @@ const updateProfileInfo = ({
   }
 });
 
+const updateUserProfile = data => ({
+  type: actionTypes.PROFILE_UPDATE_USER,
+  data
+});
+
 const signOut = () => ({ type: actionTypes.PROFILE_SIGNOUT });
 
-export { createProfile, requestProfileInfo, updateProfileInfo, signOut };
+export {
+  createProfile,
+  requestProfileInfo,
+  updateProfileInfo,
+  updateUserProfile,
+  signOut
+};
