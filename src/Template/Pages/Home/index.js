@@ -129,10 +129,10 @@ const HomePage = () => {
     if (document.getElementById("navbar")) {
       var currentScrollPos = window.pageYOffset;
       if (prevScrollpos > currentScrollPos) {
-        document.getElementById("navbar").style.top = "0";
+        document.getElementById("navbar").style.transform = "none";
         setIsScrolled(false);
       } else if (currentScrollPos > 50) {
-        document.getElementById("navbar").style.top = "-60px";
+        document.getElementById("navbar").style.transform = "translateY(-100%)";
         setIsScrolled(true);
       }
       prevScrollpos = currentScrollPos;

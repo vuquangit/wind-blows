@@ -76,6 +76,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
         if (isEqual(userId, personalId))
           await dispatch(updateUserPersonalProfile(data));
 
+        setUpdating(false);
         handleCancelModal(true);
       } catch (err) {
         setUpdating(false);
@@ -119,18 +120,14 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
           publicId: get(res, "data.public_id", "")
         };
         await fetchChangePhoto(dataProfile);
-
-        // setUpdating(false);
       } catch (err) {
         if (axios.isCancel(err)) {
           console.log("cancelled uploading photo");
         } else {
-          // setUpdating(false);
+          setUpdating(false);
           message.error({ content: `Error: ${err}`, key: keyMessage });
           console.log(err);
         }
-      } finally {
-        setUpdating(false);
       }
     },
     [fetchChangePhoto]
@@ -158,6 +155,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
       footer={null}
       closable={false}
       centered
+      destroyOnClose
     >
       {updating && (
         <div className="profile-photo__modal--loading">

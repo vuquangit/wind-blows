@@ -18,6 +18,7 @@ import {
   increaseFollowRequest
 } from "Redux/Notifications/notification.action";
 import { messaging } from "Firebases/init-fcm";
+import ScrollIntoView from "Components/ScrollIntoView";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -235,7 +236,9 @@ const Main = () => {
   ) : (
     <BrowserRouter>
       <MainWrapper>
-        <Switch>{_renderPage()}</Switch>
+        <ScrollIntoView>
+          <Switch>{_renderPage()}</Switch>
+        </ScrollIntoView>
       </MainWrapper>
     </BrowserRouter>
   );

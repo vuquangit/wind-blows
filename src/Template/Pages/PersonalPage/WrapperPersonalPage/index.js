@@ -58,7 +58,8 @@ const PersonalPage = ({
     };
 
     if (!isEqual(username, usernameBefore)) _requestPersonalInfo();
-  }, [match, dispatch, viewerId, username, usernameBefore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewerId, username, usernameBefore]);
 
   const isPrivate = useSelector(state =>
     get(state, "personalProfile.data.user.isPrivate", false)

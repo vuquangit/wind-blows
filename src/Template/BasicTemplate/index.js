@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import classNames from "classnames";
+
 import Header from "../Pages/Header";
 import "./basicTemplate.scss";
 import Footer from "Template/Pages/Footer";
@@ -12,10 +14,12 @@ const BasicTemplate = ({ footer = true, children }) => {
       var currentScrollPos = window.pageYOffset;
 
       if (prevScrollpos > currentScrollPos) {
-        document.getElementById("navbar").style.top = "0";
+        document.getElementById("navbar").style.transform = "none";
+
         setIsScrolled(false);
       } else if (currentScrollPos > 50) {
-        document.getElementById("navbar").style.top = "-60px";
+        document.getElementById("navbar").style.transform = "translateY(-100%)";
+
         setIsScrolled(true);
       }
       prevScrollpos = currentScrollPos;
@@ -29,9 +33,14 @@ const BasicTemplate = ({ footer = true, children }) => {
   //   })
   // );
 
+  const classHeader = classNames(
+    "basic-template__header"
+    // , {    "basic-template__header-hidden": isScrolled  }
+  );
+
   return (
     <div className="basic-template">
-      <div className="basic-template__header" id="navbar">
+      <div className={classHeader} id="navbar">
         <Header isScrolled={isScrolled} />
       </div>
       <div className="basic-template__children">

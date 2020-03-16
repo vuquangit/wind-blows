@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { get, isEqual } from "lodash";
 import { Button, Row, Col, Popconfirm, message, Typography } from "antd";
 import { Link } from "react-router-dom";
+import { auth as firebaseAuth } from "firebase/app";
 
+import { signOut } from "Redux/Profile/profile.action";
 import axios from "utils/axiosConfig";
 import { PasswordAdvance } from "Components/Input";
 import "./temporary.scss";
 
 const Temporary = () => {
+  const dispatch = useDispatch();
   const { id = "", username = "" } = useSelector(
     (state = {}) => get(state, "profile.data.user", {}),
     isEqual()
@@ -25,11 +28,21 @@ const Temporary = () => {
     error: null
   });
 
+  const signout = async () => {
+    try {
+      await firebaseAuth().signOut();
+      // signed out
+      dispatch(signOut());
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const confirmDisableAccount = async () => {
     try {
       setState(prevState => ({ ...prevState, isLoading: true }));
 
-      const res = await axios({
+      await axios({
         method: "post",
         url: "/users/deactivation",
         data: { userId: id, password },
@@ -37,14 +50,15 @@ const Temporary = () => {
           "Content-Type": "application/json"
         }
       });
-      console.log("Disabled account: ", res);
 
+      message.success("Your account has been temporarily disabled", 5);
       setState(prevState => ({ ...prevState, isLoading: false }));
+      signout();
     } catch (err) {
       setState(prevState => ({ ...prevState, isLoading: false, error: true }));
 
       console.log("Disable account error ", err);
-      message.error("Disable account error");
+      message.error("Temporary disable account error");
     }
   };
 
@@ -59,7 +73,6 @@ const Temporary = () => {
           You can disable your account instead of deleting it. This means your
           account will be hidden until you reactivate it by logging back in.
         </p>
-        {/* <p>You can only disable your account once a week.</p> */}
         <p className="temporary__content--title">Keeping Your Data Safe</p>
         <p>
           Nothing is more important to us than the safety and security of the
@@ -71,7 +84,7 @@ const Temporary = () => {
         <Row className="temporary__content--form-password">
           <Col xs={24} sm={12} md={12}>
             <label
-              for="password"
+              htmlFor="password"
               className="temporary__content--label-password"
             >
               To continue, please re-enter your password

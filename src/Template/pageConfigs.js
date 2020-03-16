@@ -57,22 +57,26 @@ const pageConfigs = [
   {
     path: "/accounts/edit/",
     component: EditProfile,
-    exact: true
+    exact: true,
+    private: true
   },
   {
     path: "/accounts/privacy_and_security/",
     component: PricacyAndSecurity,
-    exact: true
+    exact: true,
+    private: true
   },
   {
     path: "/accounts/remove/request/temporary/",
     component: TemporaryDisableAccount,
-    exact: true
+    exact: true,
+    private: true
   },
   {
     path: "/explore/people/suggested/",
     component: Suggested,
-    exact: true
+    exact: true,
+    private: true
   },
   {
     path: "/explore/people/search/",
