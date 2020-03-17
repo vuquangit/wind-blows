@@ -11,21 +11,16 @@ import ProfilePhoto from "Containers/ProfilePhoto";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import "./changePassword.scss";
 
-const ChangePassword = ({
-  form,
-  isResetPassword = false,
-  match = {},
-  history = {}
-}) => {
+const ChangePassword = ({ form, isResetPassword = false, match = {} }) => {
   const dispatch = useDispatch();
   const profile = useSelector(
     (state = {}) => get(state, "profile.data.user", {}),
     isEqual()
   );
-  const { isAuthenticateLogin = false } = profile;
+  const { isAuthorizationLogin = false } = profile;
   const [isCheckingTokenReset, setIsCheckingTokenReset] = useState(false);
   const [profileData, setProfileData] = useState(profile);
-  console.log("isAuthenticateLogin", isAuthenticateLogin);
+  console.log("isAuthorizationLogin", isAuthorizationLogin);
 
   // check token reset password
   useEffect(() => {
@@ -74,7 +69,7 @@ const ChangePassword = ({
   }, []);
 
   const [confirmDirty, setConfirmDirty] = useState(false);
-  const { getFieldDecorator } = form;
+  const { getFieldDecorator, setFieldsValue } = form;
   const formItemLayout = isResetPassword
     ? {}
     : {
@@ -137,7 +132,7 @@ const ChangePassword = ({
         data: {
           ...values,
           userId: profileData.id || "",
-          isConfirmOldPassword: !isResetPassword && !isAuthenticateLogin
+          isConfirmOldPassword: !isResetPassword && !isAuthorizationLogin
         },
         headers: {
           "Content-Type": "application/json"
@@ -151,6 +146,17 @@ const ChangePassword = ({
 
       if (isResetPassword) {
         window.location.href = "/";
+      } else {
+        setStateUpdate(prevState => ({
+          ...prevState,
+          error: null
+        }));
+
+        setFieldsValue({
+          oldPassword: "",
+          newPassword: "",
+          confirmNewPassword: ""
+        });
       }
     } catch (err) {
       console.log("Change password error ", err);
@@ -185,7 +191,7 @@ const ChangePassword = ({
           <Form {...formItemLayout} onSubmit={handleSubmit}>
             {!isEmpty(profileData) ? (
               <>
-                {!isResetPassword && !isAuthenticateLogin && (
+                {!isResetPassword && !isAuthorizationLogin && (
                   <Form.Item label="Old Password" hasFeedback>
                     {getFieldDecorator("oldPassword", {
                       rules: [

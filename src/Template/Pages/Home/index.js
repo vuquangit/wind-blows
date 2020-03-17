@@ -137,7 +137,7 @@ const HomePage = () => {
           <PostItem {...item} isHomePage handleRemovePost={handleRemovePost} />
         </div>
       )),
-    []
+    [handleRemovePost]
   );
 
   // scroll
@@ -184,11 +184,13 @@ const HomePage = () => {
                       <Pinwheel isLoading size={100} />
                     </div>
                   )}
-                  {state.data && state.data.length === 0 && <Suggested />}
+                  {!state.isLoading &&
+                    state.data &&
+                    state.data.length === 0 && <Suggested />}
                 </div>
               </div>
             </Col>
-            {state.data && state.data.length > 0 && (
+            {!state.isLoading && state.data && state.data.length > 0 && (
               <Col xs={0} lg={7}>
                 <Sticky topOffset={0}>
                   {({ style }) => (
