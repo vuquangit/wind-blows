@@ -12,7 +12,7 @@ const PostGrid = ({
   isLoading = false,
   hasMoreItems = false,
   getMoreItems = () => {},
-  handleRemovePersonalPost = () => {}
+  handleRemovePost = () => {}
 }) => {
   const _renderFollowItem = useCallback(
     () =>
@@ -22,10 +22,7 @@ const PostGrid = ({
         (item, idx) =>
           !isEmpty(item) && (
             <Col key={item.id || idx} span={8}>
-              <PersonalPostItem
-                {...item}
-                handleRemovePersonalPost={handleRemovePersonalPost}
-              />
+              <PersonalPostItem {...item} handleRemovePost={handleRemovePost} />
             </Col>
           )
       ),

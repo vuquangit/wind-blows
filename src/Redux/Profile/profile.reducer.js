@@ -2,7 +2,7 @@ import { merge } from "lodash";
 import * as actionType from "./actionType";
 
 const initState = {
-  isFetching: true,
+  isFetching: false,
   data: {},
   error: false,
   message: null
@@ -35,7 +35,6 @@ export const profileReducer = (state = initState, action = {}) => {
         message: null,
         data: {}
       };
-
     case actionType.PROFILE_UPDATE_USER:
       return {
         ...state,
@@ -43,6 +42,11 @@ export const profileReducer = (state = initState, action = {}) => {
           ...state.data,
           user: merge(state.data.user, action.data)
         }
+      };
+    case actionType.PROFILE_CLEAR_MESSAGE:
+      return {
+        ...state,
+        message: null
       };
 
     default:

@@ -19,7 +19,7 @@
     }
   }
 
-  &::after {
+  &:not(:last-child) &::after {
     border-bottom: 1px solid rgba(var(--b38, 219, 219, 219), 1);
     bottom: 0;
     content: "";

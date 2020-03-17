@@ -18,7 +18,7 @@ const ModalOption = ({
   match,
   history,
   handleCancelModalPost = () => {},
-  handleRemovePersonalPost = () => {}
+  handleRemovePost = () => {}
 }) => {
   const { id: viewerId = "" } = useSelector((state = {}) =>
     get(state, "profile.data.user", {})
@@ -75,7 +75,10 @@ const ModalOption = ({
       } else if (startsWith(match.path, "/:username")) {
         handleCancelModal();
         handleCancelModalPost();
-        handleRemovePersonalPost(postId);
+        handleRemovePost(postId);
+      } else if (isEqual(match.path, "/")) {
+        handleCancelModal();
+        handleRemovePost(postId);
       }
     } catch (err) {
       setIsDeleting(false);

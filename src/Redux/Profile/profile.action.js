@@ -63,6 +63,10 @@ const updateUserProfile = data => ({
   data
 });
 
+const clearMessage = () => ({
+  type: actionTypes.PROFILE_CLEAR_MESSAGE
+});
+
 const signOut = () => ({ type: actionTypes.PROFILE_SIGNOUT });
 
 export {
@@ -70,5 +74,6 @@ export {
   requestProfileInfo,
   updateProfileInfo,
   updateUserProfile,
+  clearMessage,
   signOut
 };

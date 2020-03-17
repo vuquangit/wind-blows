@@ -24,7 +24,7 @@ const PostItem = ({
   sidecarChildren = [],
   relationship = {},
   handleCancelModalPost = () => {},
-  handleRemovePersonalPost = () => {}
+  handleRemovePost = () => {}
 }) => {
   // fetch likes
   const viewerId = useSelector((state = {}) =>
@@ -107,7 +107,7 @@ const PostItem = ({
         owner={owner}
         relationship={relationship}
         handleCancelModalPost={handleCancelModalPost}
-        handleRemovePersonalPost={handleRemovePersonalPost}
+        handleRemovePost={handleRemovePost}
       />
     </article>
   );

@@ -8,7 +8,7 @@ const PostOption = ({
   owner = {},
   relationship = {},
   handleCancelModalPost = () => {},
-  handleRemovePersonalPost = () => {}
+  handleRemovePost = () => {}
 }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const showModal = () => {
@@ -30,7 +30,7 @@ const PostOption = ({
         visibleModal={visibleModal}
         handleCancelModal={handleCancelModal}
         handleCancelModalPost={handleCancelModalPost}
-        handleRemovePersonalPost={handleRemovePersonalPost}
+        handleRemovePost={handleRemovePost}
       />
     </div>
   );

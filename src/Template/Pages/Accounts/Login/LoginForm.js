@@ -1,20 +1,40 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Form, Icon, Button, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { isEmpty, get } from "lodash";
+import { isEmpty, get, isEqual } from "lodash";
 
 import { InputAdvance, PasswordAdvance } from "Components/Input";
-import { requestProfileInfo } from "Redux/Profile/profile.action";
+import { requestProfileInfo, clearMessage } from "Redux/Profile/profile.action";
 
 const LoginForm = ({ form, history }) => {
   const { getFieldDecorator, validateFields, setFieldsValue } = form;
-
-  // Check login
   const dispatch = useDispatch();
-  const { data: profileData, isFetching, message } = useSelector(
-    (state = {}) => state.profile
-  );
+  const {
+    data: profileData = {},
+    isFetching = false,
+    message = ""
+  } = useSelector((state = {}) => get(state, "profile", {}), isEqual());
+
+  // loading submit
+  const [isSubmit, setIsSubmit] = useState(false);
+  const handleIsSubmit = () => setIsSubmit(true);
+  const handleIsNotSubmit = () => setIsSubmit(false);
+
+  useEffect(() => {
+    dispatch(clearMessage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (get(window, "sessionStorage.login_username"))
+      setFieldsValue({
+        username: get(window, "sessionStorage.login_username", "")
+        // password: get(window, "sessionStorage.login_password") || ""
+      });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // fetch login
   const fetchLogin = useCallback(
@@ -33,7 +53,7 @@ const LoginForm = ({ form, history }) => {
     [dispatch]
   );
 
-  const confirmInput = field => {
+  const confirmInput = useCallback(field => {
     // Check if email
     // eslint-disable-next-line
     if (/\@/.test(field)) {
@@ -48,49 +68,45 @@ const LoginForm = ({ form, history }) => {
       if (!field) return { type: "username", isValid: false };
       else return { type: "username", isValid: true };
     }
-  };
+  }, []);
 
   // handle submit
-  const handleSubmit = e => {
-    e.preventDefault();
-    validateFields(async (err, values) => {
-      if (!err) {
-        // save local storage
-        window.sessionStorage.setItem("login_username", values.username);
-        // window.sessionStorage.setItem("login_password", values.password);
-        const typeInput = await confirmInput(values.username);
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      validateFields(async (err, values) => {
+        if (!err) {
+          handleIsSubmit();
 
-        if (typeInput.type === "email")
-          await fetchLogin({
-            email: values.username,
-            username: undefined,
-            password: values.password
-          });
-        else
-          await fetchLogin({
-            email: undefined,
-            username: values.username,
-            password: values.password
-          });
+          // save local storage
+          window.sessionStorage.setItem("login_username", values.username);
+          // window.sessionStorage.setItem("login_password", values.password);
 
-        if (!isEmpty(profileData)) {
-          window.sessionStorage.removeItem("login_username");
-          // window.sessionStorage.removeItem("login_password");
-          history.push("/");
+          const typeInput = await confirmInput(values.username);
+
+          if (typeInput.type === "email")
+            await fetchLogin({
+              email: values.username,
+              username: undefined,
+              password: values.password
+            });
+          else
+            await fetchLogin({
+              email: undefined,
+              username: values.username,
+              password: values.password
+            });
+
+          if (!isEmpty(profileData)) {
+            window.sessionStorage.removeItem("login_username");
+            // window.sessionStorage.removeItem("login_password");
+            history.push("/");
+          } else handleIsNotSubmit();
         }
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (get(window, "sessionStorage.login_username"))
-      setFieldsValue({
-        username: get(window, "sessionStorage.login_username") || ""
-        // password: get(window, "sessionStorage.login_password") || ""
       });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    },
+    [confirmInput, fetchLogin, history, profileData, validateFields]
+  );
 
   return (
     <Form onSubmit={handleSubmit} className="login-form">
@@ -100,7 +116,8 @@ const LoginForm = ({ form, history }) => {
         })(
           <InputAdvance
             prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="Username"
+            allowClear
+            placeholder="Username or Email"
           />
         )}
       </Form.Item>
@@ -110,6 +127,7 @@ const LoginForm = ({ form, history }) => {
         })(
           <PasswordAdvance
             prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            allowClear
             placeholder="Password"
           />
         )}
@@ -119,7 +137,7 @@ const LoginForm = ({ form, history }) => {
           type="primary"
           htmlType="submit"
           className="login-form__submit"
-          loading={isFetching}
+          loading={isFetching && isSubmit}
         >
           Log In
         </Button>
@@ -129,6 +147,4 @@ const LoginForm = ({ form, history }) => {
   );
 };
 
-const WrappedLoginForm = Form.create({ name: "normal_login" })(LoginForm);
-
-export default withRouter(WrappedLoginForm);
+export default Form.create({ name: "normal_login" })(withRouter(LoginForm));

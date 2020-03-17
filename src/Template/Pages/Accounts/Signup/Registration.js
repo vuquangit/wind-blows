@@ -1,99 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Form, Button, Typography } from "antd";
 import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { get, isEmpty } from "lodash";
+import { get, isEmpty, isEqual } from "lodash";
 
 import { InputAdvance, PasswordAdvance } from "Components/Input";
-import { createProfile } from "Redux/Profile/profile.action";
+import { createProfile, clearMessage } from "Redux/Profile/profile.action";
 import "./signup.scss";
 
 const Registration = ({ form = {}, history = {} }) => {
   const dispatch = useDispatch();
-  const { data: profileData, message } = useSelector(
-    (state = {}) => state.profile
-  );
-
-  const [confirmDirty, setConfirmDirty] = useState(false);
   const {
-    getFieldDecorator,
-    setFieldsValue,
-    validateFields,
-    getFieldValue
-  } = form;
+    data: profileData = {},
+    message = "",
+    isFetching = false
+  } = useSelector((state = {}) => get(state, "profile", {}), isEqual());
 
-  const validateToNextPassword = (rule, value, callback) => {
-    if (value && confirmDirty) {
-      validateFields(["confirmPassword"], { force: true });
-    }
-    callback();
-  };
-  const compareToFirstPassword = (rule, value, callback) => {
-    if (value && value !== getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
+  useEffect(() => {
+    dispatch(clearMessage());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleConfirmBlur = e => {
-    const { value } = e.target;
-    setConfirmDirty(confirmDirty || !!value);
-  };
+  // loading submit
+  const [isSubmit, setIsSubmit] = useState(false);
+  const handleIsSubmit = () => setIsSubmit(true);
+  const handleIsNotSubmit = () => setIsSubmit(false);
 
-  const validateUsername = (rule, value, callback) => {
-    if (value && /^\S+$/gi.test(value) === false) {
-      callback("Username contain whitespace");
-    } else if (value && /[A-Z]+/.test(value)) {
-      callback("The username has uppercase characters");
-    } else {
-      callback();
-    }
-  };
-
-  // handle signup
-  const fetchSignup = async data => {
-    await dispatch(
-      createProfile({
-        data,
-        endpoint: "auth/signup",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        }
-      })
-    );
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    form.validateFieldsAndScroll(async (err, values) => {
-      if (!err) {
-        // console.log("Received values of form: ", values);
-        window.sessionStorage.setItem("signup_email", values.email);
-        window.sessionStorage.setItem("signup_fullName", values.fullName);
-        window.sessionStorage.setItem(
-          "signup_username",
-          values.username.trim()
-        );
-
-        await fetchSignup({
-          email: values.email,
-          fullName: values.fullName,
-          username: values.username.trim(),
-          password: values.password
-        });
-
-        if (!isEmpty(profileData)) {
-          window.sessionStorage.removeItem("signup_email");
-          window.sessionStorage.removeItem("signup_fullName");
-          window.sessionStorage.removeItem("signup_username");
-          history.push("/");
-        }
-      }
-    });
-  };
-
+  // reload values
   useEffect(() => {
     if (get(window, "sessionStorage.signup_username"))
       setFieldsValue({
@@ -104,6 +37,106 @@ const Registration = ({ form = {}, history = {} }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // valid values
+  const [confirmDirty, setConfirmDirty] = useState(false);
+  const {
+    getFieldDecorator,
+    setFieldsValue,
+    validateFields,
+    getFieldValue
+  } = form;
+
+  const validateToNextPassword = useCallback(
+    (rule, value, callback) => {
+      if (value && confirmDirty) {
+        validateFields(["confirmPassword"], { force: true });
+      }
+      callback();
+    },
+    [confirmDirty, validateFields]
+  );
+  const compareToFirstPassword = useCallback(
+    (rule, value, callback) => {
+      if (value && value !== getFieldValue("password")) {
+        callback("Two passwords that you enter is inconsistent!");
+      } else {
+        callback();
+      }
+    },
+    [getFieldValue]
+  );
+  const handleConfirmBlur = useCallback(
+    e => {
+      const { value = "" } = e.target;
+      setConfirmDirty(confirmDirty || !!value);
+    },
+    [confirmDirty]
+  );
+
+  const validateUsername = useCallback((rule, value, callback) => {
+    if (value && /^\S+$/gi.test(value) === false) {
+      callback("Username contain whitespace");
+    } else if (value && /[A-Z]+/.test(value)) {
+      callback("The username has uppercase characters");
+    } else {
+      callback();
+    }
+  }, []);
+
+  // handle signup
+  const fetchSignup = useCallback(
+    async data => {
+      await dispatch(
+        createProfile({
+          data,
+          endpoint: "auth/signup",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+          }
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  // hanlde submit
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      form.validateFieldsAndScroll(async (err, values) => {
+        if (!err) {
+          handleIsSubmit();
+
+          // console.log("Received values of form: ", values);
+          window.sessionStorage.setItem("signup_email", values.email);
+          window.sessionStorage.setItem("signup_fullName", values.fullName);
+          window.sessionStorage.setItem(
+            "signup_username",
+            values.username.trim()
+          );
+
+          await fetchSignup({
+            email: values.email,
+            fullName: values.fullName,
+            username: values.username.trim(),
+            password: values.password
+          });
+
+          if (!isEmpty(profileData)) {
+            window.sessionStorage.removeItem("signup_email");
+            window.sessionStorage.removeItem("signup_fullName");
+            window.sessionStorage.removeItem("signup_username");
+            history.push("/");
+          } else {
+            handleIsNotSubmit();
+          }
+        }
+      });
+    },
+    [fetchSignup, form, history, profileData]
+  );
 
   return (
     <div className="registration">
@@ -192,7 +225,11 @@ const Registration = ({ form = {}, history = {} }) => {
           <Typography.Text type="danger">{message}</Typography.Text>
         )}
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={isSubmit && isFetching}
+          >
             Signup
           </Button>
         </Form.Item>

@@ -126,7 +126,7 @@ const FetchPosts = ({
   }, [newPosts]);
 
   const [countItemRemoved, setCountItemRemoved] = useState(0);
-  const handleRemovePersonalPost = useCallback(
+  const handleRemovePost = useCallback(
     postId => {
       setState(prevState => ({
         ...prevState,
@@ -164,7 +164,7 @@ const FetchPosts = ({
             isLoading={state.isLoading}
             hasMoreItems={hasMoreItems}
             getMoreItems={() => getMoreItems()}
-            handleRemovePersonalPost={handleRemovePersonalPost}
+            handleRemovePost={handleRemovePost}
           />
         ) : (
           <PostsEmpty icon={iconEmpty} text={textEmpty} />

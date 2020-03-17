@@ -24,7 +24,7 @@ const PersonalPostItem = ({
   relationship = {},
   savedByViewer = false,
   history = {},
-  handleRemovePersonalPost = () => {}
+  handleRemovePost = () => {}
 }) => {
   // show info image
   const [isHover, setIsHouver] = React.useState(false);
@@ -97,7 +97,7 @@ const PersonalPostItem = ({
               sidecarChildren={sidecarChildren}
               isModal
               handleCancelModalPost={handleCancelModal}
-              handleRemovePersonalPost={handleRemovePersonalPost}
+              handleRemovePost={handleRemovePost}
             />
           </div>
         </div>

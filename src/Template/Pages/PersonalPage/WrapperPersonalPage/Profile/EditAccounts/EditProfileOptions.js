@@ -1,15 +1,16 @@
 import React, { useState, useCallback } from "react";
-import { auth as firebaseAuth } from "firebase/app";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { withRouter } from "react-router";
 import { get } from "lodash";
 
-import { signOut } from "Redux/Profile/profile.action";
+import { Auth } from "Components/Auth";
 
 const EditProfileOptions = ({ history = {} }) => {
+  const signOut = Auth.useSignOut(); // `useDispatch` is called at top level
+
   const { isFetching = false } = useSelector((state = {}) =>
     get(state, "profile", {})
   );
@@ -17,24 +18,12 @@ const EditProfileOptions = ({ history = {} }) => {
   // Modal edit account
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const showModalEdit = () => setVisibleModalEdit(true);
-  const handleCancelEdit = () => {
-    !isFetching && setVisibleModalEdit(false);
-  };
+  const handleCancelEdit = () => !isFetching && setVisibleModalEdit(false);
 
   // handles
-  const dispatch = useDispatch();
   const handleLogoutClick = useCallback(() => {
-    const signout = async () => {
-      try {
-        await firebaseAuth().signOut();
-        // signed out
-        dispatch(signOut());
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    signout();
-  }, [dispatch]);
+    signOut();
+  }, [signOut]);
   const handleChangePassword = () => history.push("/accounts/password/change/");
   const handlePrivacyAndSecurity = () =>
     history.push("/accounts/privacy_and_security/");

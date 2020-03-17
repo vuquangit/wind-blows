@@ -13,6 +13,7 @@ import Profile from "./HomeProfile";
 import SuggestionForUser from "../Explore/Suggestion";
 import Footer from "Template/Pages/Footer";
 import Pinwheel from "Components/Loaders/Pinwheel";
+import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 import "./home.scss";
 
 const HomePage = () => {
@@ -67,6 +68,7 @@ const HomePage = () => {
             )
           ],
           totalItem: get(response, "data.totalItem"),
+          error: null,
           isLoading: false
         }));
       } catch (error) {
@@ -109,6 +111,22 @@ const HomePage = () => {
     }));
   }, []);
 
+  const handleRemovePost = useCallback(
+    id => {
+      const data =
+        state.data && state.data.length > 0
+          ? state.data.filter(item => item.id !== id)
+          : [];
+
+      setState(prevState => ({
+        ...prevState,
+        data,
+        totalItem: prevState.totalItem - 1
+      }));
+    },
+    [state.data]
+  );
+
   // render items
   const _renderPostItem = useCallback(
     items =>
@@ -116,7 +134,7 @@ const HomePage = () => {
       items.length > 0 &&
       items.map((item, idx) => (
         <div key={item.id || idx} className="home-post__item">
-          <PostItem {...item} isHomePage />
+          <PostItem {...item} isHomePage handleRemovePost={handleRemovePost} />
         </div>
       )),
     []
@@ -147,7 +165,7 @@ const HomePage = () => {
       <div className="home">
         <div className="home__content">
           <Row>
-            <Col xs={24} lg={17}>
+            <Col xs={24} lg={state.data && state.data.length > 0 ? 17 : 24}>
               <div className="home__content--post">
                 <div className="post-list">
                   <div className="post-list__post-status">
@@ -166,21 +184,24 @@ const HomePage = () => {
                       <Pinwheel isLoading size={100} />
                     </div>
                   )}
+                  {state.data && state.data.length === 0 && <Suggested />}
                 </div>
               </div>
             </Col>
-            <Col xs={0} lg={7}>
-              <Sticky topOffset={0}>
-                {({ style }) => (
-                  <div className="home__content--advance" style={style}>
-                    <div style={stylesAdvanceScroll} />
-                    <Profile />
-                    <SuggestionForUser />
-                    <Footer isHomePage />
-                  </div>
-                )}
-              </Sticky>
-            </Col>
+            {state.data && state.data.length > 0 && (
+              <Col xs={0} lg={7}>
+                <Sticky topOffset={0}>
+                  {({ style }) => (
+                    <div className="home__content--advance" style={style}>
+                      <div style={stylesAdvanceScroll} />
+                      <Profile />
+                      <SuggestionForUser />
+                      <Footer isHomePage />
+                    </div>
+                  )}
+                </Sticky>
+              </Col>
+            )}
           </Row>
         </div>
       </div>
