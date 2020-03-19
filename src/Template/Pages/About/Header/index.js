@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useRef, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
-import Pinwheel from "Components/Loaders/Pinwheel";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 import { Button } from "antd";
 import classNames from "classnames";
+
+import Pinwheel from "Components/Loaders/Pinwheel";
+import "./header.scss";
 
 const Header = () => {
   const username = useSelector((state = {}) =>
@@ -13,6 +15,7 @@ const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleToggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleCloseMenu = () => setIsMenuOpen(false);
 
   const classMenuButton = classNames("menu-line", {
     "menu-line-rotate": isMenuOpen
@@ -68,11 +71,41 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen]);
 
+  // scroll header
+  // const [isScrolled, setIsScrolled] = useState(false);
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = () => {
+    if (document.getElementById("navHeaderAbout")) {
+      var currentScrollPos = window.pageYOffset;
+
+      if (prevScrollpos > currentScrollPos) {
+        document.getElementById("navHeaderAbout").style.transform = "none";
+
+        // setIsScrolled(false);
+      } else if (currentScrollPos > 50) {
+        document.getElementById("navHeaderAbout").style.transform =
+          "translateY(-100%)";
+
+        // setIsScrolled(true);
+      }
+      prevScrollpos = currentScrollPos;
+    }
+  };
+
+  const classHeaderContentBackground = classNames(
+    "header-about__content--background",
+    {
+      "header-about__content--background-hidden": window.pageYOffset < 100
+    }
+  );
+
   return (
-    <div className="header-about">
-      <div onClick={handleToggleMenu} className="header-about__menu-close" />
+    <div className="header-about" id="navHeaderAbout">
+      {isMenuOpen && (
+        <div onClick={handleCloseMenu} className="header-about__menu-close" />
+      )}
       <div className="header-about__content">
-        <div className="header-about__content--background" />
+        <div className={classHeaderContentBackground} />
         <nav>
           <Button
             onClick={handleToggleMenu}
