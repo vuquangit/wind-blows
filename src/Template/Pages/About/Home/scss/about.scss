@@ -1,0 +1,23 @@
+.abouts {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &__devider {
+        @media (min-width: 481px) {
+            height: 120px;
+        }
+
+        @media (max-width: 480px) {
+            height: 80px;
+        }
+    }
+
+    @import 'about1';
+    @import 'about2';
+    @import 'aboutItem';
+    @import 'other';
+
+}

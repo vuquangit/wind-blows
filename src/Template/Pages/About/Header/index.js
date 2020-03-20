@@ -126,28 +126,19 @@ const Header = () => {
               <div className="menu-list__content--wrap">
                 <ul>
                   <li className="menu-item">
-                    <Link to="/" className="menu-item__content">
+                    <Link
+                      to="/the-wind-blows/about"
+                      className="menu-item__content"
+                    >
                       Home
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link to="/" className="menu-item__content">
+                    <Link
+                      to="/the-wind-blows/about-me"
+                      className="menu-item__content"
+                    >
                       About me
-                    </Link>
-                  </li>
-                  <li className="menu-item">
-                    <Link to="/" className="menu-item__content">
-                      Feature
-                    </Link>
-                  </li>
-                  <li className="menu-item">
-                    <Link to="/" className="menu-item__content">
-                      Community
-                    </Link>
-                  </li>
-                  <li className="menu-item">
-                    <Link to="/" className="menu-item__content">
-                      Creators
                     </Link>
                   </li>
                 </ul>

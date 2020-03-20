@@ -15,7 +15,8 @@ import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 import Search from "Template/Pages/Search";
 import PricacyAndSecurity from "Template/Pages/Accounts/PrivacyAndSecurity";
 import TemporaryDisableAccount from "Template/Pages/Accounts/Remove";
-import About from "Template/Pages/About";
+import About from "Template/Pages/About/Home";
+import AboutMe from "Template/Pages/About/AboutMe";
 
 const pageConfigs = [
   {
@@ -87,6 +88,11 @@ const pageConfigs = [
   {
     path: "/the-wind-blows/about",
     component: About,
+    exact: true
+  },
+  {
+    path: "/the-wind-blows/about-me",
+    component: AboutMe,
     exact: true
   },
   {
