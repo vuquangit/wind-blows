@@ -18,9 +18,11 @@ const Footer = () => {
             </Link>
           </ul>
         </div>
-        <Link to="/" className="_8git _8kk1">
-          <span>The Wind Blows</span>
-        </Link>
+        <div className="_8ghp">
+          <Link to="/" className="_8git _8kk1">
+            <span>The Wind Blows</span>
+          </Link>
+        </div>
       </footer>
     </div>
   );

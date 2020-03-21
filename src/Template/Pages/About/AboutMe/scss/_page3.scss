@@ -1,0 +1,27 @@
+.page-3 {
+    display: flex;
+    justify-content: flex-end;
+    width: 50vw;
+
+    ._8h2z {
+        left: calc(50vw - 21.428vw);
+        max-width: 342.848px;
+        top: 0;
+        width: 21.428vw;
+        z-index: 1;
+    }
+
+    ._8h2y {
+        margin-top: 25px;
+    }
+
+    ._8g17 {
+        // height: auto;
+        transition: opacity 750ms cubic-bezier(.645, .045, .355, 1);
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+    }
+}

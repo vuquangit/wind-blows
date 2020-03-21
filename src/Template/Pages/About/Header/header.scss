@@ -58,6 +58,7 @@
             transition-property: opacity, transform, visibility, filter;
             margin-left: 3.571vw;
             z-index: 3;
+            box-shadow: none;
 
             @media (max-width: 768px) {
                 margin-left: 7.142vw;

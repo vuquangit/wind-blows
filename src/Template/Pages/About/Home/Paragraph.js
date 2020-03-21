@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import imgBackground1 from "../Images/imgbtn1.svg";
 import imgBackground2 from "../Images/imgbtn2.svg";
@@ -27,6 +28,14 @@ const Paragraph = ({
       </Link>
     </>
   );
+};
+
+Paragraph.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  directText: PropTypes.string,
+  href: PropTypes.string,
+  colorWhite: PropTypes.bool
 };
 
 export default Paragraph;

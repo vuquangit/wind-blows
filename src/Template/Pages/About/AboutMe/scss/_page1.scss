@@ -1,0 +1,213 @@
+.page-1 {
+    position: relative;
+
+    ._8kmh {
+        align-items: stretch;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        justify-content: space-between;
+    }
+
+    ._8kmi,
+    ._8kmj {
+        flex-shrink: 1;
+        min-height: 100%;
+    }
+
+    ._8kmj {
+        @media (min-width: 769px) {
+            min-width: 35.714vw;
+        }
+    }
+
+    ._8h1m {
+        height: 100%;
+        position: relative;
+    }
+
+    ._8nc5 {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    ._8g9b._8gqr {
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        transition: opacity 750ms cubic-bezier(.645, .045, .355, 1);
+        border: 0;
+    }
+
+
+
+
+    // left
+    ._8kmi {
+        @media (min-width: 769px) {
+            min-width: 64.285vw;
+        }
+    }
+
+    ._8h3h {
+        box-sizing: border-box;
+        height: 104vh;
+        padding-bottom: 4vh;
+    }
+
+    ._8g5w {
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+
+    ._8g5y {
+        height: 100%;
+        min-width: 100%;
+        position: absolute;
+        // z-index: -1;
+    }
+
+    ._8gtg {
+        min-height: 100%;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        background-image: linear-gradient(135deg, #FFD9FE, #A49AFC);
+    }
+
+    ._8la4 {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform-origin: center center;
+        width: 100%;
+        animation: rotateGradient 6s infinite;
+    }
+
+    @keyframes rotateGradient {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        50% {
+            transform: rotate(90deg);
+        }
+
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+
+    ._8jh6 {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform-origin: center center;
+        width: 100%;
+        background-image: linear-gradient(135deg, #ffd9fe 25%, #9be0f5 75%);
+        transform: scale(1.24898, 1.6691);
+    }
+
+    ._8g5x {
+        height: 100%;
+
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    ._8kmk {
+        height: 100%;
+        width: 100%;
+    }
+
+    ._8g8k {
+        box-sizing: border-box;
+        height: 100%;
+
+        @media (min-width: 769px) {
+            padding-left: 7.142vw;
+            padding-right: 7.142vw;
+        }
+    }
+
+    ._8g87 {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 100%;
+        min-width: 100%;
+        width: 100%;
+    }
+
+    ._8g5_ {
+        justify-content: center;
+    }
+
+    ._8g5z {
+        align-items: flex-end;
+    }
+
+    ._8g81 {
+        max-width: 571.424px;
+        width: 35.714vw;
+    }
+
+    ._8ird {
+        color: #000;
+    }
+
+    ._8iq5 {
+        align-items: center;
+        display: flex;
+        font-family: Aveny T, Franklin Gothic, Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: .8px;
+        line-height: 24px;
+        margin: 0;
+        width: 100%;
+    }
+
+    p {
+        margin: 1em 0;
+    }
+
+    p {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    ._8g86._8kjd+._8g86._8kjd {
+        margin-top: 16px;
+    }
+
+    ._8iq4 {
+        font-size: calc(44px + (16 * ((100vw - 375px) / 1225)));
+        letter-spacing: -1px;
+        line-height: calc(56px + (8 * ((100vw - 375px) / 1225)));
+    }
+
+    ._8iq3 {
+        text-align: left;
+        font-family: Franklin Gothic, Helvetica Neue, Helvetica, Arial, sans-serif;
+        // font-size: 14px;
+        font-weight: 400;
+        margin: 0;
+        width: 100%;
+    }
+
+}
