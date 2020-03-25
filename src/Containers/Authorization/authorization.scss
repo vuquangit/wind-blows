@@ -1,0 +1,54 @@
+.authorization {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &__loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100px;
+        width: 100%;
+
+        &--description {
+            font-size: 14px;
+            color: transparent;
+            background-image: linear-gradient(45deg, #2FBAED, #1D0AC9);
+            background-clip: text;
+            // -webkit-background-clip: text;
+            box-decoration-break: clone;
+        }
+
+        svg {
+            font-size: calc(44px + (16 * ((100vw - 375px) / 1225))) !important;
+            letter-spacing: -1px;
+            line-height: calc(56px + (8 * ((100vw - 375px) / 1225)));
+        }
+    }
+
+    #firebaseui_container {
+        width: 100% !important;
+    }
+
+    .firebaseui-idp-button {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px !important;
+        min-height: 32px !important;
+    }
+
+    .firebaseui-card-content {
+        padding: 0;
+        margin: 0 40px;
+    }
+
+    .firebaseui-idp-list {
+        margin: 0;
+    }
+
+}

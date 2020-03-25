@@ -1,0 +1,84 @@
+.user-option-modal {
+    max-width: 400px;
+    padding: 0;
+    // border-radius: 12px;
+    background-color: rgba(var(--f23, 255, 255, 255), 1);
+
+    .ant-modal-body {
+        padding: 0;
+    }
+
+    .ant-modal-close {
+        display: none;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+
+        &--header {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            margin-top: 32px;
+            margin: 16px 32px;
+
+            .title {
+                display: block;
+                color: rgba(var(--i1d, 38, 38, 38), 1);
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 24px;
+                margin: -4px 0 -6px;
+            }
+
+            .description {
+                display: block;
+                padding-top: 16px;
+                color: rgba(var(--f52, 153, 153, 153), 1);
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+                margin: -3px 0 -4px;
+            }
+        }
+
+        &--options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .edit-item {
+            background-color: transparent;
+            border-bottom: 0;
+            border-left: 0;
+            border-right: 0;
+            border-top: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+            cursor: pointer;
+            line-height: 1.5;
+            margin: 0;
+            min-height: 48px;
+            padding: 4px 8px;
+            text-align: center;
+            user-select: none;
+            vertical-align: middle;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: none;
+
+            &:hover {
+                background-color: #f7f7f7;
+            }
+        }
+
+        .danger {
+            color: rgba(var(--g2b, 237, 73, 86), 1);
+            font-weight: 700;
+        }
+
+        .primary {
+            color: rgba(var(--h5f, 56, 151, 240), 1);
+        }
+    }
+
+}

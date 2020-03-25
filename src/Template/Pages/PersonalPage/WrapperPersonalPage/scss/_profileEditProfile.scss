@@ -1,0 +1,22 @@
+.profile-edit-profile {
+    color: rgba(var(--fe0, 0, 53, 105), 1);
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-left: 20px;
+
+    @include media-breakpoint-down(sm) {
+        margin-left: 0;
+    }
+
+    button {
+        background-color: transparent;
+        border: 1px solid rgba(var(--d0b, 219, 219, 219), 1);
+        color: rgba(var(--f07, 38, 38, 38), 1);
+        border-radius: 4px;
+        position: relative;
+
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
+    }
+}

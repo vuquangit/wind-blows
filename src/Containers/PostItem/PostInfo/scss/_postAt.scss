@@ -1,0 +1,10 @@
+&--posted-at {
+    display: block !important;
+    padding-left: 16px;
+    margin-bottom: 0;
+    order: 4;
+
+    @media (max-width: 736px) {
+        order: 3;
+    }
+}

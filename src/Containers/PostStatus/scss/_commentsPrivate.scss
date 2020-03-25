@@ -1,0 +1,10 @@
+&--comments-private {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px 8px;
+
+    .ant-switch {
+        margin-left: 8px;
+    }
+}

@@ -1,0 +1,96 @@
+.a3 {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .a3c {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: space-between;
+        // max-width: 1600px;
+        width: 100%;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            height: auto;
+        }
+    }
+
+    .a3c-reverse {
+        @media (min-width: 769px) {
+            flex-direction: row-reverse;
+        }
+    }
+
+    .a3img {
+        width: 100%;
+
+        @media (min-width: 769px) {
+            width: 55vw;
+            min-height: 100%;
+        }
+    }
+
+    .a3t0 {
+        @media (min-width: 769px) {
+            // width: 50vw;           
+            flex-grow: 1;
+            min-height: 100%;
+        }
+    }
+
+    .a3t1 {
+        box-sizing: border-box;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        @media (min-width: 769px) {
+            padding-left: 7.142vw;
+            padding-right: 7.142vw;
+        }
+
+        @media (max-width: 768px) {
+            padding: 32px 7.142vw;
+        }
+    }
+
+    .a3t10 {
+        justify-content: flex-end;
+    }
+
+    .a3t2 {
+        display: flex;
+        flex-direction: column-reverse;
+        max-width: 457.136px;
+
+        @media (max-width: 768px) {
+            margin-left: 0;
+            margin-top: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .a3t3 {
+        max-width: 457.136px;
+        width: 28.571vw;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 100%;
+        min-width: 100%;
+        width: 100%;
+
+        @media (max-width: 768px) {
+            max-width: 100%;
+            width: 100%;
+            align-items: flex-start;
+            justify-content: center;
+        }
+    }
+}

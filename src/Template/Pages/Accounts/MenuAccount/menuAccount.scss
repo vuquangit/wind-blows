@@ -1,0 +1,39 @@
+.menu-account {
+    // border: 1px solid #003569;
+
+    &__item {
+        border-left: 2px solid transparent;
+        display: block;
+        font-size: 16px;
+        height: 100%;
+        line-height: 20px;
+        padding: 16px 16px 16px 30px;
+        // width: calc(100% - 48px);
+        text-align: left;
+
+        &--visited {
+            color: #262626;
+            border-left-color: #262626;
+            font-weight: 600;
+
+            &:hover {
+                border-left-color: #262626 !important;
+                background-color: #fff !important;
+                text-decoration: none;
+            }
+        }
+
+        &:hover {
+            background-color: #fafafa;
+            border-left-color: #dbdbdb;
+            text-decoration: none;
+        }
+    }
+
+    a,
+    a:visited {
+        color: #003569;
+        color: rgba(var(--fe0, 0, 53, 105), 1);
+        text-decoration: none;
+    }
+}

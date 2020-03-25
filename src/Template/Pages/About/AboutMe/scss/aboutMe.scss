@@ -1,0 +1,17 @@
+.about-me {
+    overflow-x: hidden;
+
+    &__sticky {
+        position: relative;
+
+        @media (min-width: 769px) {
+            position: absolute;
+        }
+
+    }
+
+    @import 'page1';
+    @import 'pageItem';
+    @import 'page3';
+    @import 'page4';
+}

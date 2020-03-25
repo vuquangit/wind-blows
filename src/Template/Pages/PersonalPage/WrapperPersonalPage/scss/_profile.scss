@@ -1,0 +1,30 @@
+&__profile {
+  margin-bottom: 44px;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 30px;
+    border-bottom: none;
+    margin-bottom: 24px;
+    padding-bottom: 0;
+  }
+
+  &--row-edit-account {
+    height: auto;
+
+    @media (max-width: 767px) {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+    }
+
+    @media (max-width: 575px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+  }
+}

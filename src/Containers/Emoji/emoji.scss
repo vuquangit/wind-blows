@@ -1,0 +1,46 @@
+.emoji {
+  background: transparent;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  border: 0;
+  cursor: pointer;
+
+  .emoji-icon {
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: -153px -658px;
+    height: 16px;
+    width: 16px;
+
+    .picker-emoji {
+      background: transparent;
+      border: 0;
+    }
+  }
+}
+
+.close-picker-emoji {
+  bottom: 0%;
+  transition: opacity 0.3s;
+  background: #000;
+  left: 0;
+  opacity: 0;
+  position: fixed !important;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.emoji-mart {
+  .emoji-mart-anchors {
+    flex-direction: row !important;
+  }
+}
+
+.emoij-popover {
+  .ant-popover-inner-content {
+    padding: 0;
+  }
+}

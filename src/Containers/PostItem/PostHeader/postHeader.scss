@@ -1,0 +1,93 @@
+.PI__PH {
+    position: absolute !important;
+    align-items: center !important;
+    flex-direction: row !important;
+    border-left: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    height: 72px;
+    padding: 16px;
+    right: 0;
+    width: 335px;
+    margin-right: 0;
+    top: 0;
+
+    @media (max-width: 736px) {
+        height: 60px;
+        position: relative !important;
+        width: 100%;
+    }
+
+    &--homepage {
+        height: 60px;
+        position: relative !important;
+        width: 100%;
+    }
+
+    &--owner {
+        margin-left: 16px;
+        display: flex;
+        align-items: flex-start !important;
+        flex-grow: 1;
+
+        .owner {
+            flex-direction: row !important;
+            align-items: center !important;
+
+            &__info {
+                flex-direction: row !important;
+                align-items: center !important;
+
+                &--username {
+                    display: inline;
+                    font-size: 14px;
+                    margin: 0;
+
+                    a {
+                        color: #262626;
+                        text-decoration: none;
+                        font-weight: 600;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
+
+                        &:visited {
+                            color: #262626;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+
+            &__follow {
+                flex-direction: row !important;
+                align-items: center !important;
+
+                &--dot {
+                    display: inline;
+                    color: #262626;
+                    margin-left: 4px;
+                    margin-right: 4px;
+                }
+
+                .follow {
+                    color: rgba(var(--h5f, 56, 151, 240), 1);
+                }
+
+                .follow-status__btn {
+                    border: 0;
+                }
+            }
+        }
+
+        .location {
+            line-height: 15px;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #262626;
+        }
+    }
+
+}

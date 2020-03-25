@@ -1,0 +1,30 @@
+.reset-password {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  &__content {
+    max-width: 400px;
+    width: 100%;
+    background-color: rgba(var(--cdc, 255, 255, 255), 1);
+    border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+    border-radius: 3px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 24px;
+
+    &--header {
+      margin-bottom: 16px;
+
+      h1 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+&--liked {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-bottom: 4px;
+    order: 3;
+
+    @media (max-width: 736px) {
+        order: 2;
+    }
+
+    .btn-likes {
+        background: 0 0;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        background-color: transparent;
+        display: inline;
+        padding: 0;
+        position: relative;
+        color: rgba(var(--f07, 38, 38, 38), 1);
+        border: 0;
+
+        &:visited {
+            color: rgba(var(--f07, 38, 38, 38), 1);
+        }
+    }
+}

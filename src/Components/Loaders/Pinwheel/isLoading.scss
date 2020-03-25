@@ -1,0 +1,26 @@
+.is-loading {
+    &__wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--icon {
+            animation: fanSpin 0.5s linear infinite;
+            animation-delay: -1.1s;
+        }
+
+        svg {
+            color: #0492e4 !important;
+        }
+    }
+}
+
+@keyframes fanSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
+}

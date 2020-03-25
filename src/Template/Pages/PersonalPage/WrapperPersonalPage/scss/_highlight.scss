@@ -1,0 +1,98 @@
+&__highlight {
+    margin-bottom: 44px;
+    padding-left: 24px;
+    padding-right: 34px;
+
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 21px;
+    }
+
+    &--item {
+        position: relative;
+        height: 130px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        .circle-border {
+            position: absolute;
+            top: 2px;
+            left: 24px;
+            width: 87px;
+            height: 87px;
+            border: 1px solid lightgray;
+            border-radius: 50%;
+
+            @include media-breakpoint-down(sm) {
+                top: -4px;
+                left: -4px;
+                width: 64px;
+                height: 64px;
+            }
+        }
+
+        .thumbnail {
+            background-color: #fafafa;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            width: 77px;
+            height: 77px;
+
+            @include media-breakpoint-down(sm) {
+                width: 56px;
+                height: 56px;
+            }
+
+            &-url {
+                background-repeat: no-repeat;
+                background-size: cover;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .title {
+            font-weight: 600;
+            padding-top: 15px;
+            display: block;
+            cursor: pointer;
+            overflow: hidden;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+
+            @include media-breakpoint-down(sm) {
+                font-size: 12px;
+                padding-top: 8px;
+            }
+        }
+    }
+
+    $btnSlider: 26px !important;
+    $slider-lineHeight: 0;
+
+    .slick-prev {
+        &:before {
+            font-size: $btnSlider;
+            line-height: $slider-lineHeight;
+            color: rgb(0, 107, 156);
+        }
+    }
+
+    .slick-next {
+        &:before {
+            font-size: $btnSlider;
+            line-height: $slider-lineHeight;
+            color: rgb(0, 107, 156);
+        }
+    }
+
+    .slick-disabled {
+        display: none !important;
+    }
+
+}

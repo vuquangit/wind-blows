@@ -1,0 +1,44 @@
+&__menu {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+
+    &--items {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .active {
+            svg {
+                color: rgb(21, 105, 214);
+            }
+        }
+    }
+
+    .menu-item {
+        padding-left: 24px;
+        cursor: pointer;
+
+        &__wrapper {
+            border: 1px solid rgba(var(--i1d, 38, 38, 38), 1);
+            border-radius: 50%;
+            height: 30px;
+            margin-left: -3px;
+            margin-top: -3px;
+            position: absolute;
+            width: 30px;
+        }
+
+        svg {
+            color: rgb(38, 38, 38);
+            width: 24px;
+            height: 24px;
+
+            &:hover {
+                color: rgb(0, 124, 196);
+            }
+        }
+    }
+}

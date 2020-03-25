@@ -1,0 +1,21 @@
+&__registration {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &--btn {
+        margin-right: 16px;
+
+        @media (max-width: 375px) {
+            margin-right: 8px;
+        }
+    }
+
+    a {
+        text-decoration: none;
+
+        &:focus {
+            text-decoration: none;
+        }
+    }
+}

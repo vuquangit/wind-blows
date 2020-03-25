@@ -1,0 +1,27 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+.wrapper-account {
+    background-color: #fff;
+    width: 100%;
+    border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+    border-radius: 3px;
+    margin: 40px auto 0;
+
+    @include media-breakpoint-down(sm) {
+        margin: 0;
+        border: 0;
+    }
+
+    &__menu {
+        border-right: 1px solid #dbdbdb;
+        height: 100%;
+    }
+
+    &__children {
+        padding: 0 60px 0 32px;
+
+        @include media-breakpoint-down(sm) {
+            padding: 0 16px;
+        }
+    }
+}

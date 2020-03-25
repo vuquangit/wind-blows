@@ -1,0 +1,89 @@
+.basic-template {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fafafa;
+  height: 100vh;
+
+  &__header {
+    position: fixed;
+    padding: 0;
+    background: #fff;
+    border-bottom: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    height: 60px;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    box-sizing: border-box;
+    // transition: top 0.3s ease-in-out;
+    transform: none;
+    transition: transform 500ms cubic-bezier(0, .61, .28, .92);
+  }
+
+  &__header-hidden {
+    transform: translateY(-100%);
+  }
+
+  &__children {
+    background-color: rgba(var(--b3f, 250, 250, 250), 1);
+    display: flex;
+    justify-content: center;
+    flex: 1 0 auto;
+    margin-top: 55px;
+
+    @media (max-width: 736px) {
+      background-color: #fff !important;
+    }
+
+    &--content {
+      max-width: 935px;
+      width: 100%;
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.sprite-icon {
+  &__core {
+    // background-image: url(https://www.instagram.com/static/bundles/es6/sprite_core_b20f2a3cd7e4.png/b20f2a3cd7e4.png);
+    background-image: url(./sprite_core.png);
+  }
+
+  &__glyphs {
+    // background-image:
+    //   url(https://www.instagram.com/static/bundles/es6/sprite_glyphs_a35ec5018262.png/a35ec5018262.png)
+    background-image: url(./sprite_glyphs.png);
+  }
+}
+
+.verified {
+  &__small {
+    background-position: -330px -337px;
+    height: 12px;
+    width: 12px;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    margin-left: 7px;
+    display: block;
+    overflow: hidden;
+    text-indent: 110%;
+    white-space: nowrap;
+  }
+
+  &__normal {
+    background-position: -383px -238px;
+    height: 18px;
+    width: 18px;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    margin-left: 7px;
+    display: block;
+    overflow: hidden;
+    text-indent: 110%;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,17 @@
+&--option {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    height: 36px;
+    border: 1px solid rgb(241, 241, 241);
+    background-color: rgb(241, 241, 241);
+
+    .option {
+        &__toggle {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+}

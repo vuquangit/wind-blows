@@ -1,0 +1,32 @@
+.PI {
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    padding: 0;
+
+    @media (min-width: 736px) {
+        border: 1px solid #e6e6e6;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+    &__modal {
+        height: 100%;
+        border: 0;
+    }
+
+    #react-root,
+    article,
+    div,
+    footer,
+    header,
+    main,
+    nav,
+    section {
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+        // flex-shrink: 0;
+        position: relative;
+    }
+}

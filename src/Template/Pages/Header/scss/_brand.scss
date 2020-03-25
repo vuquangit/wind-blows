@@ -1,0 +1,62 @@
+&__brand {
+  width: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &--items {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 16px;
+
+    @media (max-width: 375px) {
+      margin-left: 8px;
+    }
+  }
+
+  &--divide {
+    background-color: rgba(var(--i1d, 38, 38, 38), 1);
+    height: 28px;
+    margin: 0;
+    transition: opacity 0.1s ease-out;
+    width: 1px;
+  }
+
+  svg {
+    font-size: 24px;
+  }
+
+  &--icon {
+    animation: fan-spinner 3s linear infinite;
+    display: flex;
+    justify-content: center;
+
+    @include media-breakpoint-down(sm) {
+      justify-content: start;
+    }
+  }
+
+  &--text {
+    font-size: 22px;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+}
+
+@keyframes fan-spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}

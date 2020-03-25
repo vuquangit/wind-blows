@@ -1,0 +1,230 @@
+.a1 {
+    $maxHeightImage1: calc(21.428vw + 96px);
+    max-width: 1600px;
+    width: 100%;
+    position: relative;
+
+    &__text {
+        align-items: center;
+        display: flex;
+        position: relative;
+
+        @media (min-width: 769px) {
+            left: 14.285vw;
+            max-width: 571.424px;
+            padding-bottom: 96px;
+            // padding-top: calc(21.428vw + 96px);
+            padding-top: $maxHeightImage1;
+            width: 35.714vw;
+        }
+
+        @media (max-width: 768px) {
+            left: 7.142vw;
+            max-width: 1371.424px;
+            padding-bottom: 64px;
+            padding-top: 160px;
+            position: relative;
+            width: 85.714vw;
+        }
+
+        &--content {
+            text-align: left;
+            /* font-family: Franklin Gothic, Helvetica Neue, Helvetica, Arial, sans-serif; */
+            font-weight: 400;
+            margin: 0;
+            width: 100%;
+            font-size: calc(44px + (16 * ((100vw - 375px) / 1225)));
+            letter-spacing: -1px;
+            line-height: calc(56px + (8 * ((100vw - 375px) / 1225)));
+
+            .text-animation {
+                @media (min-width: 769px) {
+                    background-position: 0, 0, 0 90%, 0;
+                    background-repeat: no-repeat;
+                    background-size: 0 0, 0 0, 0 4px, 0 0;
+                    display: inline;
+                    padding-bottom: 2px;
+                    transition: background-size 500ms cubic-bezier(0, .61, .28, .92);
+                    background-image: none, none, linear-gradient(45deg, #BA00B4, #1D0AC9), none;
+
+                    &:hover {
+                        background-size: 0 0, 0 0, 100% 4px, 0 0;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    border-bottom: 4px solid;
+                    border-image-slice: 1;
+                    border-width: 0 0 4px 0;
+                    border-image-source: linear-gradient(45deg, #BA00B4, #1D0AC9);
+                }
+
+                &__content {
+                    background-clip: text;
+                    color: transparent;
+                    position: relative;
+                    text-decoration: none;
+                    transition: color .3s;
+                    box-decoration-break: clone;
+                    background-image: linear-gradient(45deg, #BA00B4, #1D0AC9);
+                }
+            }
+        }
+    }
+
+    &__images {
+        @media (max-width: 768px) {
+            height: calc(1.25 * 71.428vw);
+            overflow-y: hidden;
+        }
+
+        &--content {
+            @media (max-width: 768px) {
+                display: flex;
+                height: calc(1.25 * 71.428vw + 40px);
+                overflow-x: scroll;
+            }
+
+            ._8gif {
+                position: relative;
+
+                @media (min-width: 769px) {
+                    left: 14.285vw;
+                    max-width: 342.848px;
+                    position: absolute;
+                    top: 0;
+                    width: 21.428vw;
+                    // max-height: calc(21.428vw + 80px);
+                }
+
+                @media (max-width: 768px) {
+                    order: 3;
+                    min-width: 71.428vw;
+                    overflow: hidden;
+                }
+            }
+
+            ._8gig {
+                position: relative;
+
+                @media (min-width: 769px) {
+                    max-width: 571.424px;
+                    position: absolute;
+                    right: 0;
+                    top: 120px;
+                    width: 35.714vw;
+                }
+
+                @media (max-width: 768px) {
+                    order: 1;
+                    padding-right: 7.142vw;
+                    min-width: 71.428vw;
+                    overflow: hidden;
+                }
+            }
+
+            ._8gie {
+                position: relative;
+
+                @media (min-width: 769px) {
+                    left: 7.142vw;
+                    max-width: 571.424px;
+                    width: 35.714vw;
+                }
+
+                @media (max-width: 768px) {
+                    order: 2;
+                    padding-right: 7.142vw;
+                    min-width: 71.428vw;
+                    overflow: hidden;
+                }
+            }
+
+            ._8gsr {
+                height: auto;
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                top: 0;
+            }
+
+            ._8gif1 {
+                @media (min-width: 769px) {
+                    max-height: $maxHeightImage1;
+                }
+            }
+
+            ._8gie1 {
+                @media (min-width: 769px) {
+                    max-height: calc(21.428vw + 250px);
+                    width: auto;
+                }
+            }
+        }
+    }
+
+    &__background {
+        height: 100%;
+        min-width: 100%;
+        position: absolute;
+
+        ._8ip8 {
+            @media (min-width: 769px) {
+                height: 85%;
+                width: 75%;
+            }
+
+            @media (max-width: 768px) {
+                height: 160px;
+                width: 100%;
+            }
+        }
+
+        ._8gtg {
+            min-height: 100%;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            background-image: linear-gradient(135deg, #FFF8D9, #61FA61);
+        }
+
+        ._8la5 ._8la4 {
+            animation: rotateGradient 6s infinite;
+        }
+
+        @keyframes rotateGradient {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(90deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        ._8la4 {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            transform-origin: center center;
+            width: 100%;
+        }
+
+        ._8jh6 {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            transform-origin: center center;
+            width: 100%;
+
+            background-image: linear-gradient(135deg, #ffffb2 25%, #61fa61 75%);
+            transform: scale(2.5, 5);
+        }
+    }
+}

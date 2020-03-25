@@ -1,0 +1,41 @@
+.profile-avatar {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-right: 30px;
+
+    @media (max-width:736px) {
+        margin: 0 !important;
+        margin-bottom: 16px !important;
+    }
+
+    .avatar-content {
+        width: fit-content;
+        position: relative;
+
+
+    }
+
+    .change-photo {
+        position: absolute;
+        right: 0px;
+        z-index: 1;
+        bottom: 15px;
+
+        &__btn-change {
+            border-radius: 50%;
+            background-color: rgb(233, 233, 233);
+            border: 0;
+            cursor: pointer;
+            height: 32px;
+            width: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}

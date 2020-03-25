@@ -1,0 +1,42 @@
+.profile-description {
+    font-size: 16px;
+    line-height: 24px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+
+    // @media (max-width: 767.98px) {
+    //   align-items: flex-start;
+    //   padding-left: 16px;
+    // }
+    // @media (max-width: 575px) {
+    //   padding: 0;
+    // }
+
+    .description-name {
+        font: inherit;
+        display: inline;
+        font-weight: 600;
+        text-align: start;
+    }
+
+    .description-bio {
+        text-align: left;
+    }
+
+    .description-website {
+        font-weight: 600;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: left;
+    }
+
+    a,
+    a:visited {
+        color: #003569;
+        color: rgba(var(--fe0, 0, 53, 105), 1);
+        text-decoration: none;
+    }
+}

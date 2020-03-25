@@ -1,0 +1,37 @@
+.GTP {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    margin: 0 auto 16px;
+    flex-grow: 1;
+    max-width: 935px;
+
+    @media (min-width: 736px) {
+        box-sizing: content-box;
+        justify-content: center;
+        padding: 40px 0px;
+        // width: calc(100% - 40px);
+    }
+
+    &__WPI {
+        // max-width: 935px;
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        flex-direction: column;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
+
+        &--is-loading {
+            height: calc(100vh - 275px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
