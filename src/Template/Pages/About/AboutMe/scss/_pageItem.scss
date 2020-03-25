@@ -1,19 +1,38 @@
-.page-2 {
+.page-item {
     margin: 0 auto;
     max-width: 1600px;
     overflow: hidden;
     width: 100%;
     text-align: left;
 
+    @media (min-width: 769px) {
+        opacity: 0.5;
+    }
+
+    &:last-child {
+        padding-bottom: 20vh;
+    }
+
     ._8jt3 {
         margin-bottom: -20vh;
         padding: 20vh 0;
+
+        @media (max-width: 768px) {
+            // margin-top: 10vh;
+            margin-bottom: 0;
+            padding: 0;
+        }
     }
 
     ._8h2u {
         align-items: center;
         display: flex;
         min-height: 70vh;
+
+        @media (max-width: 768px) {
+            height: auto;
+            min-height: unset;
+        }
     }
 
     ._8f30 {
@@ -40,11 +59,22 @@
     ._8h2w {
         max-width: 800px;
         min-width: 50vw;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
     }
 
     ._8g8k {
         box-sizing: border-box;
         height: 100%;
+
+        @media (max-width: 768px) {
+            padding-left: 7.142vw;
+            padding-right: 7.142vw;
+            padding-bottom: 32px;
+            padding-top: 32px;
+        }
     }
 
 
@@ -100,6 +130,13 @@
         width: 100%;
     }
 
+    ._8g7y {
+        @media (max-width: 768px) {
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+
     ._8g86._8kjd+._8g86._8kjd {
         margin-top: 16px;
     }
@@ -135,4 +172,8 @@
         margin: 0;
         width: 100%;
     }
+}
+
+.page-item-show {
+    opacity: 1;
 }

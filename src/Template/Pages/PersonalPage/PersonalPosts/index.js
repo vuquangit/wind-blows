@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from "react-router-dom";
+import { get } from "lodash";
 
 import WrapperPersonalPage from "../WrapperPersonalPage";
 import FetchPosts from "../FetchPosts";
 
-const WrappedPersonalPost = () => {
+const WrappedPersonalPost = ({ match = {} }) => {
   const [newPosts, setNewPosts] = useState([]);
   // new post status
   const handleAddNewPost = item => {
     setNewPosts([item]);
   };
+
+  // clear
+  const username = get(match, "params.username", "");
+  useEffect(() => {
+    setNewPosts([]);
+  }, [username]);
 
   return (
     <WrapperPersonalPage handleAddNewPost={handleAddNewPost}>
@@ -24,4 +32,4 @@ const WrappedPersonalPost = () => {
   );
 };
 
-export default WrappedPersonalPost;
+export default withRouter(WrappedPersonalPost);

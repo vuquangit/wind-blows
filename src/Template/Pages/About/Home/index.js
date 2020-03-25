@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import "./scss/about.scss";
 import About1 from "./About_1";
@@ -18,10 +18,10 @@ const Abouts = () => {
         <Devider />
         {aboutList &&
           aboutList.map((item, idx) => (
-            <>
-              <AboutItem key={idx} {...item} alignImage={idx % 2 === 0} />
+            <Fragment key={idx}>
+              <AboutItem {...item} alignImage={idx % 2 === 0} />
               <Devider />
-            </>
+            </Fragment>
           ))}
       </div>
     </WrapperAbout>

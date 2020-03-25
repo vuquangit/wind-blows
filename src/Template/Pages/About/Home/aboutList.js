@@ -7,7 +7,7 @@ const aboutList = [
     imageId: "the-wind-blows/Project image/0c44aaa47f45861bdf54_ttzcmj.jpg"
   },
   {
-    title: "STAND OUT ON INSTAGRAM",
+    title: "STAND OUT ON THE WIND BLOWS",
     description:
       "Connect with more people, build influence, and create compelling content that's distinctly yours.",
     directText: "Creators",
