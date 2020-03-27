@@ -51,14 +51,14 @@ const Notifications = () => {
           cancelToken: source.token
         });
 
-        console.log("respone notifications", response);
-
         if (response && !isEmpty(response.data))
           setState(prevState => ({
             ...prevState,
-            data: [...prevState.data, ...get(response, "data.data", [])],
+            data: [
+              ...get(prevState, "data", []),
+              ...get(response, "data.data", [])
+            ],
             totalItem: get(response, "data.totalItem", 0),
-
             isLoading: false
           }));
 
@@ -79,7 +79,7 @@ const Notifications = () => {
           await dispatch(updateFollowRequests(totalFollowRequests));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch notifications");
+          // console.log("cancelled fetch notifications");
         } else {
           setState(prevState => ({
             ...prevState,

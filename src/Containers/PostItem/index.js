@@ -48,10 +48,10 @@ const PostItem = ({
           // cancelToken: sourceLikePost.token
         });
 
-        console.log(endpoint === "like" ? "liked post" : "unlike post");
+        // console.log(endpoint === "like" ? "liked post" : "unlike post");
       } catch (err) {
         if (axios.isCancel(err)) {
-          console.log("cancelled like post");
+          // console.log("cancelled like post");
         } else {
           console.log(err);
         }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Form, Input, Tooltip, Icon, Checkbox, Button, message } from "antd";
+import { Form, Input, Tooltip, Icon, Button, message } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { get, isEqual } from "lodash";
+import { get, isEqual, omit } from "lodash";
 
 import axios from "utils/axiosConfig";
 import ProfilePhoto from "Containers/ProfilePhoto";
-import { updateProfileInfo } from "Redux/Profile/profile.action";
+import { updateUserProfile } from "Redux/Profile/profile.action";
 import { withRouter } from "react-router-dom";
 
 const EditProfile = ({ form, history = {} }) => {
@@ -57,8 +57,6 @@ const EditProfile = ({ form, history = {} }) => {
       email: get(profile, "email"),
       phoneNumber: get(profile, "phoneNumber")
     });
-
-    // return () => {};
   }, [profile, setFieldsValue]);
 
   // check uppercase username
@@ -86,13 +84,13 @@ const EditProfile = ({ form, history = {} }) => {
             "Content-Type": "application/json"
           }
         });
-        console.log("Edited profile :", res);
+
         setStateUpdate(prevState => ({ ...prevState, data: res.data }));
 
         // refresh personal store
         if (res.status === 200 || res.status === 201) {
-          const data = { email: values.email };
-          await dispatch(updateProfileInfo({ data, endpoint: "auth/me" }));
+          const data = omit(values, ["agreement"]);
+          await dispatch(updateUserProfile(data));
 
           message.success("Updated your profile", 5);
         }
@@ -192,7 +190,7 @@ const EditProfile = ({ form, history = {} }) => {
         <Form.Item label="Phone Number">
           {getFieldDecorator("phoneNumber")(<Input />)}
         </Form.Item>
-        <Form.Item label="Similar Account Suggestions">
+        {/* <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
             valuePropName: "checked",
             rules: [
@@ -203,13 +201,13 @@ const EditProfile = ({ form, history = {} }) => {
             ]
           })(
             <div className="edit-profile__form--agreement">
-              <Checkbox defaultChecked>
+              <Checkbox>
                 Include your account when recommending similar accounts people
                 might want to follow.
               </Checkbox>
             </div>
           )}
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item {...tailFormItemLayout}>
           <Button
             type="primary"

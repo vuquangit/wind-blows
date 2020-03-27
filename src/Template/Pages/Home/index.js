@@ -57,14 +57,16 @@ const HomePage = () => {
           cancelToken: source.token
         });
 
-        console.log("response fetch home", response);
+        // console.log("response fetch home", response);
         setState(prevState => ({
           ...prevState,
           data: [
-            ...prevState.data,
+            ...get(prevState, "data", []),
             ...filter(
-              response.data.data,
-              o => find(prevState.data, p => p.id === o.id) === undefined
+              get(response, "data.data", []),
+              o =>
+                find(get(prevState, "data", []), p => p.id === o.id) ===
+                undefined
             )
           ],
           totalItem: get(response, "data.totalItem"),
@@ -73,7 +75,7 @@ const HomePage = () => {
         }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch homepage");
+          // console.log("cancelled fetch homepage");
         } else {
           setState(prevState => ({
             ...prevState,

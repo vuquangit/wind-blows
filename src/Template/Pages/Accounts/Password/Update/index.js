@@ -20,7 +20,7 @@ const ChangePassword = ({ form, isResetPassword = false, match = {} }) => {
   const { isAuthorizationLogin = false } = profile;
   const [isCheckingTokenReset, setIsCheckingTokenReset] = useState(false);
   const [profileData, setProfileData] = useState(profile);
-  console.log("isAuthorizationLogin", isAuthorizationLogin);
+  // console.log("isAuthorizationLogin", isAuthorizationLogin);
 
   // check token reset password
   useEffect(() => {
@@ -42,13 +42,13 @@ const ChangePassword = ({ form, isResetPassword = false, match = {} }) => {
             },
             cancelToken: source.token
           });
-          console.log(res);
+          // console.log(res);
 
           setProfileData(get(res, "data", {}));
           setIsCheckingTokenReset(false);
         } catch (err) {
           if (axios.isCancel(err)) {
-            console.log("cancelled fetch token reset");
+            // console.log("cancelled fetch token reset");
           } else {
             console.log("Change password error ", err);
             message.error("Password reset link is invalid or has expried", 5);
@@ -171,7 +171,7 @@ const ChangePassword = ({ form, isResetPassword = false, match = {} }) => {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
         fetchChangePassword(values);
       }
     });

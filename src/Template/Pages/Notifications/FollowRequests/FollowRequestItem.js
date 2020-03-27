@@ -49,7 +49,7 @@ const FollowRequestItem = ({
         console.log("error request", err);
       });
 
-      console.log("request reposne: ", res);
+      // console.log("request reposne: ", res);
 
       endpoint === "approve"
         ? setIsLoadingConfirm(false)

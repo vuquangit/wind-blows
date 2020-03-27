@@ -39,7 +39,7 @@ const PostSubmit = ({
             })
           : [];
 
-      console.log("submit:", { ...status, sidecarChildren });
+      // console.log("submit:", { ...status, sidecarChildren });
 
       const res = await axios({
         method: "post",
@@ -50,7 +50,7 @@ const PostSubmit = ({
         }
       });
 
-      console.log(res.data);
+      // console.log(res.data);
       setState(prevState => ({ ...prevState, data: res.data }));
 
       // clear post

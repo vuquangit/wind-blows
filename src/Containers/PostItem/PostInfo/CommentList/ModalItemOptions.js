@@ -39,7 +39,7 @@ const ModalItemOptions = ({
       setIsLoading(false);
       handleCancelModal();
       handleDeleteComment(commentId);
-      console.log("deleted comment");
+      // console.log("deleted comment");
     } catch (err) {
       setIsLoading(false);
 

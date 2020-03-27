@@ -113,7 +113,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
           cancelToken: source.token
         });
 
-        console.log(res);
+        // console.log(res);
 
         const dataProfile = {
           profilePictureUrl: get(res, "data.url", ""),
@@ -122,7 +122,7 @@ const ModalChangePhoto = ({ visibleModal, handleCancelModal }) => {
         await fetchChangePhoto(dataProfile);
       } catch (err) {
         if (axios.isCancel(err)) {
-          console.log("cancelled uploading photo");
+          // console.log("cancelled uploading photo");
         } else {
           setUpdating(false);
           message.error({ content: `Error: ${err}`, key: keyMessage });

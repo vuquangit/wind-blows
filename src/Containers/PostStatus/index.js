@@ -46,7 +46,7 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
       const publicIds = status.sidecarChildren.map(item => item.public_id);
 
       try {
-        const res = await axios({
+        await axios({
           method: "POST",
           url: "/images/deletes",
           data: {
@@ -56,8 +56,6 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
             "Content-Type": "application/json;charset=UTF-8"
           }
         });
-
-        console.log("clear all images:", res);
       } catch (err) {
         message.error("Error: " + err, 3);
         console.log(err);

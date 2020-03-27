@@ -47,7 +47,7 @@ const RelationshipList = ({
         }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch relationship");
+          // console.log("cancelled fetch relationship");
         } else {
           setState(prevState => ({
             ...prevState,

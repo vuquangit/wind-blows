@@ -58,12 +58,12 @@ const CommentContent = ({
       });
 
       setIsLiking(false);
-      console.log(endpoint === "like" ? "liked comment" : "unlike comment");
+      // console.log(endpoint === "like" ? "liked comment" : "unlike comment");
     } catch (err) {
       setIsLiking(false);
 
       if (axios.isCancel(err)) {
-        console.log("cancelled like comment");
+        // console.log("cancelled like comment");
       } else {
         console.log(err);
       }
@@ -112,7 +112,7 @@ const CommentContent = ({
           }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch user comment");
+          // console.log("cancelled fetch user comment");
         } else {
           setOwnerComments(prevState => ({
             ...prevState,

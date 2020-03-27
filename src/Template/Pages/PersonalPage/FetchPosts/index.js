@@ -66,7 +66,7 @@ const FetchPosts = ({
           cancelToken: source.token
         });
 
-        console.log("response fetch", response);
+        // console.log("response fetch", response);
 
         if (response && !isEmpty(response.data.data)) {
           setState(prevState => ({
@@ -89,7 +89,7 @@ const FetchPosts = ({
         }
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch personal");
+          // console.log("cancelled fetch personal");
         } else {
           setState(prevState => ({
             ...prevState,
@@ -101,7 +101,7 @@ const FetchPosts = ({
       }
     };
 
-    console.log("fetch data personal");
+    // console.log("fetch data personal");
     !isBlocked && feactData();
 
     // unmount

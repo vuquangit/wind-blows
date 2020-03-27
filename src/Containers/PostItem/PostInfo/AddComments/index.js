@@ -31,11 +31,11 @@ const AddComments = ({
 
     const valSearch = val.match(/@([a-z\d_]+$)/gi);
     if (valSearch) {
-      console.log("searching: ", String(valSearch).substring(1));
+      // console.log("searching: ", String(valSearch).substring(1));
       setValSearch(String(valSearch).substring(1));
     } else {
       setValSearch("");
-      console.log("searching close ");
+      // console.log("searching close ");
     }
 
     setText(val);
@@ -52,7 +52,7 @@ const AddComments = ({
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     if (!text) {
-      console.log("comment empty");
+      // console.log("comment empty");
       return;
     }
 
@@ -80,7 +80,7 @@ const AddComments = ({
       // scroll to bottom comments
       setIsViewerComments(true);
 
-      console.log(textInput);
+      // console.log(textInput);
       textInput.current.focus();
     } catch (err) {
       console.log(err);

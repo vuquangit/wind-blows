@@ -18,14 +18,21 @@ const PostGrid = ({
     () =>
       items &&
       items.length > 0 &&
-      items.map(
-        (item, idx) =>
-          !isEmpty(item) && (
+      items
+        .filter(item => !isEmpty(item))
+        .map((item, idx) => {
+          const { location: locationPost = {}, ...restItem } = item;
+
+          return (
             <Col key={item.id || idx} span={8}>
-              <PersonalPostItem {...item} handleRemovePost={handleRemovePost} />
+              <PersonalPostItem
+                {...restItem}
+                locationPost={locationPost}
+                handleRemovePost={handleRemovePost}
+              />
             </Col>
-          )
-      ),
+          );
+        }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [items]
   );

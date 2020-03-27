@@ -38,6 +38,7 @@ const PostHeader = ({
           <AvatarUser
             profilePicturePublicId={profilePicturePublicId}
             profilePictureUrl={profilePictureUrl}
+            size={32}
           />
         </Link>
       </div>
