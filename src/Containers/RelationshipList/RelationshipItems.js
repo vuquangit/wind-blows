@@ -36,7 +36,7 @@ const FollowList = ({
     <>
       {!isSlider ? (
         <div className="follow-list">
-          {headerText && (
+          {headerText && items && items.length > 0 && (
             <div className="follow-list__header">
               <h1>{headerText}</h1>
             </div>
@@ -48,7 +48,6 @@ const FollowList = ({
           >
             <div>{_renderFollowItem()}</div>
           </InfiniteScroll>
-
           {isLoading && <Pinwheel size={48} />}
         </div>
       ) : (

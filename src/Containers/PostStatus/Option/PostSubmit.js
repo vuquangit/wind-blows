@@ -39,7 +39,7 @@ const PostSubmit = ({
             })
           : [];
 
-      console.log("submit:", { ...status, sidecarChildren });
+      // console.log("submit:", { ...status, sidecarChildren });
 
       const res = await axios({
         method: "post",
@@ -50,7 +50,7 @@ const PostSubmit = ({
         }
       });
 
-      console.log(res.data);
+      // console.log(res.data);
       setState(prevState => ({ ...prevState, data: res.data }));
 
       // clear post
@@ -63,7 +63,7 @@ const PostSubmit = ({
       message.success("Post status success ");
     } catch (err) {
       console.log(err);
-      message.error("Post status error: ", err);
+      message.error("Post status error, try again.", 3);
     } finally {
       setState(prevState => ({ ...prevState, isPosting: false }));
     }

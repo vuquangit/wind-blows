@@ -35,13 +35,11 @@ export class Notifications {
           }
         });
 
-        // console.log("respone notifications GCM:", response);
-
         const data = get(response, "data.data", []);
         await dispatch(newNotifications(data));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch notifications new");
+          // console.log("cancelled fetch notifications new");
         } else console.log(error);
       }
     };
@@ -73,7 +71,7 @@ export class Notifications {
 
     const registerPushListener = pushNotification =>
       navigator.serviceWorker.addEventListener("message", ({ data }) => {
-        console.log(data);
+        // console.log(data);
         !isEmpty(data) &&
           pushNotification(get(data, "firebase-messaging-msg-data"));
       });
@@ -115,14 +113,13 @@ export class Notifications {
           permissionGranted = true;
         } else {
           const token = await messaging.getToken(); // returns the same token on every invocation until refreshed by browser
-          // await sendTokenToServer(token);
           localStorage.setItem("GCM_TOKEN", token);
           permissionGranted = true;
         }
 
         await sendTokenToServer(localStorage.getItem("GCM_TOKEN"));
         registerPushListener(pushNotification);
-        console.log("register FCM success");
+        // console.log("register FCM success");
       } catch (err) {
         console.log(err);
         if (

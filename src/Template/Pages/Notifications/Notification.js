@@ -18,7 +18,6 @@ import FollowRequests from "./FollowRequests";
 const Notification = ({
   items = [],
   isLoading = false,
-
   setAllItemsReaded = () => {},
   getMoreItems = () => {},
   hasMoreItems = false,
@@ -62,8 +61,8 @@ const Notification = ({
       items.map((item, idx) => (
         <UserRelationship
           key={item.id || idx}
-          user={get(item, "user") || {}}
-          relationship={get(item, "user.relationship")}
+          user={get(item, "user", {})}
+          relationship={get(item, "user.relationship", {})}
           notifications={item}
         />
       )),

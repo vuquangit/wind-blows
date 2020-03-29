@@ -31,6 +31,11 @@ const Thumbnails = ({
   // upload
   const source = axios.CancelToken.source();
   const fetchUploadImage = async data => {
+    if (!data) {
+      console.log("No data to upload image");
+      return;
+    }
+
     try {
       handleUpdateImages({
         isUploadError: false,
@@ -46,7 +51,7 @@ const Thumbnails = ({
         cancelToken: source.token
       });
 
-      console.log("res upload:", res);
+      // console.log("res upload:", res);
 
       if (!isEmpty(res.data))
         handleUpdateImages({
@@ -56,7 +61,7 @@ const Thumbnails = ({
         });
     } catch (err) {
       if (axios.isCancel(err)) {
-        console.log("cancelled uploading photo");
+        // console.log("cancelled uploading photo");
       } else {
         message.error("Have a photo upload failed", 3);
         console.log(err);
@@ -85,7 +90,7 @@ const Thumbnails = ({
 
     if (public_id) {
       try {
-        const res = await axios({
+        await axios({
           method: "POST",
           url: "/images/delete",
           data: {
@@ -95,8 +100,6 @@ const Thumbnails = ({
             "Content-Type": "application/json;charset=UTF-8"
           }
         });
-
-        console.log(res);
       } catch (err) {
         message.error("Error: " + err, 3);
         console.log(err);

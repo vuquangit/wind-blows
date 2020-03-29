@@ -77,7 +77,7 @@ const PostInfo = ({
         }
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch comments");
+          // console.log("cancelled fetch comments");
         } else {
           setComments(prevState => ({ ...prevState, isLoading: false }));
           console.log(error);
@@ -112,7 +112,7 @@ const PostInfo = ({
       commentsTotalCount: prevState.commentsTotalCount + 1
     }));
 
-    console.log("add parent comment", stateComments);
+    // console.log("add parent comment", stateComments);
   };
   const handleDeleteComment = commentId => {
     setComments(prevState => ({

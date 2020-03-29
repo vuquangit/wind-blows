@@ -26,7 +26,11 @@ const Suggested = ({ isHomepage = false, isSlider = false }) => {
   return (
     <>
       {isHomepage || isSlider ? (
-        <RelationshipList {...apiConfig} isSlider={isSlider} />
+        <RelationshipList
+          {...apiConfig}
+          isSlider={isSlider}
+          isHomepage={isHomepage}
+        />
       ) : (
         <BasicTemplate>
           <RelationshipList {...apiConfig} headerText="Suggested" />

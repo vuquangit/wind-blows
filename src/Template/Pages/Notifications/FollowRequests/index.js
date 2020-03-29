@@ -9,10 +9,7 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import FollowRequestItem from "./FollowRequestItem";
 import NotiLoading from "../NotificationItems/NotificationLoading";
 
-const FollowRequests = ({
-  totalFollowRequests = 0,
-  toggleFollowRequest = () => {}
-}) => {
+const FollowRequests = ({ toggleFollowRequest = () => {} }) => {
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
   );
@@ -47,7 +44,7 @@ const FollowRequests = ({
           cancelToken: source.token
         });
 
-        console.log("respone follow request", response);
+        // console.log("respone follow request", response);
 
         if (!isEmpty(response.data))
           setState(prevState => ({
@@ -58,7 +55,7 @@ const FollowRequests = ({
           }));
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch notifications");
+          // console.log( "cancelled fetch notifications");
         } else {
           setState(prevState => ({
             ...prevState,

@@ -54,7 +54,7 @@ const CommentListItem = ({
           cancelToken: source.token
         });
 
-        console.log("reponse child comments", response);
+        // console.log("reponse child comments", response);
 
         if (!isEmpty(response.data)) {
           setChildComments(prevState => ({
@@ -66,7 +66,7 @@ const CommentListItem = ({
         }
       } catch (error) {
         if (axios.isCancel(error)) {
-          console.log("cancelled fetch comments");
+          // console.log("cancelled fetch comments");
         } else {
           setChildComments(prevState => ({ ...prevState, isLoading: false }));
           console.log(error);
@@ -100,7 +100,7 @@ const CommentListItem = ({
           : 0
     }));
 
-    console.log("delete child comment", childComments);
+    // console.log("delete child comment", childComments);
   };
 
   // reply to

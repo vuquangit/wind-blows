@@ -41,7 +41,7 @@ const PostAction = ({
 
   const fetchSavePost = async (endpoint = "") => {
     try {
-      const res = await axios({
+      await axios({
         method: "post",
         url: `/saved/${endpoint}`,
         data: {
@@ -53,11 +53,10 @@ const PostAction = ({
         }
       });
 
-      console.log("saved res:", res);
       setIsSavePost(!isSavePost);
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log("cancelled save post");
+        // console.log("cancelled save post");
       } else {
         console.log(error);
       }

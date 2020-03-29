@@ -123,7 +123,13 @@ const UserRelationship = ({
               <FontAwesomeIcon icon={faTimes} />
             </Button>
           )} */}
-          <AvatarUR user={user} size={isSlider ? 54 : 32} />
+          <AvatarUR
+            user={user}
+            size={isSlider ? 54 : 32}
+            background={
+              typeNotification !== 0 && !readNotification ? "#d5ebff" : "white"
+            }
+          />
           <Description user={user} notifications={notifications} />
           <Target
             user={user}

@@ -1,7 +1,7 @@
 .user-option-modal {
-    max-width: 400px;
+    max-width: 400px !important;
+    width: calc(100% - 16px) !important;
     padding: 0;
-    // border-radius: 12px;
     background-color: rgba(var(--f23, 255, 255, 255), 1);
 
     .ant-modal-body {

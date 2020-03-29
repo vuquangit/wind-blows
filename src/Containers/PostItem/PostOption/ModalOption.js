@@ -53,7 +53,7 @@ const ModalOption = ({
     setIsDeleting(true);
 
     try {
-      const res = await axios({
+      await axios({
         method: "post",
         url: "/post/delete",
         data: {
@@ -67,7 +67,6 @@ const ModalOption = ({
 
       setIsDeleting(false);
       message.success("Deleted post", 3);
-      console.log("delete", res);
 
       // go back
       if (startsWith(match.path, "/p/:id")) {
@@ -85,7 +84,7 @@ const ModalOption = ({
       message.error("Delete post error");
 
       if (axios.isCancel(err)) {
-        console.log("cancelled delete commnent");
+        // console.log("cancelled delete commnent");
       } else {
         console.log(err);
       }

@@ -80,8 +80,6 @@ const FollowStatus = ({
         }
       });
 
-      // console.log("reponse follow:", endpoint, response);
-
       handleCancelModal();
 
       // if in personal page: descrease follower, check private
