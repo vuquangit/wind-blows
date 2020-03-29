@@ -4,6 +4,7 @@ import { get, isEmpty, filter, find } from "lodash";
 import { useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 import { StickyContainer, Sticky } from "react-sticky";
+import classNames from "classnames";
 
 import axios from "utils/axiosConfig";
 import BasicTemplate from "Template/BasicTemplate";
@@ -16,7 +17,7 @@ import Pinwheel from "Components/Loaders/Pinwheel";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
 import "./home.scss";
 
-const HomePage = () => {
+const HomePage = ({ isHeaderHidden = false }) => {
   // get posts
   const viewerId = useSelector((state = {}) =>
     get(state, "profile.data.user.id", "")
@@ -142,25 +143,13 @@ const HomePage = () => {
     [handleRemovePost]
   );
 
-  // scroll
-  const [isScrolled, setIsScrolled] = useState(false);
-  var prevScrollpos = window.pageYOffset;
-  window.onscroll = () => {
-    if (document.getElementById("navbar")) {
-      var currentScrollPos = window.pageYOffset;
-      if (prevScrollpos > currentScrollPos) {
-        document.getElementById("navbar").style.transform = "none";
-        setIsScrolled(false);
-      } else if (currentScrollPos > 50) {
-        document.getElementById("navbar").style.transform = "translateY(-100%)";
-        setIsScrolled(true);
-      }
-      prevScrollpos = currentScrollPos;
-    }
-  };
   const stylesAdvanceScroll = {
-    marginTop: isScrolled ? `30px` : `90px`
+    marginTop: isHeaderHidden ? `30px` : `90px`
   };
+
+  const classAdvance = classNames("home__content--advance", {
+    "home__content--advance-hidden": state.data && state.data.length === 0
+  });
 
   return (
     <StickyContainer>
@@ -192,20 +181,18 @@ const HomePage = () => {
                 </div>
               </div>
             </Col>
-            {!state.isLoading && state.data && state.data.length > 0 && (
-              <Col xs={0} lg={7}>
-                <Sticky topOffset={0}>
-                  {({ style }) => (
-                    <div className="home__content--advance" style={style}>
-                      <div style={stylesAdvanceScroll} />
-                      <Profile />
-                      <SuggestionForUser />
-                      <Footer isHomePage />
-                    </div>
-                  )}
-                </Sticky>
-              </Col>
-            )}
+            <Col xs={0} lg={7}>
+              <Sticky topOffset={0}>
+                {({ style }) => (
+                  <div className={classAdvance} style={style}>
+                    <div style={stylesAdvanceScroll} />
+                    <Profile />
+                    <SuggestionForUser />
+                    <Footer isHomePage />
+                  </div>
+                )}
+              </Sticky>
+            </Col>
           </Row>
         </div>
       </div>
@@ -214,7 +201,7 @@ const HomePage = () => {
 };
 
 const WrappedHomePage = () => (
-  <BasicTemplate footer={false}>
+  <BasicTemplate footer={false} isHomePage>
     <HomePage />
   </BasicTemplate>
 );

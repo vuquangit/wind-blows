@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import AvatarUser from "Components/AvatarUser";
 import { stopPropagation } from "utils/stopPropagation";
 
-const AvatarUR = ({ user = {}, size = 32 }) => {
+const AvatarUR = ({ user = {}, size = 32, background = "white" }) => {
   const {
     profilePictureUrl = "",
     profilePicturePublicId = "",
@@ -26,6 +26,7 @@ const AvatarUR = ({ user = {}, size = 32 }) => {
           profilePicturePublicId={profilePicturePublicId}
           profilePictureUrl={profilePictureUrl}
           size={size}
+          background={background}
         />
       </Link>
     </div>

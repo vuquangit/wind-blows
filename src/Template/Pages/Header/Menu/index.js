@@ -52,7 +52,11 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
           document.title = title;
         }
       } catch (error) {
-        console.log(error);
+        if (axios.isCancel(error)) {
+          // console.log("cancelled fetch");
+        } else {
+          console.log(error);
+        }
       }
     };
 
