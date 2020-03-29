@@ -12,7 +12,8 @@ const RelationshipList = ({
     "Content-Type": "application/json"
   },
   headerText = "",
-  isSlider = false
+  isSlider = false,
+  isHomepage = false
 }) => {
   const [state, setState] = useState({
     data: [],
@@ -33,7 +34,7 @@ const RelationshipList = ({
         const response = await axios({
           method: method,
           url: endpoint,
-          params,
+          params: { ...params, page: state.page, limit: state.limit },
           data,
           headers,
           cancelToken: source.token
@@ -68,7 +69,7 @@ const RelationshipList = ({
   }, [state.page]);
 
   // get more page
-  const hasMoreItems = state.data.length < state.totalItems;
+  const hasMoreItems = state.data.length < state.totalItems && !isHomepage;
   const getMoreItems = () => {
     state.data.length === state.page * state.limit &&
       setState(prevState => ({ ...prevState, page: prevState.page + 1 }));

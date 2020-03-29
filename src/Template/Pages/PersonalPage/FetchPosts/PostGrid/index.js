@@ -44,7 +44,7 @@ const PostGrid = ({
         loadMore={getMoreItems}
         hasMore={hasMoreItems}
       >
-        <div>{_renderFollowItem()}</div>
+        {_renderFollowItem()}
       </InfiniteScroll>
       {isLoading && <PostsLoading />}
     </div>

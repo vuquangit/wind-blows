@@ -63,7 +63,7 @@ const PostSubmit = ({
       message.success("Post status success ");
     } catch (err) {
       console.log(err);
-      message.error("Post status error: ", err);
+      message.error("Post status error, try again.", 3);
     } finally {
       setState(prevState => ({ ...prevState, isPosting: false }));
     }

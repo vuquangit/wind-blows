@@ -74,7 +74,7 @@ const FetchPosts = ({
             data: [
               ...prevState.data,
               ...filter(
-                response.data.data,
+                get(response, "data.data", []),
                 o => find(prevState.data, p => p.id === o.id) === undefined
               )
             ],

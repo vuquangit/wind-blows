@@ -10,7 +10,7 @@ import BasicTemplate from "Template/BasicTemplate";
 import PostItem from "Containers/PostItem";
 import PostStatus from "Containers/PostStatus";
 import Profile from "./HomeProfile";
-import SuggestionForUser from "../Explore/Suggestion";
+import SuggestionForUser from "Template/Pages/Explore/Suggestion";
 import Footer from "Template/Pages/Footer";
 import Pinwheel from "Components/Loaders/Pinwheel";
 import Suggested from "Template/Pages/Explore/Suggestion/Suggested";
@@ -28,7 +28,7 @@ const HomePage = () => {
   );
 
   const [state, setState] = useState({
-    isLoading: true,
+    isLoading: false,
     data: [],
     error: null,
     limit: 12,
@@ -212,8 +212,6 @@ const HomePage = () => {
     </StickyContainer>
   );
 };
-
-// export default HomePage;
 
 const WrappedHomePage = () => (
   <BasicTemplate footer={false}>

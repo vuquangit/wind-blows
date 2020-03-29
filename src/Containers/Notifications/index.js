@@ -113,7 +113,6 @@ export class Notifications {
           permissionGranted = true;
         } else {
           const token = await messaging.getToken(); // returns the same token on every invocation until refreshed by browser
-          // await sendTokenToServer(token);
           localStorage.setItem("GCM_TOKEN", token);
           permissionGranted = true;
         }

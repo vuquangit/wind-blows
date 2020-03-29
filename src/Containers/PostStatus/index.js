@@ -41,24 +41,28 @@ const PostStatus = ({ handleAddNewPost = () => {} }) => {
 
   // clear
   const isClearStatus = !isEqual(status, defaultStatus);
-  const clearStatus = async ({ posted = false }) => {
+  const clearStatus = async ({ posted = false } = {}) => {
     if (!posted && status && status.sidecarChildren.length > 0) {
-      const publicIds = status.sidecarChildren.map(item => item.public_id);
+      const publicIds = status.sidecarChildren
+        .filter(item => item.isUploaded)
+        .map(item => item.public_id);
 
-      try {
-        await axios({
-          method: "POST",
-          url: "/images/deletes",
-          data: {
-            publicIds
-          },
-          headers: {
-            "Content-Type": "application/json;charset=UTF-8"
-          }
-        });
-      } catch (err) {
-        message.error("Error: " + err, 3);
-        console.log(err);
+      if (publicIds.length > 0) {
+        try {
+          await axios({
+            method: "POST",
+            url: "/images/deletes",
+            data: {
+              publicIds
+            },
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8"
+            }
+          });
+        } catch (err) {
+          message.error("Error: " + err, 3);
+          console.log(err);
+        }
       }
     }
 

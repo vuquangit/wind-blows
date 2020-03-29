@@ -2,9 +2,9 @@ import React from "react";
 import "./App.scss";
 import Main from "./Template/main";
 
-const App = ({ messaging = {} }) => (
+const App = () => (
   <div className="App">
-    <Main messaging={messaging} />
+    <Main />
   </div>
 );
 
