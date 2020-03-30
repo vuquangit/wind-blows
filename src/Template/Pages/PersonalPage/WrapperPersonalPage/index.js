@@ -22,25 +22,24 @@ const PersonalPage = ({
   handleAddNewPost = () => {}
 }) => {
   const dispatch = useDispatch();
-  const { isFetching = false, error = false } = useSelector(
-    state => get(state, "personalProfile", {}),
-    isEqual()
-  );
+  const {
+    isFetching = false,
+    error = false,
+    data: personalProfileData = {}
+  } = useSelector(state => get(state, "personalProfile", {}), isEqual());
 
   const { id: viewerId = "", username: viewerUsername = "" } = useSelector(
     state => get(state, "profile.data.user", {}),
     isEqual()
   );
-  const relationship = useSelector(
-    state => get(state, "personalProfile.data.relationship", ""),
-    isEqual()
-  );
+  const { relationship = {} } = personalProfileData;
 
   // fetch data username view
   const username = get(match, "params.username", "");
-  const usernameBefore = useSelector(
-    state => get(state, "personalProfile.data.user.username", ""),
-    isEqual()
+  const { username: usernameBefore, isPrivate = false } = get(
+    personalProfileData,
+    "user",
+    {}
   );
   const isOwner = isEqual(viewerUsername, username);
 
@@ -57,13 +56,13 @@ const PersonalPage = ({
       );
     };
 
-    if (!isEqual(username, usernameBefore)) _requestPersonalInfo();
+    if (!isEqual(username, usernameBefore)) {
+      _requestPersonalInfo();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewerId, username, usernameBefore]);
 
-  const isPrivate = useSelector(state =>
-    get(state, "personalProfile.data.user.isPrivate", false)
-  );
   const isPrivated =
     !isOwner &&
     isPrivate &&

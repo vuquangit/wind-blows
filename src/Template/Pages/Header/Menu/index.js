@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Badge } from "antd";
-import { get, startsWith } from "lodash";
+import { get, startsWith, isEqual } from "lodash";
 import { NavLink, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,11 +18,26 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
     id = "",
     profilePictureUrl = "",
     profilePicturePublicId = ""
-  } = useSelector((state = {}) => get(state, "profile.data.user", ""));
-  const { totalUnread: totalNotiUnread = 0 } = useSelector((state = {}) =>
-    get(state, "notifications", {})
+  } = useSelector(
+    (state = {}) => get(state, "profile.data.user", {}),
+    isEqual()
+  );
+  const {
+    username: personalUsername = "",
+    fullName: personalFullname = ""
+  } = useSelector(
+    (state = {}) => get(state, "personalProfile.data.user", {}),
+    isEqual()
+  );
+  const { totalUnread: totalNotiUnread = 0 } = useSelector(
+    (state = {}) => get(state, "notifications", {}),
+    isEqual()
   );
 
+  const enableDropdownNoti = startsWith(match.path, "/notifications");
+  const isPersonalPage = startsWith(match.path, "/:username");
+
+  // get total notifications unread
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -42,15 +57,6 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
 
         const total = get(response, "data.totalUnread", 0);
         await dispatch(updateNotifications(total));
-
-        // document.title
-        // /\([\d]+\)/.test(title)
-        const title = "The wind blows";
-        if (total && total > 0) {
-          document.title = `(${total}) ${title}`;
-        } else {
-          document.title = title;
-        }
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch");
@@ -71,8 +77,19 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const enableDropdownNoti = startsWith(match.path, "/notifications");
-  const isPersonalPage = startsWith(match.path, "/:username");
+  // document title  page
+  useEffect(() => {
+    if (isPersonalPage && personalUsername)
+      document.title = `${totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ""}${
+        personalFullname
+          ? `${personalFullname} (@${personalUsername})`
+          : `@${personalUsername}`
+      } • The Wind Blows photos`;
+    else
+      document.title = `${
+        totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ""
+      }The Wind Blows`;
+  }, [isPersonalPage, personalFullname, personalUsername, totalNotiUnread]);
 
   return (
     <div className="header__menu">

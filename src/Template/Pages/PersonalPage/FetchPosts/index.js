@@ -156,7 +156,7 @@ const FetchPosts = ({
   return (
     <div className="personal-post">
       {!isBlocked ? (
-        state.isLoading ? (
+        state.isLoading && state.data.length === 0 ? (
           <PostsLoading />
         ) : state.data.length > 0 ? (
           <PostGrid
