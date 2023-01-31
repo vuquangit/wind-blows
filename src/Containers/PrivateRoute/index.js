@@ -21,6 +21,7 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
     state => !isEmpty(get(state, "profile.data"))
   );
   const isLoading = useSelector(state => get(state, "profile.isFetching"));
+  // const isLoading = false
   // debugger;
 
   // console.log("isAuthenticated", isAuthenticated);

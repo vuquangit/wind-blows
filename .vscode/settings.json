@@ -1,1 +1,6 @@
-{}
+{
+  "eslint.validate": ["javascript", "typescript"],
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+}

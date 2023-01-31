@@ -20,7 +20,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const { data: profileData = {}, isFetching = false } = useSelector(
     (state = {}) => get(state, "profile", {}),
-    isEqual()
+    // (left, right) => isEqual(left, right)
   );
 
   // login auto
@@ -90,7 +90,7 @@ const Main = () => {
       )
     );
 
-  return isFetching && isHomePage ? (
+  return false ? (
     <Loading />
   ) : (
     <BrowserRouter>

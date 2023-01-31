@@ -14,7 +14,10 @@ const LoginForm = ({ form, history }) => {
     data: profileData = {},
     isFetching = false,
     message = ""
-  } = useSelector((state = {}) => get(state, "profile", {}), isEqual());
+  } = useSelector((state = {}) => get(state, "profile", {}), 
+  // isEqual()
+  // (left, right) => isEqual(left, right)
+  );
 
   // loading submit
   const [isSubmit, setIsSubmit] = useState(false);

@@ -1,133 +1,133 @@
-import React, { useEffect } from "react";
-import { Badge } from "antd";
-import { get, startsWith, isEqual } from "lodash";
-import { NavLink, withRouter } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect } from 'react'
+import { Badge } from 'antd'
+import { get, startsWith, isEqual } from 'lodash'
+import { NavLink, withRouter } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome, faBell, faSearch } from '@fortawesome/free-solid-svg-icons'
 
-import axios from "utils/axiosConfig";
-import AvatarUser from "Components/AvatarUser";
-import DropdownNotification from "./DropdownNotification";
-import { updateNotifications } from "Redux/Notifications/notification.action";
+import axios from 'utils/axiosConfig'
+import AvatarUser from 'Components/AvatarUser'
+import DropdownNotification from './DropdownNotification'
+import { updateNotifications } from 'Redux/Notifications/notification.action'
 
 const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const {
-    username = "",
-    id = "",
-    profilePictureUrl = "",
-    profilePicturePublicId = ""
+    username = '',
+    id = '',
+    profilePictureUrl = '',
+    profilePicturePublicId = '',
   } = useSelector(
-    (state = {}) => get(state, "profile.data.user", {}),
-    isEqual()
-  );
+    (state = {}) => get(state, 'profile.data.user', {})
+    // isEqual()
+  )
   const {
-    username: personalUsername = "",
-    fullName: personalFullname = ""
+    username: personalUsername = '',
+    fullName: personalFullname = '',
   } = useSelector(
-    (state = {}) => get(state, "personalProfile.data.user", {}),
-    isEqual()
-  );
+    (state = {}) => get(state, 'personalProfile.data.user', {})
+    // isEqual()
+  )
   const { totalUnread: totalNotiUnread = 0 } = useSelector(
-    (state = {}) => get(state, "notifications", {}),
-    isEqual()
-  );
+    (state = {}) => get(state, 'notifications', {})
+    // isEqual()
+  )
 
-  const enableDropdownNoti = startsWith(match.path, "/notifications");
-  const isPersonalPage = startsWith(match.path, "/:username");
+  const enableDropdownNoti = startsWith(match.path, '/notifications')
+  const isPersonalPage = startsWith(match.path, '/:username')
 
   // get total notifications unread
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source()
 
     const fetchNotiNew = async () => {
       try {
         const response = await axios({
-          method: "post",
-          url: "users/notifications/total-unread",
+          method: 'post',
+          url: 'users/notifications/total-unread',
           data: {
-            userId: id
+            userId: id,
           },
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
-          cancelToken: source.token
-        });
+          cancelToken: source.token,
+        })
 
-        const total = get(response, "data.totalUnread", 0);
-        await dispatch(updateNotifications(total));
+        const total = get(response, 'data.totalUnread', 0)
+        await dispatch(updateNotifications(total))
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch");
         } else {
-          console.log(error);
+          console.log(error)
         }
       }
-    };
+    }
 
     // !isEmpty(tokenUser) && fetchNotiNew();
-    fetchNotiNew();
+    fetchNotiNew()
 
     // unmount
     return async () => {
-      source.cancel();
-    };
+      source.cancel()
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   // document title  page
   useEffect(() => {
     if (isPersonalPage && personalUsername)
-      document.title = `${totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ""}${
+      document.title = `${totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ''}${
         personalFullname
           ? `${personalFullname} (@${personalUsername})`
           : `@${personalUsername}`
-      } • The Wind Blows photos`;
+      } • The Wind Blows photos`
     else
       document.title = `${
-        totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ""
-      }The Wind Blows`;
-  }, [isPersonalPage, personalFullname, personalUsername, totalNotiUnread]);
+        totalNotiUnread > 0 ? `(${totalNotiUnread}) ` : ''
+      }The Wind Blows`
+  }, [isPersonalPage, personalFullname, personalUsername, totalNotiUnread])
 
   return (
-    <div className="header__menu">
-      <div className="header__menu--items">
+    <div className='header__menu'>
+      <div className='header__menu--items'>
         {!isSmallScreen && (
-          <div className="menu-item">
+          <div className='menu-item'>
             <NavLink to={`/`}>
-              <FontAwesomeIcon icon={faHome} title="Home" />
+              <FontAwesomeIcon icon={faHome} title='Home' />
             </NavLink>
           </div>
         )}
         {isSmallScreen && (
-          <div className="menu-item">
-            <NavLink to="/explore/people/search/">
+          <div className='menu-item'>
+            <NavLink to='/explore/people/search/'>
               <FontAwesomeIcon
                 icon={faSearch}
-                className="header__search--icon"
+                className='header__search--icon'
               />
             </NavLink>
           </div>
         )}
 
-        <div className="menu-item">
+        <div className='menu-item'>
           {!isSmallScreen && !enableDropdownNoti ? (
             <DropdownNotification
               count={totalNotiUnread}
               isScrolled={isScrolled}
             />
           ) : (
-            <NavLink to="/notifications">
+            <NavLink to='/notifications'>
               <Badge count={totalNotiUnread} overflowCount={99}>
-                <FontAwesomeIcon icon={faBell} title="Notifications" />
+                <FontAwesomeIcon icon={faBell} title='Notifications' />
               </Badge>
             </NavLink>
           )}
         </div>
-        <div className="menu-item">
-          {isPersonalPage && <div className="menu-item__wrapper" />}
+        <div className='menu-item'>
+          {isPersonalPage && <div className='menu-item__wrapper' />}
           <NavLink to={`/${username}`}>
             <AvatarUser
               profilePicturePublicId={profilePicturePublicId}
@@ -137,7 +137,7 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(Menu);
+export default withRouter(Menu)
