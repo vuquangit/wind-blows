@@ -1,9 +1,9 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react'
+import classNames from 'classnames'
 
-import SliderImages from "./SliderImage";
-import ItemImage from "./ItemImage";
-import "./postImage.scss";
+import SliderImages from './SliderImage'
+import ItemImage from './ItemImage'
+import './postImage.scss'
 
 const PostImage = ({
   sidecarChildren = [],
@@ -14,20 +14,20 @@ const PostImage = ({
 }) => {
   // classNames
   const classPI = classNames(
-    "PI__PI",
+    'PI__PI',
     { PI__maxHeight: isModal },
-    { "homepage-image": isHomePage }
-  );
-  const classPIContent = classNames("PI__PI--content", {
+    { 'homepage-image': isHomePage }
+  )
+  const classPIContent = classNames('PI__PI--content', {
     PI__maxHeight: isModal
-  });
+  })
   const classPIWrapper = classNames(
-    "content__wrapper",
+    'content__wrapper',
     {
       PI__maxHeight: isModal
     },
-    { "homepage-image__wrapper": isHomePage }
-  );
+    { 'homepage-image__wrapper': isHomePage }
+  )
 
   return (
     <div className={classPI}>
@@ -42,12 +42,12 @@ const PostImage = ({
             <SliderImages sidecarChildren={sidecarChildren} isModal={isModal} />
           )}
         </div>
-        <div className="image-heart">
-          <span className="sprite-icon__core image-heart__icon" />
+        <div className='image-heart'>
+          <span className='sprite-icon__core image-heart__icon' />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PostImage;
+export default PostImage

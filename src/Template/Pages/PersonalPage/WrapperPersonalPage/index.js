@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col } from "antd";
-import { withRouter } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { get, isEqual } from "lodash";
+import React, { useEffect, useState } from 'react'
+import { Row, Col } from 'antd'
+import { withRouter } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { get, isEqual } from 'lodash'
 
-import BasicTemplate from "Template/BasicTemplate";
-import Profile from "./Profile";
-import Follows from "./Profile/ProfileCounts";
-import Pinwheel from "Components/Loaders/Pinwheel";
-import Page404 from "Template/Pages/404";
-import PostStatus from "Containers/PostStatus";
-import TabPages from "./TabPages";
-import PrivateAccount from "./PrivateAccount";
-import Suggested from "./Suggested";
-import { requestPersonalInfo } from "Redux/PersonalProfile/personalProfile.action";
-import "./scss/personalPage.scss";
+import BasicTemplate from 'Template/BasicTemplate'
+import Profile from './Profile'
+import Follows from './Profile/ProfileCounts'
+import Pinwheel from 'Components/Loaders/Pinwheel'
+import Page404 from 'Template/Pages/404'
+import PostStatus from 'Containers/PostStatus'
+import TabPages from './TabPages'
+import PrivateAccount from './PrivateAccount'
+import Suggested from './Suggested'
+import { requestPersonalInfo } from 'Redux/PersonalProfile/personalProfile.action'
+import './scss/personalPage.scss'
 
 const PersonalPage = ({
   match = {},
   children,
   handleAddNewPost = () => {}
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const {
     isFetching = false,
     error = false,
     data: personalProfileData = {}
-  } = useSelector(state => get(state, "personalProfile", {}), isEqual());
+  } = useSelector(state => get(state, 'personalProfile', {}), isEqual())
 
-  const { id: viewerId = "", username: viewerUsername = "" } = useSelector(
-    state => get(state, "profile.data.user", {}),
+  const { id: viewerId = '', username: viewerUsername = '' } = useSelector(
+    state => get(state, 'profile.data.user', {}),
     isEqual()
-  );
-  const { relationship = {} } = personalProfileData;
+  )
+  const { relationship = {} } = personalProfileData
 
   // fetch data username view
-  const username = get(match, "params.username", "");
+  const username = get(match, 'params.username', '')
   const { username: usernameBefore, isPrivate = false } = get(
     personalProfileData,
-    "user",
+    'user',
     {}
-  );
-  const isOwner = isEqual(viewerUsername, username);
+  )
+  const isOwner = isEqual(viewerUsername, username)
 
   // fetch personal data
   useEffect(() => {
@@ -50,48 +50,48 @@ const PersonalPage = ({
         requestPersonalInfo({
           data: { username, viewerId },
           headers: {
-            "Content-Type": "application/json;charset=UTF-8"
+            'Content-Type': 'application/json;charset=UTF-8'
           }
         })
-      );
-    };
+      )
+    }
 
     if (!isEqual(username, usernameBefore)) {
-      _requestPersonalInfo();
+      _requestPersonalInfo()
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewerId, username, usernameBefore]);
+  }, [viewerId, username, usernameBefore])
 
   const isPrivated =
     !isOwner &&
     isPrivate &&
     !isEqual(
-      get(relationship, "followedByViewer.state", ""),
-      "FOLLOW_STATUS_FOLLOWING"
-    );
+      get(relationship, 'followedByViewer.state', ''),
+      'FOLLOW_STATUS_FOLLOWING'
+    )
 
   const isBlocked = isEqual(
-    get(relationship, "blockedByViewer.state", ""),
-    "BLOCK_STATUS_BLOCKED"
-  );
+    get(relationship, 'blockedByViewer.state', ''),
+    'BLOCK_STATUS_BLOCKED'
+  )
 
   // toggle suggested
-  const [toggleSuggested, setToggleSuggested] = useState(false);
+  const [toggleSuggested, setToggleSuggested] = useState(false)
   const handleToggleSuggested = () => {
-    setToggleSuggested(!toggleSuggested);
-  };
+    setToggleSuggested(!toggleSuggested)
+  }
 
   return (
     <>
       {!error ? (
         <BasicTemplate>
           {isFetching ? (
-            <div className="personal__loading">
+            <div className='personal__loading'>
               <Pinwheel isLoading size={128} />
             </div>
           ) : (
-            <div className="personal">
+            <div className='personal'>
               <Profile handleToggleSuggested={handleToggleSuggested} />
               <Row>
                 <Col xs={24} sm={24} md={0}>
@@ -112,7 +112,7 @@ const PersonalPage = ({
         <Page404 />
       )}
     </>
-  );
-};
+  )
+}
 
-export default withRouter(PersonalPage);
+export default withRouter(PersonalPage)

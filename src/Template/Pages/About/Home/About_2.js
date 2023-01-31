@@ -1,31 +1,29 @@
-import React from "react";
+import React from 'react'
 
-import Paragraph from "./Paragraph";
+import Paragraph from './Paragraph'
 
 const About_2 = () => {
   return (
-    <div className="a2">
-      <div className="a2__content">
-        <div className="a2__content--image">
+    <div className='a2'>
+      <div className='a2__content'>
+        <div className='a2__content--image'>
           <div
             style={{
               backgroundImage:
-                "url(https://res.cloudinary.com/dnzsa2z7b/image/upload/v1584591521/the-wind-blows/Project%20image/5385ef3a75da8d84d4cb_xsizsi.jpg)"
+                'url(https://res.cloudinary.com/dnzsa2z7b/image/upload/v1584591521/the-wind-blows/Project%20image/5385ef3a75da8d84d4cb_xsizsi.jpg)',
             }}
-            className="a2img"
+            className='a2img'
           />
         </div>
-        <div className="a2__content--text">
-          <div className="a2ct">
-            <div className="a2ct1">
-              <div className="a2ct2">
+        <div className='a2__content--text'>
+          <div className='a2ct'>
+            <div className='a2ct1'>
+              <div className='a2ct2'>
                 <Paragraph
-                  title="ALL ARE WELCOME"
-                  description={
-                    "We're committed to fostering a safe and supportive community for everyone."
-                  }
-                  directText="Comminity"
-                  href="/"
+                  title='ALL ARE WELCOME'
+                  description='We\"re committed to fostering a safe and supportive community for everyone.'
+                  directText='Community'
+                  href='/'
                   colorWhite
                 />
               </div>
@@ -34,7 +32,7 @@ const About_2 = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default About_2;
+export default About_2

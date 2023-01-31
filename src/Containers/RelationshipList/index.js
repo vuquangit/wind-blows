@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import RelationshipItems from "./RelationshipItems";
-import axios from "utils/axiosConfig";
+import React, { useEffect, useState } from 'react'
+import RelationshipItems from './RelationshipItems'
+import axios from 'utils/axiosConfig'
 
 const RelationshipList = ({
-  method = "get",
-  endpoint = "",
+  method = 'get',
+  endpoint = '',
   params = { page: 1, limit: 20 },
   data = {},
   headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json"
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
   },
-  headerText = "",
+  headerText = '',
   isSlider = false,
   isHomepage = false
 }) => {
@@ -22,14 +22,14 @@ const RelationshipList = ({
     page: params.page,
     limit: params.limit,
     totalItems: 0
-  });
+  })
 
   useEffect(() => {
     const source = axios.CancelToken.source();
 
     (async () => {
       try {
-        setState(prevState => ({ ...prevState, isLoading: true }));
+        setState(prevState => ({ ...prevState, isLoading: true }))
 
         const response = await axios({
           method: method,
@@ -38,14 +38,14 @@ const RelationshipList = ({
           data,
           headers,
           cancelToken: source.token
-        });
+        })
 
         setState(prevState => ({
           ...prevState,
           data: [...prevState.data, ...response.data.data],
           totalItems: response.data.totalItems,
           isLoading: false
-        }));
+        }))
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch relationship");
@@ -54,26 +54,26 @@ const RelationshipList = ({
             ...prevState,
             error: error,
             isLoading: false
-          }));
-          console.log(error);
+          }))
+          console.log(error)
         }
       }
-    })();
+    })()
 
     // unmount
     return () => {
-      source.cancel();
-    };
+      source.cancel()
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.page]);
+  }, [state.page])
 
   // get more page
-  const hasMoreItems = state.data.length < state.totalItems && !isHomepage;
+  const hasMoreItems = state.data.length < state.totalItems && !isHomepage
   const getMoreItems = () => {
     state.data.length === state.page * state.limit &&
-      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }))
+  }
 
   return (
     <RelationshipItems
@@ -84,7 +84,7 @@ const RelationshipList = ({
       getMoreItems={getMoreItems}
       isSlider={isSlider}
     />
-  );
-};
+  )
+}
 
-export default RelationshipList;
+export default RelationshipList

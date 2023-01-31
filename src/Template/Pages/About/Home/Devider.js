@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const Devider = () => {
-  return <div className="abouts__devider" />;
-};
+  return <div className='abouts__devider' />
+}
 
-export default Devider;
+export default Devider

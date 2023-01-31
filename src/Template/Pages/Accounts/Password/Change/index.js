@@ -1,7 +1,7 @@
-import React from "react";
-import BasicTemplate from "Template/BasicTemplate";
-import WrapperMenuAccounts from "Template/Pages/Accounts/WrapperMenuAccount";
-import ChangePassword from "../Update";
+import React from 'react'
+import BasicTemplate from 'Template/BasicTemplate'
+import WrapperMenuAccounts from 'Template/Pages/Accounts/WrapperMenuAccount'
+import ChangePassword from '../Update'
 
 const Change = () => {
   return (
@@ -10,7 +10,7 @@ const Change = () => {
         <ChangePassword />
       </WrapperMenuAccounts>
     </BasicTemplate>
-  );
-};
+  )
+}
 
-export default Change;
+export default Change

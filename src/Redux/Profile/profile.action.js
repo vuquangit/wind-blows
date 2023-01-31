@@ -1,10 +1,10 @@
-import { REQUEST_API } from "Middlewares/api";
-import * as actionTypes from "./actionType";
+import { REQUEST_API } from 'Middlewares/api'
+import * as actionTypes from './actionType'
 
 const createProfile = ({
   data = {},
-  endpoint = "auth",
-  method = "POST",
+  endpoint = 'auth',
+  method = 'POST',
   headers = {}
 } = {}) => ({
   [REQUEST_API]: {
@@ -18,12 +18,12 @@ const createProfile = ({
     options: { data },
     headers
   }
-});
+})
 
 const requestProfileInfo = ({
   data = {},
-  endpoint = "auth",
-  method = "GET",
+  endpoint = 'auth',
+  method = 'GET',
   headers = {}
 } = {}) => ({
   [REQUEST_API]: {
@@ -37,12 +37,12 @@ const requestProfileInfo = ({
     options: { data },
     headers
   }
-});
+})
 
 const updateProfileInfo = ({
   data = {},
-  endpoint = "auth",
-  method = "PUT",
+  endpoint = 'auth',
+  method = 'PUT',
   headers = {}
 } = {}) => ({
   [REQUEST_API]: {
@@ -56,18 +56,18 @@ const updateProfileInfo = ({
     options: { data },
     headers
   }
-});
+})
 
 const updateUserProfile = data => ({
   type: actionTypes.PROFILE_UPDATE_USER,
   data
-});
+})
 
 const clearMessage = () => ({
   type: actionTypes.PROFILE_CLEAR_MESSAGE
-});
+})
 
-const signOut = () => ({ type: actionTypes.PROFILE_SIGNOUT });
+const signOut = () => ({ type: actionTypes.PROFILE_SIGNOUT })
 
 export {
   createProfile,
@@ -76,4 +76,4 @@ export {
   updateUserProfile,
   clearMessage,
   signOut
-};
+}

@@ -1,16 +1,16 @@
-import React, { useEffect, useCallback } from "react";
-import { Divider, Button } from "antd";
-import * as Scroll from "react-scroll";
-import classNames from "classnames";
-import { Link } from "react-router-dom";
+import React, { useEffect, useCallback } from 'react'
+import { Divider, Button } from 'antd'
+import * as Scroll from 'react-scroll'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
-import CommentItem from "./CommentItem";
+import CommentItem from './CommentItem'
 
 const CommentList = ({
   captionAndTitle,
   postedAt = new Date(),
   owner = {},
-  id: postId = "",
+  id: postId = '',
   commentsDisabled,
   comments,
   isHomePage,
@@ -22,32 +22,32 @@ const CommentList = ({
 }) => {
   // add scroll events
   useEffect(() => {
-    Scroll.Events.scrollEvent.register("begin");
-    Scroll.Events.scrollEvent.register("end");
-    Scroll.scrollSpy.update();
+    Scroll.Events.scrollEvent.register('begin')
+    Scroll.Events.scrollEvent.register('end')
+    Scroll.scrollSpy.update()
 
     //componentWillUnmount
     return () => {
-      Scroll.Events.scrollEvent.remove("begin");
-      Scroll.Events.scrollEvent.remove("end");
-    };
-  }, []);
+      Scroll.Events.scrollEvent.remove('begin')
+      Scroll.Events.scrollEvent.remove('end')
+    }
+  }, [])
 
   // event scroll
   const scrollToEnd = useCallback(() => {
-    Scroll.scroller.scrollTo("scroll-container__my-scroll", {
+    Scroll.scroller.scrollTo('scroll-container__my-scroll', {
       duration: 800,
       delay: 0,
-      smooth: "easeInOutCirc",
-      containerId: "scroll-container"
-    });
-  }, []);
+      smooth: 'easeInOutCirc',
+      containerId: 'scroll-container'
+    })
+  }, [])
 
   // effect scroll
   useEffect(() => {
     if (!isHomePage && IsViewerComments) {
-      scrollToEnd();
-      setIsViewerComments(false);
+      scrollToEnd()
+      setIsViewerComments(false)
     }
   }, [
     comments,
@@ -55,20 +55,20 @@ const CommentList = ({
     isHomePage,
     IsViewerComments,
     setIsViewerComments
-  ]);
+  ])
 
   // class styles
-  const CLClass = classNames("PI__info--comment-list", {
-    "homepage-info__CL": isHomePage
-  });
-  const CLContentClass = classNames("CL", {
-    "homepage-info__CL--content": isHomePage
-  });
-  const CLCommentClass = classNames("CL__comment", { CLCMT: isHomePage });
+  const CLClass = classNames('PI__info--comment-list', {
+    'homepage-info__CL': isHomePage
+  })
+  const CLContentClass = classNames('CL', {
+    'homepage-info__CL--content': isHomePage
+  })
+  const CLCommentClass = classNames('CL__comment', { CLCMT: isHomePage })
 
   return (
     <div className={CLClass}>
-      <div className={CLContentClass} id="scroll-container">
+      <div className={CLContentClass} id='scroll-container'>
         {captionAndTitle && (
           <CommentItem
             isCaption
@@ -83,7 +83,7 @@ const CommentList = ({
         {!commentsDisabled && comments && (
           <>
             {isHomePage && commentsTotalCount > 0 && (
-              <Link to={`p/${postId}`} className="CL__comment--GTP">
+              <Link to={`p/${postId}`} className='CL__comment--GTP'>
                 {`View all ${commentsTotalCount} comments`}
               </Link>
             )}
@@ -102,16 +102,16 @@ const CommentList = ({
                 </div>
               ))}
             {!isHomePage && comments.length < commentsTotalCount && (
-              <Divider className="CL__comment--divider">
+              <Divider className='CL__comment--divider'>
                 <Button onClick={fetchMoreComments}>Read more</Button>
               </Divider>
             )}
           </>
         )}
-        <Scroll.Element name="scroll-container__my-scroll" />
+        <Scroll.Element name='scroll-container__my-scroll' />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CommentList;
+export default CommentList

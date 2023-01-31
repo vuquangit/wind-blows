@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import ModalOption from "./ModalOption";
-import "./postOption.scss";
+import React, { useState } from 'react'
+import { Button } from 'antd'
+import ModalOption from './ModalOption'
+import './postOption.scss'
 
 const PostOption = ({
-  postId = "",
+  postId = '',
   owner = {},
   relationship = {},
   handleCancelModalPost = () => {},
   handleRemovePost = () => {}
 }) => {
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false)
   const showModal = () => {
-    setVisibleModal(true);
-  };
+    setVisibleModal(true)
+  }
   const handleCancelModal = e => {
-    setVisibleModal(false);
-  };
+    setVisibleModal(false)
+  }
 
   return (
-    <div className="PI__PO">
-      <Button className="PI__PO--btn" onClick={showModal}>
-        <span className="sprite-icon__glyphs btn-img" />
+    <div className='PI__PO'>
+      <Button className='PI__PO--btn' onClick={showModal}>
+        <span className='sprite-icon__glyphs btn-img' />
       </Button>
       <ModalOption
         postId={postId}
@@ -33,7 +33,7 @@ const PostOption = ({
         handleRemovePost={handleRemovePost}
       />
     </div>
-  );
-};
+  )
+}
 
-export default PostOption;
+export default PostOption

@@ -1,18 +1,18 @@
-import React from "react";
-import moment from "moment";
-import "./timeFromNow.scss";
+import React from 'react'
+import moment from 'moment'
+import './timeFromNow.scss'
 
-const PostTimeAgo = ({ postedAt, className = "" }) => {
+const PostTimeAgo = ({ postedAt, className = '' }) => {
   const _timeAgo = moment(
     parseInt(
       postedAt +
         (postedAt.toString().length <= 13
-          ? "0".repeat(13 - postedAt.toString().length)
-          : "")
+          ? '0'.repeat(13 - postedAt.toString().length)
+          : '')
     )
-  ).fromNow();
+  ).fromNow()
 
-  return <div className={`time-from-now ${className}`}>{_timeAgo}</div>;
-};
+  return <div className={`time-from-now ${className}`}>{_timeAgo}</div>
+}
 
-export default PostTimeAgo;
+export default PostTimeAgo

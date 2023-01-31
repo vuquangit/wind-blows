@@ -1,14 +1,14 @@
-import { useDispatch } from "react-redux";
-import { auth as firebaseAuth } from "firebase/app";
-import { signOut } from "Redux/Profile/profile.action";
+import { useDispatch } from 'react-redux'
+import { auth as firebaseAuth } from 'firebase/app'
+import { signOut } from 'Redux/Profile/profile.action'
 
 export class Auth {
   static useSignOut = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     return async () => {
-      await firebaseAuth().signOut();
-      dispatch(signOut());
-    };
+      await firebaseAuth().signOut()
+      dispatch(signOut())
+    }
   };
 }

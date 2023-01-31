@@ -1,29 +1,29 @@
-import React, { useState, useCallback } from "react";
-import { Button, Divider, Typography } from "antd";
-import { Link } from "react-router-dom";
-import MouseParallax from "./MouseParallax";
-import { useSpring } from "react-spring";
+import React, { useState, useCallback } from 'react'
+import { Button, Divider, Typography } from 'antd'
+import { Link } from 'react-router-dom'
+import MouseParallax from './MouseParallax'
+import { useSpring } from 'react-spring'
 
-import axios from "utils/axiosConfig";
-import { InputAdvance } from "Components/Input";
+import axios from 'utils/axiosConfig'
+import { InputAdvance } from 'Components/Input'
 
 const ResetPassword = () => {
   // animition
   const [mouseParallax: props, setMouseParallax: set] = useSpring(() => ({
     xy: [0, 0],
     config: { mass: 10, tension: 550, friction: 140 }
-  }));
+  }))
   const calcMouseParallax = (x, y) => [
     x - window.innerWidth / 2,
     y - window.innerHeight / 2
-  ];
+  ]
 
   //  email
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('')
   const handleChangeEmail = e => {
-    setEmail(e.target.value);
-    e.preventDefault();
-  };
+    setEmail(e.target.value)
+    e.preventDefault()
+  }
 
   // fetch
   const [state, setState] = useState({
@@ -31,65 +31,64 @@ const ResetPassword = () => {
     data: {},
     isSendForgotPassword: false,
     error: null
-  });
+  })
 
   const handleForgotPassord = useCallback(async () => {
-    const localhost = window.location.origin;
+    const localhost = window.location.origin
 
     try {
-      setState(prevState => ({ ...prevState, isLoading: true }));
+      setState(prevState => ({ ...prevState, isLoading: true }))
 
       await axios({
-        method: "post",
-        url: "/users/forgot-password",
+        method: 'post',
+        url: '/users/forgot-password',
         data: {
           email: email,
           localhost: localhost
         },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
 
-      setState(prevState => ({ ...prevState, isSendForgotPassword: true }));
+      setState(prevState => ({ ...prevState, isSendForgotPassword: true }))
     } catch (err) {
-      console.log("Change password error ", err);
+      console.log('Change password error ', err)
 
-      setState(prevState => ({ ...prevState, error: err }));
+      setState(prevState => ({ ...prevState, error: err }))
     } finally {
-      setState(prevState => ({ ...prevState, isLoading: false }));
+      setState(prevState => ({ ...prevState, isLoading: false }))
     }
-  }, [email]);
+  }, [email])
 
   const handleResendEmail = useCallback(() => {
-    setState(prevState => ({ ...prevState, isSendForgotPassword: false }));
-  }, []);
+    setState(prevState => ({ ...prevState, isSendForgotPassword: false }))
+  }, [])
 
   return (
-    <div className="RP">
+    <div className='RP'>
       <div
-        className="RP__content"
+        className='RP__content'
         onMouseMove={({ clientX: x, clientY: y }) =>
-          setMouseParallax({ xy: calcMouseParallax(x, y) })
-        }
+          setMouseParallax({ xy: calcMouseParallax(x, y) })}
       >
-        <div className="RP__content--item RP__content--icon">
+        <div className='RP__content--item RP__content--icon'>
           <MouseParallax mouseParallax={mouseParallax} />
         </div>
         {!state.isSendForgotPassword ? (
           <>
-            <div className="RP__content--item">
-              <h4 className="item__TLI">Trouble Logging In?</h4>
+            <div className='RP__content--item'>
+              <h4 className='item__TLI'>Trouble Logging In?</h4>
             </div>
-            <div className="RP__content--item">
-              <div className="item__description">
+            <div className='RP__content--item'>
+              <div className='item__description'>
                 Enter your username or email and we'll send you a link to get
                 back into your account.
               </div>
             </div>
-            <div className="RP__content--item">
+            <div className='RP__content--item'>
               <InputAdvance
-                placeholder={email ? "Email" : "Email..."}
+                placeholder={email ? 'Email' : 'Email...'}
                 allowClear
                 value={email}
                 onChange={handleChangeEmail}
@@ -97,13 +96,13 @@ const ResetPassword = () => {
               />
             </div>
             {state.error && (
-              <Typography.Text type="danger" className="RP__content--item">
+              <Typography.Text type='danger' className='RP__content--item'>
                 This email does not exist or has not been registered
               </Typography.Text>
             )}
-            <div className="RP__content--item">
+            <div className='RP__content--item'>
               <Button
-                type="primary"
+                type='primary'
                 block
                 onClick={handleForgotPassord}
                 loading={state.isLoading}
@@ -114,10 +113,10 @@ const ResetPassword = () => {
             </div>
           </>
         ) : (
-          <div className="RP__content--sended">
+          <div className='RP__content--sended'>
             <h1>Check your email</h1>
             <p>
-              We've sent an email to{" "}
+              We've sent an email to{' '}
               <span style={{ fontWeight: 600 }}>{email}</span>.
             </p>
             <p>
@@ -125,30 +124,30 @@ const ResetPassword = () => {
               see the email, check other places it might be, like your junk,
               spam, social, or other folders
             </p>
-            <Button onClick={handleResendEmail} className="btn-resend-mail">
+            <Button onClick={handleResendEmail} className='btn-resend-mail'>
               I didn't receive the email
             </Button>
           </div>
         )}
 
-        <div className="RP__content--item">
-          <Divider className="item__devider">OR</Divider>
+        <div className='RP__content--item'>
+          <Divider className='item__devider'>OR</Divider>
         </div>
-        <div className="RP__content--item">
-          <Link to="/accounts/emailsignup/" className="item__CNA">
+        <div className='RP__content--item'>
+          <Link to='/accounts/emailsignup/' className='item__CNA'>
             Create New Account
           </Link>
         </div>
-        <div className="RP__content--item">
-          <div className="item__BTL">
-            <Link to="/accounts/login/" className="item__BTL--content">
+        <div className='RP__content--item'>
+          <div className='item__BTL'>
+            <Link to='/accounts/login/' className='item__BTL--content'>
               Back To Login
             </Link>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

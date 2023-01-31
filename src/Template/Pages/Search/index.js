@@ -1,42 +1,40 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Input } from "antd";
-import { get, isEmpty, startsWith } from "lodash";
-import { useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react'
+import { Input } from 'antd'
+import { get, isEmpty, startsWith } from 'lodash'
+import { useSelector } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
-import axios from "utils/axiosConfig";
-import BasicTemplate from "Template/BasicTemplate";
-import SearchResults from "./SearchResults";
-import "./search.scss";
+import axios from 'utils/axiosConfig'
+import BasicTemplate from 'Template/BasicTemplate'
+import SearchResults from './SearchResults'
+import './search.scss'
 
 const SearchComponent = ({
   isSearchPage = false,
   isScrolled = false,
   isTagPeople = false,
-  valueSearch = "",
-  handleSelectSearchItem = () => {}
+  valueSearch = '',
+  handleSelectSearchItem = () => {},
 }) => {
-  const { id: viewerId = "" } = useSelector((state = {}) =>
-    get(state, "profile.data.user", {})
-  );
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-  const source = axios.CancelToken.source();
-  const [value, setValue] = useState("");
+  const { id: viewerId = '' } = useSelector((state = {}) => get(state, 'profile.data.user', {}))
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+  const source = axios.CancelToken.source()
+  const [value, setValue] = useState('')
   const [state, setState] = useState({
     data: [],
     error: null,
     isLoading: false,
     page: 1,
     limit: 10,
-    totalItems: 0
-  });
+    totalItems: 0,
+  })
 
   const initSearch = useCallback(
     value => {
-      source.cancel("Cancel search");
+      source.cancel('Cancel search')
 
-      const val = value.toLowerCase();
-      setValue(val);
+      const val = value.toLowerCase()
+      setValue(val)
 
       setState(prevState => ({
         ...prevState,
@@ -45,60 +43,60 @@ const SearchComponent = ({
         isLoading: false,
         page: 1,
         limit: 10,
-        totalItems: 0
-      }));
+        totalItems: 0,
+      }))
 
-      if (val) setIsOpenDropdown(true);
-      else setIsOpenDropdown(false);
+      if (val) setIsOpenDropdown(true)
+      else setIsOpenDropdown(false)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
-  );
+  )
 
   const handleSearchChanged = e => {
-    initSearch(e.target.value);
-  };
+    initSearch(e.target.value)
+  }
 
   const handleSearchClick = () => {
-    value && state.data && setIsOpenDropdown(true);
-  };
+    value && state.data && setIsOpenDropdown(true)
+  }
 
   useEffect(() => {
-    isTagPeople && initSearch(valueSearch);
+    isTagPeople && initSearch(valueSearch)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valueSearch]);
+  }, [valueSearch])
 
   useEffect(() => {
     const fetchSearch = async () => {
       try {
-        setState(prevState => ({ ...prevState, isLoading: true }));
+        setState(prevState => ({ ...prevState, isLoading: true }))
 
         const response = await axios({
-          method: "get",
-          url: "/explore/people/search",
+          method: 'get',
+          url: '/explore/people/search',
           params: {
             value: value,
-            viewerId
+            viewerId,
           },
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
-          cancelToken: source.token
-        });
+          cancelToken: source.token,
+        })
 
         if (!isEmpty(response))
           setState(prevState => ({
             ...prevState,
             data: [...prevState.data, ...response.data.data],
             totalItems: response.data.totalItems,
-            isLoading: false
-          }));
+            isLoading: false,
+          }))
         else
           setState(prevState => ({
             ...prevState,
-            isLoading: false
-          }));
+            isLoading: false,
+          }))
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch relationship");
@@ -106,34 +104,34 @@ const SearchComponent = ({
           setState(prevState => ({
             ...prevState,
             error: error,
-            isLoading: false
-          }));
-          console.log(error);
+            isLoading: false,
+          }))
+          console.log(error)
         }
       }
-    };
+    }
 
-    if (value) fetchSearch();
+    if (value) fetchSearch()
 
     // unmount
     return () => {
-      source.cancel();
-    };
+      source.cancel()
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value, state.page]);
+  }, [value, state.page])
 
   // get more page
-  const hasMoreItems = state.data.length < state.totalItems;
+  const hasMoreItems = state.data.length < state.totalItems
   const getMoreItems = async () => {
     state.data.length === state.page * state.limit &&
-      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }))
+  }
 
   const _handleSelectSearchItem = val => {
-    setIsOpenDropdown(false);
-    handleSelectSearchItem(val);
-  };
+    setIsOpenDropdown(false)
+    handleSelectSearchItem(val)
+  }
 
   const _searchResult = () => (
     <SearchResults
@@ -145,13 +143,13 @@ const SearchComponent = ({
       isTagPeople={isTagPeople}
       handleSelectSearchItem={_handleSelectSearchItem}
     />
-  );
+  )
 
   return (
-    <div className="search-people">
+    <div className='search-people'>
       {!isTagPeople && (
         <Input.Search
-          placeholder="Search"
+          placeholder='Search'
           allowClear
           loading={state.isLoading}
           onChange={handleSearchChanged}
@@ -163,36 +161,35 @@ const SearchComponent = ({
           ? _searchResult()
           : isOpenDropdown &&
             !isScrolled && (
-              <>
-                <div
-                  className="search-people__close-dropdown"
-                  role="dialog"
-                  onClick={() => setIsOpenDropdown(false)}
-                />
-                <div className="search-people__dropdown-content">
-                  <div className="search-people__arrow-up" />
-                  <div className="search-people__dropdown">
-                    {_searchResult()}
-                  </div>
-                </div>
-              </>
-            )
-        : isOpenDropdown && (
+            // eslint-disable-next-line react/jsx-indent
             <>
               <div
-                className="search-people__close-dropdown"
-                role="dialog"
+                className='search-people__close-dropdown'
+                role='dialog'
                 onClick={() => setIsOpenDropdown(false)}
               />
-              <div className="search-people__tag-people">{_searchResult()}</div>
+              <div className='search-people__dropdown-content'>
+                <div className='search-people__arrow-up' />
+                <div className='search-people__dropdown'>{_searchResult()}</div>
+              </div>
             </>
-          )}
+          )
+        : isOpenDropdown && (
+          <>
+            <div
+              className='search-people__close-dropdown'
+              role='dialog'
+              onClick={() => setIsOpenDropdown(false)}
+            />
+            <div className='search-people__tag-people'>{_searchResult()}</div>
+          </>
+        )}
     </div>
-  );
-};
+  )
+}
 
 const WrappedSearch = ({ match = {}, ...restProps }) => {
-  const isSearchPage = startsWith(match.path, "/explore/people/search");
+  const isSearchPage = startsWith(match.path, '/explore/people/search')
 
   return (
     <>
@@ -204,7 +201,7 @@ const WrappedSearch = ({ match = {}, ...restProps }) => {
         <SearchComponent {...restProps} isSearchPage={isSearchPage} />
       )}
     </>
-  );
-};
+  )
+}
 
-export default withRouter(WrappedSearch);
+export default withRouter(WrappedSearch)

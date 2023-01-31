@@ -1,29 +1,29 @@
-import React, { useEffect } from "react";
-import { isEmpty, get } from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router";
-import { Row, Col } from "antd";
+import React, { useEffect } from 'react'
+import { isEmpty, get } from 'lodash'
+import { useSelector, useDispatch } from 'react-redux'
+import { withRouter } from 'react-router'
+import { Row, Col } from 'antd'
 
-import Login from "./Login";
-import PanelImage from "./PanelImage";
-import Loading from "Template/Pages/Loading";
-import "./login.scss";
+import Login from './Login'
+import PanelImage from './PanelImage'
+import Loading from 'Template/Pages/Loading'
+import './login.scss'
 
 const WrapperLogin = ({ history }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const {
     data: profileData = {},
     isFetching = false
-  } = useSelector((state = {}) => get(state, "profile", {}));
+  } = useSelector((state = {}) => get(state, 'profile', {}))
 
   useEffect(() => {
     if (!isEmpty(profileData)) {
-      history.push("/");
+      history.push('/')
     }
-  }, [dispatch, history, profileData]);
+  }, [dispatch, history, profileData])
 
   return (
-    <div className="login">
+    <div className='login'>
       {isFetching && !isEmpty(profileData) ? (
         <Loading />
       ) : (
@@ -37,7 +37,7 @@ const WrapperLogin = ({ history }) => {
         </Row>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(WrapperLogin);
+export default withRouter(WrapperLogin)

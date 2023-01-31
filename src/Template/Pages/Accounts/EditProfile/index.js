@@ -1,8 +1,8 @@
-import React from "react";
-import BasicTemplate from "Template/BasicTemplate";
-import WrapperMenuAccounts from "../WrapperMenuAccount";
-import EditProfile from "./EditProfile";
-import "./editProfile.scss";
+import React from 'react'
+import BasicTemplate from 'Template/BasicTemplate'
+import WrapperMenuAccounts from '../WrapperMenuAccount'
+import EditProfile from './EditProfile'
+import './editProfile.scss'
 
 const Edit = () => {
   return (
@@ -11,7 +11,7 @@ const Edit = () => {
         <EditProfile />
       </WrapperMenuAccounts>
     </BasicTemplate>
-  );
-};
+  )
+}
 
-export default Edit;
+export default Edit

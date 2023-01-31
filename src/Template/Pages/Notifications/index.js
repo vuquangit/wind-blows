@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import axios from "utils/axiosConfig";
-import { get, startsWith, isEmpty } from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import axios from 'utils/axiosConfig'
+import { get, startsWith, isEmpty } from 'lodash'
+import { useSelector, useDispatch } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
-import BasicTemplate from "Template/BasicTemplate";
-import Notification from "./Notification";
-import NotiLoading from "./NotificationItems/NotificationLoading";
-import NotiEmpty from "./NotificationItems/NotificationEmpty";
+import BasicTemplate from 'Template/BasicTemplate'
+import Notification from './Notification'
+import NotiLoading from './NotificationItems/NotificationLoading'
+import NotiEmpty from './NotificationItems/NotificationEmpty'
 import {
   clearNewNotifications,
   updateNotifications,
   updateFollowRequests
-} from "Redux/Notifications/notification.action";
-import "./notification.scss";
+} from 'Redux/Notifications/notification.action'
+import './notification.scss'
 
 const Notifications = () => {
   const viewerId = useSelector((state = {}) =>
-    get(state, "profile.data.user.id", "")
-  );
+    get(state, 'profile.data.user.id', '')
+  )
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const [state, setState] = useState({
     isLoading: false,
     data: [],
@@ -28,55 +28,55 @@ const Notifications = () => {
     limit: 18,
     page: 1,
     totalItem: 0
-  });
+  })
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source()
 
     const feactData = async () => {
       try {
-        setState(prevState => ({ ...prevState, isLoading: true }));
+        setState(prevState => ({ ...prevState, isLoading: true }))
 
         const response = await axios({
-          method: "get",
-          url: "/users/notifications",
+          method: 'get',
+          url: '/users/notifications',
           params: {
             userId: viewerId,
             limit: state.limit,
             page: state.page
           },
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           cancelToken: source.token
-        });
+        })
 
         if (response && !isEmpty(response.data))
           setState(prevState => ({
             ...prevState,
             data: [
-              ...get(prevState, "data", []),
-              ...get(response, "data.data", [])
+              ...get(prevState, 'data', []),
+              ...get(response, 'data.data', [])
             ],
-            totalItem: get(response, "data.totalItem", 0),
+            totalItem: get(response, 'data.totalItem', 0),
             isLoading: false
-          }));
+          }))
 
         // clear new notifications by GCM
-        if (state.page === 1) await dispatch(clearNewNotifications());
+        if (state.page === 1) await dispatch(clearNewNotifications())
 
         // update total unread
-        const totalUnread = get(response, "data.totalUnread", 0);
-        if (totalUnread) await dispatch(updateNotifications(totalUnread));
+        const totalUnread = get(response, 'data.totalUnread', 0)
+        if (totalUnread) await dispatch(updateNotifications(totalUnread))
 
         // total follow requests
         const totalFollowRequests = get(
           response,
-          "data.totalFollowRequests",
+          'data.totalFollowRequests',
           0
-        );
+        )
         if (totalFollowRequests)
-          await dispatch(updateFollowRequests(totalFollowRequests));
+          await dispatch(updateFollowRequests(totalFollowRequests))
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch notifications");
@@ -85,40 +85,40 @@ const Notifications = () => {
             ...prevState,
             error: error,
             isLoading: false
-          }));
-          console.log(error);
+          }))
+          console.log(error)
         }
       }
-    };
+    }
 
-    feactData();
+    feactData()
 
     // unmount
     return () => {
-      source.cancel();
-    };
+      source.cancel()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.page]);
+  }, [state.page])
 
   const setAllItemsReaded = () => {
     if (state && state.data && state.data.length > 0) {
       const items = state.data.map(item => {
-        return { ...item, read: true };
-      });
+        return { ...item, read: true }
+      })
 
       setState(prevState => ({
         ...prevState,
         data: items
-      }));
+      }))
     }
-  };
+  }
 
   // load more item
-  const hasMoreItems = state.data.length < state.totalItem;
+  const hasMoreItems = state.data.length < state.totalItem
   const getMoreItems = () => {
     state.data.length === state.page * state.limit &&
-      setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+      setState(prevState => ({ ...prevState, page: prevState.page + 1 }))
+  }
 
   return (
     <>
@@ -136,11 +136,11 @@ const Notifications = () => {
         <NotiEmpty />
       )}
     </>
-  );
-};
+  )
+}
 
 const WrappedNotification = ({ match = {} }) => {
-  const isDropdown = startsWith(match.path, "/notifications");
+  const isDropdown = startsWith(match.path, '/notifications')
 
   return (
     <>
@@ -152,7 +152,7 @@ const WrappedNotification = ({ match = {} }) => {
         <Notifications />
       )}
     </>
-  );
-};
+  )
+}
 
-export default withRouter(WrappedNotification);
+export default withRouter(WrappedNotification)

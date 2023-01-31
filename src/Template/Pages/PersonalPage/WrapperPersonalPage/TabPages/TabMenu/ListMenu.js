@@ -1,16 +1,16 @@
-import { faTable, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faTable, faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 const ListMenu = [
   {
-    label: "Post",
+    label: 'Post',
     icon: faTable,
-    href: `/`
+    href: '/'
   },
   {
-    label: "Saved",
+    label: 'Saved',
     icon: faBookmark,
-    href: `/saved/`
+    href: '/saved/'
   }
-];
+]
 
-export default ListMenu;
+export default ListMenu

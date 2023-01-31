@@ -1,16 +1,16 @@
-import React, { useCallback } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import Slider from "react-slick";
-import { settings } from "./configSlider";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useCallback } from 'react'
+import InfiniteScroll from 'react-infinite-scroller'
+import Slider from 'react-slick'
+import { settings } from './configSlider'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
-import UserRelationship from "Containers/UserRelationship";
-import Pinwheel from "Components/Loaders/Pinwheel";
-import "./Relationship.scss";
+import UserRelationship from 'Containers/UserRelationship'
+import Pinwheel from 'Components/Loaders/Pinwheel'
+import './Relationship.scss'
 
 const FollowList = ({
-  headerText = "",
+  headerText = '',
   items = [],
   isLoading = false,
   hasMoreItems = false,
@@ -30,14 +30,14 @@ const FollowList = ({
         />
       )),
     [isSlider, items]
-  );
+  )
 
   return (
     <>
       {!isSlider ? (
-        <div className="follow-list">
+        <div className='follow-list'>
           {headerText && items && items.length > 0 && (
-            <div className="follow-list__header">
+            <div className='follow-list__header'>
               <h1>{headerText}</h1>
             </div>
           )}
@@ -52,14 +52,14 @@ const FollowList = ({
         </div>
       ) : (
         <>
-          <Slider {...settings} className="relationship-slider">
+          <Slider {...settings} className='relationship-slider'>
             {_renderFollowItem()}
             {isLoading && <Pinwheel size={48} />}
           </Slider>
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default FollowList;
+export default FollowList

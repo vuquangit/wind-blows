@@ -1,12 +1,12 @@
-import React from "react";
-import { Avatar } from "antd";
-import { Image, Transformation } from "cloudinary-react";
+import React from 'react'
+import { Avatar } from 'antd'
+import { Image, Transformation } from 'cloudinary-react'
 
 const AvatarUser = ({
-  profilePicturePublicId = "",
-  profilePictureUrl = "",
+  profilePicturePublicId = '',
+  profilePictureUrl = '',
   size = 24,
-  background = "white"
+  background = 'white'
 }) => {
   return (
     <>
@@ -15,18 +15,18 @@ const AvatarUser = ({
           <Transformation
             width={size}
             height={size}
-            radius="max"
-            crop="fill"
+            radius='max'
+            crop='fill'
             background={background}
           />
         </Image>
       ) : profilePictureUrl ? (
         <Avatar src={profilePictureUrl} size={size} />
       ) : (
-        <Avatar icon="user" size={size} />
+        <Avatar icon='user' size={size} />
       )}
     </>
-  );
-};
+  )
+}
 
-export default AvatarUser;
+export default AvatarUser

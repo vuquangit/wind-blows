@@ -1,16 +1,16 @@
-import React, { memo } from "react";
-import { Button, Popover } from "antd";
-import "emoji-mart/css/emoji-mart.css";
-import { Picker } from "emoji-mart";
+import React, { memo } from 'react'
+import { Button, Popover } from 'antd'
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
 
-import emojiImage from "assets/images/emoji__4Z_KKMxKl4H.png";
-import "./emoji.scss";
+import emojiImage from 'assets/images/emoji__4Z_KKMxKl4H.png'
+import './emoji.scss'
 
 const Emoji = ({ onSelect = () => {}, style = {} }) => {
   const emojiPicker = (
     <Picker
-      title="Pick your emoji…"
-      emoji="point_up"
+      title='Pick your emoji…'
+      emoji='point_up'
       style={{
         ...style
       }}
@@ -18,25 +18,25 @@ const Emoji = ({ onSelect = () => {}, style = {} }) => {
       showPreview={false}
       showSkinTones={false}
     />
-  );
+  )
 
   return (
     <>
       <Popover
         content={emojiPicker}
         title={null}
-        trigger="click"
-        overlayClassName="emoij-popover"
+        trigger='click'
+        overlayClassName='emoij-popover'
       >
-        <Button className="emoji" title="Insert emoji">
+        <Button className='emoji' title='Insert emoji'>
           <div
-            className="emoji-icon"
+            className='emoji-icon'
             style={{ backgroundImage: `url(${emojiImage})` }}
           />
         </Button>
       </Popover>
     </>
-  );
-};
+  )
+}
 
-export default memo(Emoji);
+export default memo(Emoji)

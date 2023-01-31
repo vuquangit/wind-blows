@@ -1,38 +1,38 @@
-import React, { useState } from "react";
-import { Row, Col } from "antd";
-import { useSelector } from "react-redux";
-import { get, isEqual } from "lodash";
+import React, { useState } from 'react'
+import { Row, Col } from 'antd'
+import { useSelector } from 'react-redux'
+import { get, isEqual } from 'lodash'
 
-import AvatarUser from "Components/AvatarUser";
-import ModalChangePhoto from "./ModalChangePhoto";
-import "./profilePhoto.scss";
+import AvatarUser from 'Components/AvatarUser'
+import ModalChangePhoto from './ModalChangePhoto'
+import './profilePhoto.scss'
 
 const ProfilePhoto = props => {
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false)
   const showModal = () => {
-    setVisibleModal(true);
-  };
+    setVisibleModal(true)
+  }
   const handleCancelModal = () => {
-    setVisibleModal(false);
-  };
+    setVisibleModal(false)
+  }
 
   const {
     labelCol = { sm: { span: 6 } },
     wrapperCol = { sm: { span: 18 } },
     changePhoto = false
-  } = props;
+  } = props
 
   const {
-    profilePictureUrl = "",
-    username = "",
-    profilePicturePublicId = ""
-  } = useSelector(state => get(state, "profile.data.user"), isEqual());
+    profilePictureUrl = '',
+    username = '',
+    profilePicturePublicId = ''
+  } = useSelector(state => get(state, 'profile.data.user'), isEqual())
 
   return (
-    <div className="profile-photo">
-      <Row type="flex" align="middle">
+    <div className='profile-photo'>
+      <Row type='flex' align='middle'>
         <Col {...labelCol.sm}>
-          <div className="profile-photo__avatar">
+          <div className='profile-photo__avatar'>
             <AvatarUser
               profilePicturePublicId={profilePicturePublicId}
               profilePictureUrl={profilePictureUrl}
@@ -41,7 +41,7 @@ const ProfilePhoto = props => {
           </div>
         </Col>
         <Col {...wrapperCol.sm}>
-          <div className="profile-photo__change">
+          <div className='profile-photo__change'>
             <div>
               <h1>{username}</h1>
               {changePhoto && (
@@ -58,7 +58,7 @@ const ProfilePhoto = props => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ProfilePhoto;
+export default ProfilePhoto

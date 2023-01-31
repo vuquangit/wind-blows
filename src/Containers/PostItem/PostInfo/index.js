@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import classNames from "classnames";
-import axios from "utils/axiosConfig";
-import { get, filter, isEmpty } from "lodash";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Button } from "antd";
+import React, { useState, useEffect } from 'react'
+import classNames from 'classnames'
+import axios from 'utils/axiosConfig'
+import { get, filter, isEmpty } from 'lodash'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Button } from 'antd'
 
-import PostAction from "./PostAction";
-import PostLikes from "./PostLikes";
-import CommentList from "./CommentList";
-import PostedAt from "./PostedAt";
-import AddComments from "./AddComments";
-import "./scss/postInfo.scss";
+import PostAction from './PostAction'
+import PostLikes from './PostLikes'
+import CommentList from './CommentList'
+import PostedAt from './PostedAt'
+import AddComments from './AddComments'
+import './scss/postInfo.scss'
 
 const PostInfo = ({
-  postId = "",
+  postId = '',
   owner = {},
   numLikes = 0,
-  postAt = "",
+  postAt = '',
   isHomePage = false,
   likedByViewer = false,
   savedByViewer = false,
@@ -26,8 +26,8 @@ const PostInfo = ({
   handleLikePost = () => {}
 }) => {
   const viewerId = useSelector((state = {}) =>
-    get(state, "profile.data.user.id", "")
-  );
+    get(state, 'profile.data.user.id', '')
+  )
 
   // fetch comments data
   const [stateComments, setComments] = useState({
@@ -37,16 +37,16 @@ const PostInfo = ({
     limit: isHomePage ? 3 : 12,
     page: 1,
     commentsTotalCount: 0
-  });
+  })
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
+    const source = axios.CancelToken.source()
 
     const feactCommentsData = async () => {
       try {
         const response = await axios({
-          method: "get",
-          url: "/post/comments",
+          method: 'get',
+          url: '/post/comments',
           params: {
             postId: postId,
             viewerId: viewerId,
@@ -54,10 +54,10 @@ const PostInfo = ({
             page: stateComments.page
           },
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           cancelToken: source.token
-        });
+        })
 
         // console.log("reponse comments", response);
 
@@ -68,38 +68,38 @@ const PostInfo = ({
               ...prevState.data,
               ...response.data,
               comments: [
-                ...(get(prevState, "data.comments") || []),
-                ...get(response, "data.comments")
+                ...(get(prevState, 'data.comments') || []),
+                ...get(response, 'data.comments')
               ]
             },
-            commentsTotalCount: get(response, "data.commentsTotalCount", 0)
-          }));
+            commentsTotalCount: get(response, 'data.commentsTotalCount', 0)
+          }))
         }
       } catch (error) {
         if (axios.isCancel(error)) {
           // console.log("cancelled fetch comments");
         } else {
-          setComments(prevState => ({ ...prevState, isLoading: false }));
-          console.log(error);
+          setComments(prevState => ({ ...prevState, isLoading: false }))
+          console.log(error)
         }
       }
-    };
+    }
 
-    feactCommentsData();
+    feactCommentsData()
 
     // unmount
     return () => {
-      source.cancel();
-    };
+      source.cancel()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateComments.page]);
+  }, [stateComments.page])
 
   // get more comments
   const fetchMoreComments = () => {
     stateComments.commentsTotalCount > 0 &&
       stateComments.data.comments.length < stateComments.commentsTotalCount &&
-      setComments(prevState => ({ ...prevState, page: prevState.page + 1 }));
-  };
+      setComments(prevState => ({ ...prevState, page: prevState.page + 1 }))
+  }
 
   // add post comments
   const handleAddComment = res => {
@@ -107,13 +107,13 @@ const PostInfo = ({
       ...prevState,
       data: {
         ...prevState.data,
-        comments: [...get(prevState, "data.comments", []), res]
+        comments: [...get(prevState, 'data.comments', []), res]
       },
       commentsTotalCount: prevState.commentsTotalCount + 1
-    }));
+    }))
 
     // console.log("add parent comment", stateComments);
-  };
+  }
   const handleDeleteComment = commentId => {
     setComments(prevState => ({
       ...prevState,
@@ -132,15 +132,15 @@ const PostInfo = ({
         prevState.commentsTotalCount - 1 > 0
           ? prevState.commentsTotalCount - 1
           : 0
-    }));
-  };
+    }))
+  }
 
-  const [IsViewerComments, setIsViewerComments] = useState(false);
+  const [IsViewerComments, setIsViewerComments] = useState(false)
 
   // classNames
-  const infoClass = classNames("PI__info", {
-    "homepage-info": isHomePage
-  });
+  const infoClass = classNames('PI__info', {
+    'homepage-info': isHomePage
+  })
 
   return (
     <div className={infoClass}>
@@ -166,7 +166,7 @@ const PostInfo = ({
       <PostedAt isHomePage={isHomePage} postedAt={postAt} />
       {!commentsDisabled &&
         (viewerId ? (
-          <div className="PI__info--post-comment">
+          <div className='PI__info--post-comment'>
             <AddComments
               isHomePage={isHomePage}
               postId={postId}
@@ -175,16 +175,16 @@ const PostInfo = ({
             />
           </div>
         ) : (
-          <div className="PI__info--post-comment">
-            <Link to="/accounts/login">
-              <Button type="primary" block>
+          <div className='PI__info--post-comment'>
+            <Link to='/accounts/login'>
+              <Button type='primary' block>
                 Login to comment
               </Button>
             </Link>
           </div>
         ))}
     </div>
-  );
-};
+  )
+}
 
-export default PostInfo;
+export default PostInfo

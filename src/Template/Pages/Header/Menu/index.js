@@ -96,7 +96,7 @@ const Menu = ({ isScrolled = false, isSmallScreen = false, match = {} }) => {
       <div className='header__menu--items'>
         {!isSmallScreen && (
           <div className='menu-item'>
-            <NavLink to={`/`}>
+            <NavLink to='/'>
               <FontAwesomeIcon icon={faHome} title='Home' />
             </NavLink>
           </div>

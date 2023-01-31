@@ -4,47 +4,47 @@ import React, {
   forwardRef,
   cloneElement,
   useEffect
-} from "react";
-import { Input } from "antd";
-import classNames from "classnames";
-import "./input.scss";
+} from 'react'
+import { Input } from 'antd'
+import classNames from 'classnames'
+import './input.scss'
 
 const WrappedInput = ({ forwardedRef, props, children }) => {
   const {
-    value = "",
+    value = '',
     onChange,
-    placeholder = "",
+    placeholder = '',
     prefix = null,
-    className = "",
+    className = '',
     ...restProps
-  } = props;
-  const [isChanged, setIsChanged] = useState(false);
+  } = props
+  const [isChanged, setIsChanged] = useState(false)
 
   useEffect(() => {
-    value ? setIsChanged(true) : setIsChanged(false);
-  }, [value]);
+    value ? setIsChanged(true) : setIsChanged(false)
+  }, [value])
 
   const handleInputOnchange = e => {
-    if (onChange) onChange(e);
-  };
+    if (onChange) onChange(e)
+  }
 
   const classInput = classNames(
-    "input-advance__content--input",
+    'input-advance__content--input',
     {
-      "input-advance__content--input-change": isChanged
+      'input-advance__content--input-change': isChanged
     },
     className
-  );
+  )
 
   const classLabel = classNames(
-    "input-advance__content--label",
+    'input-advance__content--label',
     {
-      "input-advance__content--label-prefix": !!prefix
+      'input-advance__content--label-prefix': !!prefix
     },
     {
-      "input-advance__content--label-change": isChanged
+      'input-advance__content--label-change': isChanged
     }
-  );
+  )
 
   // pass props to chidren component
   const _children = Children.map(children, child =>
@@ -56,30 +56,30 @@ const WrappedInput = ({ forwardedRef, props, children }) => {
       onChange: handleInputOnchange,
       ref: forwardedRef
     })
-  );
+  )
 
   return (
-    <div className="input-advance">
-      <label className="input-advance__content">
+    <div className='input-advance'>
+      <label className='input-advance__content'>
         <div className={classLabel}>
           <span>{placeholder}</span>
         </div>
         {_children}
       </label>
     </div>
-  );
-};
+  )
+}
 
 const InputAdvance = forwardRef((props, ref) => (
   <WrappedInput props={props} forwardedRef={ref}>
     <Input />
   </WrappedInput>
-));
+))
 
 const PasswordAdvance = forwardRef((props, ref) => (
   <WrappedInput props={props} forwardedRef={ref}>
     <Input.Password />
   </WrappedInput>
-));
+))
 
-export { InputAdvance, PasswordAdvance };
+export { InputAdvance, PasswordAdvance }

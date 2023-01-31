@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const ChatSidebar = () => {
-  return <div className="chat-sidebar">ChatSidebar</div>;
-};
+  return <div className='chat-sidebar'>ChatSidebar</div>
+}
 
-export default ChatSidebar;
+export default ChatSidebar

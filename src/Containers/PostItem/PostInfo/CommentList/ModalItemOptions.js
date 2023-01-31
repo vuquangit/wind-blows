@@ -1,70 +1,70 @@
-import React, { useState } from "react";
-import { Modal, Button, message } from "antd";
-import { useSelector } from "react-redux";
-import { get, isEqual } from "lodash";
-import axios from "utils/axiosConfig";
+import React, { useState } from 'react'
+import { Modal, Button, message } from 'antd'
+import { useSelector } from 'react-redux'
+import { get, isEqual } from 'lodash'
+import axios from 'utils/axiosConfig'
 
 const ModalItemOptions = ({
-  commentOwnerId = "",
-  commentId = "",
-  postOwnerId = "",
+  commentOwnerId = '',
+  commentId = '',
+  postOwnerId = '',
   visibleModal = false,
   handleCancelModal = () => {},
   handleDeleteComment = () => {}
 }) => {
   const viewerId = useSelector((state = {}) =>
-    get(state, "profile.data.user.id", "")
-  );
+    get(state, 'profile.data.user.id', '')
+  )
 
   const canDeleteComment = isEqual(viewerId, postOwnerId)
     ? true
-    : isEqual(viewerId, commentOwnerId);
+    : isEqual(viewerId, commentOwnerId)
 
   // delete comments
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleDelete = async () => {
     try {
       await axios({
-        method: "post",
-        url: "/post/comments/delete",
+        method: 'post',
+        url: '/post/comments/delete',
         data: {
           commentsId: commentId
         },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
 
-      setIsLoading(false);
-      handleCancelModal();
-      handleDeleteComment(commentId);
+      setIsLoading(false)
+      handleCancelModal()
+      handleDeleteComment(commentId)
       // console.log("deleted comment");
     } catch (err) {
-      setIsLoading(false);
+      setIsLoading(false)
 
-      console.log(err);
-      message.error("Comments this post error");
+      console.log(err)
+      message.error('Comments this post error')
     }
-  };
+  }
 
   return (
     <Modal
       title={null}
       visible={visibleModal}
       onCancel={handleCancelModal}
-      className="PI__PO--modal"
+      className='PI__PO--modal'
       footer={null}
       closable={false}
       centered
     >
-      <div className="modal__content">
-        <Button className="modal__content--btn btn-red" disabled={isLoading}>
+      <div className='modal__content'>
+        <Button className='modal__content--btn btn-red' disabled={isLoading}>
           Report
         </Button>
         {canDeleteComment && (
           <Button
-            className="modal__content--btn btn-red"
+            className='modal__content--btn btn-red'
             onClick={() => handleDelete()}
             disabled={isLoading}
           >
@@ -72,7 +72,7 @@ const ModalItemOptions = ({
           </Button>
         )}
         <Button
-          className="modal__content--btn"
+          className='modal__content--btn'
           onClick={handleCancelModal}
           disabled={isLoading}
         >
@@ -80,7 +80,7 @@ const ModalItemOptions = ({
         </Button>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalItemOptions;
+export default ModalItemOptions

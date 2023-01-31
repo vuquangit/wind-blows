@@ -1,35 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUserPlus,
   faUserCheck,
   faHeart,
   faCommentAlt
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons'
 
-import TimeFromNow from "Components/TimeFromNow";
-import { stopPropagation } from "utils/stopPropagation";
+import TimeFromNow from 'Components/TimeFromNow'
+import { stopPropagation } from 'utils/stopPropagation'
 
 const Description = ({ user = {}, notifications = {}, match = {} }) => {
-  const { username = "", suggestionDescription = "", fullName = "" } = user;
-  const { typeNotification = 0, text = "", timestamp = "" } = notifications;
-  const subDescription = match.path === "/" ? suggestionDescription : fullName;
+  const { username = '', suggestionDescription = '', fullName = '' } = user
+  const { typeNotification = 0, text = '', timestamp = '' } = notifications
+  const subDescription = match.path === '/' ? suggestionDescription : fullName
 
   const handleStopPropagation = e => {
-    stopPropagation(e);
-  };
+    stopPropagation(e)
+  }
 
   return (
-    <div className="SGI__info">
+    <div className='SGI__info'>
       {typeNotification === 0 || typeNotification === 1 ? (
-        <div className="SGI__info--username">
+        <div className='SGI__info--username'>
           <Link
             to={`/${username}/`}
             title={username}
             onClick={handleStopPropagation}
-            className="username"
+            className='username'
           >
             {username}
           </Link>
@@ -39,60 +39,60 @@ const Description = ({ user = {}, notifications = {}, match = {} }) => {
           to={`/${username}/`}
           title={username}
           onClick={handleStopPropagation}
-          className="username"
+          className='username'
         >
           {username}
         </Link>
       )}
       {typeNotification === 0 ? (
-        <div className="description-suggestions">{subDescription}</div>
+        <div className='description-suggestions'>{subDescription}</div>
       ) : typeNotification === 1 ? (
-        " started following you."
+        ' started following you.'
       ) : typeNotification === 2 ? (
-        " liked your photo."
+        ' liked your photo.'
       ) : typeNotification === 3 ? (
         <>
-          {` like your comments: `}
+          {' like your comments: '}
           <span>"{text}"</span>
         </>
       ) : typeNotification === 4 ? (
         <>
-          {` mentioned you in a comment: `}
+          {' mentioned you in a comment: '}
           <span>"{text}"</span>
         </>
       ) : (
-        " accepted your follow request."
+        ' accepted your follow request.'
       )}
       {typeNotification !== 0 && (
-        <div className="SGI__description-more">
+        <div className='SGI__description-more'>
           {typeNotification === 1 ? (
             <FontAwesomeIcon
               icon={faUserPlus}
-              className="SGI__description-more--icon-follow"
+              className='SGI__description-more--icon-follow'
             />
           ) : typeNotification === 2 || typeNotification === 3 ? (
             <FontAwesomeIcon
               icon={faHeart}
-              className="SGI__description-more--icon-heart"
+              className='SGI__description-more--icon-heart'
             />
           ) : typeNotification === 4 ? (
             <FontAwesomeIcon
               icon={faCommentAlt}
-              className="SGI__description-more--icon-comment"
+              className='SGI__description-more--icon-comment'
             />
           ) : (
             typeNotification === 5 && (
               <FontAwesomeIcon
                 icon={faUserCheck}
-                className="SGI__description-more--icon-follow"
+                className='SGI__description-more--icon-follow'
               />
             )
           )}
-          <TimeFromNow postedAt={timestamp} className="timestamp" />
+          <TimeFromNow postedAt={timestamp} className='timestamp' />
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default withRouter(Description);
+export default withRouter(Description)

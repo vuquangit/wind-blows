@@ -1,6 +1,6 @@
-import React from "react";
-import PostSubmit from "./PostSubmit";
-import TogglePost from "./TogglePost";
+import React from 'react'
+import PostSubmit from './PostSubmit'
+import TogglePost from './TogglePost'
 
 const PostOption = ({
   status = {},
@@ -11,7 +11,7 @@ const PostOption = ({
   handleAddNewPost = () => {}
 }) => {
   return (
-    <div className="post-status__content--option">
+    <div className='post-status__content--option'>
       <TogglePost
         isShowOption={isShowOption}
         handleToggleOption={handleToggleOption}
@@ -23,7 +23,7 @@ const PostOption = ({
         handleAddNewPost={handleAddNewPost}
       />
     </div>
-  );
-};
+  )
+}
 
-export default PostOption;
+export default PostOption

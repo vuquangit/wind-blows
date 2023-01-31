@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import Pinwheel from "Components/Loaders/Pinwheel";
-import ResultItem from "./ResultItem";
+import React, { useCallback } from 'react'
+import InfiniteScroll from 'react-infinite-scroller'
+import Pinwheel from 'Components/Loaders/Pinwheel'
+import ResultItem from './ResultItem'
 
 const SearchResults = ({
-  value = "",
+  value = '',
   items = [],
   isLoading = false,
   hasMoreItems = false,
@@ -25,7 +25,7 @@ const SearchResults = ({
         />
       )),
     [handleSelectSearchItem, isTagPeople, items]
-  );
+  )
 
   return (
     <>
@@ -33,20 +33,20 @@ const SearchResults = ({
         pageStart={0}
         loadMore={getMoreItems}
         hasMore={hasMoreItems}
-        className="search-result"
+        className='search-result'
       >
         {_renderFollowItem()}
         {!isLoading && items && items.length === 0 && value && !isTagPeople && (
-          <div className="search-result__empty">No result</div>
+          <div className='search-result__empty'>No result</div>
         )}
       </InfiniteScroll>
       {isLoading && (
-        <div className="search-result__is-loading">
+        <div className='search-result__is-loading'>
           <Pinwheel isLoading={isLoading} size={40} />
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default SearchResults;
+export default SearchResults

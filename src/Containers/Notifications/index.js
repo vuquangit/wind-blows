@@ -68,7 +68,7 @@ export class Notifications {
       if (get(data, 'notification.title', '') !== 'New follow request')
         feactNewNoti()
       else await dispatch(increaseFollowRequest())
-    };
+    }
 
     const registerPushListener = (pushNotification) =>
       navigator.serviceWorker.addEventListener('message', ({ data }) => {

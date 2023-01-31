@@ -1,15 +1,15 @@
-import React from "react";
-import { Modal, message } from "antd";
+import React from 'react'
+import { Modal, message } from 'antd'
 import {
   faFacebookSquare,
   faFacebookMessenger,
   faLinkedin,
   faTwitter,
   faPinterestSquare
-} from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { get } from "lodash";
+} from '@fortawesome/free-brands-svg-icons'
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
+import { get } from 'lodash'
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -17,38 +17,38 @@ import {
   LinkedinShareButton,
   PinterestShareButton,
   TwitterShareButton
-} from "react-share";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+} from 'react-share'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import ShareButtonWrapper from "./ShareButtonWrapper";
+import ShareButtonWrapper from './ShareButtonWrapper'
 
 const ModalShare = ({
-  postId = "",
+  postId = '',
   sidecarChildren = {},
   visibleModal,
   handleCancelModal
 }) => {
-  const FBAppID = process.env.FACEBOOK_APP_ID;
-  const postImageLink = get(sidecarChildren, "[0].url", "");
-  const postLink = `${get(window, "location.origin", "")}/p/${postId}`;
+  const FBAppID = process.env.FACEBOOK_APP_ID
+  const postImageLink = get(sidecarChildren, '[0].url', '')
+  const postLink = `${get(window, 'location.origin', '')}/p/${postId}`
   const handleCopyLink = () => {
-    message.success("Post link is copied");
-  };
+    message.success('Post link is copied')
+  }
 
   // console.log(postImageLink);
 
   return (
     <Modal
-      title="Share"
+      title='Share'
       visible={visibleModal}
       onCancel={handleCancelModal}
-      className="action__share-modal"
+      className='action__share-modal'
       footer={null}
       closable
       centered
     >
-      <div className="action__share-modal--content">
-        <FacebookShareButton url={postLink} quote={`The wind blows post`}>
+      <div className='action__share-modal--content'>
+        <FacebookShareButton url={postLink} quote='The wind blows post'>
           <ShareButtonWrapper icon={faFacebookSquare}>
             Share to Facebook
           </ShareButtonWrapper>
@@ -88,7 +88,7 @@ const ModalShare = ({
         </ShareButtonWrapper>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalShare;
+export default ModalShare

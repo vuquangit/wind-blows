@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
 const StyledSpinner = styled.svg`
   animation: rotate 1s linear infinite;
@@ -31,19 +31,19 @@ const StyledSpinner = styled.svg`
       stroke-dashoffset: -124;
     }
   }
-`;
+`
 
-const Spinner = ({ size = 24, color = "fff" }) => (
-  <StyledSpinner viewBox="0 0 50 50" theme={{ size, color }}>
+const Spinner = ({ size = 24, color = 'fff' }) => (
+  <StyledSpinner viewBox='0 0 50 50' theme={{ size, color }}>
     <circle
-      className="path"
-      cx="25"
-      cy="25"
-      r="20"
-      fill="none"
-      strokeWidth="2"
+      className='path'
+      cx='25'
+      cy='25'
+      r='20'
+      fill='none'
+      strokeWidth='2'
     />
   </StyledSpinner>
-);
+)
 
-export default Spinner;
+export default Spinner

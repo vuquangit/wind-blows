@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import axios from "utils/axiosConfig";
-import classNames from "classnames";
-import { useDispatch } from "react-redux";
-import { get, isEmpty } from "lodash";
-import { message } from "antd";
-import { withRouter } from "react-router-dom";
+import React, { useState } from 'react'
+import axios from 'utils/axiosConfig'
+import classNames from 'classnames'
+import { useDispatch } from 'react-redux'
+import { get, isEmpty } from 'lodash'
+import { message } from 'antd'
+import { withRouter } from 'react-router-dom'
 
-import { decreaseNotifications } from "Redux/Notifications/notification.action";
-import AvatarUR from "./AvatarUR";
-import Description from "./Description";
-import Target from "./Target";
-import Options from "./Options";
-import "./userRelationship.scss";
-import { useEffect } from "react";
+import { decreaseNotifications } from 'Redux/Notifications/notification.action'
+import AvatarUR from './AvatarUR'
+import Description from './Description'
+import Target from './Target'
+import Options from './Options'
+import './userRelationship.scss'
+import { useEffect } from 'react'
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,87 +23,87 @@ const UserRelationship = ({
   history = {},
   isSlider = false
 }) => {
-  const dispatch = useDispatch();
-  const { username = "" } = user;
+  const dispatch = useDispatch()
+  const { username = '' } = user
   const {
-    id: notificationId = "",
+    id: notificationId = '',
     typeNotification = 0,
     media = {},
     read = false
-  } = notifications;
-  const postId = get(media, "id", "");
+  } = notifications
+  const postId = get(media, 'id', '')
 
   // toggle read notification
-  const [readNotification, setReadNotification] = useState(false);
+  const [readNotification, setReadNotification] = useState(false)
   useEffect(() => {
-    setReadNotification(read);
-  }, [read]);
+    setReadNotification(read)
+  }, [read])
   const toggleReadNotification = () => {
-    setReadNotification(!readNotification);
-  };
+    setReadNotification(!readNotification)
+  }
 
   // handle click div
   const fetchReadItem = async () => {
     try {
       await axios({
-        method: "post",
-        url: "/users/notifications/read",
+        method: 'post',
+        url: '/users/notifications/read',
         data: {
           id: notificationId
         },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
     } catch (error) {
-      console.log(error);
-      message.error("error");
+      console.log(error)
+      message.error('error')
     }
-  };
+  }
   const handleClickItem = async () => {
-    await fetchReadItem();
-    await dispatch(decreaseNotifications());
+    await fetchReadItem()
+    await dispatch(decreaseNotifications())
 
     history.push(
       typeNotification === 0 || typeNotification === 1 || typeNotification === 5
         ? `/${username}`
         : `/p/${postId}`
-    );
-  };
+    )
+  }
 
   // delete notification
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false)
   const handleDeleteNotification = async () => {
     try {
       await axios({
-        method: "post",
-        url: "/users/notifications/delete",
+        method: 'post',
+        url: '/users/notifications/delete',
         data: {
           id: notificationId
         },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
 
-      message.info("Deleted notification");
-      setIsDeleted(true);
+      message.info('Deleted notification')
+      setIsDeleted(true)
     } catch (error) {
-      console.log(error);
-      message.error("error");
+      console.log(error)
+      message.error('error')
     }
-  };
+  }
 
   // styles
   const classSGI = classNames(
-    "SGI",
+    'SGI',
     {
       SGI__unread: typeNotification !== 0 && !readNotification
     },
     {
-      "SGI-slider": isSlider
+      'SGI-slider': isSlider
     }
-  );
+  )
 
   // const handleDismissItem = () => {
   //   setIsDeleted(true);
@@ -115,7 +115,7 @@ const UserRelationship = ({
         <div
           className={classSGI}
           onClick={() => {
-            typeNotification !== 0 && handleClickItem();
+            typeNotification !== 0 && handleClickItem()
           }}
         >
           {/* {isSlider && (
@@ -127,7 +127,7 @@ const UserRelationship = ({
             user={user}
             size={isSlider ? 54 : 32}
             background={
-              typeNotification !== 0 && !readNotification ? "#d5ebff" : "white"
+              typeNotification !== 0 && !readNotification ? '#d5ebff' : 'white'
             }
           />
           <Description user={user} notifications={notifications} />
@@ -148,7 +148,7 @@ const UserRelationship = ({
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default withRouter(UserRelationship);
+export default withRouter(UserRelationship)

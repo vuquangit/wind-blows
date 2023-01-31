@@ -1,16 +1,16 @@
 const MenuLists = [
   {
-    label: "Edit Profile",
-    href: "/accounts/edit/"
+    label: 'Edit Profile',
+    href: '/accounts/edit/'
   },
   {
-    label: "Change Password",
-    href: "/accounts/password/change/"
+    label: 'Change Password',
+    href: '/accounts/password/change/'
   },
   {
-    label: "Privacy and Security",
-    href: "/accounts/privacy_and_security/"
+    label: 'Privacy and Security',
+    href: '/accounts/privacy_and_security/'
   }
-];
+]
 
-export default MenuLists;
+export default MenuLists

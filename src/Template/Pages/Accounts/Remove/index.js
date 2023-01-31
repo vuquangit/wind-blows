@@ -1,7 +1,7 @@
-import React from "react";
-import BasicTemplate from "Template/BasicTemplate";
-import WrapperMenuAccounts from "../WrapperMenuAccount";
-import Temporary from "./Temporary";
+import React from 'react'
+import BasicTemplate from 'Template/BasicTemplate'
+import WrapperMenuAccounts from '../WrapperMenuAccount'
+import Temporary from './Temporary'
 // import "./editProfile.scss";
 
 const Remove = () => {
@@ -11,7 +11,7 @@ const Remove = () => {
         <Temporary />
       </WrapperMenuAccounts>
     </BasicTemplate>
-  );
-};
+  )
+}
 
-export default Remove;
+export default Remove

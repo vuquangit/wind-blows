@@ -1,23 +1,23 @@
-import { useEffect, useRef } from "react";
-import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useEffect, useRef } from 'react'
+import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 const ScrollIntoView = ({ children, location }) => {
-  const prevLocation = useRef();
+  const prevLocation = useRef()
 
   useEffect(() => {
     if (prevLocation.current !== location.pathname) {
-      window.scrollTo(0, 0);
-      prevLocation.current = location.pathname;
+      window.scrollTo(0, 0)
+      prevLocation.current = location.pathname
     }
-  }, [location]);
+  }, [location])
 
-  return children;
-};
+  return children
+}
 
 ScrollIntoView.propTypes = {
   children: PropTypes.node,
   location: PropTypes.object
-};
+}
 
-export default withRouter(ScrollIntoView);
+export default withRouter(ScrollIntoView)

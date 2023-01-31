@@ -1,15 +1,15 @@
-import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import React from 'react'
+import Header from './Header'
+import Footer from './Footer'
 
 const WrapperAbout = ({ children }) => {
   return (
-    <div className="w-100">
+    <div className='w-100'>
       <Header />
       {children}
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default WrapperAbout;
+export default WrapperAbout

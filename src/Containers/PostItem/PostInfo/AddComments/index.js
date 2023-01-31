@@ -1,67 +1,67 @@
-import React, { useState, useRef } from "react";
-import { get } from "lodash";
-import { useSelector } from "react-redux";
-import { Comment, Button, Input, message } from "antd";
+import React, { useState, useRef } from 'react'
+import { get } from 'lodash'
+import { useSelector } from 'react-redux'
+import { Comment, Button, Input, message } from 'antd'
 
-import axios from "utils/axiosConfig";
-import AvatarUser from "Components/AvatarUser";
-import Emoji from "Containers/Emoji";
-import Search from "Template/Pages/Search";
+import axios from 'utils/axiosConfig'
+import AvatarUser from 'Components/AvatarUser'
+import Emoji from 'Containers/Emoji'
+import Search from 'Template/Pages/Search'
 
 const AddComments = ({
-  postId = "",
-  parentCommentId = "",
+  postId = '',
+  parentCommentId = '',
   isRepply = false,
-  replyTo = "",
+  replyTo = '',
   handleAddComment = () => {},
   setIsViewerComments = () => {}
 }) => {
   const {
-    id: viewerId = "",
-    profilePicturePublicId = "",
-    profilePictureUrl = ""
-  } = useSelector(state => get(state, "profile.data.user", {}));
+    id: viewerId = '',
+    profilePicturePublicId = '',
+    profilePictureUrl = ''
+  } = useSelector(state => get(state, 'profile.data.user', {}))
 
-  const textInput = useRef(null);
-  const [text, setText] = useState(replyTo ? `@${replyTo} ` : "");
-  const [valueSearch, setValSearch] = useState("");
+  const textInput = useRef(null)
+  const [text, setText] = useState(replyTo ? `@${replyTo} ` : '')
+  const [valueSearch, setValSearch] = useState('')
 
   const handleChangeText = e => {
-    const val = e.target.value;
+    const val = e.target.value
 
-    const valSearch = val.match(/@([a-z\d_]+$)/gi);
+    const valSearch = val.match(/@([a-z\d_]+$)/gi)
     if (valSearch) {
       // console.log("searching: ", String(valSearch).substring(1));
-      setValSearch(String(valSearch).substring(1));
+      setValSearch(String(valSearch).substring(1))
     } else {
-      setValSearch("");
+      setValSearch('')
       // console.log("searching close ");
     }
 
-    setText(val);
-  };
+    setText(val)
+  }
 
   const handleSelectSearchItem = val => {
-    const _text = text.endsWith("@" + valueSearch)
-      ? text.substring(0, text.length - valueSearch.length) + val + " "
-      : text;
-    setText(_text);
-  };
+    const _text = text.endsWith('@' + valueSearch)
+      ? text.substring(0, text.length - valueSearch.length) + val + ' '
+      : text
+    setText(_text)
+  }
 
   // fetch comments data
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const handleSubmit = async () => {
     if (!text) {
       // console.log("comment empty");
-      return;
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
       const response = await axios({
-        method: "post",
-        url: "/post/comments/add",
+        method: 'post',
+        url: '/post/comments/add',
         data: {
           userId: viewerId,
           postId,
@@ -69,47 +69,47 @@ const AddComments = ({
           parentCommentId
         },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
 
       // console.log("fetch comments data", response);
-      handleAddComment(get(response, "data", {}));
-      setText("");
+      handleAddComment(get(response, 'data', {}))
+      setText('')
 
       // scroll to bottom comments
-      setIsViewerComments(true);
+      setIsViewerComments(true)
 
       // console.log(textInput);
-      textInput.current.focus();
+      textInput.current.focus()
     } catch (err) {
-      console.log(err);
-      message.error("Comments this post error");
+      console.log(err)
+      message.error('Comments this post error')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  const onSelectEmoji = emoji => setText(prevState => prevState + emoji.native);
+  const onSelectEmoji = emoji => setText(prevState => prevState + emoji.native)
 
   const Submit = () => (
     <Button
-      htmlType="submit"
+      htmlType='submit'
       loading={isLoading}
       onClick={() => handleSubmit()}
-      type="default"
-      className="submit"
+      type='default'
+      className='submit'
       disabled={!text}
     >
       Post
     </Button>
-  );
+  )
 
   return (
-    <section className="post-comment">
+    <section className='post-comment'>
       <Comment
         avatar={
-          <div className="post-comment__avatar">
+          <div className='post-comment__avatar'>
             <AvatarUser
               profilePicturePublicId={profilePicturePublicId}
               profilePictureUrl={profilePictureUrl}
@@ -119,21 +119,21 @@ const AddComments = ({
         }
         content={
           <>
-            <div className="post-comment__content">
-              <div className="post-comment__content--text">
+            <div className='post-comment__content'>
+              <div className='post-comment__content--text'>
                 <Input.TextArea
                   rows={1}
                   onChange={handleChangeText}
                   onPressEnter={() => handleSubmit()}
                   value={text}
-                  placeholder="Add a comment..."
+                  placeholder='Add a comment...'
                   autoSize={{ minRows: 1, maxRows: 4 }}
                   disabled={isLoading}
                   ref={textInput}
                   allowClear
                 />
-                <div className="comment-emoji">
-                  <Emoji onSelect={onSelectEmoji} style={{ top: "20px" }} />
+                <div className='comment-emoji'>
+                  <Emoji onSelect={onSelectEmoji} style={{ top: '20px' }} />
                 </div>
               </div>
               {!isRepply && <Submit />}
@@ -151,7 +151,7 @@ const AddComments = ({
         />
       )}
     </section>
-  );
-};
+  )
+}
 
-export default AddComments;
+export default AddComments

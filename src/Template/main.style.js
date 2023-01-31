@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const MainWrapper = styled.div`
   min-height: 100vh;
@@ -7,4 +7,4 @@ export const MainWrapper = styled.div`
   justify-content: center;
   flex-direction: row;
   align-items: stretch;
-`;
+`

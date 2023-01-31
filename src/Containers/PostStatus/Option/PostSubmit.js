@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button, message } from "antd";
-import { omit, every } from "lodash";
+import React, { useState } from 'react'
+import { Button, message } from 'antd'
+import { omit, every } from 'lodash'
 
-import axios from "utils/axiosConfig";
+import axios from 'utils/axiosConfig'
 
 const PostSubmit = ({
   status = {},
@@ -12,76 +12,76 @@ const PostSubmit = ({
 }) => {
   const disabledSubmit =
     status && status.sidecarChildren && status.sidecarChildren.length > 0
-      ? !every(status.sidecarChildren, ["isUploaded", true])
-      : true;
+      ? !every(status.sidecarChildren, ['isUploaded', true])
+      : true
 
   // post
   const [state, setState] = useState({
     isPosting: false,
     data: {},
     error: null
-  });
+  })
 
   const fetchPostStatus = async () => {
     try {
-      setState(prevState => ({ ...prevState, isPosting: true }));
+      setState(prevState => ({ ...prevState, isPosting: true }))
 
       const sidecarChildren =
         status && status.sidecarChildren.length > 0
           ? status.sidecarChildren.map(item => {
-              return omit(item, [
-                "uuidFile",
-                "isUploaded",
-                "isUploadError",
-                "isConverted",
-                "base64"
-              ]);
-            })
-          : [];
+            return omit(item, [
+              'uuidFile',
+              'isUploaded',
+              'isUploadError',
+              'isConverted',
+              'base64'
+            ])
+          })
+          : []
 
       // console.log("submit:", { ...status, sidecarChildren });
 
       const res = await axios({
-        method: "post",
-        url: "/post/add",
+        method: 'post',
+        url: '/post/add',
         data: { ...status, sidecarChildren },
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         }
-      });
+      })
 
       // console.log(res.data);
-      setState(prevState => ({ ...prevState, data: res.data }));
+      setState(prevState => ({ ...prevState, data: res.data }))
 
       // clear post
-      clearStatus({ posted: true });
-      handleCancelStatusFocus();
+      clearStatus({ posted: true })
+      handleCancelStatusFocus()
 
       // show post
-      handleAddNewPost(res.data);
+      handleAddNewPost(res.data)
 
-      message.success("Post status success ");
+      message.success('Post status success ')
     } catch (err) {
-      console.log(err);
-      message.error("Post status error, try again.", 3);
+      console.log(err)
+      message.error('Post status error, try again.', 3)
     } finally {
-      setState(prevState => ({ ...prevState, isPosting: false }));
+      setState(prevState => ({ ...prevState, isPosting: false }))
     }
-  };
+  }
 
   return (
-    <div className="post-status__content--submit">
+    <div className='post-status__content--submit'>
       <Button
-        type="primary"
+        type='primary'
         loading={state.isPosting}
         onClick={fetchPostStatus}
         disabled={disabledSubmit}
-        className="btn-submit"
+        className='btn-submit'
       >
         Post
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default PostSubmit;
+export default PostSubmit

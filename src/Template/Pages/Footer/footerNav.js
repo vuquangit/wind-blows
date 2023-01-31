@@ -1,12 +1,12 @@
 const footerNav = [
   {
-    label: " About",
-    href: "/the-wind-blows/about"
+    label: ' About',
+    href: '/the-wind-blows/about'
   },
   {
-    label: " About me",
-    href: "/the-wind-blows/about-me"
+    label: ' About me',
+    href: '/the-wind-blows/about-me'
   }
-];
+]
 
-export default footerNav;
+export default footerNav

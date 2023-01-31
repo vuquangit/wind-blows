@@ -1,27 +1,27 @@
-import React from "react";
-import { get } from "lodash";
-import { useSelector } from "react-redux";
+import React from 'react'
+import { get } from 'lodash'
+import { useSelector } from 'react-redux'
 
-import BasicTemplate from "Template/BasicTemplate";
-import RelationshipList from "Containers/RelationshipList";
+import BasicTemplate from 'Template/BasicTemplate'
+import RelationshipList from 'Containers/RelationshipList'
 
 const Suggested = ({ isHomepage = false, isSlider = false }) => {
   const viewerId = useSelector((state = {}) =>
-    get(state, "profile.data.user.id", "")
-  );
+    get(state, 'profile.data.user.id', '')
+  )
 
   const apiConfig = {
-    method: "get",
-    endpoint: "/explore/people/suggested",
+    method: 'get',
+    endpoint: '/explore/people/suggested',
     params: {
       userId: viewerId,
       limit: isHomepage ? 3 : 20,
       page: 1
     },
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     }
-  };
+  }
 
   return (
     <>
@@ -33,11 +33,11 @@ const Suggested = ({ isHomepage = false, isSlider = false }) => {
         />
       ) : (
         <BasicTemplate>
-          <RelationshipList {...apiConfig} headerText="Suggested" />
+          <RelationshipList {...apiConfig} headerText='Suggested' />
         </BasicTemplate>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Suggested;
+export default Suggested

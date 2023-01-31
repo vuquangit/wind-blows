@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
-import AddImage from "./AddImage";
-import Thumbnails from "./Thumbnails";
-import "./uploadImage.scss";
+import AddImage from './AddImage'
+import Thumbnails from './Thumbnails'
+import './uploadImage.scss'
 
 const PostUploadImage = ({
   sidecarChildren = [],
@@ -11,10 +11,10 @@ const PostUploadImage = ({
   handleRemoveImage = () => {}
 }) => {
   return (
-    <div className="post-upload-image">
-      <div className="upload-image__wrapper">
-        <div className="upload-image__items">
-          <div className="thumbnails">
+    <div className='post-upload-image'>
+      <div className='upload-image__wrapper'>
+        <div className='upload-image__items'>
+          <div className='thumbnails'>
             {sidecarChildren.length > 0 &&
               sidecarChildren.map((item, idx) => (
                 <Thumbnails
@@ -35,7 +35,7 @@ const PostUploadImage = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PostUploadImage;
+export default PostUploadImage

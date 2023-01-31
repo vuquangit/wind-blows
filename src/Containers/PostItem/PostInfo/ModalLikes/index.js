@@ -1,22 +1,22 @@
-import React from "react";
-import Modal from "Components/Modal";
+import React from 'react'
+import Modal from 'Components/Modal'
 
-import RelationshipList from "Containers/RelationshipList";
+import RelationshipList from 'Containers/RelationshipList'
 
 const ModalLikes = ({
   visibleModal = false,
   handleCancelModal = () => {},
-  endpoint = "",
+  endpoint = '',
   params = {}
 }) => {
   const apiConfig = {
-    method: "get",
+    method: 'get',
     endpoint,
     params,
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     }
-  };
+  }
 
   return (
     <div>
@@ -29,10 +29,10 @@ const ModalLikes = ({
         centered
         destroyOnClose
       >
-        <RelationshipList {...apiConfig} headerText="Likes" />
+        <RelationshipList {...apiConfig} headerText='Likes' />
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default ModalLikes;
+export default ModalLikes

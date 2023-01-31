@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Form, Input, Tooltip, Icon, Button, message } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { get, isEqual, omit } from "lodash";
+import React, { useEffect, useState, useCallback } from 'react'
+import { Form, Input, Tooltip, Icon, Button, message } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
+import { get, isEqual, omit } from 'lodash'
 
-import axios from "utils/axiosConfig";
-import ProfilePhoto from "Containers/ProfilePhoto";
-import { updateUserProfile } from "Redux/Profile/profile.action";
-import { withRouter } from "react-router-dom";
+import axios from 'utils/axiosConfig'
+import ProfilePhoto from 'Containers/ProfilePhoto'
+import { updateUserProfile } from 'Redux/Profile/profile.action'
+import { withRouter } from 'react-router-dom'
 
 const EditProfile = ({ form, history = {} }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const profile = useSelector(
-    (state = {}) => get(state, "profile.data.user", {}),
+    (state = {}) => get(state, 'profile.data.user', {}),
     isEqual()
-  );
+  )
 
-  const { getFieldDecorator, setFieldsValue } = form;
+  const { getFieldDecorator, setFieldsValue } = form
 
   const formItemLayout = {
     labelCol: {
@@ -27,7 +27,7 @@ const EditProfile = ({ form, history = {} }) => {
       xs: { span: 24 },
       sm: { span: 18 }
     }
-  };
+  }
   const tailFormItemLayout = {
     wrapperCol: {
       xs: {
@@ -39,101 +39,101 @@ const EditProfile = ({ form, history = {} }) => {
         offset: 8
       }
     }
-  };
+  }
 
   const [stateUpdate, setStateUpdate] = useState({
     isUpdating: false,
     data: {},
     error: null
-  });
+  })
 
   // set values profile
   useEffect(() => {
     setFieldsValue({
-      fullName: get(profile, "fullName"),
-      username: get(profile, "username"),
-      website: get(profile, "website"),
-      bio: get(profile, "bio"),
-      email: get(profile, "email"),
-      phoneNumber: get(profile, "phoneNumber")
-    });
-  }, [profile, setFieldsValue]);
+      fullName: get(profile, 'fullName'),
+      username: get(profile, 'username'),
+      website: get(profile, 'website'),
+      bio: get(profile, 'bio'),
+      email: get(profile, 'email'),
+      phoneNumber: get(profile, 'phoneNumber')
+    })
+  }, [profile, setFieldsValue])
 
   // check uppercase username
   const validateUsername = (rule, value, callback) => {
     if (value && /^\S+$/gi.test(value) === false) {
-      callback("Username contain whitespace");
+      callback('Username contain whitespace')
     } else if (value && /[A-Z]+/.test(value)) {
-      callback("The username has uppercase characters");
+      callback('The username has uppercase characters')
     } else {
-      callback();
+      callback()
     }
-  };
+  }
 
   // update profile
   const fetchUpdateProfile = useCallback(
     async values => {
       try {
-        setStateUpdate(prevState => ({ ...prevState, isUpdating: true }));
+        setStateUpdate(prevState => ({ ...prevState, isUpdating: true }))
 
         const res = await axios({
-          method: "post",
-          url: "/users/update",
-          data: { id: get(profile, "id", ""), ...values },
+          method: 'post',
+          url: '/users/update',
+          data: { id: get(profile, 'id', ''), ...values },
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           }
-        });
+        })
 
-        setStateUpdate(prevState => ({ ...prevState, data: res.data }));
+        setStateUpdate(prevState => ({ ...prevState, data: res.data }))
 
         // refresh personal store
         if (res.status === 200 || res.status === 201) {
-          const data = omit(values, ["agreement"]);
-          await dispatch(updateUserProfile(data));
+          const data = omit(values, ['agreement'])
+          await dispatch(updateUserProfile(data))
 
-          message.success("Updated your profile", 5);
+          message.success('Updated your profile', 5)
         }
       } catch (err) {
-        console.log("Edit profile error ", err);
-        message.error("Edit profile error: ", err);
+        console.log('Edit profile error ', err)
+        message.error('Edit profile error: ', err)
       } finally {
-        setStateUpdate(prevState => ({ ...prevState, isUpdating: false }));
+        setStateUpdate(prevState => ({ ...prevState, isUpdating: false }))
       }
     },
     [dispatch, profile]
-  );
+  )
 
   // submit
   const handleSubmit = useCallback(
     e => {
-      e.preventDefault();
+      e.preventDefault()
       form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          fetchUpdateProfile(values);
+          fetchUpdateProfile(values)
         }
-      });
+      })
     },
     [fetchUpdateProfile, form]
-  );
+  )
 
   // disable account
   const handleDisableAccount = async () => {
-    history.push("/accounts/remove/request/temporary/");
-  };
+    history.push('/accounts/remove/request/temporary/')
+  }
 
   return (
-    <div className="edit-profile">
-      <div className="edit-profile__photo">
+    <div className='edit-profile'>
+      <div className='edit-profile__photo'>
         <ProfilePhoto {...formItemLayout} changePhoto />
       </div>
       <Form {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item label="Name">
-          {getFieldDecorator("fullName", {
+        <Form.Item label='Name'>
+          {getFieldDecorator('fullName', {
             rules: [
               {
                 required: true,
-                message: "Please input your name!",
+                message: 'Please input your name!',
                 whitespace: true
               }
             ]
@@ -143,17 +143,17 @@ const EditProfile = ({ form, history = {} }) => {
           label={
             <span>
               Username&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <Icon type="question-circle-o" />
+              <Tooltip title='What do you want others to call you?'>
+                <Icon type='question-circle-o' />
               </Tooltip>
             </span>
           }
         >
-          {getFieldDecorator("username", {
+          {getFieldDecorator('username', {
             rules: [
               {
                 required: true,
-                message: "Please input your username!",
+                message: 'Please input your username!',
                 whitespace: true
               },
               {
@@ -162,33 +162,33 @@ const EditProfile = ({ form, history = {} }) => {
             ]
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Website">
-          {getFieldDecorator("website")(<Input />)}
+        <Form.Item label='Website'>
+          {getFieldDecorator('website')(<Input />)}
         </Form.Item>
-        <Form.Item label="Bio">
-          {getFieldDecorator("bio")(
+        <Form.Item label='Bio'>
+          {getFieldDecorator('bio')(
             <Input.TextArea autoSize={{ minRows: 2, maxRows: 9999999 }} />
           )}
         </Form.Item>
-        <Form.Item label=" " className="edit-profile__form--private">
-          <h2 className="private__text">Private Information</h2>
+        <Form.Item label=' ' className='edit-profile__form--private'>
+          <h2 className='private__text'>Private Information</h2>
         </Form.Item>
-        <Form.Item label="E-mail">
-          {getFieldDecorator("email", {
+        <Form.Item label='E-mail'>
+          {getFieldDecorator('email', {
             rules: [
               {
-                type: "email",
-                message: "The input is not valid E-mail!"
+                type: 'email',
+                message: 'The input is not valid E-mail!'
               },
               {
                 required: true,
-                message: "Please input your E-mail!"
+                message: 'Please input your E-mail!'
               }
             ]
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Phone Number">
-          {getFieldDecorator("phoneNumber")(<Input />)}
+        <Form.Item label='Phone Number'>
+          {getFieldDecorator('phoneNumber')(<Input />)}
         </Form.Item>
         {/* <Form.Item label="Similar Account Suggestions">
           {getFieldDecorator("agreement", {
@@ -210,15 +210,15 @@ const EditProfile = ({ form, history = {} }) => {
         </Form.Item> */}
         <Form.Item {...tailFormItemLayout}>
           <Button
-            type="primary"
-            htmlType="submit"
+            type='primary'
+            htmlType='submit'
             loading={stateUpdate.isUpdating}
           >
             Submit
           </Button>
           <Button
-            type="danger"
-            style={{ marginLeft: "16px" }}
+            type='danger'
+            style={{ marginLeft: '16px' }}
             disabled={stateUpdate.isUpdating}
             onClick={handleDisableAccount}
           >
@@ -227,7 +227,7 @@ const EditProfile = ({ form, history = {} }) => {
         </Form.Item>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default Form.create({ name: "editProfile" })(withRouter(EditProfile));
+export default Form.create({ name: 'editProfile' })(withRouter(EditProfile))

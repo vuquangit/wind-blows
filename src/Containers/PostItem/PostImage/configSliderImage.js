@@ -6,4 +6,4 @@ export const settings = {
   slidesToScroll: 1,
   initialSlide: 0,
   autoplay: false
-};
+}

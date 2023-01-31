@@ -1,17 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react'
 
-import "./scss/about.scss";
-import About1 from "./About_1";
-import Devider from "./Devider";
-import About2 from "./About_2";
-import AboutItem from "./AboutItem";
-import aboutList from "./aboutList";
-import WrapperAbout from "../WrapperAbout";
+import './scss/about.scss'
+import About1 from './About_1'
+import Devider from './Devider'
+import About2 from './About_2'
+import AboutItem from './AboutItem'
+import aboutList from './aboutList'
+import WrapperAbout from '../WrapperAbout'
 
 const Abouts = () => {
   return (
     <WrapperAbout>
-      <div className="abouts">
+      <div className='abouts'>
         <About1 />
         <Devider />
         <About2 />
@@ -25,7 +25,7 @@ const Abouts = () => {
           ))}
       </div>
     </WrapperAbout>
-  );
-};
+  )
+}
 
-export default Abouts;
+export default Abouts

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 
 // https://reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
 // export function useClientRect() {
@@ -12,16 +12,16 @@ import { useState, useRef, useEffect, useLayoutEffect } from "react";
 // }
 
 export const useClientRect = () => {
-  const ref = useRef();
-  const [rect, setBbox] = useState({});
+  const ref = useRef()
+  const [rect, setBbox] = useState({})
   const set = () =>
-    setBbox(ref && ref.current ? ref.current.getBoundingClientRect() : {});
+    setBbox(ref && ref.current ? ref.current.getBoundingClientRect() : {})
 
   useEffect(() => {
-    set();
-    window.addEventListener("useClientRectEvent", set);
-    return () => window.removeEventListener("useClientRectEvent", set);
-  }, []);
+    set()
+    window.addEventListener('useClientRectEvent', set)
+    return () => window.removeEventListener('useClientRectEvent', set)
+  }, [])
 
   // useLayoutEffect(() => {
   //   set();
@@ -29,5 +29,5 @@ export const useClientRect = () => {
   //   return () => window.removeEventListener("useClientRectEvent", set);
   // }, []);
 
-  return [rect, ref];
-};
+  return [rect, ref]
+}
