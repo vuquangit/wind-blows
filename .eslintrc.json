@@ -1,6 +1,45 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react-hooks", "@typescript-eslint", "prettier"],
+  "parserOptions": {
+    "useJSXTextNode": true,
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true,
+      "tsx": true
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "baseUrl": "src",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "rootDirs": [
+      "src",
+      "stories"
+    ]
+  },
+  "plugins": [
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -8,41 +47,44 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "react/jsx-filename-extension": [
-      1,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/member-delimiter-style": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
+    "react/prop-types": 0,
+    "indent": [
+      "error",
+      2,
       {
-        "extensions": [".js", ".jsx"]
+        "SwitchCase": 1
       }
     ],
-    "react/prop-types": 0,
-    "no-underscore-dangle": 0,
-    // "import/imports-first": ["error", "absolute-first"],
-    // "import/newline-after-import": "error",
-    "indent": ["error", 2],
-    "quotes": ["error", "single"],
-    "semi": ["error", "never"],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/jsx-fragments": 0,
-    "react/jsx-indent": 0
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": "off"
   },
-  "globals": {
-    "window": true,
-    "document": true,
-    "localStorage": true,
-    "FormData": true,
-    "FileReader": true,
-    "Blob": true,
-    "navigator": true,
-    "fetch": true
-  },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
+  // "globals": {
+  //   "window": true,
+  //   "document": true,
+  //   "localStorage": true,
+  //   "FormData": true,
+  //   "FileReader": true,
+  //   "Blob": true,
+  //   "navigator": true,
+  //   "fetch": true
+  // },
   "env": {
     "jest": true,
     "browser": true,
@@ -54,9 +96,11 @@
       "version": "detect"
     },
     "import/resolver": {
-      "node": {
-        "paths": ["src"]
-      },
+      // "node": {
+      //   "paths": [
+      //     "src"
+      //   ]
+      // },
       "alias": {
         "map": "[['@', path.resolve(__dirname, 'src')]]"
       }

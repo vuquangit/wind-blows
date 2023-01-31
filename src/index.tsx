@@ -15,12 +15,14 @@ import cloudinaryConfig from './cloudinaryConfig'
 // eslint-disable-next-line
 import firebase from "Firebases/firebase";
 import './index.css'
+// import { setupStore } from '@/store'
 
 registerServiceWorkerFCM()
 
 // local store redux
 const persistedState = loadState()
 const store = configureStore(persistedState)
+// const store = setupStore()
 store.subscribe(
   throttle(() => {
     saveState({
