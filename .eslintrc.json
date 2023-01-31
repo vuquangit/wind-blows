@@ -1,6 +1,12 @@
 {
-  "extends": ["standard-react"],
-  "plugins": ["react-hooks", "react", "jsx-a11y"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react-hooks", "@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:react/recommended"
+  ],
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -30,7 +36,6 @@
     "navigator": true,
     "fetch": true
   },
-  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -41,12 +46,19 @@
   "env": {
     "jest": true,
     "browser": true,
+    "node": true,
     "es6": true
   },
   "settings": {
+    "react": {
+      "version": "detect"
+    },
     "import/resolver": {
       "node": {
         "paths": ["src"]
+      },
+      "alias": {
+        "map": "[['@', path.resolve(__dirname, 'src')]]"
       }
     }
   }
